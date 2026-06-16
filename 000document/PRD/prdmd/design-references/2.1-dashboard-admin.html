@@ -3,282 +3,376 @@
 <html lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>LMS Admin Dashboard Shell</title>
+<title>LMS Admin Dashboard</title>
+<!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config -->
 <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
                     "colors": {
-                            "secondary": "#505f76",
-                            "tertiary-container": "#5a6274",
-                            "on-primary-container": "#d9dbff",
-                            "error-container": "#ffdad6",
-                            "surface-variant": "#dfe3e7",
-                            "tertiary-fixed": "#dbe2f8",
-                            "on-secondary-fixed": "#0b1c30",
-                            "primary-container": "#3c50e0",
-                            "on-secondary-fixed-variant": "#38485d",
-                            "secondary-fixed-dim": "#b7c8e1",
-                            "error": "#ba1a1a",
-                            "on-surface-variant": "#454655",
-                            "primary-fixed": "#dfe0ff",
-                            "surface-bright": "#f6fafe",
-                            "surface-container-highest": "#dfe3e7",
-                            "tertiary-fixed-dim": "#bec6dc",
-                            "secondary-container": "#d0e1fb",
-                            "surface-container": "#eaeef2",
-                            "primary": "#1c33c8",
-                            "on-secondary-container": "#54647a",
-                            "outline-variant": "#c5c5d7",
-                            "on-error": "#ffffff",
-                            "inverse-surface": "#2c3134",
-                            "on-primary": "#ffffff",
-                            "surface-tint": "#384cdd",
-                            "on-tertiary-fixed-variant": "#3f4758",
-                            "tertiary": "#424a5c",
-                            "on-tertiary-fixed": "#131c2b",
-                            "surface": "#f6fafe",
-                            "on-tertiary": "#ffffff",
-                            "background": "#f6fafe",
-                            "primary-fixed-dim": "#bcc2ff",
-                            "on-surface": "#171c1f",
-                            "on-primary-fixed": "#000c61",
-                            "on-tertiary-container": "#d6def4",
-                            "surface-container-high": "#e4e9ed",
-                            "inverse-on-surface": "#edf1f5",
-                            "surface-dim": "#d6dade",
-                            "on-secondary": "#ffffff",
-                            "secondary-fixed": "#d3e4fe",
-                            "surface-container-lowest": "#ffffff",
-                            "on-primary-fixed-variant": "#172fc5",
-                            "inverse-primary": "#bcc2ff",
-                            "on-background": "#171c1f",
-                            "outline": "#757686",
-                            "on-error-container": "#93000a",
-                            "surface-container-low": "#f0f4f8"
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#d3e4fe",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#172fc5",
+                        "inverse-primary": "#bcc2ff",
+                        "on-background": "#171c1f",
+                        "outline": "#757686",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f0f4f8",
+                        "tertiary": "#424a5c",
+                        "on-tertiary-fixed": "#131c2b",
+                        "surface": "#f6fafe",
+                        "on-tertiary": "#ffffff",
+                        "background": "#f6fafe",
+                        "primary-fixed-dim": "#bcc2ff",
+                        "on-surface": "#171c1f",
+                        "on-primary-fixed": "#000c61",
+                        "on-tertiary-container": "#d6def4",
+                        "surface-container-high": "#e4e9ed",
+                        "inverse-on-surface": "#edf1f5",
+                        "surface-dim": "#d6dade",
+                        "surface-container-highest": "#dfe3e7",
+                        "surface-bright": "#f6fafe",
+                        "primary-fixed": "#dfe0ff",
+                        "tertiary-fixed-dim": "#bec6dc",
+                        "secondary-container": "#d0e1fb",
+                        "surface-container": "#eaeef2",
+                        "primary": "#1c33c8",
+                        "on-secondary-container": "#54647a",
+                        "outline-variant": "#c5c5d7",
+                        "on-error": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#2c3134",
+                        "surface-tint": "#384cdd",
+                        "on-tertiary-fixed-variant": "#3f4758",
+                        "tertiary-container": "#5a6274",
+                        "secondary": "#505f76",
+                        "on-primary-container": "#d9dbff",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#dfe3e7",
+                        "tertiary-fixed": "#dbe2f8",
+                        "primary-container": "#3c50e0",
+                        "on-secondary-fixed": "#0b1c30",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#454655"
                     },
                     "borderRadius": {
-                            "DEFAULT": "0.25rem",
-                            "lg": "0.5rem",
-                            "xl": "0.75rem",
-                            "full": "9999px"
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
                     },
                     "spacing": {
-                            "stack-md": "1rem",
-                            "gutter": "24px",
-                            "stack-lg": "1.5rem",
-                            "container-margin": "24px",
-                            "card-padding": "1.5rem",
-                            "sidebar-width": "280px",
-                            "stack-sm": "0.5rem"
+                        "stack-md": "1rem",
+                        "container-margin": "24px",
+                        "stack-lg": "1.5rem",
+                        "gutter": "24px",
+                        "card-padding": "1.5rem",
+                        "stack-sm": "0.5rem",
+                        "sidebar-width": "280px"
                     },
                     "fontFamily": {
-                            "headline-md": [
-                                    "Inter"
-                            ],
-                            "body-lg": [
-                                    "Inter"
-                            ],
-                            "headline-lg": [
-                                    "Inter"
-                            ],
-                            "label-md": [
-                                    "Inter"
-                            ],
-                            "headline-lg-mobile": [
-                                    "Inter"
-                            ],
-                            "headline-xl": [
-                                    "Inter"
-                            ],
-                            "body-md": [
-                                    "Inter"
-                            ],
-                            "label-sm": [
-                                    "Inter"
-                            ]
+                        "headline-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"]
                     },
                     "fontSize": {
-                            "headline-md": [
-                                    "20px",
-                                    {
-                                            "lineHeight": "28px",
-                                            "fontWeight": "600"
-                                    }
-                            ],
-                            "body-lg": [
-                                    "16px",
-                                    {
-                                            "lineHeight": "24px",
-                                            "fontWeight": "400"
-                                    }
-                            ],
-                            "headline-lg": [
-                                    "24px",
-                                    {
-                                            "lineHeight": "32px",
-                                            "letterSpacing": "-0.01em",
-                                            "fontWeight": "700"
-                                    }
-                            ],
-                            "label-md": [
-                                    "14px",
-                                    {
-                                            "lineHeight": "20px",
-                                            "fontWeight": "500"
-                                    }
-                            ],
-                            "headline-lg-mobile": [
-                                    "20px",
-                                    {
-                                            "lineHeight": "28px",
-                                            "fontWeight": "700"
-                                    }
-                            ],
-                            "headline-xl": [
-                                    "30px",
-                                    {
-                                            "lineHeight": "38px",
-                                            "letterSpacing": "-0.02em",
-                                            "fontWeight": "700"
-                                    }
-                            ],
-                            "body-md": [
-                                    "14px",
-                                    {
-                                            "lineHeight": "20px",
-                                            "fontWeight": "400"
-                                    }
-                            ],
-                            "label-sm": [
-                                    "12px",
-                                    {
-                                            "lineHeight": "16px",
-                                            "fontWeight": "600"
-                                    }
-                            ]
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-xl": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
                     }
+                }
             }
         }
-      }
     </script>
+<style>
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #c5c5d7;
+            border-radius: 10px;
+        }
+    </style>
 </head>
-<body class="bg-[#F1F5F9] text-on-surface font-body-md min-h-screen flex">
+<body class="bg-background text-on-background font-body-md antialiased overflow-x-hidden min-h-screen">
 <!-- SideNavBar -->
-<aside class="fixed left-0 top-0 h-full w-[280px] bg-white dark:bg-inverse-surface border-r border-outline-variant dark:border-outline shadow-sm flex flex-col z-50">
-<!-- Logo Area -->
-<div class="px-6 py-6 border-b border-outline-variant flex items-center gap-3">
-<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container">
-<span class="material-symbols-outlined" data-icon="school">school</span>
-</div>
-<div>
+<nav class="bg-white dark:bg-inverse-surface text-primary dark:text-primary-fixed fixed left-0 top-0 h-full w-[280px] border-r border-outline-variant dark:border-outline shadow-sm flex flex-col py-6 z-50">
+<!-- Brand / Header -->
+<div class="px-6 mb-8 flex flex-col gap-1">
 <h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">LMS Admin</h1>
-<p class="font-label-sm text-label-sm text-secondary">Management System</p>
-</div>
+<span class="font-label-sm text-label-sm text-secondary">Management System</span>
 </div>
 <!-- Navigation Links -->
-<nav class="flex-1 overflow-y-auto py-6 flex flex-col gap-1">
+<div class="flex-1 overflow-y-auto overflow-x-hidden flex flex-col font-label-md text-label-md">
+<!-- Active Tab: Dashboard -->
 <a class="flex items-center gap-3 px-4 py-3 text-primary bg-primary/5 border-l-4 border-primary font-bold active:opacity-80 transition-all" href="#">
-<span class="material-symbols-outlined text-[20px]" data-icon="dashboard">dashboard</span>
-<span class="font-label-md text-label-md">Dashboard</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed hover:bg-surface-container-low transition-colors active:opacity-80" href="#">
-<span class="material-symbols-outlined text-[20px]" data-icon="database">database</span>
-<span class="font-label-md text-label-md">Master Data</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed hover:bg-surface-container-low transition-colors active:opacity-80" href="#">
-<span class="material-symbols-outlined text-[20px]" data-icon="group">group</span>
-<span class="font-label-md text-label-md">Pengguna</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed hover:bg-surface-container-low transition-colors active:opacity-80" href="#">
-<span class="material-symbols-outlined text-[20px]" data-icon="calendar_month">calendar_month</span>
-<span class="font-label-md text-label-md">Jadwal Pelajaran</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed hover:bg-surface-container-low transition-colors active:opacity-80" href="#">
-<span class="material-symbols-outlined text-[20px]" data-icon="upload_file">upload_file</span>
-<span class="font-label-md text-label-md">Import Excel</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed hover:bg-surface-container-low transition-colors active:opacity-80" href="#">
-<span class="material-symbols-outlined text-[20px]" data-icon="how_to_reg">how_to_reg</span>
-<span class="font-label-md text-label-md">Absensi</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed hover:bg-surface-container-low transition-colors active:opacity-80" href="#">
-<span class="material-symbols-outlined text-[20px]" data-icon="menu_book">menu_book</span>
-<span class="font-label-md text-label-md">Materi</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed hover:bg-surface-container-low transition-colors active:opacity-80" href="#">
-<span class="material-symbols-outlined text-[20px]" data-icon="assignment">assignment</span>
-<span class="font-label-md text-label-md">Tugas</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed hover:bg-surface-container-low transition-colors active:opacity-80" href="#">
-<span class="material-symbols-outlined text-[20px]" data-icon="quiz">quiz</span>
-<span class="font-label-md text-label-md">CBT</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed hover:bg-surface-container-low transition-colors active:opacity-80" href="#">
-<span class="material-symbols-outlined text-[20px]" data-icon="trending_up">trending_up</span>
-<span class="font-label-md text-label-md">Kenaikan Kelas</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed hover:bg-surface-container-low transition-colors active:opacity-80" href="#">
-<span class="material-symbols-outlined text-[20px]" data-icon="grade">grade</span>
-<span class="font-label-md text-label-md">Penilaian Akhir</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed hover:bg-surface-container-low transition-colors active:opacity-80 mt-auto" href="#">
-<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
-<span class="font-label-md text-label-md">Pengaturan</span>
-</a>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+                Dashboard
+            </a>
+<!-- Inactive Tabs -->
+<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed hover:bg-surface-container-low dark:hover:bg-tertiary-container transition-colors active:opacity-80" href="#">
+<span class="material-symbols-outlined">database</span>
+                Master Data
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed hover:bg-surface-container-low dark:hover:bg-tertiary-container transition-colors active:opacity-80" href="#">
+<span class="material-symbols-outlined">group</span>
+                Pengguna
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed hover:bg-surface-container-low dark:hover:bg-tertiary-container transition-colors active:opacity-80" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+                Jadwal Pelajaran
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed hover:bg-surface-container-low dark:hover:bg-tertiary-container transition-colors active:opacity-80" href="#">
+<span class="material-symbols-outlined">upload_file</span>
+                Import Excel
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed hover:bg-surface-container-low dark:hover:bg-tertiary-container transition-colors active:opacity-80" href="#">
+<span class="material-symbols-outlined">how_to_reg</span>
+                Absensi
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed hover:bg-surface-container-low dark:hover:bg-tertiary-container transition-colors active:opacity-80" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+                Materi
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed hover:bg-surface-container-low dark:hover:bg-tertiary-container transition-colors active:opacity-80" href="#">
+<span class="material-symbols-outlined">assignment</span>
+                Tugas
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed hover:bg-surface-container-low dark:hover:bg-tertiary-container transition-colors active:opacity-80" href="#">
+<span class="material-symbols-outlined">quiz</span>
+                CBT
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed hover:bg-surface-container-low dark:hover:bg-tertiary-container transition-colors active:opacity-80" href="#">
+<span class="material-symbols-outlined">trending_up</span>
+                Kenaikan Kelas
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed hover:bg-surface-container-low dark:hover:bg-tertiary-container transition-colors active:opacity-80" href="#">
+<span class="material-symbols-outlined">grade</span>
+                Penilaian Akhir
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed hover:bg-surface-container-low dark:hover:bg-tertiary-container transition-colors active:opacity-80 mt-auto border-t border-outline-variant/30 pt-4" href="#">
+<span class="material-symbols-outlined">settings</span>
+                Pengaturan
+            </a>
+</div>
 </nav>
-</aside>
-<!-- Main Wrapper -->
-<div class="ml-[280px] w-[calc(100%-280px)] min-h-screen flex flex-col">
 <!-- TopNavBar -->
-<header class="sticky top-0 z-40 w-full bg-white dark:bg-surface-container-highest border-b border-outline-variant shadow-sm h-16 px-gutter flex justify-between items-center">
-<!-- Page Title -->
+<header class="bg-white dark:bg-surface-container-highest sticky top-0 z-40 border-b border-outline-variant dark:border-outline shadow-sm flex justify-between items-center h-16 px-gutter ml-[280px] w-[calc(100%-280px)] text-primary dark:text-primary-fixed font-headline-md text-headline-md">
+<!-- Left Section: Navigation Links -->
+<div class="flex items-center h-full gap-6">
+<a class="h-full flex items-center text-primary font-bold border-b-2 border-primary pt-1 cursor-pointer active:scale-95 transition-all" href="#">
+                TA 2023/2024 - Ganjil
+            </a>
+</div>
+<!-- Right Section: Actions & Profile -->
 <div class="flex items-center gap-4">
-<button class="md:hidden p-2 text-secondary hover:bg-surface-container rounded-lg">
-<span class="material-symbols-outlined">menu</span>
+<!-- Trailing Icons -->
+<button class="p-2 rounded-full text-secondary hover:bg-surface-container-low hover:text-primary transition-colors cursor-pointer active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
 </button>
-<h2 class="font-headline-lg text-headline-lg font-bold text-on-surface">Dashboard</h2>
+<!-- Separator -->
+<div class="h-8 w-px bg-outline-variant mx-1"></div>
+<!-- Profile Info -->
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="text-right hidden sm:block">
+<p class="font-label-md text-label-md text-on-surface font-semibold group-hover:text-primary transition-colors">Admin User</p>
+<p class="font-label-sm text-label-sm text-secondary">Administrator</p>
 </div>
-<!-- Right Actions -->
-<div class="flex items-center gap-6">
-<!-- Academic Period Dropdown -->
-<div class="hidden md:flex items-center gap-2 px-3 py-1.5 bg-surface-container-low border border-outline-variant rounded-md cursor-pointer hover:bg-surface-container transition-colors">
-<span class="font-label-md text-label-md text-secondary">TA 2023/2024 - Ganjil</span>
-<span class="material-symbols-outlined text-[18px] text-secondary" data-icon="arrow_drop_down">arrow_drop_down</span>
-</div>
-<!-- Notifications -->
-<button class="relative p-2 text-secondary hover:bg-surface-container rounded-full transition-colors cursor-pointer active:scale-95">
-<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-<span class="absolute top-1 right-1 w-2 h-2 bg-error rounded-full"></span>
-</button>
-<!-- User Profile -->
-<div class="flex items-center gap-3 cursor-pointer pl-4 border-l border-outline-variant">
-<div class="text-right hidden md:block">
-<p class="font-label-md text-label-md text-on-surface font-medium">Admin User</p>
-<p class="font-label-sm text-label-sm text-secondary">Super Admin</p>
-</div>
-<div class="w-10 h-10 rounded-full bg-primary-container/20 border border-primary-container/30 overflow-hidden">
-<img alt="User Avatar" class="w-full h-full object-cover" data-alt="A professional headshot of a modern corporate professional in a brightly lit office setting, maintaining a corporate modern aesthetic suitable for a SaaS application profile picture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbPul06vN3EimPUIpB8y-BF0IfjgUzHGbAwQfTOOsAgVtmLaWnTTAfSltxKvsGmG4ge12vH06_UYkHGjLL1W61GC5OvfcdEUDmwR4qBHvg24DWxQLE-Bq0qflJcsHL5VgvKULNgL_lK7ZTYqopdf4egk3NmughKaby13XvVsq4C4lvhND9MyXN7I13wJRkm2Kjk_ie8rIDB-4anGjp5gtsrCyaa_CLHUxookhkuMXasBFyYdp7XsFUGCBPtbZJ6tjkIwWQpER-nGlW"/>
+<div class="h-9 w-9 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-sm overflow-hidden border border-outline-variant">
+<span class="material-symbols-outlined text-[20px]">person</span>
 </div>
 </div>
 </div>
 </header>
-<!-- Main Canvas -->
-<main class="flex-1 p-gutter bg-[#F1F5F9]">
-<!-- Content Area Placeholder -->
-<div class="w-full h-full min-h-[calc(100vh-8rem)] rounded-xl border-2 border-dashed border-outline-variant/50 bg-white/50 flex items-center justify-center">
-<div class="text-center text-secondary">
-<span class="material-symbols-outlined text-4xl mb-2 opacity-50" data-icon="dashboard_customize">dashboard_customize</span>
-<h3 class="font-headline-md text-headline-md opacity-50">Content Area</h3>
-<p class="font-body-md text-body-md opacity-50 mt-1">Select a module from the sidebar to view details.</p>
+<!-- Main Content Area -->
+<main class="ml-[280px] p-container-margin pb-12 flex flex-col gap-container-margin">
+<!-- Top Row: Stat Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-container-margin">
+<!-- Stat Card 1 -->
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant shadow-sm p-card-padding flex items-center justify-between group hover:border-primary transition-colors">
+<div>
+<p class="font-label-sm text-label-sm text-secondary mb-1">Total Peserta Didik</p>
+<h3 class="font-headline-lg text-headline-lg text-on-surface">1,240</h3>
+</div>
+<div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+</div>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant shadow-sm p-card-padding flex items-center justify-between group hover:border-primary transition-colors">
+<div>
+<p class="font-label-sm text-label-sm text-secondary mb-1">Total Guru</p>
+<h3 class="font-headline-lg text-headline-lg text-on-surface">85</h3>
+</div>
+<div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+</div>
+</div>
+<!-- Stat Card 3 -->
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant shadow-sm p-card-padding flex items-center justify-between group hover:border-primary transition-colors">
+<div>
+<p class="font-label-sm text-label-sm text-secondary mb-1">Total Rombel</p>
+<h3 class="font-headline-lg text-headline-lg text-on-surface">32</h3>
+</div>
+<div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">school</span>
+</div>
+</div>
+<!-- Stat Card 4 -->
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant shadow-sm p-card-padding flex items-center justify-between group hover:border-primary transition-colors">
+<div>
+<p class="font-label-sm text-label-sm text-secondary mb-1">Periode Aktif</p>
+<h3 class="font-headline-md text-headline-md text-on-surface">2023/2024 Ganjil</h3>
+</div>
+<div class="h-12 w-12 rounded-full bg-surface-container-low flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">calendar_today</span>
+</div>
+</div>
+</div>
+<!-- Bottom Row: Table and Summary Cards (65/35 split) -->
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-container-margin">
+<!-- Left Column: Table Card (Span 2) -->
+<div class="xl:col-span-2 bg-surface-container-lowest rounded-lg border border-outline-variant shadow-sm flex flex-col">
+<div class="px-card-padding py-4 border-b border-outline-variant flex justify-between items-center">
+<h2 class="font-headline-md text-headline-md text-on-surface">Rombel Terbaru</h2>
+<button class="text-primary font-label-sm text-label-sm hover:underline">Lihat Semua</button>
+</div>
+<div class="overflow-x-auto p-0">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/50">
+<th class="py-3 px-card-padding font-label-sm text-label-sm text-secondary uppercase tracking-wider border-b border-outline-variant font-semibold">Nama Rombel</th>
+<th class="py-3 px-4 font-label-sm text-label-sm text-secondary uppercase tracking-wider border-b border-outline-variant font-semibold">Wilayah</th>
+<th class="py-3 px-4 font-label-sm text-label-sm text-secondary uppercase tracking-wider border-b border-outline-variant font-semibold text-center">Jumlah Peserta Didik</th>
+<th class="py-3 px-card-padding font-label-sm text-label-sm text-secondary uppercase tracking-wider border-b border-outline-variant font-semibold">Wali Kelas</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md text-on-surface">
+<tr class="border-b border-outline-variant/30 hover:bg-surface-container-lowest transition-colors">
+<td class="py-4 px-card-padding font-medium">X RPL 1</td>
+<td class="py-4 px-4 text-secondary">Gedung A, Lt 1</td>
+<td class="py-4 px-4 text-center">36</td>
+<td class="py-4 px-card-padding flex items-center gap-2">
+<div class="h-6 w-6 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-xs">A</div>
+                                    Ahmad Santoso, S.Kom
+                                </td>
+</tr>
+<tr class="border-b border-outline-variant/30 hover:bg-surface-container-lowest transition-colors">
+<td class="py-4 px-card-padding font-medium">X TKJ 2</td>
+<td class="py-4 px-4 text-secondary">Gedung B, Lt 2</td>
+<td class="py-4 px-4 text-center">35</td>
+<td class="py-4 px-card-padding flex items-center gap-2">
+<div class="h-6 w-6 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-xs">B</div>
+                                    Budi Haryanto, M.Pd
+                                </td>
+</tr>
+<tr class="border-b border-outline-variant/30 hover:bg-surface-container-lowest transition-colors">
+<td class="py-4 px-card-padding font-medium">XI MM 1</td>
+<td class="py-4 px-4 text-secondary">Gedung C, Lt 1</td>
+<td class="py-4 px-4 text-center">34</td>
+<td class="py-4 px-card-padding flex items-center gap-2">
+<div class="h-6 w-6 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-xs">C</div>
+                                    Citra Dewi, S.Sn
+                                </td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="py-4 px-card-padding font-medium">XII AKL 1</td>
+<td class="py-4 px-4 text-secondary">Gedung A, Lt 3</td>
+<td class="py-4 px-4 text-center">32</td>
+<td class="py-4 px-card-padding flex items-center gap-2">
+<div class="h-6 w-6 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center text-xs">D</div>
+                                    Dian Pratiwi, S.E
+                                </td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Right Column: Summary Card (Span 1) -->
+<div class="xl:col-span-1 bg-surface-container-lowest rounded-lg border border-outline-variant shadow-sm flex flex-col h-full">
+<div class="px-card-padding py-4 border-b border-outline-variant">
+<h2 class="font-headline-md text-headline-md text-on-surface">Ringkasan Absensi Hari Ini</h2>
+<p class="font-body-md text-body-md text-secondary mt-1">Rekapitulasi kehadiran seluruh siswa.</p>
+</div>
+<div class="p-card-padding flex flex-col gap-6 flex-1 justify-center">
+<!-- Hadir Bar -->
+<div>
+<div class="flex justify-between items-end mb-2">
+<span class="font-label-md text-label-md font-semibold text-on-surface flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-[#10B981]"></div> Hadir
+                            </span>
+<span class="font-label-md text-label-md font-bold text-on-surface">88%</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-2">
+<div class="bg-[#10B981] h-2 rounded-full" style="width: 88%"></div>
+</div>
+</div>
+<!-- Izin Bar -->
+<div>
+<div class="flex justify-between items-end mb-2">
+<span class="font-label-md text-label-md font-semibold text-on-surface flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-[#F59E0B]"></div> Izin
+                            </span>
+<span class="font-label-md text-label-md font-bold text-on-surface">7%</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-2">
+<div class="bg-[#F59E0B] h-2 rounded-full" style="width: 7%"></div>
+</div>
+</div>
+<!-- Sakit Bar -->
+<div>
+<div class="flex justify-between items-end mb-2">
+<span class="font-label-md text-label-md font-semibold text-on-surface flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-[#3B82F6]"></div> Sakit
+                            </span>
+<span class="font-label-md text-label-md font-bold text-on-surface">3%</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-2">
+<div class="bg-[#3B82F6] h-2 rounded-full" style="width: 3%"></div>
+</div>
+</div>
+<!-- Alpa Bar -->
+<div>
+<div class="flex justify-between items-end mb-2">
+<span class="font-label-md text-label-md font-semibold text-on-surface flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-[#EF4444]"></div> Alpa
+                            </span>
+<span class="font-label-md text-label-md font-bold text-on-surface">2%</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-2">
+<div class="bg-[#EF4444] h-2 rounded-full" style="width: 2%"></div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </main>
-</div>
-</body>
-</html>
+</body></html>
