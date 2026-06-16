@@ -1,0 +1,91 @@
+1. Rancangan 2 merupakan revisi dari rancangan 1 dan hak akses pada file "hak akses.xlsx"
+2. Hierarki dan Arsitektur Rombel (Rombongan Belajar)
+
+Agar sistem rapi dan tidak membingungkan, penamaan dan pembentukan kelas akan mengikuti logika hierarki berikut:
+
+    Region: Misal: Botolambat, Pusat, Cabang A.
+
+    Paket: Paket A (SD), Paket B (SMP), Paket C (SMA).
+
+    Tingkat: Kelas 10, Kelas 11, Kelas 12.
+
+    Rombel (Hasil Akhir): Gabungan dari ketiganya + Tahun Ajaran Aktif + Guru Wali Kelas.
+    (Contoh Output: Kelas 10 Botolambat Paket C - TA 2023/2024 Ganjil)
+
+3. Alur Kerja Sistem Utama (System Flows)
+
+A. Alur Siklus Awal Tahun Ajaran (Setup Admin)
+
+    Admin login dan masuk ke menu Tahun Ajaran.
+
+    Admin membuat Tahun Ajaran baru (misal: 2023/2024 Genap) dan mengaturnya menjadi Aktif.
+
+    Admin mengunggah file Excel Master Peserta Didik (Sistem akan memproses background job agar server aman).
+
+    Admin membuat Rombel, menetapkan Wali Kelas, dan memasukkan daftar Peserta Didik ke dalam Rombel tersebut.
+
+    Admin memetakan Guru A mengajar Mapel B di Rombel C.
+
+B. Alur Kegiatan Belajar Mengajar (Materi & Tugas)
+
+    Guru login dan melihat daftar Rombel & Mapel yang diampunya pada tahun ajaran aktif.
+
+    Guru masuk ke Mapel tertentu dan membuat Materi (unggah PDF, link YouTube, atau teks).
+
+    Guru membuat Tugas dengan deskripsi, lampiran, dan batas waktu (Tenggat/Deadline).
+
+    Peserta Didik login, melihat notifikasi tugas baru di dashboard, lalu mengunggah file jawaban sebelum deadline.
+
+    Guru membuka halaman tugas, melihat daftar peserta didik yang sudah mengumpulkan, dan memberikan nilai (0-100).
+
+C. Alur Ujian / Latihan (CBT)
+
+    Guru membuat jadwal CBT (Nama Ujian, KKM, Tanggal & Waktu Mulai, Durasi Pengerjaan).
+
+    Guru memasukkan soal (Pilihan Ganda atau Uraian) ke dalam sistem CBT tersebut beserta kunci jawaban.
+
+    Guru mengatur setting: "Tampilkan Nilai Otomatis: Ya/Tidak".
+
+    Peserta Didik login pada waktu yang ditentukan. Saat masuk ke halaman pengerjaan, timer mulai berjalan mundur.
+
+    Jika waktu habis, sistem otomatis mengirim (auto-submit) jawaban yang sudah diisi.
+
+    Sistem otomatis menghitung nilai Pilihan Ganda. Untuk Uraian, guru masuk ke menu koreksi untuk memberikan skor manual.
+
+D. Alur Absensi
+
+    Guru memulai kelas tatap muka atau online, lalu menekan tombol "Buka Sesi Absensi" di sistem.
+
+    Status absensi hari itu berubah menjadi Terbuka.
+
+    Peserta didik menekan tombol Hadir di smartphone masing-masing.
+
+    Guru dapat melihat siapa yang belum absen secara real-time dan dapat secara manual mengubah status peserta didik menjadi Hadir/Alpa jika terjadi kendala teknis.
+
+    Sesi absensi ditutup oleh guru.
+
+E. Alur Akhir Tahun (Kenaikan Kelas)
+
+    Tahun Ajaran akan segera berakhir.
+
+    Wali Kelas masuk ke menu Kenaikan Kelas.
+
+    Sistem menampilkan daftar nama Peserta Didik di Rombelnya.
+
+    Wali Kelas memilih status untuk setiap anak: Naik ke Kelas 11, Tinggal di Kelas 10, atau Lulus.
+
+    Setelah disimpan, sistem memindahkan data peserta didik ke "Ruang Tunggu" Rombel tingkat selanjutnya, siap untuk di-assign pada Tahun Ajaran baru oleh Admin.
+
+4. Strategi Penanganan Excel (Data Peserta Didik & Orang Tua)
+
+Seperti yang dibahas sebelumnya, format A-BL (64 kolom) tidak akan kita paksakan masuk ke satu tabel utama.
+
+    Tabel users: Menampung otentikasi dasar (ID, email/username, password, role).
+
+    Tabel peserta_didik: Menampung data operasional akademik (NIS, NIK, Nama Lengkap, Jenis Kelamin, Tanggal Lahir).
+
+    Tabel peserta_didik_details: Memiliki satu kolom berjenis JSON atau TEXT. Semua data tambahan seperti Pekerjaan Ayah, Penghasilan Ibu, Alamat Lengkap Wali, dsb., disuntikkan ke dalam kolom JSON ini saat proses import Excel. Ini membuat database ringan namun data tetap utuh untuk keperluan arsip/pelaporan.
+
+Rancangan ini sudah mencakup end-to-end siklus sebuah lembaga pendidikan informal/Kejar Paket.
+
+Mengingat Anda ingin menyusun PRD dan mematangkannya hari ini, apakah Anda ingin kita mendetailkan format Database Schema (ERD kasar) selanjutnya, atau Anda ingin merancang spesifikasi antarmuka (UI/UX) untuk dashboard masing-masing role terlebih dahulu?

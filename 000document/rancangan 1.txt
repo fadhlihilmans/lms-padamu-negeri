@@ -1,0 +1,61 @@
+Halo saya ingin membuat web LMS untuk lembaga KEJAR PAKET PADAMU NEGERI, menggunakan laravel 13, livewire 3.x (monolith tanpa api), mysql, tailadmin (template)
+
+gambaran singkat:
+fitur utama :
+login
+cbt
+absensi
+mata pelajaran
+kelas
+naik kelas atau pindah kelas
+
+User:
+1. Admin
+* all akses 
+2. Peserta Didik
+• CBT
+• Absen
+• Lihat Mapel Apa Saja
+• Lihat materi
+• Lihat tugas (seperti google classroom)
+• Jadwal
+• Lihat Nilai
+3. Guru
+• Membuat materi
+• Membuat soal cbt dan ketentuan cbt waktu dll
+• Membuka absensi
+
+Alur beberapa fitur (masih belum fix) :
+1. cbt 
+• guru membuat soal dan jawaban untuk cbt 
+• misal latihan ulangan matematika
+• guru membuat soal, jawaban, durasi waktu pengerjaan, deadline, tampilkan nilai (true atau false), kkm (nilain minimal lulus)
+• terdapat juga untuk soal uraian yang menilai guru jadi hanya form soal dan jawaban saja
+• peserta didik mengerjakan berdasarkan deadline dan waktu tersebut
+• nanti muncul nilai atau tidak tergantung
+
+2. absensi 
+• guru membuka sesi
+• peserta didik membuka untuk menu absensi dan klik hadir atau tidak saja
+• nanti terdapat rekap di guru
+
+3. materi
+• guru membuat materi seperti biasa, bisa bentuk text, file, video, gambar
+
+4. Tugas
+• membuat tugas text, file, video, gambar
+• upload tugas 
+• memberi nilai
+• 
+
+LAIN LAIN karena bingung:
+* saya masih kebingungan untuk tahun ajaran / periode atau semester karena pendidikan berkaitan dengan tahun ajaran. apakah akan dibuat jika login harus input session juga atau filter global lewat url
+• untuk kelas terdapat urutan rombel [daerah (misal botolambat)->paket ( C / SMA )-> kelas (10)] jadi rombelnya kelas 10 Botolambat paket C 
+• terdapat juga fitur unutk import excel, nantinya datanya banyak untuk peserta didik sendiri karena hal ini nanti saya meminta rekomendasi anda untuk import excel seperti format dsb
+• untuk fitur naik kelas bagaimana alurnya saya masih bingung dan tiap kelas terdapat wali kelas
+• apakah cbt atau ujian dimasukan dalam tugas saja
+
+Note  :
+• Sistem ini tidak terlalu yang kompleks sekali, ini sederhana karena hanya untuk internal saja
+• disini tidak menggunakan istilah siswa, namun peserta didik
+• Kolom excel A-AT (data peserta didik ) | AU-BL (data ayah,ibu,wali)
