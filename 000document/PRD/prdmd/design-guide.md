@@ -105,7 +105,66 @@ pakai named slot: di layout `{{ $header ?? '' }}`, di halaman `<x-slot:header>..
 
 ---
 
-## Ringkasan keputusan desain untuk dikunci di awal
+## Bagian C — Jika Hasil Export Stitch Hanya Berupa Gambar (Bukan Kode Asli)
+
+Kadang hasil export/screenshot dari Stitch yang Anda taruh di
+`design-reference/` **bukan kode HTML/Tailwind sungguhan**, melainkan gambar
+statis (PNG/JPG dari hasil render Stitch, atau HTML yang isinya cuma
+`<img src="...">` satu file besar). Ini terjadi kalau Anda screenshot manual
+alih-alih memakai fitur export kode di Stitch.
+
+**Cara menanganinya di Claude Code:**
+
+1. **Jangan pernah suruh Claude Code "menyalin" gambar itu jadi HTML 1:1
+   secara visual semata.** Itu menghasilkan markup yang rapuh (posisi absolut,
+   ukuran fixed-pixel) dan tidak responsif.
+2. Perintahkan eksplisit, contoh:
+   *"Gambar di `design-reference/dashboard-admin.png` ini hasil render Stitch,
+   bukan kode asli. Bangun ulang sebagai komponen Livewire + TailAdmin yang
+   MENERJEMAHKAN maksud layout-nya (posisi sidebar, urutan card, struktur
+   tabel) — bukan meniru piksel persis. Pastikan hasilnya responsive dan
+   pakai komponen TailAdmin yang sudah ada di proyek, jangan styling baru
+   dari nol."*
+3. Jika gambar terlalu rumit untuk dideskripsikan lewat teks, **screenshot
+   ulang per-bagian** (mis. crop khusus bagian sidebar, crop khusus bagian
+   tabel) supaya Claude Code bisa fokus menerjemahkan satu bagian dengan
+   akurat, lalu digabung.
+4. Selalu re-export dari Stitch sebagai **kode (HTML/Tailwind/JSX)**, bukan
+   gambar, setiap kali memungkinkan — ini jauh lebih akurat untuk
+   diterjemahkan Claude Code dibanding gambar. Gambar hanya untuk kasus
+   darurat saat fitur export kode tidak tersedia/gagal.
+
+## Bagian D — Standar Wajib: Responsive & User-Friendly
+
+Setiap kali Claude Code membangun atau mengonversi tampilan dari referensi
+desain (Stitch, screenshot, atau mockup apapun), terapkan aturan berikut
+**tanpa perlu diminta ulang setiap saat** — ini standar baku proyek:
+
+- **Mobile-first / breakpoint Tailwind wajib dipakai** (`sm:`, `md:`, `lg:`,
+  `xl:`), bukan ukuran fixed-pixel. Sidebar yang di desktop tampil penuh harus
+  collapse jadi hamburger menu di layar kecil (`<lg`).
+- **Tabel data lebar** (mis. rekap nilai, hasil CBT) di layar kecil: bungkus
+  dengan `overflow-x-auto`, jangan biarkan tabel memaksa lebar halaman melebar.
+- **Form & modal** harus tetap nyaman dipakai di layar sempit — input full
+  width di mobile, padding cukup, tombol mudah disentuh (minimal area klik
+  ~44px tinggi sesuai prinsip touch-target).
+- **Kontras warna & ukuran teks** harus terbaca jelas (teks badan minimal
+  setara `text-sm`/14px, jangan lebih kecil untuk konten penting).
+- **State kosong & loading wajib ada**, bukan tampilan kosong membingungkan:
+  tampilkan pesan seperti "Belum ada data" dengan ilustrasi/ikon sederhana
+  saat tabel/list kosong, dan indikator loading (spinner Livewire bawaan
+  `wire:loading`) saat data sedang diproses.
+- **Konfirmasi untuk aksi merusak** (hapus, reset password, nonaktifkan
+  modul) selalu pakai modal konfirmasi — jangan langsung eksekusi dari satu
+  klik tombol tanpa jeda.
+- Jika ragu antara "mengikuti referensi desain persis" vs "membuat lebih
+  rapi & mudah dipakai", **utamakan yang lebih mudah dipakai** — referensi
+  desain (termasuk hasil Stitch) adalah panduan arah, bukan kontrak yang
+  harus ditiru piksel demi piksel.
+
+---
+
+
 - Layout utama: 1 file `app.blade.php` + `$slot` + `<x-sidebar/>` & `<x-topbar/>`.
 - Layout login terpisah: `guest.blade.php` (tanpa sidebar).
 - Sidebar render menu sesuai role (Admin/Guru/Peserta Didik) — cek role via Spatie.

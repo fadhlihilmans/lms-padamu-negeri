@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Import Data Peserta Didik - Sistem Akademik Sekolah</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<!-- Tailwind CSS & Config -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#2c3134",
+                        "on-tertiary-container": "#d6def4",
+                        "primary-container": "#3c50e0",
+                        "on-tertiary-fixed": "#131c2b",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "secondary-container": "#d0e1fb",
+                        "on-tertiary-fixed-variant": "#3f4758",
+                        "on-primary-fixed": "#000c61",
+                        "surface-container": "#eaeef2",
+                        "primary-fixed": "#dfe0ff",
+                        "on-surface": "#171c1f",
+                        "inverse-on-surface": "#edf1f5",
+                        "surface-container-low": "#f0f4f8",
+                        "secondary": "#505f76",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed-variant": "#172fc5",
+                        "outline-variant": "#c5c5d7",
+                        "outline": "#757686",
+                        "primary-fixed-dim": "#bcc2ff",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "inverse-primary": "#bcc2ff",
+                        "on-secondary-fixed": "#0b1c30",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed-dim": "#bec6dc",
+                        "tertiary-container": "#5a6274",
+                        "error": "#ba1a1a",
+                        "primary": "#1c33c8",
+                        "on-secondary-container": "#54647a",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#dfe3e7",
+                        "on-surface-variant": "#454655",
+                        "surface-tint": "#384cdd",
+                        "surface": "#f6fafe",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#d3e4fe",
+                        "on-tertiary": "#ffffff",
+                        "background": "#f6fafe",
+                        "surface-container-high": "#e4e9ed",
+                        "surface-dim": "#d6dade",
+                        "tertiary": "#424a5c",
+                        "surface-variant": "#dfe3e7",
+                        "tertiary-fixed": "#dbe2f8",
+                        "on-primary-container": "#d9dbff",
+                        "on-background": "#171c1f",
+                        "surface-bright": "#f6fafe"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "0.5rem",
+                        "container-margin": "24px",
+                        "card-padding": "1.5rem",
+                        "gutter": "24px",
+                        "stack-md": "1rem",
+                        "sidebar-width": "280px",
+                        "stack-lg": "1.5rem"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Inter", "sans-serif"],
+                        "label-sm": ["Inter", "sans-serif"],
+                        "headline-lg": ["Inter", "sans-serif"],
+                        "label-md": ["Inter", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "body-lg": ["Inter", "sans-serif"],
+                        "headline-md": ["Inter", "sans-serif"],
+                        "headline-lg-mobile": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+                        "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["20px", {"lineHeight": "28px", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex antialiased">
+<!-- SideNavBar Shell -->
+<aside class="hidden md:flex flex-col bg-surface-container-lowest border-r border-outline-variant shadow-sm fixed left-0 top-0 h-screen w-sidebar-width py-6 overflow-y-auto z-50">
+<!-- Brand Header -->
+<div class="px-6 pb-6 mb-2 border-b border-surface-container-high flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary text-headline-md font-headline-md font-bold">
+                AS
+            </div>
+<div>
+<h1 class="text-headline-sm font-headline-sm font-bold text-primary">Admin Sekolah</h1>
+<p class="text-label-sm font-label-sm text-secondary">Sistem Manajemen</p>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<nav class="flex-1 flex flex-col gap-1 px-4">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-secondary hover:bg-surface-container-low hover:text-primary transition-all text-label-md font-label-md group" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+                Dashboard
+            </a>
+<!-- Active State Navigation -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md bg-primary-fixed text-on-primary-fixed border-l-4 border-primary font-bold text-label-md font-label-md scale-95 duration-150 shadow-sm" href="#">
+<span class="material-symbols-outlined text-[20px] text-primary" style="font-variation-settings: 'FILL' 1;">database</span>
+                Master Data
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-secondary hover:bg-surface-container-low hover:text-primary transition-all text-label-md font-label-md group" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+                Pengguna
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-secondary hover:bg-surface-container-low hover:text-primary transition-all text-label-md font-label-md group" href="#">
+<span class="material-symbols-outlined text-[20px]">menu_book</span>
+                Kurikulum
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-secondary hover:bg-surface-container-low hover:text-primary transition-all text-label-md font-label-md group" href="#">
+<span class="material-symbols-outlined text-[20px]">calendar_today</span>
+                Jadwal Pelajaran
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-secondary hover:bg-surface-container-low hover:text-primary transition-all text-label-md font-label-md group" href="#">
+<span class="material-symbols-outlined text-[20px]">fact_check</span>
+                Presensi
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-secondary hover:bg-surface-container-low hover:text-primary transition-all text-label-md font-label-md group" href="#">
+<span class="material-symbols-outlined text-[20px]">grade</span>
+                Penilaian
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-secondary hover:bg-surface-container-low hover:text-primary transition-all text-label-md font-label-md group" href="#">
+<span class="material-symbols-outlined text-[20px]">description</span>
+                E-Rapor
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-secondary hover:bg-surface-container-low hover:text-primary transition-all text-label-md font-label-md group" href="#">
+<span class="material-symbols-outlined text-[20px]">payments</span>
+                Keuangan
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-secondary hover:bg-surface-container-low hover:text-primary transition-all text-label-md font-label-md group" href="#">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+                Inventaris
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-secondary hover:bg-surface-container-low hover:text-primary transition-all text-label-md font-label-md group" href="#">
+<span class="material-symbols-outlined text-[20px]">analytics</span>
+                Laporan
+            </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-secondary hover:bg-surface-container-low hover:text-primary transition-all text-label-md font-label-md group" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+                Pengaturan
+            </a>
+</nav>
+<!-- Footer Actions -->
+<div class="mt-auto px-4 pt-6 flex flex-col gap-2">
+<button class="w-full flex items-center justify-center gap-2 py-2 text-primary font-label-md text-label-md border border-outline-variant rounded hover:bg-surface-container-low transition-colors">
+                Bantuan Teknis
+            </button>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-md text-on-surface-variant hover:bg-surface-container hover:text-error transition-all text-label-md font-label-md mt-2" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+                Log Out
+            </a>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col min-w-0 md:ml-sidebar-width bg-background min-h-screen">
+<!-- TopNavBar Shell -->
+<header class="bg-surface-container-lowest border-b border-outline-variant shadow-sm sticky top-0 w-full z-40 h-16 px-6 flex justify-between items-center">
+<div class="flex items-center gap-6">
+<!-- Mobile menu toggle (hidden on desktop) -->
+<button class="md:hidden text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h2 class="text-headline-md font-headline-md font-bold text-primary hidden lg:block">Sistem Akademik Sekolah</h2>
+<div class="hidden md:flex items-center gap-4 border-l border-outline-variant pl-6">
+<a class="text-secondary hover:text-primary hover:bg-surface-container-low transition-colors px-3 py-1.5 rounded text-label-md font-label-md" href="#">Tahun Ajaran 2023/2024</a>
+<a class="text-secondary hover:text-primary hover:bg-surface-container-low transition-colors px-3 py-1.5 rounded text-label-md font-label-md" href="#">Semester Ganjil</a>
+</div>
+</div>
+<!-- Search Bar & Actions -->
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary w-64 transition-shadow" placeholder="Pencarian cepat..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-secondary hover:text-primary hover:bg-surface-container-low rounded-full transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-2 text-secondary hover:text-primary hover:bg-surface-container-low rounded-full transition-colors hidden sm:block">
+<span class="material-symbols-outlined">help</span>
+</button>
+<button class="p-2 text-secondary hover:text-primary hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined">apps</span>
+</button>
+<div class="ml-2 w-8 h-8 rounded-full bg-primary-container border border-primary-fixed overflow-hidden flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[20px]">person</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 p-container-margin overflow-y-auto">
+<!-- Page Header -->
+<div class="mb-6">
+<nav aria-label="Breadcrumb" class="flex text-label-sm font-label-sm text-secondary mb-2">
+<ol class="inline-flex items-center space-x-1 md:space-x-2">
+<li class="inline-flex items-center">
+<a class="hover:text-primary transition-colors" href="#">Master Data</a>
+</li>
+<li>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[16px] mx-1">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Peserta Didik</a>
+</div>
+</li>
+<li aria-current="page">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-[16px] mx-1">chevron_right</span>
+<span class="text-on-surface-variant font-bold">Import Data</span>
+</div>
+</li>
+</ol>
+</nav>
+<h1 class="text-headline-lg font-headline-lg text-on-surface">Import Data Peserta Didik</h1>
+</div>
+<!-- Upload Section Card -->
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant shadow-sm p-card-padding mb-gutter">
+<div class="border-2 border-dashed border-outline-variant rounded-lg p-10 flex flex-col items-center justify-center bg-surface-bright hover:bg-surface-container-low hover:border-primary-fixed transition-all cursor-pointer group">
+<div class="w-16 h-16 bg-surface-container rounded-full flex items-center justify-center mb-4 group-hover:bg-primary-fixed group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[32px] text-secondary group-hover:text-primary transition-colors">upload_file</span>
+</div>
+<p class="text-body-md text-on-surface-variant mb-2">Tarik file Excel di sini atau klik untuk pilih file (.xlsx)</p>
+<p class="text-label-sm font-label-sm text-outline">Maksimal ukuran file: 10MB</p>
+</div>
+<div class="flex flex-col sm:flex-row justify-between items-center mt-6 pt-4 border-t border-surface-container-highest gap-4">
+<a class="flex items-center gap-2 text-primary font-label-md text-label-md hover:underline bg-primary-fixed px-3 py-1.5 rounded-md bg-opacity-30" href="#">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                        Unduh Template Excel
+                    </a>
+<button class="w-full sm:w-auto bg-primary text-on-primary px-6 py-2.5 rounded-md text-label-md font-label-md shadow-sm hover:bg-surface-tint hover:shadow transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">rocket_launch</span>
+                        Proses Import
+                    </button>
+</div>
+</div>
+<!-- Results Section Card -->
+<div class="bg-surface-container-lowest rounded-lg border border-outline-variant shadow-sm p-card-padding">
+<div class="border-b border-surface-container-highest pb-4 mb-6">
+<h2 class="text-headline-md font-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">analytics</span>
+                        Ringkasan Hasil Import
+                    </h2>
+</div>
+<!-- Stat Boxes -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+<div class="bg-surface-container-low border border-outline-variant p-5 rounded-lg flex flex-col items-center justify-center">
+<span class="text-label-sm font-label-sm text-secondary uppercase tracking-wider mb-1">Total Baris Diproses</span>
+<div class="text-headline-xl font-headline-xl text-on-surface flex items-baseline gap-2">
+                            18 <span class="text-body-md text-secondary font-normal">Baris</span>
+</div>
+</div>
+<div class="bg-surface-container text-on-surface p-5 rounded-lg border border-outline-variant flex flex-col items-center justify-center relative overflow-hidden">
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined text-[80px]">check_circle</span>
+</div>
+<span class="text-label-sm font-label-sm text-secondary uppercase tracking-wider mb-1">Berhasil</span>
+<div class="text-headline-xl font-headline-xl text-primary flex items-baseline gap-2">
+                            15 <span class="text-body-md text-secondary font-normal">Baris</span>
+</div>
+</div>
+<div class="bg-error-container border border-error p-5 rounded-lg flex flex-col items-center justify-center relative overflow-hidden">
+<div class="absolute -right-4 -bottom-4 opacity-10 text-on-error-container">
+<span class="material-symbols-outlined text-[80px]">warning</span>
+</div>
+<span class="text-label-sm font-label-sm text-on-error-container uppercase tracking-wider mb-1">Gagal</span>
+<div class="text-headline-xl font-headline-xl text-on-error-container flex items-baseline gap-2">
+                            3 <span class="text-body-md text-on-error-container opacity-80 font-normal">Baris</span>
+</div>
+</div>
+</div>
+<!-- Failed Rows Table -->
+<div class="mt-2">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-error text-[20px]">error</span>
+<h3 class="text-label-md font-label-md text-on-surface">Detail Baris Gagal</h3>
+</div>
+<div class="overflow-x-auto rounded-lg border border-outline-variant">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low">
+<th class="py-3 px-4 border-b border-outline-variant text-label-sm font-label-sm text-secondary uppercase tracking-wider w-24">Baris</th>
+<th class="py-3 px-4 border-b border-outline-variant text-label-sm font-label-sm text-secondary uppercase tracking-wider w-48">Kolom Bermasalah</th>
+<th class="py-3 px-4 border-b border-outline-variant text-label-sm font-label-sm text-secondary uppercase tracking-wider">Alasan Gagal</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant bg-surface-container-lowest">
+<tr class="hover:bg-surface-bright transition-colors">
+<td class="py-3 px-4 text-body-md font-bold text-on-surface">Baris 5</td>
+<td class="py-3 px-4 text-body-md text-on-surface-variant">Wilayah</td>
+<td class="py-3 px-4 text-body-md text-on-surface-variant flex items-center gap-2">
+                                        Wilayah <span class="font-mono bg-surface-variant px-1 rounded text-error">'Sumberejo'</span> tidak ditemukan di master data.
+                                    </td>
+</tr>
+<tr class="hover:bg-surface-bright transition-colors">
+<td class="py-3 px-4 text-body-md font-bold text-on-surface">Baris 12</td>
+<td class="py-3 px-4 text-body-md text-on-surface-variant">NISN</td>
+<td class="py-3 px-4 text-body-md text-on-surface-variant flex items-center gap-2">
+                                        Format NISN tidak valid (harus 10 digit angka).
+                                    </td>
+</tr>
+<tr class="hover:bg-surface-bright transition-colors">
+<td class="py-3 px-4 text-body-md font-bold text-on-surface">Baris 17</td>
+<td class="py-3 px-4 text-body-md text-on-surface-variant">Tanggal Lahir</td>
+<td class="py-3 px-4 text-body-md text-on-surface-variant flex items-center gap-2">
+                                        Format tanggal salah. Gunakan format YYYY-MM-DD.
+                                    </td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

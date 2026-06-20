@@ -8,7 +8,8 @@
 
 - `docs/prd.md` — Product Requirements Document (sumber kebenaran fitur & flow).
 - `docs/database.md` — **Skema database FINAL & TERKUNCI.** Semua migration & model
-  WAJIB mengikuti file ini persis. Jangan mengarang tipe kolom sendiri.
+  WAJIB mengikuti file ini persis. Jangan mengarang tipe kolom sendiri. Termasuk
+  tabel `settings` (Bagian 8) — lihat aturan akses di bawah.
 - `docs/build-steps.md` — Urutan pengerjaan, satu langkah satu commit.
 - `docs/design-guide.md` — Cara menerjemahkan desain Google Stitch → TailAdmin → Livewire.
 
@@ -43,6 +44,61 @@ file-file ini, file ini yang menang — konfirmasikan dulu ke saya kalau ada ben
 7. Proses berat (import Excel, kompilasi rapor) dijalankan **synchronous** — jangan
    buat Job/Queue.
 8. Layout halaman pakai pola **`{{ $slot }}`** dari Livewire (lihat `docs/design-guide.md`).
+   **Setiap halaman/komponen WAJIB responsive (breakpoint Tailwind) dan
+   user-friendly** (state kosong, loading, konfirmasi aksi merusak) — lihat
+   standar baku di `docs/design-guide.md` Bagian D. Ini berlaku otomatis,
+   tidak perlu diminta ulang tiap kali membangun komponen baru.
+9. **Pengaturan global pakai tabel `settings` (key-value), bukan `.env` atau
+   konstanta kode.** Akses lewat `SettingService::get('key')` /
+   `SettingService::set('key', $value)` — Service ini yang melakukan cast sesuai
+   kolom `type` (`boolean`/`string`/`integer`/`json`). Jangan query tabel
+   `settings` langsung dari Livewire component; selalu lewat Service supaya
+   caching & casting konsisten di satu tempat. Gunakan Laravel cache (`Cache::
+   remember`) di Service ini agar tidak query DB di setiap request — invalidasi
+   cache saat Admin menyimpan perubahan.
+10. **Mode Maintenance** (`maintenance_mode`): dicek di Middleware global
+    (`CheckMaintenanceMode`), bukan dicek manual di tiap controller/Livewire.
+    Saat `true`: Admin tetap bisa login & akses penuh; role lain diarahkan ke
+    halaman maintenance statis. Middleware ini didaftarkan di grup `web`
+    sebelum middleware auth lain.
+11. **Toggle modul (`modul_*_aktif`) WAJIB dicek di dua lapis, bukan satu:**
+    - **Lapis 1 (UX):** sidebar menyembunyikan menu modul yang nonaktif.
+    - **Lapis 2 (keamanan, WAJIB, jangan dilewati):** Middleware atau Policy
+      di route group modul tersebut tetap memblokir akses langsung ke URL-nya
+      meski menu disembunyikan. Tampilkan halaman "Modul belum tersedia"
+      (bukan 404 polos) jika diakses saat nonaktif.
+    - Jangan pernah menganggap "menu disembunyikan" sudah cukup aman — itu
+      hanya kosmetik, bukan kontrol akses.
+12. **Logo (`logo_pkbm_path`, `logo_kabupaten_path`) disimpan via
+    `storage:link`** seperti file upload lain, path-nya saja yang disimpan di
+    tabel `settings`. Jangan simpan logo sebagai base64 di kolom `value`.
+13. **Soft delete WAJIB** di Model untuk tabel bertanda "Ya" pada daftar di
+    `docs/database.md` (Bagian "Soft Delete"). Tambahkan trait `SoftDeletes`
+    dan kolom `deleted_at` di migration-nya. Untuk laporan/rekap yang
+    menampilkan data historis (mis. Wali Kelas melihat rapor tahun lalu),
+    gunakan `withTrashed()` secara eksplisit di Service — jangan asumsikan
+    data lama otomatis muncul di query biasa.
+14. **Setiap blok `try-catch` yang menangani `\Throwable` WAJIB mencatat ke
+    `error_log`** lewat `ErrorLogService::catat()`, bukan `Log::error()`
+    bawaan Laravel saja (boleh keduanya, tapi `error_log` di database wajib
+    ada supaya Admin bisa lihat dari UI). Pola standar:
+    ```php
+    try {
+        // ...
+    } catch (\Throwable $th) {
+        app(ErrorLogService::class)->catat(
+            aksi: 'Update Jabatan',
+            throwable: $th,
+        );
+        $this->dispatch('failed-message', 'Maaf, terjadi kesalahan.');
+    }
+    ```
+    `ErrorLogService::catat()` otomatis mengisi `pesan_error` dari
+    `$th->getMessage()`, `user_id` dari `Auth::id()`, dan `url` dari
+    `request()->fullUrl()` — komponen tidak perlu mengisi itu manual.
+15. **Bug Report (`bug_report`) adalah fitur terpisah dari `error_log`** —
+    untuk laporan manual pengguna (semua role boleh lapor), bukan exception
+    otomatis. Jangan satukan logic keduanya di satu Service/tabel yang sama.
 
 ## Konvensi Penamaan
 

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Assign Rombel Baru - Ruang Tunggu</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#dfe3e7",
+                        "error": "#ba1a1a",
+                        "tertiary": "#424a5c",
+                        "surface-tint": "#384cdd",
+                        "on-tertiary": "#ffffff",
+                        "on-tertiary-fixed": "#131c2b",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#d6def4",
+                        "surface-bright": "#f6fafe",
+                        "inverse-surface": "#2c3134",
+                        "tertiary-container": "#5a6274",
+                        "surface-container": "#eaeef2",
+                        "on-secondary-container": "#54647a",
+                        "on-surface-variant": "#454655",
+                        "on-primary-fixed": "#000c61",
+                        "inverse-on-surface": "#edf1f5",
+                        "surface": "#f6fafe",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "inverse-primary": "#bcc2ff",
+                        "on-secondary-fixed": "#0b1c30",
+                        "background": "#f6fafe",
+                        "outline": "#757686",
+                        "on-background": "#171c1f",
+                        "on-surface": "#171c1f",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "secondary-container": "#d0e1fb",
+                        "primary-fixed-dim": "#bcc2ff",
+                        "on-primary-fixed-variant": "#172fc5",
+                        "tertiary-fixed-dim": "#bec6dc",
+                        "tertiary-fixed": "#dbe2f8",
+                        "surface-container-high": "#e4e9ed",
+                        "secondary": "#505f76",
+                        "on-tertiary-fixed-variant": "#3f4758",
+                        "on-primary-container": "#d9dbff",
+                        "surface-dim": "#d6dade",
+                        "primary-fixed": "#dfe0ff",
+                        "on-error-container": "#93000a",
+                        "outline-variant": "#c5c5d7",
+                        "primary": "#1c33c8",
+                        "on-primary": "#ffffff",
+                        "surface-variant": "#dfe3e7",
+                        "secondary-fixed": "#d3e4fe",
+                        "surface-container-low": "#f0f4f8",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#3c50e0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sidebar-width": "280px",
+                        "gutter": "24px",
+                        "container-margin": "24px",
+                        "card-padding": "1.5rem",
+                        "stack-sm": "0.5rem",
+                        "stack-lg": "1.5rem",
+                        "stack-md": "1rem"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "headline-xl": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen">
+<!-- SideNavBar -->
+<aside class="w-[sidebar-width] h-screen fixed left-0 top-0 bg-surface-container-lowest border-r border-outline-variant shadow-sm z-50">
+<div class="flex flex-col h-full py-6">
+<div class="px-6 mb-8 flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold">
+                    PK
+                </div>
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary font-bold">Sistem PKBM</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Admin Panel</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-2">
+<a class="flex items-center gap-3 text-secondary px-6 py-3 hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">dashboard</span>
+<span class="font-label-md text-label-md">Beranda</span>
+</a>
+<a class="flex items-center gap-3 text-secondary px-6 py-3 hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">database</span>
+<span class="font-label-md text-label-md">Data Master</span>
+</a>
+<a class="flex items-center gap-3 bg-secondary-container/5 text-primary border-l-[3px] border-primary px-6 py-3 hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">group</span>
+<span class="font-label-md text-label-md font-bold">Rombel</span>
+</a>
+<a class="flex items-center gap-3 text-secondary px-6 py-3 hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">menu_book</span>
+<span class="font-label-md text-label-md">Modul Ajar</span>
+</a>
+<a class="flex items-center gap-3 text-secondary px-6 py-3 hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">grade</span>
+<span class="font-label-md text-label-md">Nilai</span>
+</a>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full py-2 px-4 rounded-lg border border-outline-variant text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">help</span>
+                    Bantuan Sistem
+                </button>
+</div>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 left-[sidebar-width] h-16 bg-surface-container-lowest border-b border-outline-variant shadow-sm z-40">
+<div class="flex justify-between items-center px-gutter w-full h-full">
+<div class="flex items-center gap-4">
+<h2 class="font-headline-md text-headline-md text-on-surface">Manajemen PKBM</h2>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden md:block w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-10 pr-4 py-2 rounded-lg border border-outline-variant bg-surface-bright focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all font-body-md text-body-md" placeholder="Cari..." type="text"/>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors cursor-pointer">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border border-outline-variant ml-2">
+<img alt="Administrator" class="w-full h-full object-cover" data-alt="A small circular avatar image showing a professional administrator wearing business casual attire in a bright office environment, used for the top navigation bar profile icon." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZ8qBGqIEpMlXS5HQfeRg6lVy8b6I7RHd3cHvnVTl7_z-8PqVypoGECp3yiwctN0j2aoMGUD_j2osHyhavLiZLmNTHpcftDk92DF6of0-B1KCtI32NTl-DpMCgJrGR4CCeCLZb1NinXI3OA0OsNpRe1fLPQMQ2BHKmP3ihfvk_lhdCuwFkV5Ep6vEZfHA4Wjzi4Y7oqKpRo8T_mOKR7ElSwe_hq782GQec1O2BUA6_6icsRpBKWZ7vOFU3ExHjIYpTEpErQSJaW0WB"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-[sidebar-width] pt-16 p-container-margin min-h-screen">
+<div class="mb-8">
+<div class="flex items-center gap-2 text-on-surface-variant font-label-md text-label-md mb-2">
+<span>Rombel</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-primary">Assign Rombel Baru</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface">Assign Rombel Baru - Ruang Tunggu</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 max-w-2xl">Pilih peserta didik dari ruang tunggu dan tentukan rombongan belajar baru untuk tahun ajaran yang sedang berjalan.</p>
+</div>
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+<!-- Left Panel: Daftar Tunggu -->
+<div class="xl:col-span-8 bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden flex flex-col h-[700px]">
+<div class="p-card-padding border-b border-outline-variant bg-surface-bright flex justify-between items-center">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Daftar Tunggu Peserta Didik</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Pilih siswa yang akan di-assign (Terpilih: 2)</p>
+</div>
+<div class="flex items-center gap-3">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input class="pl-9 pr-4 py-1.5 rounded-md border border-outline-variant text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none" placeholder="Cari nama..." type="text"/>
+</div>
+<button class="flex items-center gap-2 px-3 py-1.5 border border-outline-variant rounded-md hover:bg-surface-container-high transition-colors text-label-md">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+                            Filter
+                        </button>
+</div>
+</div>
+<!-- Table Header -->
+<div class="grid grid-cols-[48px_1fr_150px_150px] gap-4 px-card-padding py-3 bg-surface-container border-b border-outline-variant font-label-sm text-label-sm uppercase text-on-surface-variant">
+<div class="flex items-center justify-center">
+<input class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+</div>
+<div class="flex items-center">Nama Peserta Didik</div>
+<div class="flex items-center">Status</div>
+<div class="flex items-center">Rombel Asal</div>
+</div>
+<!-- Table Body (Scrollable) -->
+<div class="flex-1 overflow-y-auto">
+<!-- Row 1 (Selected) -->
+<div class="grid grid-cols-[48px_1fr_150px_150px] gap-4 px-card-padding py-4 border-b border-outline-variant hover:bg-surface-bright transition-colors bg-secondary-container/10">
+<div class="flex items-center justify-center">
+<input checked="" class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-label-sm">
+                                AR
+                            </div>
+<span class="font-label-md text-label-md text-on-surface">Ahmad Rifqi</span>
+</div>
+<div class="flex items-center">
+<span class="inline-flex items-center px-2 py-1 rounded-md bg-secondary-container text-on-secondary-fixed-variant font-label-sm text-label-sm">Naik Kelas</span>
+</div>
+<div class="flex items-center font-body-md text-body-md text-on-surface-variant">Kelas 10 IPA 1</div>
+</div>
+<!-- Row 2 -->
+<div class="grid grid-cols-[48px_1fr_150px_150px] gap-4 px-card-padding py-4 border-b border-outline-variant hover:bg-surface-bright transition-colors">
+<div class="flex items-center justify-center">
+<input class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-label-sm">
+                                BW
+                            </div>
+<span class="font-label-md text-label-md text-on-surface">Budi Wibowo</span>
+</div>
+<div class="flex items-center">
+<span class="inline-flex items-center px-2 py-1 rounded-md bg-secondary-container text-on-secondary-fixed-variant font-label-sm text-label-sm">Naik Kelas</span>
+</div>
+<div class="flex items-center font-body-md text-body-md text-on-surface-variant">Kelas 10 IPA 1</div>
+</div>
+<!-- Row 3 (Selected) -->
+<div class="grid grid-cols-[48px_1fr_150px_150px] gap-4 px-card-padding py-4 border-b border-outline-variant hover:bg-surface-bright transition-colors bg-secondary-container/10">
+<div class="flex items-center justify-center">
+<input checked="" class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-label-sm">
+                                CS
+                            </div>
+<span class="font-label-md text-label-md text-on-surface">Citra Sari</span>
+</div>
+<div class="flex items-center">
+<span class="inline-flex items-center px-2 py-1 rounded-md bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm">Pindah Paket</span>
+</div>
+<div class="flex items-center font-body-md text-body-md text-on-surface-variant">Paket B - 2</div>
+</div>
+<!-- Row 4 -->
+<div class="grid grid-cols-[48px_1fr_150px_150px] gap-4 px-card-padding py-4 border-b border-outline-variant hover:bg-surface-bright transition-colors">
+<div class="flex items-center justify-center">
+<input class="rounded border-outline-variant text-primary focus:ring-primary" type="checkbox"/>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center font-label-sm">
+                                DP
+                            </div>
+<span class="font-label-md text-label-md text-on-surface">Dian Pertiwi</span>
+</div>
+<div class="flex items-center">
+<span class="inline-flex items-center px-2 py-1 rounded-md bg-secondary-container text-on-secondary-fixed-variant font-label-sm text-label-sm">Naik Kelas</span>
+</div>
+<div class="flex items-center font-body-md text-body-md text-on-surface-variant">Kelas 10 IPS 2</div>
+</div>
+</div>
+</div>
+<!-- Right Panel: Assign Action -->
+<div class="xl:col-span-4">
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm p-card-padding sticky top-24">
+<div class="flex items-center gap-3 mb-6 border-b border-outline-variant pb-4">
+<div class="w-10 h-10 rounded-lg bg-primary-container/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">person_add</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Assign ke Rombel Baru</h3>
+</div>
+<div class="space-y-6">
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-2">Pilih Rombel Tujuan</label>
+<div class="relative">
+<select class="w-full appearance-none bg-surface-bright border border-outline-variant rounded-lg px-4 py-3 font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none">
+<option disabled="" selected="" value="">Pilih Rombel...</option>
+<optgroup label="Tahun Ajaran 2024/2025 - Ganjil">
+<option value="11-ipa-1">Kelas 11 IPA 1 (Kapasitas: 28/30)</option>
+<option value="11-ips-1">Kelas 11 IPS 1 (Kapasitas: 25/30)</option>
+<option value="paket-c-1">Paket C - Tingkatan 5 (Kapasitas: 15/20)</option>
+</optgroup>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">info</span>
+                                Pastikan kapasitas kelas mencukupi.
+                            </p>
+</div>
+<div class="bg-surface-container rounded-lg p-4">
+<h4 class="font-label-md text-label-md text-on-surface mb-2">Ringkasan Assignment</h4>
+<div class="flex justify-between items-center font-body-sm text-body-md text-on-surface-variant py-1">
+<span>Siswa Terpilih</span>
+<span class="font-bold text-on-surface">2 Orang</span>
+</div>
+<div class="flex justify-between items-center font-body-sm text-body-md text-on-surface-variant py-1">
+<span>Status</span>
+<span class="text-tertiary">Campuran</span>
+</div>
+</div>
+<button class="w-full bg-primary-container text-on-primary font-label-md text-label-md py-3 px-4 rounded-lg hover:bg-primary transition-colors flex items-center justify-center gap-2 shadow-sm">
+<span class="material-symbols-outlined">check_circle</span>
+                            Assign ke Rombel Ini
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>

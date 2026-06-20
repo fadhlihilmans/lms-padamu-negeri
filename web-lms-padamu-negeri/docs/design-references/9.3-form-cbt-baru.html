@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Buat CBT Baru</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#f6fafe",
+                        "surface-dim": "#d6dade",
+                        "surface-container-high": "#e4e9ed",
+                        "tertiary-fixed": "#dbe2f8",
+                        "on-primary-container": "#d9dbff",
+                        "on-background": "#171c1f",
+                        "surface-variant": "#dfe3e7",
+                        "tertiary": "#424a5c",
+                        "surface-bright": "#f6fafe",
+                        "primary": "#1c33c8",
+                        "on-secondary-container": "#54647a",
+                        "surface-container-highest": "#dfe3e7",
+                        "on-surface-variant": "#454655",
+                        "surface-container-lowest": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-error": "#ffffff",
+                        "surface-tint": "#384cdd",
+                        "surface": "#f6fafe",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed": "#d3e4fe",
+                        "on-primary-fixed-variant": "#172fc5",
+                        "on-primary": "#ffffff",
+                        "secondary": "#505f76",
+                        "surface-container-low": "#f0f4f8",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "inverse-primary": "#bcc2ff",
+                        "primary-fixed-dim": "#bcc2ff",
+                        "outline-variant": "#c5c5d7",
+                        "outline": "#757686",
+                        "tertiary-fixed-dim": "#bec6dc",
+                        "tertiary-container": "#5a6274",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed": "#0b1c30",
+                        "on-error-container": "#93000a",
+                        "primary-container": "#3c50e0",
+                        "on-tertiary-fixed": "#131c2b",
+                        "on-tertiary-container": "#d6def4",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#2c3134",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "secondary-container": "#d0e1fb",
+                        "on-tertiary-fixed-variant": "#3f4758",
+                        "surface-container": "#eaeef2",
+                        "primary-fixed": "#dfe0ff",
+                        "on-primary-fixed": "#000c61",
+                        "inverse-on-surface": "#edf1f5",
+                        "on-surface": "#171c1f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "card-padding": "1.5rem",
+                        "gutter": "24px",
+                        "stack-sm": "0.5rem",
+                        "container-margin": "24px",
+                        "stack-lg": "1.5rem",
+                        "stack-md": "1rem",
+                        "sidebar-width": "280px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-xl": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Custom Toggle Switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #3C50E0;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #3C50E0;
+        }
+        .toggle-checkbox {
+            right: 0;
+            z-index: 1;
+            border-color: #e2e8f0;
+            transition: all 0.3s;
+        }
+        .toggle-label {
+            width: 3rem;
+            height: 1.5rem;
+            background-color: #e2e8f0;
+            border-radius: 9999px;
+            transition: all 0.3s;
+        }
+        .toggle-circle {
+            width: 1.25rem;
+            height: 1.25rem;
+            background-color: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 0.125rem;
+            left: 0.125rem;
+            transition: all 0.3s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .toggle-checkbox:checked ~ .toggle-circle {
+            transform: translateX(1.5rem);
+        }
+    </style>
+</head>
+<body class="bg-surface-container-low text-on-surface font-body-md h-screen overflow-hidden flex">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen w-sidebar-width bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant dark:border-outline shadow-sm hidden md:flex flex-col z-20">
+<div class="p-6 flex items-center gap-4 border-b border-outline-variant/50">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md text-primary dark:text-inverse-primary">EduPortal Admin</h2>
+<p class="font-label-sm text-label-sm text-secondary">Senior Educator</p>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto py-4 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-low hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-low hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="font-body-md text-body-md">Question Bank</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-secondary-container dark:bg-secondary-fixed-variant text-primary dark:text-on-primary-fixed font-bold border-l-4 border-primary transition-transform" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-body-md text-body-md">Exam Sessions</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-low hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined">grade</span>
+<span class="font-body-md text-body-md">Grading</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-low hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors mt-auto border-t border-outline-variant/30" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col md:ml-[280px] h-screen overflow-hidden">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-surface-container-lowest border-b border-outline-variant flex justify-between items-center h-16 px-gutter w-full z-10 shrink-0">
+<div class="flex items-center gap-4">
+<button class="md:hidden text-secondary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">CBT Manager</h1>
+</div>
+<div class="hidden md:flex items-center flex-1 max-w-md mx-8">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-body-md focus:ring-2 focus:ring-primary/20" placeholder="Search..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden lg:flex items-center gap-6">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Help Center</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Resources</a>
+</nav>
+<div class="flex items-center gap-3 border-l border-outline-variant pl-6">
+<button class="text-secondary hover:text-primary transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+<button class="hidden sm:block bg-primary text-on-primary font-label-md px-4 py-2 rounded shadow-sm hover:bg-surface-tint transition-colors ml-2">
+                        Create New Exam
+                    </button>
+</div>
+</div>
+</header>
+<!-- Page Content -->
+<main class="flex-1 overflow-y-auto p-container-margin">
+<div class="max-w-5xl mx-auto flex flex-col gap-stack-lg">
+<!-- Page Header -->
+<div class="flex items-center justify-between">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Buat CBT Baru</h1>
+<p class="font-body-md text-body-md text-secondary mt-1">Konfigurasi pengaturan dasar dan daftar soal untuk ujian.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 border border-outline-variant rounded bg-surface-container-lowest text-secondary font-label-md hover:bg-surface-container-low transition-colors shadow-sm">Batal</button>
+<button class="px-4 py-2 bg-primary text-on-primary rounded font-label-md hover:bg-surface-tint transition-colors shadow-sm">Simpan Ujian</button>
+</div>
+</div>
+<!-- Form Card -->
+<div class="bg-surface-container-lowest rounded-lg shadow-sm border border-outline-variant p-card-padding">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-6 pb-4 border-b border-outline-variant/50">Pengaturan Dasar</h2>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Nama Ujian -->
+<div class="md:col-span-8 flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface">Nama Ujian</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded p-3 text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-shadow" placeholder="Masukkan nama ujian" type="text"/>
+</div>
+<!-- KKM -->
+<div class="md:col-span-4 flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface">KKM</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded p-3 text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-shadow" placeholder="75" type="number"/>
+</div>
+<!-- Tanggal Mulai -->
+<div class="md:col-span-6 flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface">Tanggal &amp; Waktu Mulai</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">calendar_today</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded p-3 pl-10 text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-shadow text-on-surface" type="datetime-local"/>
+</div>
+</div>
+<!-- Durasi -->
+<div class="md:col-span-6 flex flex-col gap-2">
+<label class="font-label-md text-label-md text-on-surface">Durasi (menit)</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">timer</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded p-3 pl-10 text-body-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-shadow" placeholder="120" type="number"/>
+</div>
+</div>
+<!-- Toggle -->
+<div class="md:col-span-12 flex items-center justify-between p-4 bg-surface-container-low rounded border border-outline-variant/50 mt-2">
+<div>
+<p class="font-label-md text-label-md text-on-surface">Tampilkan Nilai Otomatis ke Peserta Didik</p>
+<p class="font-body-md text-body-md text-secondary text-sm mt-0.5">Siswa dapat langsung melihat skor setelah menyelesaikan ujian.</p>
+</div>
+<div class="relative inline-block w-12 mr-2 align-middle select-none">
+<input class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer opacity-0" id="toggle" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer" for="toggle"></label>
+<div class="toggle-circle pointer-events-none"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Daftar Soal Section -->
+<div class="bg-surface-container-lowest rounded-lg shadow-sm border border-outline-variant p-card-padding">
+<div class="flex items-center justify-between mb-6 pb-4 border-b border-outline-variant/50">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Daftar Soal</h2>
+<p class="font-body-md text-body-md text-secondary text-sm">Kelola butir soal untuk sesi ujian ini.</p>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 border border-primary text-primary rounded font-label-md hover:bg-primary/5 transition-colors">
+<span class="material-symbols-outlined text-sm">add</span>
+                            Tambah Soal
+                        </button>
+</div>
+<!-- Empty State -->
+<div class="flex flex-col items-center justify-center py-16 text-center">
+<img class="w-48 h-auto mb-6 opacity-80" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPlNIkRggomyJfUk1_igLu8AEu3P2KvJ8C9YRECMDFyJ2ULKkIi48HWIUQ5fFiDJWVoT_wyHKyqHYRwl29ntqFoIj-6sNVBMmNQRit0zimvxWSJctAPTW78yJezkWF_hnP_CrUWIE4icUReUihjRAE2njHNHWHQDzwJuDriIJG9Mh9f-6M5L2NofWDRajCmqE2IOr4ykbU7tb6-SIxGiWerT0ZtDg_lzyfQt3GPHcZo8gaHddF040G_eU073rjZ0UE3XdXi55L69LR"/>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Belum ada soal ditambahkan</h3>
+<p class="font-body-md text-body-md text-secondary max-w-md">Silakan tambahkan soal baru secara manual atau impor dari bank soal untuk memulai.</p>
+<button class="mt-6 flex items-center gap-2 px-6 py-2 bg-primary text-on-primary rounded font-label-md hover:bg-surface-tint transition-colors shadow-sm">
+<span class="material-symbols-outlined text-sm">add</span>
+                            Tambah Soal Pertama
+                        </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

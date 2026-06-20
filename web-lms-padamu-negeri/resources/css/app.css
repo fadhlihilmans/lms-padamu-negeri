@@ -1,0 +1,88 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    /* Font */
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+    /* Brand colors dari design reference */
+    --color-primary:                  #1c33c8;
+    --color-primary-container:        #3c50e0;
+    --color-primary-fixed:            #dfe0ff;
+    --color-primary-fixed-dim:        #bcc2ff;
+    --color-on-primary:               #ffffff;
+    --color-on-primary-fixed:         #000c61;
+    --color-on-primary-fixed-variant: #172fc5;
+    --color-inverse-primary:          #bcc2ff;
+
+    --color-secondary:                #505f76;
+    --color-secondary-container:      #d0e1fb;
+    --color-secondary-fixed:          #d3e4fe;
+    --color-secondary-fixed-dim:      #b7c8e1;
+    --color-on-secondary:             #ffffff;
+    --color-on-secondary-fixed:       #0b1c30;
+    --color-on-secondary-fixed-variant: #38485d;
+    --color-on-secondary-container:   #54647a;
+
+    --color-tertiary:                 #424a5c;
+    --color-tertiary-container:       #5a6274;
+    --color-tertiary-fixed:           #dbe2f8;
+    --color-tertiary-fixed-dim:       #bec6dc;
+    --color-on-tertiary:              #ffffff;
+    --color-on-tertiary-fixed:        #131c2b;
+    --color-on-tertiary-fixed-variant: #3f4758;
+    --color-on-tertiary-container:    #d6def4;
+
+    --color-error:                    #ba1a1a;
+    --color-error-container:          #ffdad6;
+    --color-on-error:                 #ffffff;
+    --color-on-error-container:       #93000a;
+
+    --color-surface:                  #f6fafe;
+    --color-surface-bright:           #f6fafe;
+    --color-surface-dim:              #d6dade;
+    --color-surface-variant:          #dfe3e7;
+    --color-surface-tint:             #384cdd;
+    --color-surface-container-lowest: #ffffff;
+    --color-surface-container-low:    #f0f4f8;
+    --color-surface-container:        #eaeef2;
+    --color-surface-container-high:   #e4e9ed;
+    --color-surface-container-highest: #dfe3e7;
+    --color-on-surface:               #171c1f;
+    --color-on-surface-variant:       #454655;
+    --color-inverse-surface:          #2c3134;
+    --color-inverse-on-surface:       #edf1f5;
+
+    --color-outline:                  #757686;
+    --color-outline-variant:          #c5c5d7;
+
+    --color-background:               #f6fafe;
+    --color-on-background:            #171c1f;
+
+    /* Spacing */
+    --spacing-gutter:           24px;
+    --spacing-card-padding:     1.5rem;
+    --spacing-stack-lg:         1.5rem;
+    --spacing-stack-md:         1rem;
+    --spacing-stack-sm:         0.5rem;
+    --spacing-sidebar-width:    280px;
+
+    /* Border radius */
+    --radius-DEFAULT: 0.25rem;
+    --radius-lg:      0.5rem;
+    --radius-xl:      0.75rem;
+}
+
+/* Custom font size utilities (design token scale) */
+@layer utilities {
+    .text-headline-xl  { font-size: 30px; line-height: 38px; font-weight: 700; letter-spacing: -0.02em; }
+    .text-headline-lg  { font-size: 24px; line-height: 32px; font-weight: 700; letter-spacing: -0.01em; }
+    .text-headline-lg-mobile { font-size: 20px; line-height: 28px; font-weight: 700; }
+    .text-headline-md  { font-size: 20px; line-height: 28px; font-weight: 600; }
+    .text-body-lg      { font-size: 16px; line-height: 24px; font-weight: 400; }
+    .text-body-md      { font-size: 14px; line-height: 20px; font-weight: 400; }
+    .text-label-md     { font-size: 14px; line-height: 20px; font-weight: 500; }
+    .text-label-sm     { font-size: 12px; line-height: 16px; font-weight: 600; }
+}

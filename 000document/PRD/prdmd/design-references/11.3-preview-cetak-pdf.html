@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Preview Dokumen Laporan Hasil Belajar</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#eaeef2",
+                        "secondary": "#505f76",
+                        "on-primary-fixed": "#000c61",
+                        "on-tertiary-container": "#d6def4",
+                        "on-primary-container": "#d9dbff",
+                        "tertiary": "#424a5c",
+                        "surface-container-low": "#f0f4f8",
+                        "on-background": "#171c1f",
+                        "secondary-container": "#d0e1fb",
+                        "primary-fixed-dim": "#bcc2ff",
+                        "on-surface-variant": "#454655",
+                        "surface-container-high": "#e4e9ed",
+                        "tertiary-fixed-dim": "#bec6dc",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "secondary-fixed": "#d3e4fe",
+                        "primary-fixed": "#dfe0ff",
+                        "on-tertiary-fixed": "#131c2b",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "surface-variant": "#dfe3e7",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed": "#dbe2f8",
+                        "tertiary-container": "#5a6274",
+                        "outline": "#757686",
+                        "on-surface": "#171c1f",
+                        "background": "#f6fafe",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#bcc2ff",
+                        "primary-container": "#3c50e0",
+                        "on-secondary-container": "#54647a",
+                        "surface": "#f6fafe",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#0b1c30",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#3f4758",
+                        "surface-tint": "#384cdd",
+                        "inverse-surface": "#2c3134",
+                        "outline-variant": "#c5c5d7",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#d6dade",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-bright": "#f6fafe",
+                        "on-primary-fixed-variant": "#172fc5",
+                        "inverse-on-surface": "#edf1f5",
+                        "surface-container-highest": "#dfe3e7",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#1c33c8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-margin": "24px",
+                        "sidebar-width": "280px",
+                        "stack-md": "1rem",
+                        "gutter": "24px",
+                        "stack-sm": "0.5rem",
+                        "stack-lg": "1.5rem",
+                        "card-padding": "1.5rem"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "headline-xl": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom print-like styles */
+        .a4-document {
+            width: 100%;
+            max-width: 210mm; /* A4 width */
+            min-height: 297mm; /* A4 height */
+            margin: 0 auto;
+        }
+        .double-border-bottom {
+            border-bottom: 3px double #171c1f;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased overflow-hidden flex h-screen">
+<!-- SideNavBar -->
+<aside class="w-[sidebar-width] h-screen fixed left-0 top-0 border-r border-outline-variant shadow-sm bg-surface-container-lowest dark:bg-inverse-surface hidden md:block z-20">
+<div class="flex flex-col h-full py-6">
+<!-- Header -->
+<div class="px-6 mb-8 flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center shrink-0 overflow-hidden">
+<img alt="PKBM Logo" class="w-full h-full object-cover" data-alt="A clean, modern, abstract geometric logo representing education or an institution, styled in a professional blue color palette, suitable for a corporate SaaS dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSbFiWZRZnr3oVJV9fN0skhBSY6MUI98yCfzHsBhtFFd5VQFx0lvZ55tu-INxNYwrxydf3bfzM8LirrQF2upk1QGGmaeXD4-TAeyzrFcJovy_8sPDu7vKL7Xnql-KEsxRQntTa1ylenaijJ4RQWSbAmxTvxp6bv2gPS0mbYXOnYjDTemYIe82v6Y4yV1LyhsZGARC3F_T4qTQc9RR0GikT85iuc6npdfrn7N8Sjv6ZvU7X6Qiy4PRNVHdKAJn_E5UCalJ23Md1OeN5"/>
+</div>
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary dark:text-inverse-primary font-bold">Sistem PKBM</h1>
+<p class="font-label-sm text-label-sm text-secondary">Admin Panel</p>
+</div>
+</div>
+<!-- Navigation -->
+<nav class="flex-1 flex flex-col font-label-md text-label-md">
+<a class="flex items-center gap-3 text-secondary px-6 py-3 hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Beranda</span>
+</a>
+<a class="flex items-center gap-3 text-secondary px-6 py-3 hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="database">database</span>
+<span>Data Master</span>
+</a>
+<a class="flex items-center gap-3 text-secondary px-6 py-3 hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Rombel</span>
+</a>
+<a class="flex items-center gap-3 text-secondary px-6 py-3 hover:bg-surface-container-high transition-colors cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span>Modul Ajar</span>
+</a>
+<!-- Active Nav: Nilai -->
+<a class="flex items-center gap-3 bg-secondary-container/5 text-primary border-l-[3px] border-primary px-6 py-3 cursor-pointer active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="grade">grade</span>
+<span>Nilai</span>
+</a>
+</nav>
+<!-- Footer CTA -->
+<div class="px-6 mt-auto">
+<button class="w-full py-2 px-4 border border-outline-variant rounded-lg font-label-md text-label-md text-secondary hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]">help</span>
+                    Bantuan Sistem
+                </button>
+</div>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col ml-0 md:ml-[sidebar-width] h-screen overflow-hidden">
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 left-0 md:left-[sidebar-width] h-16 border-b border-outline-variant shadow-sm bg-surface-container-lowest dark:bg-inverse-surface z-10">
+<div class="flex justify-between items-center px-gutter w-full h-full">
+<!-- Left: Title / Mobile Menu -->
+<div class="flex items-center gap-4">
+<button class="md:hidden text-secondary p-2 -ml-2 rounded-lg hover:bg-surface-container-high">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h2 class="font-headline-md text-headline-md text-on-surface dark:text-inverse-on-surface">Manajemen PKBM</h2>
+</div>
+<!-- Right: Actions -->
+<div class="flex items-center gap-2 md:gap-4">
+<!-- Search Bar (implied on_left logic from JSON, adjusting to right for typical dashboard pattern if not specified layout, but keeping left of actions) -->
+<div class="hidden md:flex relative mr-2">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+<input class="pl-10 pr-4 py-2 border border-outline-variant rounded-full text-body-md font-body-md focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 w-64 bg-surface-container-lowest text-on-surface" placeholder="Cari..." type="text"/>
+</div>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors cursor-pointer hover:bg-surface-container-high">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors cursor-pointer hover:bg-surface-container-high hidden sm:flex">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant ml-2 cursor-pointer">
+<img alt="Administrator" class="w-full h-full object-cover" data-alt="A professional headshot of an administrator in a modern office environment, soft natural lighting, high quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAmY8nzbPANMI3-LpbKvWKw4KGiOKW4h42Hg6NuyU2uemrY_gTA6nfLYIPjfVpVwq0aaSA0YrxOY3D-Kl-55cTW7cshvcF0eLpwn97hmRQG6m4uKq4BdGsD6Sy3VKDQdpbRpnvKxuBpJMGVXf3n5U3Zr58NRGTs7L1RRliXQGqgU3VOsb7_JKViVYrHU1DJqPi4oXeX9zpZqU2G_6ArDT8WS-hDUSG6GOCVwlyj1OoDITkruKWnY8IqHxtIryLQjh2-FV5icseZWmz"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<main class="flex-1 overflow-y-auto bg-surface-container pt-16">
+<div class="max-w-[210mm] mx-auto p-4 sm:p-container-margin relative">
+<!-- Floating Action Bar for Document -->
+<div class="sticky top-0 z-10 flex justify-end mb-4 sm:mb-6">
+<button class="bg-primary-container text-on-primary shadow-md hover:bg-surface-tint transition-colors px-6 py-2.5 rounded-full flex items-center gap-2 font-label-md text-label-md border border-primary-container">
+<span class="material-symbols-outlined text-[20px]">print</span>
+                        Cetak PDF
+                    </button>
+</div>
+<!-- A4 Document Container -->
+<div class="a4-document bg-surface-container-lowest shadow-sm rounded-sm p-10 sm:p-14 lg:p-16 border border-outline-variant relative">
+<!-- Letterhead -->
+<div class="flex items-center justify-between pb-4 mb-8 double-border-bottom">
+<!-- Gov Logo Placeholder -->
+<div class="w-20 h-24 shrink-0 flex items-center justify-center">
+<img alt="Logo Pemkab" class="w-16 h-16 object-contain grayscale opacity-80" data-alt="A formal government seal or emblem, intricate details, monochromatic or gold tones, professional document context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvXSLMynn72f03bxLB80QPeMB8j6EYr8xAMroJZyw0usF4_ZT-ES4mov36K6XoamLsz2x94k92-dVTy2vySADY3ZrMiZiueFSUThRzVWcZriea21pnKigo7rV0TQAtbym1EJ65ErSwpBcE9mhoJXvaZ9Uvoyvef9wJImKvDbUywL_4ATCixwreMQNfAI6-569rzj1Fp_z8fwwnKmHlH-LfTK3H3xatFVDZwnxdiKJAQqYW--ugpEoVY1sqTSSNYhXZ9CEXYzX_JvQe"/>
+</div>
+<!-- Center Text -->
+<div class="flex-1 text-center px-4">
+<h3 class="font-headline-lg text-headline-lg text-on-surface mb-1">PEMERINTAH KABUPATEN BATANG</h3>
+<h4 class="font-headline-md text-headline-md text-on-surface font-semibold mb-1">DINAS PENDIDIKAN DAN KEBUDAYAAN</h4>
+<h2 class="font-headline-xl text-headline-xl text-on-surface font-bold tracking-tight mb-2">PKBM PADAMU NEGERI</h2>
+<p class="font-body-md text-body-md text-on-surface-variant text-[13px] leading-tight">
+                                Jl. Pendidikan No. 123, Kecamatan Batang, Kabupaten Batang, Jawa Tengah 51211<br/>
+                                Telepon: (0285) 123456 | Email: info@pkbmpadamunegeri.sch.id | Website: www.pkbmpadamunegeri.sch.id
+                            </p>
+</div>
+<!-- School Logo Placeholder -->
+<div class="w-20 h-24 shrink-0 flex items-center justify-center">
+<img alt="Logo Sekolah" class="w-16 h-16 object-contain grayscale opacity-80" data-alt="An educational institution logo featuring an open book and abstract figures, clean lines, flat vector style, professional context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGslYQYcstyyWmTHh5oVQPsqUGgf5wGx6qZDojxnno906u3JD2rQodDWVwr3OGjPrc9-mxXOMNhBeuWpQLVJAU-ean5yMHgTg3CFBHE4FmsjLQmFW9V_FbbwCmaBxWavLeU6uAjDRcFjdo_vxsWsTrRzJDu9ECNPRdKhxaxZfo0b86rC0RzybenIx3gDlIech1apQ44KDgfsR41xX5Oc0mPWc2EApIfJV_vLZqA2e3gMC3I399W_nsQEC5Bph3TKA9vfqllwwsBXTv"/>
+</div>
+</div>
+<!-- Title -->
+<div class="text-center mb-10">
+<h1 class="font-headline-lg text-headline-lg text-on-surface uppercase border-b border-on-surface inline-block pb-1">LAPORAN HASIL BELAJAR PESERTA DIDIK</h1>
+</div>
+<!-- Identity Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-3 mb-10 font-body-md text-body-md text-on-surface">
+<div class="flex">
+<span class="w-32 font-medium">Nama Peserta Didik</span>
+<span class="mx-2">:</span>
+<span class="font-semibold uppercase">BUDI SANTOSO</span>
+</div>
+<div class="flex">
+<span class="w-32 font-medium">Kelas / Rombel</span>
+<span class="mx-2">:</span>
+<span>Paket C - Kelas XI IPA</span>
+</div>
+<div class="flex">
+<span class="w-32 font-medium">Nomor Induk / NISN</span>
+<span class="mx-2">:</span>
+<span>192010111 / 0031234567</span>
+</div>
+<div class="flex">
+<span class="w-32 font-medium">Semester</span>
+<span class="mx-2">:</span>
+<span>Genap (2)</span>
+</div>
+<div class="flex">
+<span class="w-32 font-medium">Tahun Pelajaran</span>
+<span class="mx-2">:</span>
+<span>2023 / 2024</span>
+</div>
+</div>
+<!-- Results Table -->
+<div class="mb-10">
+<table class="w-full text-left border-collapse border border-outline text-on-surface font-body-md text-[14px]">
+<thead>
+<tr class="bg-surface-container-low font-label-md text-label-md">
+<th class="border border-outline p-3 w-12 text-center">No</th>
+<th class="border border-outline p-3">Mata Pelajaran</th>
+<th class="border border-outline p-3 w-24 text-center">Nilai Angka</th>
+<th class="border border-outline p-3 w-24 text-center">Predikat</th>
+<th class="border border-outline p-3">Deskripsi Kemajuan Belajar</th>
+</tr>
+</thead>
+<tbody class="align-top">
+<!-- Row 1 -->
+<tr>
+<td class="border border-outline p-3 text-center">1</td>
+<td class="border border-outline p-3 font-medium">Pendidikan Agama dan Budi Pekerti</td>
+<td class="border border-outline p-3 text-center">88</td>
+<td class="border border-outline p-3 text-center">B</td>
+<td class="border border-outline p-3 text-sm text-on-surface-variant">Menunjukkan pemahaman yang baik dalam konsep agama dan menerapkannya dalam kehidupan sehari-hari.</td>
+</tr>
+<!-- Row 2 -->
+<tr>
+<td class="border border-outline p-3 text-center">2</td>
+<td class="border border-outline p-3 font-medium">Pendidikan Pancasila dan Kewarganegaraan</td>
+<td class="border border-outline p-3 text-center">92</td>
+<td class="border border-outline p-3 text-center">A</td>
+<td class="border border-outline p-3 text-sm text-on-surface-variant">Sangat aktif dalam diskusi mengenai hak dan kewajiban warga negara.</td>
+</tr>
+<!-- Row 3 -->
+<tr>
+<td class="border border-outline p-3 text-center">3</td>
+<td class="border border-outline p-3 font-medium">Bahasa Indonesia</td>
+<td class="border border-outline p-3 text-center">85</td>
+<td class="border border-outline p-3 text-center">B</td>
+<td class="border border-outline p-3 text-sm text-on-surface-variant">Mampu menyusun teks laporan dengan struktur yang tepat dan tata bahasa yang baik.</td>
+</tr>
+<!-- Row 4 -->
+<tr>
+<td class="border border-outline p-3 text-center">4</td>
+<td class="border border-outline p-3 font-medium">Matematika</td>
+<td class="border border-outline p-3 text-center">78</td>
+<td class="border border-outline p-3 text-center">C</td>
+<td class="border border-outline p-3 text-sm text-on-surface-variant">Perlu peningkatan dalam pemahaman konsep statistika dasar.</td>
+</tr>
+<!-- Row 5 -->
+<tr>
+<td class="border border-outline p-3 text-center">5</td>
+<td class="border border-outline p-3 font-medium">Bahasa Inggris</td>
+<td class="border border-outline p-3 text-center">82</td>
+<td class="border border-outline p-3 text-center">B</td>
+<td class="border border-outline p-3 text-sm text-on-surface-variant">Kemampuan speaking meningkat, perlu lebih banyak latihan dalam grammar.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Bottom: Catatan Wali Kelas -->
+<div class="border border-outline rounded-sm p-4 mb-16 h-32">
+<h4 class="font-label-md text-label-md font-bold text-on-surface mb-2">Catatan Wali Kelas :</h4>
+<p class="font-body-md text-body-md text-on-surface-variant italic text-[14px]">
+                            "Budi telah menunjukkan progres yang baik semester ini. Pertahankan prestasimu dan tingkatkan lagi semangat belajarnya, terutama pada mata pelajaran eksakta. Tetap semangat!"
+                        </p>
+</div>
+<!-- Signatures -->
+<div class="grid grid-cols-3 gap-8 mt-12 font-body-md text-body-md text-on-surface text-center">
+<div>
+<p class="mb-16">Mengetahui,<br/>Orang Tua/Wali</p>
+<div class="border-b border-on-surface-variant w-40 mx-auto mb-1"></div>
+</div>
+<div>
+<p class="mb-16">Mengetahui,<br/>Kepala PKBM</p>
+<div class="border-b border-on-surface-variant w-40 mx-auto mb-1"></div>
+<p class="text-[12px]">NIP. 19700101 199001 1 001</p>
+</div>
+<div>
+<p class="mb-16">Batang, 20 Juni 2024<br/>Wali Kelas</p>
+<div class="border-b border-on-surface-variant w-40 mx-auto mb-1"></div>
+<p class="text-[12px]">NIP. 19850505 201001 2 003</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

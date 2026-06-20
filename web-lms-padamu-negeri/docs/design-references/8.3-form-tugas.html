@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tugas Pertemuan 5 - Matematika</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#424a5c",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#54647a",
+                        "surface-container": "#eaeef2",
+                        "surface-bright": "#f6fafe",
+                        "tertiary-fixed-dim": "#bec6dc",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#c5c5d7",
+                        "on-secondary-fixed": "#0b1c30",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "primary-fixed-dim": "#bcc2ff",
+                        "primary-container": "#3c50e0",
+                        "on-background": "#171c1f",
+                        "inverse-surface": "#2c3134",
+                        "on-surface": "#171c1f",
+                        "secondary-container": "#d0e1fb",
+                        "surface-variant": "#dfe3e7",
+                        "surface-dim": "#d6dade",
+                        "tertiary-container": "#5a6274",
+                        "on-tertiary-fixed": "#131c2b",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#bcc2ff",
+                        "surface-container-high": "#e4e9ed",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#454655",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#d3e4fe",
+                        "secondary": "#505f76",
+                        "primary-fixed": "#dfe0ff",
+                        "outline": "#757686",
+                        "on-tertiary-container": "#d6def4",
+                        "surface-tint": "#384cdd",
+                        "tertiary-fixed": "#dbe2f8",
+                        "background": "#f6fafe",
+                        "surface-container-highest": "#dfe3e7",
+                        "on-primary-fixed-variant": "#172fc5",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "on-error-container": "#93000a",
+                        "surface": "#f6fafe",
+                        "on-primary-fixed": "#000c61",
+                        "inverse-on-surface": "#edf1f5",
+                        "on-primary-container": "#d9dbff",
+                        "surface-container-low": "#f0f4f8",
+                        "on-tertiary-fixed-variant": "#3f4758",
+                        "primary": "#1c33c8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "1.5rem",
+                        "sidebar-width": "280px",
+                        "stack-md": "1rem",
+                        "stack-sm": "0.5rem",
+                        "card-padding": "1.5rem",
+                        "gutter": "24px",
+                        "container-margin": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "label-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-xl": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-md">
+<!-- TopNavBar -->
+<nav class="bg-surface-container-lowest text-primary text-body-md font-body-md docked full-width top-0 border-b border-surface-variant shadow-sm flex justify-between items-center w-full px-gutter h-16 z-50">
+<div class="flex items-center gap-stack-md">
+<span class="text-headline-md font-headline-md text-primary">LMS Sekolah</span>
+</div>
+<div class="hidden md:flex items-center gap-stack-lg">
+<a class="text-secondary font-medium hover:text-primary transition-colors cursor-pointer active:scale-95 transition-transform" href="#">Dashboard</a>
+<a class="text-secondary font-medium hover:text-primary transition-colors cursor-pointer active:scale-95 transition-transform" href="#">Mata Pelajaran</a>
+<a class="text-secondary font-medium hover:text-primary transition-colors cursor-pointer active:scale-95 transition-transform" href="#">Kalender</a>
+</div>
+<div class="flex items-center gap-stack-md">
+<span class="material-symbols-outlined text-secondary hover:text-primary cursor-pointer active:scale-95 transition-transform">notifications</span>
+<span class="material-symbols-outlined text-secondary hover:text-primary cursor-pointer active:scale-95 transition-transform">settings</span>
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-variant">
+<img alt="Foto Profil Pengguna" class="w-full h-full object-cover" data-alt="A professional headshot of a smiling user against a bright, modern, well-lit background. The style is clean, corporate modern, consistent with a high-end educational software interface. High quality, crisp details." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCD3QNX9l6LxQoEcDjDglqkKpRNjJP8AxXsvz6FaU7NvJd0VdfkLz2iQM8UTNzpdVfLffLQI06rJ1_LGZmFESlR8ZCizpSK1YSgLhfYqcCxhU2JlcIGyGA4sCsfdVM4EP7YmyIgEiYdmjFey-pWWAPsSPKhm20a5wzkYo4fFPLbnG85AtE1iBJnsZKMMXSaH64oVenhln6ZU6qM2wTfBhlKoHTuBGZFrjgz1MG04-3PFkppXNE5uFkl76kBc-2RZwB1l5ih2pven47B"/>
+</div>
+</div>
+</nav>
+<div class="flex h-[calc(100vh-64px)] w-full relative">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-lowest text-primary text-label-md font-label-md fixed left-0 top-0 h-full w-sidebar-width border-r border-surface-variant shadow-sm flex flex-col h-full py-stack-lg z-40 md:block hidden top-[64px] h-[calc(100vh-64px)] overflow-y-auto">
+<div class="px-gutter mb-stack-lg">
+<div class="flex items-center gap-stack-sm mb-stack-sm">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">school</span>
+</div>
+<div>
+<h2 class="text-headline-lg font-headline-lg text-primary text-lg">Portal Akademik</h2>
+<p class="text-label-sm font-label-sm text-secondary">Sistem Manajemen Pembelajaran</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-stack-md px-4 py-3 rounded-lg text-secondary hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">home</span>
+                    Beranda
+                </a>
+<a class="flex items-center gap-stack-md px-4 py-3 rounded-lg bg-secondary-container text-primary border-l-4 border-primary hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined fill">assignment</span>
+                    Tugas Saya
+                </a>
+<a class="flex items-center gap-stack-md px-4 py-3 rounded-lg text-secondary hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">grade</span>
+                    Daftar Nilai
+                </a>
+<a class="flex items-center gap-stack-md px-4 py-3 rounded-lg text-secondary hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">book</span>
+                    Materi Kuliah
+                </a>
+<a class="flex items-center gap-stack-md px-4 py-3 rounded-lg text-secondary hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">analytics</span>
+                    Laporan
+                </a>
+</nav>
+<div class="px-4 mt-auto">
+<button class="w-full mb-stack-sm py-2 px-4 rounded-lg border border-outline-variant text-secondary text-label-md font-label-md hover:bg-surface-container transition-colors">
+                    Bantuan Teknis
+                </button>
+<a class="flex items-center gap-stack-md px-4 py-3 rounded-lg text-secondary hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+                    Keluar
+                </a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 p-container-margin md:ml-sidebar-width overflow-y-auto">
+<div class="max-w-4xl mx-auto">
+<!-- Header Card -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm p-card-padding mb-stack-lg">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-stack-md mb-stack-md">
+<div>
+<h1 class="text-headline-xl font-headline-xl text-on-surface mb-2">Tugas Pertemuan 5 - Matematika</h1>
+<div class="flex items-center gap-stack-sm text-secondary text-body-md font-body-md">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+<span>Ditugaskan: 12 Oktober 2023</span>
+<span class="mx-2">•</span>
+<span class="material-symbols-outlined text-[18px]">person</span>
+<span>Bpk. Budi Santoso</span>
+</div>
+</div>
+<div class="bg-[#FFF3CD] text-[#856404] px-4 py-2 rounded-full flex items-center gap-2 border border-[#FFEEBA]">
+<span class="material-symbols-outlined text-[18px]">timer</span>
+<span class="text-label-md font-label-md font-bold">Deadline: 2 hari lagi</span>
+</div>
+</div>
+<hr class="border-t border-outline-variant my-stack-md"/>
+<div class="prose max-w-none text-body-lg font-body-lg text-on-surface-variant">
+<p class="mb-4">Kerjakan soal-soal latihan pada halaman 45-47 buku paket Matematika Kelas 10. Kerjakan dengan rapi dan sertakan cara penyelesaiannya. Anda dapat mengunggah foto hasil pekerjaan atau mengetik langsung jawabannya pada kolom yang disediakan.</p>
+<p><strong>Penting:</strong> Pastikan hasil scan atau foto dapat terbaca dengan jelas sebelum dikumpulkan.</p>
+</div>
+</div>
+<!-- Submission Area -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+<!-- Tabs -->
+<div class="flex border-b border-outline-variant bg-surface-container-low px-4">
+<button class="px-6 py-4 text-label-md font-label-md font-semibold text-primary border-b-2 border-primary transition-colors flex items-center gap-2" id="tab-upload" onclick="switchTab('upload')">
+<span class="material-symbols-outlined text-[20px]">cloud_upload</span>
+                            Upload File
+                        </button>
+<button class="px-6 py-4 text-label-md font-label-md font-medium text-secondary hover:text-on-surface transition-colors border-b-2 border-transparent flex items-center gap-2" id="tab-text" onclick="switchTab('text')">
+<span class="material-symbols-outlined text-[20px]">edit_document</span>
+                            Tulis Jawaban
+                        </button>
+</div>
+<div class="p-card-padding">
+<!-- Upload Section -->
+<div class="block" id="content-upload">
+<div class="border-2 border-dashed border-outline-variant rounded-lg p-10 flex flex-col items-center justify-center bg-surface-bright hover:bg-surface-container-low transition-colors cursor-pointer relative group">
+<div class="w-16 h-16 rounded-full bg-primary-container/10 text-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl">upload_file</span>
+</div>
+<h3 class="text-headline-md font-headline-md text-on-surface mb-2">Tarik dan lepas file di sini</h3>
+<p class="text-body-md font-body-md text-secondary mb-6 text-center max-w-sm">Mendukung format PDF, JPG, PNG, atau DOCX. Ukuran maksimal 10MB per file.</p>
+<button class="bg-surface-container-lowest border border-outline-variant text-on-surface px-6 py-2 rounded-lg text-label-md font-label-md font-medium hover:bg-surface-variant transition-colors shadow-sm">
+                                    Pilih File
+                                </button>
+<input class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" type="file"/>
+</div>
+</div>
+<!-- Text Area Section -->
+<div class="hidden" id="content-text">
+<label class="block text-label-md font-label-md text-on-surface mb-2">Tulis jawaban Anda secara detail:</label>
+<textarea class="w-full border border-outline-variant rounded-lg p-4 text-body-md font-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent resize-y bg-surface-container-lowest" placeholder="Mulai mengetik jawaban Anda di sini..." rows="8"></textarea>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="bg-surface-container-low px-card-padding py-4 border-t border-outline-variant flex justify-end gap-stack-md items-center">
+<span class="text-label-sm font-label-sm text-secondary mr-auto hidden sm:block">Pastikan memeriksa kembali sebelum mengumpulkan.</span>
+<button class="px-6 py-2 rounded-lg border border-outline-variant text-secondary bg-surface-container-lowest hover:bg-surface-variant transition-colors text-label-md font-label-md font-medium">
+                            Simpan Draft
+                        </button>
+<button class="px-6 py-2 rounded-lg bg-primary-container text-on-primary hover:bg-primary transition-colors text-label-md font-label-md font-semibold flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-[18px]">send</span>
+                            Kumpulkan Tugas
+                        </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script>
+        function switchTab(tabId) {
+            // Get elements
+            const btnUpload = document.getElementById('tab-upload');
+            const btnText = document.getElementById('tab-text');
+            const contentUpload = document.getElementById('content-upload');
+            const contentText = document.getElementById('content-text');
+
+            if (tabId === 'upload') {
+                // Style buttons
+                btnUpload.className = "px-6 py-4 text-label-md font-label-md font-semibold text-primary border-b-2 border-primary transition-colors flex items-center gap-2";
+                btnText.className = "px-6 py-4 text-label-md font-label-md font-medium text-secondary hover:text-on-surface transition-colors border-b-2 border-transparent flex items-center gap-2";
+                
+                // Show/hide content
+                contentUpload.classList.remove('hidden');
+                contentUpload.classList.add('block');
+                contentText.classList.remove('block');
+                contentText.classList.add('hidden');
+            } else {
+                // Style buttons
+                btnText.className = "px-6 py-4 text-label-md font-label-md font-semibold text-primary border-b-2 border-primary transition-colors flex items-center gap-2";
+                btnUpload.className = "px-6 py-4 text-label-md font-label-md font-medium text-secondary hover:text-on-surface transition-colors border-b-2 border-transparent flex items-center gap-2";
+                
+                // Show/hide content
+                contentText.classList.remove('hidden');
+                contentText.classList.add('block');
+                contentUpload.classList.remove('block');
+                contentUpload.classList.add('hidden');
+            }
+        }
+    </script>
+</body></html>

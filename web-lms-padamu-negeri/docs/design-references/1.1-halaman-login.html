@@ -1,0 +1,170 @@
+<!DOCTYPE html><html class="light" lang="id"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Login - LMS Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#505f76",
+                        "tertiary-container": "#5a6274",
+                        "on-primary-container": "#d9dbff",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#dfe3e7",
+                        "tertiary-fixed": "#dbe2f8",
+                        "on-secondary-fixed": "#0b1c30",
+                        "primary-container": "#3c50e0",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#454655",
+                        "primary-fixed": "#dfe0ff",
+                        "surface-bright": "#f6fafe",
+                        "surface-container-highest": "#dfe3e7",
+                        "tertiary-fixed-dim": "#bec6dc",
+                        "secondary-container": "#d0e1fb",
+                        "surface-container": "#eaeef2",
+                        "primary": "#1c33c8",
+                        "on-secondary-container": "#54647a",
+                        "outline-variant": "#c5c5d7",
+                        "on-error": "#ffffff",
+                        "inverse-surface": "#2c3134",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#384cdd",
+                        "on-tertiary-fixed-variant": "#3f4758",
+                        "tertiary": "#424a5c",
+                        "on-tertiary-fixed": "#131c2b",
+                        "surface": "#f6fafe",
+                        "on-tertiary": "#ffffff",
+                        "background": "#f6fafe",
+                        "primary-fixed-dim": "#bcc2ff",
+                        "on-surface": "#171c1f",
+                        "on-primary-fixed": "#000c61",
+                        "on-tertiary-container": "#d6def4",
+                        "surface-container-high": "#e4e9ed",
+                        "inverse-on-surface": "#edf1f5",
+                        "surface-dim": "#d6dade",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#d3e4fe",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#172fc5",
+                        "inverse-primary": "#bcc2ff",
+                        "on-background": "#171c1f",
+                        "outline": "#757686",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f0f4f8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "1rem",
+                        "gutter": "24px",
+                        "stack-lg": "1.5rem",
+                        "container-margin": "24px",
+                        "card-padding": "1.5rem",
+                        "stack-sm": "0.5rem",
+                        "sidebar-width": "280px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["20px", { "lineHeight": "28px", "fontWeight": "700" }],
+                        "headline-xl": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "16px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #F1F5F9; /* Level 0 Background per Style Guidance */
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center font-body-md text-on-surface">
+<div class="w-full max-w-[400px] px-4 mx-auto">
+<!-- Card -->
+<div class="bg-surface-container-lowest rounded-lg border border-[#E2E8F0] shadow-sm p-card-padding">
+<!-- Header -->
+<div class="text-center mb-stack-lg">
+<img alt="School Logo" class="w-16 h-16 mx-auto mb-4 object-cover rounded-full bg-surface-container" data-alt="A clean, modern logo placeholder suitable for an academic institution. A minimalist crest or open book icon in primary blue on a stark white background, conveying a sense of corporate modern professionalism and organized control." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtQi16pm8x0NsJU6cRs9U7cUMI35oDKHdi7A40zZWrFhabBhYpVfjToaRyOB4-ZW99S5aFEj6xck6XHJcGm9BhV53U325gc_YTQmDis33lAIIc13_u54JtgGPDCE8ei9xtyeNZJc4Q7o4NMy2ADI8-JureJB-9GfaQrbXfkicDzpDovsu97t55GGrcblQBQasjBVDoc5kw-gc_dIFK-m52N1-OPdFVdQLDS6EiVLFjumx2n9fEj3TrkPwj5MyolzaMm_V_APGW3o-K">
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-1">LMS Padamu Negeri</h1>
+<p class="font-body-md text-body-md text-secondary">Sistem Akademik PKBM</p>
+</div>
+<!-- Form -->
+<form action="#" class="space-y-stack-md" method="POST">
+<!-- Username Input -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-stack-sm" for="username">Username (NIP / NIPD)</label>
+<div class="relative">
+<input class="w-full bg-surface-container-lowest border border-[#E2E8F0] rounded-lg px-4 py-2.5 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary-container focus:border-primary-container transition-shadow duration-200" id="username" name="username" placeholder="Masukkan Username" required="" type="text">
+</div>
+</div>
+<!-- Password Input -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-stack-sm" for="password">Password</label>
+<div class="relative">
+<input class="w-full bg-surface-container-lowest border border-[#E2E8F0] rounded-lg pl-4 pr-10 py-2.5 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-1 focus:ring-primary-container focus:border-primary-container transition-shadow duration-200" id="password" name="password" placeholder="Masukkan Password" required="" type="password">
+<button class="absolute inset-y-0 right-0 pr-3 flex items-center text-secondary hover:text-on-surface focus:outline-none" onclick="togglePassword()" type="button">
+<span class="material-symbols-outlined" data-icon="visibility" id="visibility-icon" style="font-variation-settings: 'FILL' 0;">visibility</span>
+</button>
+</div>
+</div>
+<!-- Submit Button -->
+<button class="w-full bg-primary-container text-on-primary font-label-md text-label-md py-2.5 rounded-lg hover:bg-primary transition-colors duration-200 mt-stack-lg shadow-sm" type="submit">
+                    Masuk
+                </button>
+</form>
+</div>
+<!-- Helper Text -->
+<div class="text-center mt-stack-md">
+<p class="font-body-md text-body-md text-secondary">
+                Lupa password? <a class="text-primary-container hover:text-primary hover:underline font-label-md" href="#">Hubungi Admin</a>
+</p>
+</div>
+</div>
+<script>
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const visibilityIcon = document.getElementById('visibility-icon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                visibilityIcon.textContent = 'visibility_off';
+                visibilityIcon.setAttribute('data-icon', 'visibility_off');
+            } else {
+                passwordInput.type = 'password';
+                visibilityIcon.textContent = 'visibility';
+                visibilityIcon.setAttribute('data-icon', 'visibility');
+            }
+        }
+    </script>
+
+
+</body></html>
