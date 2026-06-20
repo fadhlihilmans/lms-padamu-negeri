@@ -61,6 +61,7 @@ Role tidak disimpan sebagai kolom — dikelola Spatie (`model_has_roles`).
 | id | BIGINT PK | |
 | user_id | FK → users, UNIQUE, onDelete cascade | |
 | nipd | VARCHAR(30) UNIQUE NOT NULL | |
+| nisn | VARCHAR(20) UNIQUE NULL | Nomor Induk Siswa Nasional, opsional |
 | nik | VARCHAR(20) NULL | |
 | nama_lengkap | VARCHAR(150) NOT NULL | |
 | jenis_kelamin | ENUM('L','P') NOT NULL | |

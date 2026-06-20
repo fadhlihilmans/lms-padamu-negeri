@@ -1,17 +1,14 @@
-langkah 8 (belum selesai)
+langkah 10 selesai
 
-prompt:
-selanjutnya:
-1. lanjutkan langkah 8 hingga selesai, karena sebelumnya belum selesai
-2. baca design-guide.md :
-- pada saat hover button, tag a, atau lainnya yang memiliki aksi, usahakan untuk ubah cursor menjadi pointer ya
-belum diterapkan pada :
-Langkah 7 — Periode Ajaran + Switcher
-Langkah 8 — Wilayah, Paket, Tingkat
-3. baca claude.md :
-- tambahkan search, pagination, pilihan untuk menampilkan berapa data, filter (jika dibutuhkan dan gunakan filter yang interaktif jika dibutuhkan seperti search, checkbox, etc) untuk tiap menu atau crud.
-belum diterapkan pada :
-Langkah 7 — Periode Ajaran + Switcher
-Langkah 8 — Wilayah, Paket, Tingkat
+kurang:
+- halaman login hubungi admin
+- error ketika ganti periode mungkin bisa gunakan 
+    #[Url]
+    public $periode_ajaran = '';
+pada livewire, atau mungkin anda punya cara sendiri tidak masalah.
 
-dan kedepannya aturan tambahan tersebut untuk diterapkan yaa
+error:
+Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
+vendor/laravel/framework/src/Illuminate/Routing/AbstractRouteCollection.php:130
+
+The GET method is not supported for route livewire/update. Supported methods: POST. 

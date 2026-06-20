@@ -53,7 +53,7 @@
             @auth
                 @inject('periodeService', 'App\Services\PeriodeService')
                 @if ($periodeService->isReadOnlyMode())
-                    @php $p = $periodeService->periodeSelected(); @endphp
+                    @php $p = $periodeService->getSelected(); @endphp
                     <div class="bg-amber-50 border-b border-amber-200 px-gutter py-2.5 flex items-center justify-between gap-4 text-[14px] text-amber-900 flex-shrink-0">
                         <div class="flex items-center gap-2">
                             <span class="material-symbols-outlined text-[18px] text-amber-600">history</span>
@@ -131,6 +131,55 @@
             </div>
         </template>
     </div>
+
+    {{-- Modal Konfirmasi Logout --}}
+    {{-- x-teleport memindahkan modal langsung ke <body> (di luar hierarki flex/overflow-hidden)
+         sehingga z-index tidak terkontaminasi oleh stacking context sticky topbar --}}
+    @auth
+        <div x-data="{ show: false }" @open-logout-modal.window="show = true">
+            <template x-teleport="body">
+                <div x-show="show"
+                     @keydown.escape.window="show = false"
+                     style="display:none"
+                     class="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+                    {{-- Backdrop --}}
+                    <div class="absolute inset-0 bg-black/50" @click="show = false"></div>
+                    {{-- Dialog --}}
+                    <div x-show="show"
+                         x-transition:enter="transition ease-out duration-150"
+                         x-transition:enter-start="opacity-0 scale-95"
+                         x-transition:enter-end="opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-100"
+                         x-transition:leave-start="opacity-100 scale-100"
+                         x-transition:leave-end="opacity-0 scale-95"
+                         class="relative z-10 bg-white rounded-xl shadow-xl w-full max-w-sm border border-[#c5c5d7] p-6 flex flex-col gap-4">
+                        <div class="flex items-start gap-3">
+                            <div class="w-10 h-10 rounded-full bg-[#ffdad6] flex items-center justify-center flex-shrink-0">
+                                <span class="material-symbols-outlined text-[#ba1a1a]">logout</span>
+                            </div>
+                            <div>
+                                <h4 class="text-[16px] font-semibold text-on-surface">Keluar dari sistem?</h4>
+                                <p class="text-[14px] text-[#505f76] mt-1">Anda akan diarahkan ke halaman login.</p>
+                            </div>
+                        </div>
+                        <div class="flex justify-end gap-3">
+                            <button type="button" @click="show = false"
+                                    class="px-4 py-2 rounded-lg border border-[#c5c5d7] text-[14px] text-[#505f76] hover:bg-[#f0f4f8] transition-colors cursor-pointer">
+                                Batal
+                            </button>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit"
+                                        class="px-4 py-2 rounded-lg bg-[#ba1a1a] text-white text-[14px] font-medium hover:bg-[#93000a] transition-colors cursor-pointer">
+                                    Ya, Keluar
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    @endauth
 
     @livewireScripts
 </body>

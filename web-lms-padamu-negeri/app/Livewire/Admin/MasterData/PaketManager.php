@@ -4,30 +4,43 @@ namespace App\Livewire\Admin\MasterData;
 
 use App\Models\Paket;
 use App\Services\ErrorLogService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('components.layouts.app', ['pageTitle' => 'Paket'])]
 #[Title('Paket')]
 class PaketManager extends Component
 {
-    public bool   $showForm         = false;
-    public ?int   $editId           = null;
-    public string $nama             = '';
-    public ?int   $confirmDeleteId  = null;
+    use WithPagination;
 
-    // ── Form ────────────────────────────────────────────────────────────────
+    // ── Search & pagination ──────────────────────────────────────────────────
+    #[Url] public string $search  = '';
+    public int           $perPage = 10;
 
-    public function bukaFormTambah(): void
+    // ── Form ─────────────────────────────────────────────────────────────────
+    public bool   $showForm        = false;
+    public ?int   $editId          = null;
+    public string $nama            = '';
+    public ?int   $confirmDeleteId = null;
+
+    public function updatedSearch(): void  { $this->resetPage(); }
+    public function updatedPerPage(): void { $this->resetPage(); }
+
+    // ── Form actions ─────────────────────────────────────────────────────────
+
+    public function openCreateForm(): void
     {
         $this->resetForm();
         $this->showForm = true;
     }
 
-    public function bukaFormEdit(int $id): void
+    public function openEditForm(int $id): void
     {
         $p              = Paket::findOrFail($id);
         $this->editId   = $id;
@@ -35,13 +48,13 @@ class PaketManager extends Component
         $this->showForm = true;
     }
 
-    public function tutupForm(): void
+    public function closeForm(): void
     {
         $this->showForm = false;
         $this->resetForm();
     }
 
-    public function simpan(): void
+    public function save(): void
     {
         $this->validate([
             'nama' => [
@@ -54,30 +67,28 @@ class PaketManager extends Component
             'nama.unique'   => 'Nama Paket sudah ada.',
         ]);
 
+        $isEdit = (bool) $this->editId;
+
         try {
             Paket::updateOrCreate(
                 ['id' => $this->editId],
                 ['nama' => trim($this->nama)]
             );
-            $aksi = $this->editId ? 'diperbarui' : 'ditambahkan';
-            $this->tutupForm();
-            $this->dispatch('notify', type: 'success', message: "Paket berhasil {$aksi}.");
+            $this->closeForm();
+            $this->dispatch('notify', type: 'success', message: 'Paket berhasil ' . ($isEdit ? 'diperbarui' : 'ditambahkan') . '.');
         } catch (\Throwable $th) {
-            app(ErrorLogService::class)->catat('Simpan Paket', $th);
+            app(ErrorLogService::class)->record('Simpan Paket', $th);
             $this->dispatch('notify', type: 'error', message: 'Maaf, terjadi kesalahan saat menyimpan.');
         }
     }
 
-    // ── Hapus ───────────────────────────────────────────────────────────────
+    // ── Delete ───────────────────────────────────────────────────────────────
 
-    public function konfirmasiHapus(int $id): void
-    {
-        $this->confirmDeleteId = $id;
-    }
+    public function confirmDelete(int $id): void { $this->confirmDeleteId = $id; }
 
-    public function hapus(): void
+    public function delete(): void
     {
-        $id                    = $this->confirmDeleteId;
+        $id = $this->confirmDeleteId;
         $this->confirmDeleteId = null;
         if (! $id) return;
 
@@ -90,18 +101,22 @@ class PaketManager extends Component
             $paket->delete();
             $this->dispatch('notify', type: 'success', message: 'Paket berhasil dihapus.');
         } catch (\Throwable $th) {
-            app(ErrorLogService::class)->catat('Hapus Paket', $th);
+            app(ErrorLogService::class)->record('Hapus Paket', $th);
             $this->dispatch('notify', type: 'error', message: 'Maaf, terjadi kesalahan saat menghapus.');
         }
     }
 
-    // ── Render ──────────────────────────────────────────────────────────────
+    // ── Render ───────────────────────────────────────────────────────────────
 
     public function render(): View
     {
-        return view('livewire.admin.master-data.paket-manager', [
-            'pakets' => Paket::withCount('tingkat')->orderBy('nama')->get(),
-        ]);
+        $pakets = Paket::query()
+            ->withCount('tingkat')
+            ->when($this->search, fn(Builder $q) => $q->where('nama', 'like', "%{$this->search}%"))
+            ->orderBy('nama')
+            ->paginate($this->perPage);
+
+        return view('livewire.admin.master-data.paket-manager', compact('pakets'));
     }
 
     private function resetForm(): void

@@ -2,8 +2,7 @@
 
 namespace App\Livewire\Admin\MasterData;
 
-use App\Models\Paket;
-use App\Models\Tingkat;
+use App\Models\Mapel;
 use App\Services\ErrorLogService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
@@ -14,27 +13,24 @@ use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-#[Layout('components.layouts.app', ['pageTitle' => 'Tingkat'])]
-#[Title('Tingkat')]
-class TingkatManager extends Component
+#[Layout('components.layouts.app', ['pageTitle' => 'Mata Pelajaran'])]
+#[Title('Mata Pelajaran')]
+class MapelManager extends Component
 {
     use WithPagination;
 
     // ── Search & pagination ──────────────────────────────────────────────────
-    #[Url] public string $search       = '';
-    public string        $filterPaketId = '';
-    public int           $perPage       = 10;
+    #[Url] public string $search  = '';
+    public int           $perPage = 10;
 
     // ── Form ─────────────────────────────────────────────────────────────────
     public bool   $showForm        = false;
     public ?int   $editId          = null;
     public string $nama            = '';
-    public ?int   $paketId         = null;
     public ?int   $confirmDeleteId = null;
 
-    public function updatedSearch(): void        { $this->resetPage(); }
-    public function updatedPerPage(): void       { $this->resetPage(); }
-    public function updatedFilterPaketId(): void { $this->resetPage(); }
+    public function updatedSearch(): void  { $this->resetPage(); }
+    public function updatedPerPage(): void { $this->resetPage(); }
 
     // ── Form actions ─────────────────────────────────────────────────────────
 
@@ -46,10 +42,9 @@ class TingkatManager extends Component
 
     public function openEditForm(int $id): void
     {
-        $t              = Tingkat::findOrFail($id);
+        $m              = Mapel::findOrFail($id);
         $this->editId   = $id;
-        $this->nama     = $t->nama;
-        $this->paketId  = $t->paket_id;
+        $this->nama     = $m->nama;
         $this->showForm = true;
     }
 
@@ -62,33 +57,27 @@ class TingkatManager extends Component
     public function save(): void
     {
         $this->validate([
-            'paketId' => 'required|exists:paket,id',
-            'nama'    => [
-                'required', 'string', 'max:50',
-                Rule::unique('tingkat', 'nama')->where('paket_id', $this->paketId)->ignore($this->editId),
+            'nama' => [
+                'required', 'string', 'max:100',
+                Rule::unique('mapel', 'nama')->ignore($this->editId),
             ],
         ], [
-            'paketId.required' => 'Paket wajib dipilih.',
-            'paketId.exists'   => 'Paket tidak valid.',
-            'nama.required'    => 'Nama Tingkat wajib diisi.',
-            'nama.max'         => 'Nama Tingkat maksimal 50 karakter.',
-            'nama.unique'      => 'Nama Tingkat sudah ada di Paket yang sama.',
+            'nama.required' => 'Nama Mata Pelajaran wajib diisi.',
+            'nama.max'      => 'Nama Mata Pelajaran maksimal 100 karakter.',
+            'nama.unique'   => 'Nama Mata Pelajaran sudah ada.',
         ]);
 
         $isEdit = (bool) $this->editId;
 
         try {
-            Tingkat::updateOrCreate(
+            Mapel::updateOrCreate(
                 ['id' => $this->editId],
-                [
-                    'paket_id' => $this->paketId,
-                    'nama'     => trim($this->nama),
-                ]
+                ['nama' => trim($this->nama)]
             );
             $this->closeForm();
-            $this->dispatch('notify', type: 'success', message: 'Tingkat berhasil ' . ($isEdit ? 'diperbarui' : 'ditambahkan') . '.');
+            $this->dispatch('notify', type: 'success', message: 'Mata Pelajaran berhasil ' . ($isEdit ? 'diperbarui' : 'ditambahkan') . '.');
         } catch (\Throwable $th) {
-            app(ErrorLogService::class)->record('Simpan Tingkat', $th);
+            app(ErrorLogService::class)->record('Simpan Mapel', $th);
             $this->dispatch('notify', type: 'error', message: 'Maaf, terjadi kesalahan saat menyimpan.');
         }
     }
@@ -104,15 +93,19 @@ class TingkatManager extends Component
         if (! $id) return;
 
         try {
-            $tingkat = Tingkat::findOrFail($id);
-            if ($tingkat->rombel()->exists()) {
-                $this->dispatch('notify', type: 'error', message: 'Tingkat tidak dapat dihapus karena masih digunakan oleh Rombel.');
+            $mapel = Mapel::findOrFail($id);
+            if ($mapel->guruMapelRombel()->exists()) {
+                $this->dispatch('notify', type: 'error', message: 'Mata Pelajaran tidak dapat dihapus karena sudah digunakan dalam Pemetaan Guru.');
                 return;
             }
-            $tingkat->delete();
-            $this->dispatch('notify', type: 'success', message: 'Tingkat berhasil dihapus.');
+            if ($mapel->jadwalPelajaran()->exists()) {
+                $this->dispatch('notify', type: 'error', message: 'Mata Pelajaran tidak dapat dihapus karena sudah digunakan dalam Jadwal Pelajaran.');
+                return;
+            }
+            $mapel->delete();
+            $this->dispatch('notify', type: 'success', message: 'Mata Pelajaran berhasil dihapus.');
         } catch (\Throwable $th) {
-            app(ErrorLogService::class)->record('Hapus Tingkat', $th);
+            app(ErrorLogService::class)->record('Hapus Mapel', $th);
             $this->dispatch('notify', type: 'error', message: 'Maaf, terjadi kesalahan saat menghapus.');
         }
     }
@@ -121,24 +114,19 @@ class TingkatManager extends Component
 
     public function render(): View
     {
-        $tingkats = Tingkat::query()
-            ->with('paket')
+        $mapels = Mapel::query()
             ->when($this->search, fn(Builder $q) => $q->where('nama', 'like', "%{$this->search}%"))
-            ->when($this->filterPaketId, fn(Builder $q) => $q->where('paket_id', $this->filterPaketId))
-            ->orderBy('paket_id')
+            ->withCount('guruMapelRombel')
             ->orderBy('nama')
             ->paginate($this->perPage);
 
-        $pakets = Paket::orderBy('nama')->get();
-
-        return view('livewire.admin.master-data.tingkat-manager', compact('tingkats', 'pakets'));
+        return view('livewire.admin.master-data.mapel-manager', compact('mapels'));
     }
 
     private function resetForm(): void
     {
-        $this->editId  = null;
-        $this->nama    = '';
-        $this->paketId = null;
+        $this->editId = null;
+        $this->nama   = '';
         $this->resetValidation();
     }
 }

@@ -12,12 +12,21 @@ class AdminSeeder extends Seeder
         $admin = User::firstOrCreate(
             ['username' => 'admin'],
             [
-                'password'            => bcrypt('admin'),
-                'is_change_password'  => false,  // akan muncul modal ganti password saat login pertama
-                'is_active'           => true,
+                'password'           => 'admin',
+                'is_change_password' => true,
+                'is_active'          => true,
             ]
         );
-
         $admin->assignRole('admin');
+
+        $adminDev = User::firstOrCreate(
+            ['username' => 'admindev'],
+            [
+                'password'           => 'admindev',
+                'is_change_password' => true,
+                'is_active'          => true,
+            ]
+        );
+        $adminDev->assignRole('admin');
     }
 }

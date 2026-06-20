@@ -86,7 +86,7 @@
 - `JadwalViewer` (read-only untuk Guru & Peserta Didik).
 
 ### Langkah 12 — Import Excel Peserta Didik (PRD 6.5 & Bab 7)
-- Template `.xlsx` kolom A–Y (lihat Langkah 18 / Tahap 4 PRD).
+- Template `.xlsx` kolom A–Z (lihat Langkah 18 / Tahap 4 PRD).
 - `Admin/ImportExcel/UploadForm` — proses **synchronous**, validasi per baris.
 - `RingkasanHasilImport` — tampilkan berhasil/gagal + alasan per baris.
 - Output: buat `users + peserta_didik + alamat + ortu` + masuk Rombel otomatis.

@@ -196,6 +196,7 @@ Menampung data operasional akademik inti yang sering di-query/filter.
 | id | Primary Key |
 | user_id | Foreign Key ke users |
 | nipd | String, unik |
+| nisn | String, unik, nullable |
 | nik | String |
 | nama_lengkap | String |
 | jenis_kelamin | Enum: L, P |
@@ -742,7 +743,7 @@ rusak atau tombol yang terasa tidak berfungsi sesuai harapan.
 
 # 7. Template Excel Import Peserta Didik
 
-Template dirancang khusus untuk lembaga (bukan turunan Dapodik), berisi 25 kolom data yang relevan operasional. Field tidak relevan (NISN, SKHUN, No KK, data Bank, KIP/KPS/PIP, koordinat, Berat/Tinggi Badan, dsb.) tidak disertakan.
+Template dirancang khusus untuk lembaga (bukan turunan Dapodik), berisi 26 kolom data yang relevan operasional. Field tidak relevan (SKHUN, No KK, data Bank, KIP/KPS/PIP, koordinat, Berat/Tinggi Badan, dsb.) tidak disertakan.
 
 ## 7.1 Struktur Berkas
 
@@ -750,50 +751,52 @@ Template dirancang khusus untuk lembaga (bukan turunan Dapodik), berisi 25 kolom
 - **Baris 2 dan seterusnya (Data):** satu baris = satu Peserta Didik. Tidak boleh ada baris kosong di tengah — sistem berhenti membaca saat menemukan baris yang seluruh kolomnya kosong.
 - Sheet yang dibaca adalah sheet pertama (Sheet1). Sheet tambahan diabaikan.
 
-## 7.2 Pemetaan Kolom (A–Y)
+## 7.2 Pemetaan Kolom (A–Z)
 
 | Kolom | Nama Header (Baris 1) | Keterangan |
 |---|---|---|
 | A | No | Nomor urut baris, tidak disimpan ke database. |
 | B | NIPD | Nomor Induk Peserta Didik, wajib unik. |
-| C | NIK | Nomor Induk Kependudukan Peserta Didik. |
-| D | Nama Lengkap | Wajib diisi. |
-| E | Jenis Kelamin | Isi: L atau P. |
-| F | Tempat Lahir | |
-| G | Tanggal Lahir | Format: YYYY-MM-DD. |
-| H | Agama | |
-| I | No HP Peserta Didik | Opsional. |
-| J | Email | Opsional, info kontak tambahan (bukan untuk login). |
-| K | Wilayah | Wajib cocok dengan master data Wilayah. |
-| L | Paket | Wajib cocok dengan master data Paket (A/B/C). |
-| M | Tingkat | Wajib cocok dengan master data Tingkat. |
-| N | Alamat | |
-| O | RT | |
-| P | RW | |
-| Q | Dusun | Opsional. |
-| R | Kelurahan | |
-| S | Kecamatan | |
-| T | Kode Pos | Opsional. |
-| U | Nama Ayah | |
-| V | No HP Ayah | Opsional. |
-| W | Nama Ibu | |
-| X | No HP Ibu | Opsional. |
-| Y | Nama Wali | Opsional, diisi jika wali berbeda dari Ayah/Ibu. |
+| C | NISN | Nomor Induk Siswa Nasional, opsional (10 digit). |
+| D | NIK | Nomor Induk Kependudukan Peserta Didik. |
+| E | Nama Lengkap | Wajib diisi. |
+| F | Jenis Kelamin | Isi: L atau P. |
+| G | Tempat Lahir | |
+| H | Tanggal Lahir | Format: YYYY-MM-DD. |
+| I | Agama | |
+| J | No HP Peserta Didik | Opsional. |
+| K | Email | Opsional, info kontak tambahan (bukan untuk login). |
+| L | Wilayah | Wajib cocok dengan master data Wilayah. |
+| M | Paket | Wajib cocok dengan master data Paket (A/B/C). |
+| N | Tingkat | Wajib cocok dengan master data Tingkat. |
+| O | Alamat | |
+| P | RT | |
+| Q | RW | |
+| R | Dusun | Opsional. |
+| S | Kelurahan | |
+| T | Kecamatan | |
+| U | Kode Pos | Opsional. |
+| V | Nama Ayah | |
+| W | No HP Ayah | Opsional. |
+| X | Nama Ibu | |
+| Y | No HP Ibu | Opsional. |
+| Z | Nama Wali | Opsional, diisi jika wali berbeda dari Ayah/Ibu. |
 
-> Catatan: kolom Wali dapat diperluas menjadi 3 kolom (Y: Nama Wali, Z: No HP Wali, AA: Hubungan Wali) jika perlu. Untuk versi awal cukup kolom Y.
+> Catatan: kolom Wali dapat diperluas menjadi 3 kolom (Z: Nama Wali, AA: No HP Wali, AB: Hubungan Wali) jika perlu. Untuk versi awal cukup kolom Z.
 
 ## 7.3 Contoh Baris Data
 
-| Baris | Contoh Isi (kolom B, D, E, K, L, M) |
+| Baris | Contoh Isi (kolom B, C, E, F, L, M, N) |
 |---|---|
-| 2 | 2024001 │ Ahmad Fauzi │ L │ Botolambat │ C │ 10 |
-| 3 | 2024002 │ Siti Aminah │ P │ Botolambat │ C │ 10 |
-| 4 | 2024003 │ Budi Santoso │ L │ Pondok 1 │ B │ 8 |
+| 2 | 1718 │ 1234567890 │ Ahmad Fauzi │ L │ Botolambat │ C │ 10 |
+| 3 | 1719 │ (kosong) │ Siti Aminah │ P │ Botolambat │ C │ 10 |
+| 4 | 1720 │ 9876543210 │ Budi Santoso │ L │ Pondok 1 │ B │ 8 |
 
 ## 7.4 Aturan Validasi Saat Import
 
-- Kombinasi Wilayah + Paket + Tingkat (kolom K–M) wajib sudah terdaftar di Master Data. Jika tidak ditemukan, baris gagal dan ditandai — sistem tidak membuat master baru otomatis.
+- Kombinasi Wilayah + Paket + Tingkat (kolom L–N) wajib sudah terdaftar di Master Data. Jika tidak ditemukan, baris gagal dan ditandai — sistem tidak membuat master baru otomatis.
 - NIPD wajib unik. Baris dengan NIPD yang sudah terdaftar ditolak dan ditandai duplikat.
+- NISN opsional; jika diisi wajib unik (10 digit angka). Baris dengan NISN yang sudah terdaftar ditolak.
 - Nilai kosong berupa karakter spasi diperlakukan sebagai NULL, bukan string kosong.
 - Proses import synchronous (langsung saat upload, tanpa background job/queue).
 

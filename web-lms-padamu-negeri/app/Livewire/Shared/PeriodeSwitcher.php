@@ -9,16 +9,16 @@ use Livewire\Component;
 
 class PeriodeSwitcher extends Component
 {
-    public function pindah(int $id): void
+    public function switchPeriod(int $id): void
     {
-        app(PeriodeService::class)->setPeriode($id);
+        app(PeriodeService::class)->setPeriod($id);
         $this->redirect(request()->fullUrl(), navigate: false);
     }
 
     public function render(): View
     {
         $service  = app(PeriodeService::class);
-        $selected = $service->periodeSelected();
+        $selected = $service->getSelected();
 
         $daftar = PeriodeAjaran::orderByDesc('tahun_ajaran')
             ->orderByRaw("FIELD(semester, 'genap', 'ganjil')")

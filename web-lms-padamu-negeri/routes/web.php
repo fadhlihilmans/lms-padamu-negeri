@@ -3,10 +3,18 @@
 use App\Http\Controllers\AuthController;
 use App\Livewire\Auth\LoginForm;
 use App\Livewire\Dashboard;
+use App\Livewire\Admin\MasterData\MapelManager;
+use App\Livewire\Admin\MasterData\PemetaanGuruMapelRombel;
 use App\Livewire\Admin\MasterData\PeriodeAjaranManager;
+use App\Livewire\Admin\MasterData\RombelManager;
 use App\Livewire\Admin\MasterData\WilayahManager;
 use App\Livewire\Admin\MasterData\PaketManager;
 use App\Livewire\Admin\MasterData\TingkatManager;
+use App\Livewire\Admin\Akademik\JadwalManager;
+use App\Livewire\Admin\Pengguna\GuruManager;
+use App\Livewire\Admin\Pengguna\PesertaDidikManager;
+use App\Livewire\Guru\JadwalGuru;
+use App\Livewire\PesertaDidik\JadwalPesertaDidik;
 use App\Services\PeriodeService;
 use Illuminate\Support\Facades\Route;
 
@@ -35,7 +43,7 @@ Route::middleware('auth')->group(function () {
 
     // Reset periode switcher ke aktif
     Route::get('/periode/reset', function () {
-        app(PeriodeService::class)->resetToAktif();
+        app(PeriodeService::class)->resetToActive();
         return redirect()->back();
     })->name('periode.reset');
 
@@ -48,24 +56,33 @@ Route::middleware('auth')->group(function () {
             Route::get('/wilayah',        WilayahManager::class)->name('wilayah');
             Route::get('/paket',          PaketManager::class)->name('paket');
             Route::get('/tingkat',        TingkatManager::class)->name('tingkat');
-
-            // Rombel, Mapel, Pemetaan — Langkah 9
+            Route::get('/rombel',         RombelManager::class)->name('rombel');
+            Route::get('/mapel',          MapelManager::class)->name('mapel');
+            Route::get('/pemetaan',       PemetaanGuruMapelRombel::class)->name('pemetaan');
         });
 
-        // Pengguna — Langkah 10
-        // Jadwal — Langkah 11
+        // Pengguna
+        Route::prefix('pengguna')->name('pengguna.')->group(function () {
+            Route::get('/guru',          GuruManager::class)->name('guru');
+            Route::get('/peserta-didik', PesertaDidikManager::class)->name('peserta-didik');
+        });
+
+        // Akademik
+        Route::prefix('akademik')->name('akademik.')->group(function () {
+            Route::get('/jadwal', JadwalManager::class)->name('jadwal');
+        });
         // Import Excel — Langkah 12
         // Settings, Error Log, Bug Report — Langkah 19 & 20
     });
 
     // ── Guru routes ──────────────────────────────────────────────────────────
     Route::middleware('role:guru')->prefix('guru')->name('guru.')->group(function () {
-        // Modul Guru dibangun Langkah 13–16
+        Route::get('/jadwal', JadwalGuru::class)->name('jadwal');
     });
 
     // ── Peserta Didik routes ─────────────────────────────────────────────────
     Route::middleware('role:peserta_didik')->prefix('peserta-didik')->name('peserta-didik.')->group(function () {
-        // Modul Peserta Didik dibangun Langkah 13–16
+        Route::get('/jadwal', JadwalPesertaDidik::class)->name('jadwal');
     });
 
 });

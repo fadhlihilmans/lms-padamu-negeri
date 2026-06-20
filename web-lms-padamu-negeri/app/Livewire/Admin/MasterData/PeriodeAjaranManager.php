@@ -5,49 +5,66 @@ namespace App\Livewire\Admin\MasterData;
 use App\Models\PeriodeAjaran;
 use App\Services\ErrorLogService;
 use App\Services\PeriodeService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('components.layouts.app', ['pageTitle' => 'Periode Ajaran'])]
 #[Title('Periode Ajaran')]
 class PeriodeAjaranManager extends Component
 {
+    use WithPagination;
+
+    // ── Search & pagination ──────────────────────────────────────────────────
+    #[Url] public string $search         = '';
+    public string        $filterSemester = '';
+    public int           $perPage        = 10;
+
+    // ── Form ─────────────────────────────────────────────────────────────────
     public bool   $showForm    = false;
     public ?int   $editId      = null;
     public string $tahunAjaran = '';
     public string $semester    = '';
 
-    public ?int   $confirmDeleteId   = null;
-    public ?int   $confirmAktifId    = null;
+    // ── Confirmations ────────────────────────────────────────────────────────
+    public ?int $confirmDeleteId   = null;
+    public ?int $confirmActivateId = null;
 
-    // ── Form ────────────────────────────────────────────────────────────────
+    // ── Search / filter lifecycle ─────────────────────────────────────────────
+    public function updatedSearch(): void         { $this->resetPage(); }
+    public function updatedPerPage(): void        { $this->resetPage(); }
+    public function updatedFilterSemester(): void { $this->resetPage(); }
 
-    public function bukaFormTambah(): void
+    // ── Form actions ─────────────────────────────────────────────────────────
+
+    public function openCreateForm(): void
     {
         $this->resetForm();
         $this->showForm = true;
     }
 
-    public function bukaFormEdit(int $id): void
+    public function openEditForm(int $id): void
     {
-        $periode = PeriodeAjaran::findOrFail($id);
+        $periode           = PeriodeAjaran::findOrFail($id);
         $this->editId      = $id;
         $this->tahunAjaran = $periode->tahun_ajaran;
         $this->semester    = $periode->semester;
         $this->showForm    = true;
     }
 
-    public function tutupForm(): void
+    public function closeForm(): void
     {
         $this->showForm = false;
         $this->resetForm();
     }
 
-    public function simpan(): void
+    public function save(): void
     {
         $this->validate([
             'tahunAjaran' => [
@@ -58,14 +75,16 @@ class PeriodeAjaranManager extends Component
                     ->where('semester', $this->semester)
                     ->ignore($this->editId),
             ],
-            'semester'    => 'required|in:ganjil,genap',
+            'semester' => 'required|in:ganjil,genap',
         ], [
             'tahunAjaran.required' => 'Tahun Ajaran wajib diisi.',
-            'tahunAjaran.regex'    => 'Format Tahun Ajaran harus YYYY/YYYY, mis. 2024/2025.',
+            'tahunAjaran.regex'    => 'Format harus YYYY/YYYY, mis. 2024/2025.',
             'tahunAjaran.unique'   => 'Kombinasi Tahun Ajaran dan Semester sudah ada.',
             'semester.required'    => 'Semester wajib dipilih.',
             'semester.in'          => 'Semester tidak valid.',
         ]);
+
+        $isEdit = (bool) $this->editId;
 
         try {
             PeriodeAjaran::updateOrCreate(
@@ -76,29 +95,24 @@ class PeriodeAjaranManager extends Component
                 ]
             );
 
-            $this->tutupForm();
-            $this->dispatch('notify', type: 'success', message: 'Periode Ajaran berhasil ' . ($this->editId ? 'diperbarui' : 'ditambahkan') . '.');
+            $this->closeForm();
+            $this->dispatch('notify', type: 'success', message: 'Periode Ajaran berhasil ' . ($isEdit ? 'diperbarui' : 'ditambahkan') . '.');
         } catch (\Throwable $th) {
-            app(ErrorLogService::class)->catat('Simpan Periode Ajaran', $th);
+            app(ErrorLogService::class)->record('Simpan Periode Ajaran', $th);
             $this->dispatch('notify', type: 'error', message: 'Maaf, terjadi kesalahan saat menyimpan.');
         }
     }
 
-    // ── Hapus ───────────────────────────────────────────────────────────────
+    // ── Delete ───────────────────────────────────────────────────────────────
 
-    public function konfirmasiHapus(int $id): void
-    {
-        $this->confirmDeleteId = $id;
-    }
+    public function confirmDelete(int $id): void { $this->confirmDeleteId = $id; }
 
-    public function hapus(): void
+    public function delete(): void
     {
         $id = $this->confirmDeleteId;
         $this->confirmDeleteId = null;
 
-        if (! $id) {
-            return;
-        }
+        if (! $id) return;
 
         try {
             $periode = PeriodeAjaran::findOrFail($id);
@@ -111,26 +125,21 @@ class PeriodeAjaranManager extends Component
             $periode->delete();
             $this->dispatch('notify', type: 'success', message: 'Periode Ajaran berhasil dihapus.');
         } catch (\Throwable $th) {
-            app(ErrorLogService::class)->catat('Hapus Periode Ajaran', $th);
+            app(ErrorLogService::class)->record('Hapus Periode Ajaran', $th);
             $this->dispatch('notify', type: 'error', message: 'Maaf, terjadi kesalahan saat menghapus.');
         }
     }
 
-    // ── Set Aktif ───────────────────────────────────────────────────────────
+    // ── Activate ─────────────────────────────────────────────────────────────
 
-    public function konfirmasiAktif(int $id): void
+    public function confirmActivate(int $id): void { $this->confirmActivateId = $id; }
+
+    public function activate(): void
     {
-        $this->confirmAktifId = $id;
-    }
+        $id = $this->confirmActivateId;
+        $this->confirmActivateId = null;
 
-    public function setAktif(): void
-    {
-        $id = $this->confirmAktifId;
-        $this->confirmAktifId = null;
-
-        if (! $id) {
-            return;
-        }
+        if (! $id) return;
 
         try {
             DB::transaction(function () use ($id) {
@@ -138,25 +147,26 @@ class PeriodeAjaranManager extends Component
                 PeriodeAjaran::findOrFail($id)->update(['is_aktif' => true]);
             });
 
-            // Reset switcher session agar langsung pakai periode aktif baru
-            app(PeriodeService::class)->resetToAktif();
-
+            app(PeriodeService::class)->resetToActive();
             $this->dispatch('notify', type: 'success', message: 'Periode Ajaran berhasil diaktifkan.');
         } catch (\Throwable $th) {
-            app(ErrorLogService::class)->catat('Set Aktif Periode Ajaran', $th);
+            app(ErrorLogService::class)->record('Aktifkan Periode Ajaran', $th);
             $this->dispatch('notify', type: 'error', message: 'Maaf, terjadi kesalahan.');
         }
     }
 
-    // ── Render ──────────────────────────────────────────────────────────────
+    // ── Render ───────────────────────────────────────────────────────────────
 
     public function render(): View
     {
-        return view('livewire.admin.master-data.periode-ajaran-manager', [
-            'periodes' => PeriodeAjaran::orderByDesc('tahun_ajaran')
-                ->orderByRaw("FIELD(semester, 'genap', 'ganjil')")
-                ->get(),
-        ]);
+        $periodes = PeriodeAjaran::query()
+            ->when($this->search, fn(Builder $q) => $q->where('tahun_ajaran', 'like', "%{$this->search}%"))
+            ->when($this->filterSemester, fn(Builder $q) => $q->where('semester', $this->filterSemester))
+            ->orderByDesc('tahun_ajaran')
+            ->orderByRaw("FIELD(semester, 'genap', 'ganjil')")
+            ->paginate($this->perPage);
+
+        return view('livewire.admin.master-data.periode-ajaran-manager', compact('periodes'));
     }
 
     private function resetForm(): void

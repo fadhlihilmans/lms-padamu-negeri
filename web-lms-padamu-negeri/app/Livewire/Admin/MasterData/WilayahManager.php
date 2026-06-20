@@ -4,44 +4,57 @@ namespace App\Livewire\Admin\MasterData;
 
 use App\Models\Wilayah;
 use App\Services\ErrorLogService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Url;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 #[Layout('components.layouts.app', ['pageTitle' => 'Wilayah'])]
 #[Title('Wilayah')]
 class WilayahManager extends Component
 {
-    public bool   $showForm         = false;
-    public ?int   $editId           = null;
-    public string $nama             = '';
-    public ?int   $confirmDeleteId  = null;
+    use WithPagination;
 
-    // ── Form ────────────────────────────────────────────────────────────────
+    // ── Search & pagination ──────────────────────────────────────────────────
+    #[Url] public string $search  = '';
+    public int           $perPage = 10;
 
-    public function bukaFormTambah(): void
+    // ── Form ─────────────────────────────────────────────────────────────────
+    public bool   $showForm        = false;
+    public ?int   $editId          = null;
+    public string $nama            = '';
+    public ?int   $confirmDeleteId = null;
+
+    public function updatedSearch(): void  { $this->resetPage(); }
+    public function updatedPerPage(): void { $this->resetPage(); }
+
+    // ── Form actions ─────────────────────────────────────────────────────────
+
+    public function openCreateForm(): void
     {
         $this->resetForm();
         $this->showForm = true;
     }
 
-    public function bukaFormEdit(int $id): void
+    public function openEditForm(int $id): void
     {
-        $w             = Wilayah::findOrFail($id);
-        $this->editId  = $id;
-        $this->nama    = $w->nama;
+        $w              = Wilayah::findOrFail($id);
+        $this->editId   = $id;
+        $this->nama     = $w->nama;
         $this->showForm = true;
     }
 
-    public function tutupForm(): void
+    public function closeForm(): void
     {
         $this->showForm = false;
         $this->resetForm();
     }
 
-    public function simpan(): void
+    public function save(): void
     {
         $this->validate([
             'nama' => [
@@ -54,30 +67,28 @@ class WilayahManager extends Component
             'nama.unique'   => 'Nama Wilayah sudah ada.',
         ]);
 
+        $isEdit = (bool) $this->editId;
+
         try {
             Wilayah::updateOrCreate(
                 ['id' => $this->editId],
                 ['nama' => trim($this->nama)]
             );
-            $aksi = $this->editId ? 'diperbarui' : 'ditambahkan';
-            $this->tutupForm();
-            $this->dispatch('notify', type: 'success', message: "Wilayah berhasil {$aksi}.");
+            $this->closeForm();
+            $this->dispatch('notify', type: 'success', message: 'Wilayah berhasil ' . ($isEdit ? 'diperbarui' : 'ditambahkan') . '.');
         } catch (\Throwable $th) {
-            app(ErrorLogService::class)->catat('Simpan Wilayah', $th);
+            app(ErrorLogService::class)->record('Simpan Wilayah', $th);
             $this->dispatch('notify', type: 'error', message: 'Maaf, terjadi kesalahan saat menyimpan.');
         }
     }
 
-    // ── Hapus ───────────────────────────────────────────────────────────────
+    // ── Delete ───────────────────────────────────────────────────────────────
 
-    public function konfirmasiHapus(int $id): void
-    {
-        $this->confirmDeleteId = $id;
-    }
+    public function confirmDelete(int $id): void { $this->confirmDeleteId = $id; }
 
-    public function hapus(): void
+    public function delete(): void
     {
-        $id                    = $this->confirmDeleteId;
+        $id = $this->confirmDeleteId;
         $this->confirmDeleteId = null;
         if (! $id) return;
 
@@ -90,18 +101,21 @@ class WilayahManager extends Component
             $wilayah->delete();
             $this->dispatch('notify', type: 'success', message: 'Wilayah berhasil dihapus.');
         } catch (\Throwable $th) {
-            app(ErrorLogService::class)->catat('Hapus Wilayah', $th);
+            app(ErrorLogService::class)->record('Hapus Wilayah', $th);
             $this->dispatch('notify', type: 'error', message: 'Maaf, terjadi kesalahan saat menghapus.');
         }
     }
 
-    // ── Render ──────────────────────────────────────────────────────────────
+    // ── Render ───────────────────────────────────────────────────────────────
 
     public function render(): View
     {
-        return view('livewire.admin.master-data.wilayah-manager', [
-            'wilayahs' => Wilayah::orderBy('nama')->get(),
-        ]);
+        $wilayahs = Wilayah::query()
+            ->when($this->search, fn(Builder $q) => $q->where('nama', 'like', "%{$this->search}%"))
+            ->orderBy('nama')
+            ->paginate($this->perPage);
+
+        return view('livewire.admin.master-data.wilayah-manager', compact('wilayahs'));
     }
 
     private function resetForm(): void

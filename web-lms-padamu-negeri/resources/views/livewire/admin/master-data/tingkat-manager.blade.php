@@ -6,8 +6,8 @@
             <h2 class="text-[24px] font-bold tracking-tight text-on-surface">Tingkat</h2>
             <p class="text-[14px] text-[#505f76] mt-0.5">Kelola data tingkat kelas per Paket.</p>
         </div>
-        <button wire:click="bukaFormTambah"
-                class="inline-flex items-center gap-2 bg-[#3c50e0] text-white text-[14px] font-medium px-4 py-2.5 rounded-lg hover:bg-[#1c33c8] transition-colors shadow-sm">
+        <button wire:click="openCreateForm"
+                class="inline-flex items-center gap-2 bg-[#3c50e0] text-white text-[14px] font-medium px-4 py-2.5 rounded-lg hover:bg-[#1c33c8] transition-colors shadow-sm cursor-pointer">
             <span class="material-symbols-outlined text-[18px]">add</span>
             Tambah Tingkat
         </button>
@@ -21,19 +21,18 @@
                     <h3 class="text-[20px] font-semibold text-on-surface">
                         {{ $editId ? 'Edit Tingkat' : 'Tambah Tingkat' }}
                     </h3>
-                    <button wire:click="tutupForm" class="text-[#505f76] hover:text-[#ba1a1a] transition-colors">
+                    <button wire:click="closeForm" class="text-[#505f76] hover:text-[#ba1a1a] transition-colors p-1 cursor-pointer">
                         <span class="material-symbols-outlined">close</span>
                     </button>
                 </div>
-                <form wire:submit="simpan" class="p-6 flex flex-col gap-4">
+                <form wire:submit="save" class="p-6 flex flex-col gap-4">
 
-                    {{-- Paket --}}
                     <div class="flex flex-col gap-1.5">
                         <label class="text-[14px] font-medium text-on-surface" for="paketId">
                             Paket <span class="text-[#ba1a1a]">*</span>
                         </label>
                         <select wire:model="paketId" id="paketId"
-                                class="w-full border rounded-lg px-4 py-2.5 text-[14px] text-on-surface focus:outline-none focus:ring-1 transition-shadow
+                                class="w-full border rounded-lg px-4 py-2.5 text-[14px] text-on-surface focus:outline-none focus:ring-1 transition-shadow cursor-pointer
                                        {{ $errors->has('paketId') ? 'border-[#ba1a1a] focus:ring-[#ba1a1a]' : 'border-[#c5c5d7] focus:ring-[#3c50e0] focus:border-[#3c50e0]' }}">
                             <option value="">— Pilih Paket —</option>
                             @foreach ($pakets as $pk)
@@ -45,7 +44,6 @@
                         @enderror
                     </div>
 
-                    {{-- Nama Tingkat --}}
                     <div class="flex flex-col gap-1.5">
                         <label class="text-[14px] font-medium text-on-surface" for="nama">
                             Nama Tingkat <span class="text-[#ba1a1a]">*</span>
@@ -59,14 +57,14 @@
                     </div>
 
                     <div class="flex justify-end gap-3 pt-2 border-t border-[#c5c5d7] mt-1">
-                        <button type="button" wire:click="tutupForm"
-                                class="px-4 py-2.5 rounded-lg border border-[#c5c5d7] text-[#505f76] text-[14px] font-medium hover:bg-[#f0f4f8] transition-colors">
+                        <button type="button" wire:click="closeForm"
+                                class="px-4 py-2.5 rounded-lg border border-[#c5c5d7] text-[#505f76] text-[14px] font-medium hover:bg-[#f0f4f8] transition-colors cursor-pointer">
                             Batal
                         </button>
                         <button type="submit"
-                                class="px-4 py-2.5 rounded-lg bg-[#3c50e0] text-white text-[14px] font-medium hover:bg-[#1c33c8] transition-colors shadow-sm flex items-center gap-2"
+                                class="px-4 py-2.5 rounded-lg bg-[#3c50e0] text-white text-[14px] font-medium hover:bg-[#1c33c8] transition-colors shadow-sm flex items-center gap-2 cursor-pointer"
                                 wire:loading.attr="disabled" wire:loading.class="opacity-70 cursor-not-allowed">
-                            <span wire:loading wire:target="simpan" class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span>
+                            <span wire:loading wire:target="save" class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span>
                             Simpan
                         </button>
                     </div>
@@ -90,11 +88,11 @@
                 </div>
                 <div class="flex justify-end gap-3">
                     <button wire:click="$set('confirmDeleteId', null)"
-                            class="px-4 py-2 rounded-lg border border-[#c5c5d7] text-[14px] text-[#505f76] hover:bg-[#f0f4f8] transition-colors">
+                            class="px-4 py-2 rounded-lg border border-[#c5c5d7] text-[14px] text-[#505f76] hover:bg-[#f0f4f8] transition-colors cursor-pointer">
                         Batal
                     </button>
-                    <button wire:click="hapus"
-                            class="px-4 py-2 rounded-lg bg-[#ba1a1a] text-white text-[14px] font-medium hover:bg-[#93000a] transition-colors">
+                    <button wire:click="delete"
+                            class="px-4 py-2 rounded-lg bg-[#ba1a1a] text-white text-[14px] font-medium hover:bg-[#93000a] transition-colors cursor-pointer">
                         Ya, Hapus
                     </button>
                 </div>
@@ -104,6 +102,21 @@
 
     {{-- ── Tabel ───────────────────────────────────────────────────────────── --}}
     <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm overflow-hidden">
+
+        <x-table-controls searchPlaceholder="Cari nama tingkat...">
+            <x-slot:filters>
+                <select
+                    wire:model.live="filterPaketId"
+                    class="border border-[#c5c5d7] rounded-lg px-3 py-2 text-[14px] text-on-surface bg-white focus:outline-none focus:ring-1 focus:ring-[#3c50e0] cursor-pointer transition-shadow flex-shrink-0"
+                >
+                    <option value="">Semua Paket</option>
+                    @foreach ($pakets as $pk)
+                        <option value="{{ $pk->id }}">{{ $pk->nama }}</option>
+                    @endforeach
+                </select>
+            </x-slot:filters>
+        </x-table-controls>
+
         <div class="overflow-x-auto">
             <table class="w-full text-left">
                 <thead>
@@ -117,7 +130,7 @@
                 <tbody class="text-[14px] text-on-surface divide-y divide-[#c5c5d7]">
                     @forelse ($tingkats as $i => $t)
                         <tr class="hover:bg-[#f6fafe] transition-colors">
-                            <td class="px-6 py-4 text-[#505f76]">{{ $i + 1 }}</td>
+                            <td class="px-6 py-4 text-[#505f76]">{{ $tingkats->firstItem() + $i }}</td>
                             <td class="px-6 py-4 font-medium">{{ $t->nama }}</td>
                             <td class="px-6 py-4">
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[12px] font-semibold bg-[#EEF2FF] text-[#1c33c8]">
@@ -126,13 +139,13 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center justify-end gap-2">
-                                    <button wire:click="bukaFormEdit({{ $t->id }})"
-                                            class="p-1.5 text-[#505f76] hover:text-[#1c33c8] hover:bg-[#eaeef2] rounded-lg transition-colors"
+                                    <button wire:click="openEditForm({{ $t->id }})"
+                                            class="p-1.5 text-[#505f76] hover:text-[#1c33c8] hover:bg-[#eaeef2] rounded-lg transition-colors cursor-pointer"
                                             title="Edit">
                                         <span class="material-symbols-outlined text-[18px]">edit</span>
                                     </button>
-                                    <button wire:click="konfirmasiHapus({{ $t->id }})"
-                                            class="p-1.5 text-[#505f76] hover:text-[#ba1a1a] hover:bg-[#ffdad6] rounded-lg transition-colors"
+                                    <button wire:click="confirmDelete({{ $t->id }})"
+                                            class="p-1.5 text-[#505f76] hover:text-[#ba1a1a] hover:bg-[#ffdad6] rounded-lg transition-colors cursor-pointer"
                                             title="Hapus">
                                         <span class="material-symbols-outlined text-[18px]">delete</span>
                                     </button>
@@ -142,19 +155,38 @@
                     @empty
                         <tr>
                             <td colspan="4" class="px-6 py-16 text-center">
-                                <span class="material-symbols-outlined text-[48px] text-[#c5c5d7] mb-3 block">bar_chart</span>
-                                <p class="text-[14px] text-[#505f76]">Belum ada data Tingkat.</p>
-                                <button wire:click="bukaFormTambah"
-                                        class="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#3c50e0] text-white text-[14px] font-medium hover:bg-[#1c33c8] transition-colors">
-                                    <span class="material-symbols-outlined text-[16px]">add</span>
-                                    Tambah Sekarang
-                                </button>
+                                @if ($search || $filterPaketId)
+                                    <span class="material-symbols-outlined text-[48px] text-[#c5c5d7] mb-3 block">search_off</span>
+                                    <p class="text-[14px] text-[#505f76]">Tidak ada data ditemukan.</p>
+                                    <button wire:click="$set('search', '')"
+                                            class="mt-3 text-[13px] text-[#3c50e0] hover:underline cursor-pointer">
+                                        Hapus Filter
+                                    </button>
+                                @else
+                                    <span class="material-symbols-outlined text-[48px] text-[#c5c5d7] mb-3 block">bar_chart</span>
+                                    <p class="text-[14px] text-[#505f76]">Belum ada data Tingkat.</p>
+                                    <button wire:click="openCreateForm"
+                                            class="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#3c50e0] text-white text-[14px] font-medium hover:bg-[#1c33c8] transition-colors cursor-pointer">
+                                        <span class="material-symbols-outlined text-[16px]">add</span>
+                                        Tambah Sekarang
+                                    </button>
+                                @endif
                             </td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
+
+        @if ($tingkats->total() > 0)
+            <div class="px-6 py-4 border-t border-[#c5c5d7] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <p class="text-[13px] text-[#505f76]">
+                    Menampilkan {{ $tingkats->firstItem() }}–{{ $tingkats->lastItem() }} dari {{ $tingkats->total() }} data
+                </p>
+                <div class="text-[13px]">{{ $tingkats->links() }}</div>
+            </div>
+        @endif
+
     </div>
 
 </div>

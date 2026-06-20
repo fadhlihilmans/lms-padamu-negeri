@@ -4,7 +4,7 @@
     <button
         @click="open = !open"
         type="button"
-        class="flex items-center gap-2 px-3 py-1.5 rounded-md text-[14px] font-medium transition-colors
+        class="flex items-center gap-2 px-3 py-1.5 rounded-md text-[14px] font-medium transition-colors cursor-pointer
                {{ $isReadOnlyMode
                   ? 'bg-amber-50 border border-amber-300 text-amber-800 hover:bg-amber-100'
                   : 'bg-[#f0f4f8] border border-[#c5c5d7] text-[#505f76] hover:bg-[#eaeef2]' }}"
@@ -22,7 +22,8 @@
         @if ($isReadOnlyMode)
             <span class="text-[11px] font-semibold px-1.5 py-0.5 rounded bg-amber-200 text-amber-900">Arsip</span>
         @endif
-        <span class="material-symbols-outlined text-[16px]" :class="open ? 'rotate-180' : ''" style="transition: transform 0.15s">arrow_drop_down</span>
+        <span class="material-symbols-outlined text-[16px] transition-transform duration-150"
+              :class="open ? 'rotate-180' : ''">arrow_drop_down</span>
     </button>
 
     {{-- Dropdown --}}
@@ -45,10 +46,10 @@
             @forelse ($daftar as $p)
                 <li>
                     <button
-                        wire:click="pindah({{ $p->id }})"
+                        wire:click="switchPeriod({{ $p->id }})"
                         @click="open = false"
                         type="button"
-                        class="w-full flex items-center justify-between px-4 py-3 text-[14px] hover:bg-[#f0f4f8] transition-colors
+                        class="w-full flex items-center justify-between px-4 py-3 text-[14px] hover:bg-[#f0f4f8] transition-colors cursor-pointer
                                {{ $selected?->id === $p->id ? 'text-[#1c33c8] font-semibold bg-[#EEF2FF]' : 'text-on-surface' }}"
                     >
                         <span>TA {{ $p->tahun_ajaran }} &ndash; {{ ucfirst($p->semester) }}</span>
@@ -66,6 +67,5 @@
                 <li class="px-4 py-4 text-[14px] text-[#505f76] text-center">Belum ada periode.</li>
             @endforelse
         </ul>
-
     </div>
 </div>

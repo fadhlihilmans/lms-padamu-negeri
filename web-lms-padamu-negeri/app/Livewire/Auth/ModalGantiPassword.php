@@ -9,18 +9,17 @@ class ModalGantiPassword extends Component
 {
     public bool $terbuka = false;
 
-    public string $passwordBaru        = '';
-    public string $konfirmasiPassword  = '';
+    public string $passwordBaru       = '';
+    public string $konfirmasiPassword = '';
 
     public function mount(): void
     {
-        // Tampilkan modal jika session menandai perlu ganti password
         if (auth()->check() && session('prompt_ganti_password', false)) {
             $this->terbuka = true;
         }
     }
 
-    public function simpan(): void
+    public function save(): void
     {
         $this->validate([
             'passwordBaru'       => 'required|string|min:6',
@@ -38,15 +37,12 @@ class ModalGantiPassword extends Component
         ]);
 
         session()->forget('prompt_ganti_password');
-
         $this->terbuka = false;
         $this->reset('passwordBaru', 'konfirmasiPassword');
     }
 
-    public function lewati(): void
+    public function skip(): void
     {
-        // Sembunyikan untuk sesi ini saja, is_change_password tetap 0
-        // sehingga modal muncul kembali saat login berikutnya
         session()->forget('prompt_ganti_password');
         $this->terbuka = false;
     }

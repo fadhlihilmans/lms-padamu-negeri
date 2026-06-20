@@ -17,6 +17,7 @@ class PesertaDidik extends Model
     protected $fillable = [
         'user_id',
         'nipd',
+        'nisn',
         'nik',
         'nama_lengkap',
         'jenis_kelamin',

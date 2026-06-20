@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
             PaketSeeder::class,
             TingkatSeeder::class,
             MapelSeeder::class,
+            GuruSeeder::class,
+            PesertaDidikSeeder::class,
         ]);
     }
 }
