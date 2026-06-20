@@ -21,6 +21,7 @@
         x-data="{ sidebarOpen: false }"
         class="flex h-screen overflow-hidden"
         @keydown.escape.window="sidebarOpen = false"
+        @toggle-sidebar="sidebarOpen = !sidebarOpen"
     >
         {{-- Overlay (mobile) --}}
         <div
@@ -47,7 +48,7 @@
         <div class="flex flex-1 flex-col overflow-hidden lg:ml-0">
 
             {{-- Topbar --}}
-            <x-topbar :pageTitle="$pageTitle ?? 'Dashboard'" @toggle-sidebar="sidebarOpen = !sidebarOpen" />
+            <x-topbar :pageTitle="$pageTitle ?? 'Dashboard'" />
 
             {{-- Banner Mode Arsip (tampil saat melihat periode non-aktif) --}}
             @auth
@@ -182,5 +183,6 @@
     @endauth
 
     @livewireScripts
+    @stack('scripts')
 </body>
 </html>

@@ -27,15 +27,20 @@
                 </div>
                 <form wire:submit="save" class="p-6 flex flex-col gap-4">
 
-                    {{-- Tahun Ajaran --}}
+                    {{-- Periode Ajaran --}}
                     <div class="flex flex-col gap-1.5">
-                        <label class="text-[14px] font-medium text-on-surface" for="tahunAjaran">
-                            Tahun Ajaran <span class="text-[#ba1a1a]">*</span>
+                        <label class="text-[14px] font-medium text-on-surface" for="periodeAjaranId">
+                            Periode Ajaran <span class="text-[#ba1a1a]">*</span>
                         </label>
-                        <input wire:model="tahunAjaran" id="tahunAjaran" type="text" placeholder="Contoh: 2024/2025"
-                               class="w-full border rounded-lg px-4 py-2.5 text-[14px] text-on-surface focus:outline-none focus:ring-1 transition-shadow
-                                      {{ $errors->has('tahunAjaran') ? 'border-[#ba1a1a] focus:ring-[#ba1a1a]' : 'border-[#c5c5d7] focus:ring-[#3c50e0] focus:border-[#3c50e0]' }}">
-                        @error('tahunAjaran')
+                        <select wire:model="periodeAjaranId" id="periodeAjaranId"
+                                class="w-full border rounded-lg px-4 py-2.5 text-[14px] text-on-surface focus:outline-none focus:ring-1 transition-shadow cursor-pointer
+                                       {{ $errors->has('periodeAjaranId') ? 'border-[#ba1a1a] focus:ring-[#ba1a1a]' : 'border-[#c5c5d7] focus:ring-[#3c50e0] focus:border-[#3c50e0]' }}">
+                            <option value="">— Pilih Periode —</option>
+                            @foreach ($periodes as $p)
+                                <option value="{{ $p->id }}">{{ $p->tahun_ajaran }} {{ $p->semester }}{{ $p->is_aktif ? ' (Aktif)' : '' }}</option>
+                            @endforeach
+                        </select>
+                        @error('periodeAjaranId')
                             <p class="text-[12px] text-[#ba1a1a]">{{ $message }}</p>
                         @enderror
                     </div>
@@ -113,18 +118,19 @@
                     </div>
 
                     {{-- Preview nama otomatis --}}
-                    @if ($wilayahId && $paketId && $tingkatId && $tahunAjaran)
+                    @if ($periodeAjaranId && $wilayahId && $paketId && $tingkatId)
                         @php
-                            $prevW = $wilayahs->firstWhere('id', $wilayahId)?->nama ?? '?';
-                            $prevP = $pakets->firstWhere('id', $paketId)?->nama ?? '?';
-                            $prevT = $tingkats->firstWhere('id', $tingkatId)?->nama ?? '?';
+                            $prevW  = $wilayahs->firstWhere('id', $wilayahId)?->nama ?? '?';
+                            $prevP  = $pakets->firstWhere('id', $paketId)?->nama ?? '?';
+                            $prevT  = $tingkats->firstWhere('id', $tingkatId)?->nama ?? '?';
+                            $prevTA = $periodes->firstWhere('id', $periodeAjaranId)?->tahun_ajaran ?? '?';
                         @endphp
                         <div class="flex items-start gap-2 p-3 rounded-lg bg-[#EEF2FF] border border-[#c5d0ff]">
                             <span class="material-symbols-outlined text-[#3c50e0] text-[16px] flex-shrink-0 mt-0.5">auto_awesome</span>
                             <div>
                                 <p class="text-[11px] font-semibold text-[#3c50e0] uppercase tracking-wide">Nama Rombel (otomatis)</p>
                                 <p class="text-[13px] text-[#1c33c8] font-medium mt-0.5">
-                                    {{ $prevT }} {{ $prevW }} {{ $prevP }} – TA {{ $tahunAjaran }}
+                                    {{ $prevT }} {{ $prevW }} {{ $prevP }} – TA {{ $prevTA }}
                                 </p>
                             </div>
                         </div>
@@ -305,12 +311,12 @@
                     @endforeach
                 </select>
 
-                {{-- Filter Tahun Ajaran --}}
-                <select wire:model.live="filterTahunAjaran"
+                {{-- Filter Periode Ajaran --}}
+                <select wire:model.live="filterPeriodeId"
                         class="border border-[#c5c5d7] rounded-lg px-3 py-2 text-[14px] text-on-surface bg-white focus:outline-none focus:ring-1 focus:ring-[#3c50e0] cursor-pointer transition-shadow flex-shrink-0">
-                    <option value="">Semua TA</option>
-                    @foreach ($tahunAjaranOptions as $ta)
-                        <option value="{{ $ta }}">{{ $ta }}</option>
+                    <option value="">Semua Periode</option>
+                    @foreach ($periodes as $p)
+                        <option value="{{ $p->id }}">{{ $p->tahun_ajaran }} {{ $p->semester }}</option>
                     @endforeach
                 </select>
             </x-slot:filters>
@@ -334,7 +340,7 @@
                             <td class="px-6 py-4">
                                 <p class="font-medium">{{ $r->nama }}</p>
                                 <p class="text-[12px] text-[#505f76] mt-0.5">
-                                    TA {{ $r->tahun_ajaran }} &bull; {{ $r->paket?->nama }} &bull; {{ $r->wilayah?->nama }}
+                                    TA {{ $r->periodeAjaran?->tahun_ajaran }} {{ $r->periodeAjaran?->semester }} &bull; {{ $r->paket?->nama }} &bull; {{ $r->wilayah?->nama }}
                                 </p>
                             </td>
                             <td class="px-6 py-4">
@@ -377,7 +383,7 @@
                     @empty
                         <tr>
                             <td colspan="5" class="px-6 py-16 text-center">
-                                @if ($search || $filterWilayahId || $filterPaketId || $filterTahunAjaran)
+                                @if ($search || $filterWilayahId || $filterPaketId || $filterPeriodeId)
                                     <span class="material-symbols-outlined text-[48px] text-[#c5c5d7] mb-3 block">search_off</span>
                                     <p class="text-[14px] text-[#505f76]">Tidak ada data ditemukan.</p>
                                     <button wire:click="$set('search', '')"

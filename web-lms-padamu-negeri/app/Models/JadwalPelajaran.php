@@ -10,26 +10,14 @@ class JadwalPelajaran extends Model
     protected $table = 'jadwal_pelajaran';
 
     protected $fillable = [
-        'rombel_id',
-        'mapel_id',
-        'guru_id',
+        'guru_mapel_rombel_id',
         'hari',
         'jam_mulai',
         'jam_selesai',
     ];
 
-    public function rombel(): BelongsTo
+    public function guruMapelRombel(): BelongsTo
     {
-        return $this->belongsTo(Rombel::class);
-    }
-
-    public function mapel(): BelongsTo
-    {
-        return $this->belongsTo(Mapel::class);
-    }
-
-    public function guru(): BelongsTo
-    {
-        return $this->belongsTo(Guru::class);
+        return $this->belongsTo(GuruMapelRombel::class);
     }
 }

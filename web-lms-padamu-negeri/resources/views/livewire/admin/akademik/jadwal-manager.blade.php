@@ -4,9 +4,9 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
             <h2 class="text-[24px] font-bold tracking-tight text-on-surface">Jadwal Pelajaran</h2>
-            <p class="text-[14px] text-[#505f76] mt-0.5">Kelola jadwal mengajar per rombel.</p>
+            <p class="text-[14px] text-[#505f76] mt-0.5">Kelola jadwal mengajar per rombel berdasarkan pemetaan guru-mapel.</p>
         </div>
-        @if ($filterRombelId)
+        @if ($filterRombelId && $pemetaan->isNotEmpty())
             <button wire:click="openCreateForm"
                     class="inline-flex items-center gap-2 bg-[#3c50e0] text-white text-[14px] font-medium px-4 py-2.5 rounded-lg hover:bg-[#1c33c8] transition-colors shadow-sm cursor-pointer flex-shrink-0">
                 <span class="material-symbols-outlined text-[18px]">add</span>
@@ -31,10 +31,30 @@
 
                     {{-- Info rombel --}}
                     <div class="p-3 rounded-lg bg-[#EEF2FF] border border-[#c5d0ff] text-[13px] text-[#1c33c8] font-medium">
+                        <span class="material-symbols-outlined text-[14px] align-middle">groups</span>
                         {{ $rombelSelected?->nama ?? '—' }}
                     </div>
 
-                    {{-- Hari + Jam (2 kolom) --}}
+                    {{-- Pemetaan Guru–Mapel --}}
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-[14px] font-medium text-on-surface" for="gmrId">
+                            Guru &amp; Mata Pelajaran <span class="text-[#ba1a1a]">*</span>
+                        </label>
+                        <select wire:model="gmrId" id="gmrId"
+                                class="w-full border rounded-lg px-4 py-2.5 text-[14px] text-on-surface focus:outline-none focus:ring-1 transition-shadow cursor-pointer
+                                       {{ $errors->has('gmrId') ? 'border-[#ba1a1a] focus:ring-[#ba1a1a]' : 'border-[#c5c5d7] focus:ring-[#3c50e0] focus:border-[#3c50e0]' }}">
+                            <option value="">— Pilih Guru & Mapel —</option>
+                            @forelse ($pemetaan as $p)
+                                <option value="{{ $p->id }}">{{ $p->mapel->nama }} — {{ $p->guru->nama_lengkap }}</option>
+                            @empty
+                                <option disabled>Belum ada pemetaan guru-mapel untuk rombel ini</option>
+                            @endforelse
+                        </select>
+                        @error('gmrId') <p class="text-[12px] text-[#ba1a1a]">{{ $message }}</p> @enderror
+                        <p class="text-[11px] text-[#757686]">Hanya menampilkan guru-mapel yang sudah dipetakan untuk rombel ini.</p>
+                    </div>
+
+                    {{-- Hari + Jam (3 kolom) --}}
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div class="flex flex-col gap-1.5">
                             <label class="text-[14px] font-medium text-on-surface" for="hari">
@@ -68,40 +88,6 @@
                                           {{ $errors->has('jamSelesai') ? 'border-[#ba1a1a] focus:ring-[#ba1a1a]' : 'border-[#c5c5d7] focus:ring-[#3c50e0] focus:border-[#3c50e0]' }}">
                             @error('jamSelesai') <p class="text-[12px] text-[#ba1a1a]">{{ $message }}</p> @enderror
                         </div>
-                    </div>
-
-                    {{-- Mapel --}}
-                    <div class="flex flex-col gap-1.5">
-                        <label class="text-[14px] font-medium text-on-surface" for="mapelId">
-                            Mata Pelajaran <span class="text-[#ba1a1a]">*</span>
-                        </label>
-                        <select wire:model="mapelId" id="mapelId"
-                                class="w-full border rounded-lg px-4 py-2.5 text-[14px] text-on-surface focus:outline-none focus:ring-1 transition-shadow cursor-pointer
-                                       {{ $errors->has('mapelId') ? 'border-[#ba1a1a] focus:ring-[#ba1a1a]' : 'border-[#c5c5d7] focus:ring-[#3c50e0] focus:border-[#3c50e0]' }}">
-                            <option value="">— Pilih Mata Pelajaran —</option>
-                            @foreach ($mapels as $m)
-                                <option value="{{ $m->id }}">{{ $m->nama }}</option>
-                            @endforeach
-                        </select>
-                        @error('mapelId') <p class="text-[12px] text-[#ba1a1a]">{{ $message }}</p> @enderror
-                    </div>
-
-                    {{-- Guru --}}
-                    <div class="flex flex-col gap-1.5">
-                        <label class="text-[14px] font-medium text-on-surface" for="guruId">
-                            Guru <span class="text-[#ba1a1a]">*</span>
-                        </label>
-                        <select wire:model="guruId" id="guruId"
-                                class="w-full border rounded-lg px-4 py-2.5 text-[14px] text-on-surface focus:outline-none focus:ring-1 transition-shadow cursor-pointer
-                                       {{ $errors->has('guruId') ? 'border-[#ba1a1a] focus:ring-[#ba1a1a]' : 'border-[#c5c5d7] focus:ring-[#3c50e0] focus:border-[#3c50e0]' }}">
-                            <option value="">— Pilih Guru —</option>
-                            @forelse ($gurus as $g)
-                                <option value="{{ $g->id }}">{{ $g->nama_lengkap }} ({{ $g->nip }})</option>
-                            @empty
-                                <option disabled>Belum ada guru terdaftar</option>
-                            @endforelse
-                        </select>
-                        @error('guruId') <p class="text-[12px] text-[#ba1a1a]">{{ $message }}</p> @enderror
                     </div>
 
                     <div class="flex justify-end gap-3 pt-2 border-t border-[#c5c5d7] mt-1">
@@ -168,7 +154,34 @@
             <p class="text-[14px] text-[#505f76] mt-1">Gunakan dropdown di atas untuk melihat dan mengatur jadwal rombel.</p>
         </div>
 
+    @elseif ($pemetaan->isEmpty())
+        <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm px-6 py-16 text-center">
+            <span class="material-symbols-outlined text-[48px] text-amber-400 mb-3 block">hub</span>
+            <p class="text-[16px] font-semibold text-on-surface">Belum ada pemetaan guru-mapel</p>
+            <p class="text-[14px] text-[#505f76] mt-1">Buat pemetaan guru-mapel untuk rombel ini terlebih dahulu sebelum menambah jadwal.</p>
+            <a href="{{ route('admin.master.pemetaan') }}"
+               class="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#3c50e0] text-white text-[14px] font-medium hover:bg-[#1c33c8] transition-colors cursor-pointer">
+                <span class="material-symbols-outlined text-[16px]">hub</span>
+                Ke Halaman Pemetaan
+            </a>
+        </div>
+
     @else
+        {{-- Info pemetaan yang tersedia --}}
+        <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm p-4 mb-5">
+            <p class="text-[12px] font-semibold text-[#505f76] uppercase tracking-wider mb-2">Pemetaan Guru-Mapel Tersedia</p>
+            <div class="flex flex-wrap gap-2">
+                @foreach ($pemetaan as $p)
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-medium bg-[#EEF2FF] text-[#1c33c8] border border-[#c5d0ff]">
+                        <span class="material-symbols-outlined text-[13px]">book</span>
+                        {{ $p->mapel->nama }}
+                        <span class="text-[#505f76]">·</span>
+                        {{ $p->guru->nama_lengkap }}
+                    </span>
+                @endforeach
+            </div>
+        </div>
+
         {{-- Jadwal per hari --}}
         @if ($jadwalByHari->isEmpty())
             <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm px-6 py-16 text-center">
@@ -209,11 +222,11 @@
                                                 </td>
                                                 <td class="px-5 py-3">
                                                     <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[12px] font-semibold bg-[#f0f4f8] text-on-surface">
-                                                        {{ $jadwal->mapel?->nama ?? '—' }}
+                                                        {{ $jadwal->guruMapelRombel?->mapel?->nama ?? '—' }}
                                                     </span>
                                                 </td>
                                                 <td class="px-5 py-3 text-[#505f76]">
-                                                    {{ $jadwal->guru?->nama_lengkap ?? '—' }}
+                                                    {{ $jadwal->guruMapelRombel?->guru?->nama_lengkap ?? '—' }}
                                                 </td>
                                                 <td class="px-5 py-3">
                                                     <div class="flex items-center justify-end gap-1">

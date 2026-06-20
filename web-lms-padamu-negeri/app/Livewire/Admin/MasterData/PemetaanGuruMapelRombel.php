@@ -114,7 +114,7 @@ class PemetaanGuruMapelRombel extends Component
 
     public function render(): View
     {
-        $rombels  = Rombel::orderByDesc('tahun_ajaran')->orderBy('nama')->get();
+        $rombels  = Rombel::orderByDesc('periode_ajaran_id')->orderBy('nama')->get();
         $periodes = PeriodeAjaran::orderByDesc('tahun_ajaran')
             ->orderByRaw("FIELD(semester, 'genap', 'ganjil')")
             ->get();

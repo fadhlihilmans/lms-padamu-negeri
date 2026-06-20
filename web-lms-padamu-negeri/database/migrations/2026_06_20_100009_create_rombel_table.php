@@ -10,10 +10,10 @@ return new class extends Migration
     {
         Schema::create('rombel', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('periode_ajaran_id')->constrained('periode_ajaran')->restrictOnDelete();
             $table->foreignId('wilayah_id')->constrained('wilayah')->restrictOnDelete();
             $table->foreignId('paket_id')->constrained('paket')->restrictOnDelete();
             $table->foreignId('tingkat_id')->constrained('tingkat')->restrictOnDelete();
-            $table->string('tahun_ajaran', 9);
             // wali_kelas_id → guru.id; nullable, null saat rombel baru dibuat
             $table->unsignedBigInteger('wali_kelas_id')->nullable();
             $table->foreign('wali_kelas_id')->references('id')->on('guru')->nullOnDelete();

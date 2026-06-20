@@ -170,3 +170,4 @@ desain (Stitch, screenshot, atau mockup apapun), terapkan aturan berikut
 - Sidebar render menu sesuai role (Admin/Guru/Peserta Didik) — cek role via Spatie.
 - Sumber komponen UI = TailAdmin. Stitch hanya untuk wireframe → export ke `design-reference/`.
 - pada saat hover button, tag a, atau lainnya yang memiliki aksi, usahakan untuk ubah cursor menjadi pointer ya
+- mobile first, improviasis design dari referensi sangat diperlukan terutama pada layout mobile.

@@ -48,8 +48,8 @@
 
             <p class="px-3 pt-4 pb-1 text-label-sm text-secondary/60 uppercase tracking-wider">Akademik</p>
             <x-sidebar-item route="admin.akademik.jadwal" icon="schedule" label="Jadwal Pelajaran" />
-            <x-sidebar-item route="import.index" icon="upload_file" label="Import Excel" />
-            <x-sidebar-item route="absensi.index" icon="how_to_reg" label="Absensi" />
+            <x-sidebar-item route="admin.import.peserta-didik" icon="upload_file" label="Import Excel" />
+            <x-sidebar-item route="admin.absensi.rekap" icon="how_to_reg" label="Rekap Absensi" />
             <x-sidebar-item route="kenaikan.index" icon="trending_up" label="Kenaikan Kelas" />
             <x-sidebar-item route="penilaian.index" icon="grade" label="Penilaian Akhir" />
 
@@ -64,9 +64,9 @@
 
             <p class="px-3 pt-4 pb-1 text-label-sm text-secondary/60 uppercase tracking-wider">Kelas Saya</p>
             <x-sidebar-item route="guru.jadwal" icon="schedule" label="Jadwal Pelajaran" />
-            <x-sidebar-item route="absensi.index" icon="how_to_reg" label="Absensi" />
-            <x-sidebar-item route="materi.index" icon="menu_book" label="Materi" />
-            <x-sidebar-item route="tugas.index" icon="assignment" label="Tugas" />
+            <x-sidebar-item route="guru.absensi" icon="how_to_reg" label="Absensi" />
+            <x-sidebar-item route="guru.materi" icon="menu_book" label="Materi" />
+            <x-sidebar-item route="guru.tugas" icon="assignment" label="Tugas" />
             <x-sidebar-item route="cbt.index" icon="quiz" label="CBT" />
             <x-sidebar-item route="penilaian.index" icon="grade" label="Penilaian Akhir" />
 
@@ -77,8 +77,8 @@
 
             <p class="px-3 pt-4 pb-1 text-label-sm text-secondary/60 uppercase tracking-wider">Belajar</p>
             <x-sidebar-item route="peserta-didik.jadwal" icon="schedule" label="Jadwal Pelajaran" />
-            <x-sidebar-item route="absensi.index" icon="how_to_reg" label="Absensi" />
-            <x-sidebar-item route="materi.index" icon="menu_book" label="Materi" />
+            <x-sidebar-item route="peserta-didik.absensi" icon="how_to_reg" label="Absensi" />
+            <x-sidebar-item route="peserta-didik.materi" icon="menu_book" label="Materi" />
             <x-sidebar-item route="tugas.index" icon="assignment" label="Tugas" />
             <x-sidebar-item route="cbt.index" icon="quiz" label="CBT" />
             <x-sidebar-item route="penilaian.index" icon="grade" label="Rapor Saya" />

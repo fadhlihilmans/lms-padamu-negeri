@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Materi extends Model
@@ -15,14 +16,16 @@ class Materi extends Model
     protected $fillable = [
         'guru_mapel_rombel_id',
         'judul',
-        'deskripsi',
-        'tipe_konten',
-        'file_path',
-        'url',
+        'isi',
     ];
 
     public function guruMapelRombel(): BelongsTo
     {
         return $this->belongsTo(GuruMapelRombel::class);
+    }
+
+    public function lampiran(): HasMany
+    {
+        return $this->hasMany(MateriLampiran::class)->orderBy('urutan');
     }
 }

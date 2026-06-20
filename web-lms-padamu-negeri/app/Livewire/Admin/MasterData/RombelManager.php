@@ -4,9 +4,9 @@ namespace App\Livewire\Admin\MasterData;
 
 use App\Models\Guru;
 use App\Models\Paket;
+use App\Models\PeriodeAjaran;
 use App\Models\PesertaDidik;
 use App\Models\PesertaDidikRombel;
-use App\Models\PeriodeAjaran;
 use App\Models\Rombel;
 use App\Models\Tingkat;
 use App\Models\Wilayah;
@@ -26,23 +26,23 @@ class RombelManager extends Component
     use WithPagination;
 
     // ── Search & pagination ──────────────────────────────────────────────────
-    #[Url] public string $search             = '';
-    public string        $filterWilayahId    = '';
-    public string        $filterPaketId      = '';
-    public string        $filterTahunAjaran  = '';
-    public int           $perPage            = 10;
+    #[Url] public string $search              = '';
+    public string        $filterWilayahId     = '';
+    public string        $filterPaketId       = '';
+    public string        $filterPeriodeId     = '';
+    public int           $perPage             = 10;
 
     // ── Form ─────────────────────────────────────────────────────────────────
-    public bool   $showForm     = false;
-    public ?int   $editId       = null;
-    public ?int   $wilayahId    = null;
-    public ?int   $paketId      = null;
-    public ?int   $tingkatId    = null;
-    public string $tahunAjaran  = '';
-    public ?int   $waliKelasId  = null;
+    public bool   $showForm        = false;
+    public ?int   $editId          = null;
+    public ?int   $periodeAjaranId = null;
+    public ?int   $wilayahId       = null;
+    public ?int   $paketId         = null;
+    public ?int   $tingkatId       = null;
+    public ?int   $waliKelasId     = null;
 
     // ── Kelola Anggota ────────────────────────────────────────────────────────
-    public ?int  $kelolaRombelId  = null;
+    public ?int   $kelolaRombelId = null;
     public string $searchAnggota  = '';
 
     // ── Confirm delete ────────────────────────────────────────────────────────
@@ -50,13 +50,12 @@ class RombelManager extends Component
 
     // ── Lifecycle ────────────────────────────────────────────────────────────
 
-    public function updatedSearch(): void            { $this->resetPage(); }
-    public function updatedPerPage(): void           { $this->resetPage(); }
-    public function updatedFilterWilayahId(): void   { $this->resetPage(); }
-    public function updatedFilterPaketId(): void     { $this->resetPage(); }
-    public function updatedFilterTahunAjaran(): void { $this->resetPage(); }
+    public function updatedSearch(): void           { $this->resetPage(); }
+    public function updatedPerPage(): void          { $this->resetPage(); }
+    public function updatedFilterWilayahId(): void  { $this->resetPage(); }
+    public function updatedFilterPaketId(): void    { $this->resetPage(); }
+    public function updatedFilterPeriodeId(): void  { $this->resetPage(); }
 
-    /** Reset tingkat when paket changes in the form */
     public function updatedPaketId(): void { $this->tingkatId = null; }
 
     // ── Form actions ─────────────────────────────────────────────────────────
@@ -64,24 +63,23 @@ class RombelManager extends Component
     public function openCreateForm(): void
     {
         $this->resetForm();
-        // Default tahun ajaran to the active periode
         $aktif = PeriodeAjaran::where('is_aktif', true)->first();
         if ($aktif) {
-            $this->tahunAjaran = $aktif->tahun_ajaran;
+            $this->periodeAjaranId = $aktif->id;
         }
         $this->showForm = true;
     }
 
     public function openEditForm(int $id): void
     {
-        $rombel             = Rombel::findOrFail($id);
-        $this->editId       = $id;
-        $this->wilayahId    = $rombel->wilayah_id;
-        $this->paketId      = $rombel->paket_id;
-        $this->tingkatId    = $rombel->tingkat_id;
-        $this->tahunAjaran  = $rombel->tahun_ajaran;
-        $this->waliKelasId  = $rombel->wali_kelas_id;
-        $this->showForm     = true;
+        $rombel               = Rombel::findOrFail($id);
+        $this->editId         = $id;
+        $this->periodeAjaranId = $rombel->periode_ajaran_id;
+        $this->wilayahId      = $rombel->wilayah_id;
+        $this->paketId        = $rombel->paket_id;
+        $this->tingkatId      = $rombel->tingkat_id;
+        $this->waliKelasId    = $rombel->wali_kelas_id;
+        $this->showForm       = true;
     }
 
     public function closeForm(): void
@@ -93,35 +91,35 @@ class RombelManager extends Component
     public function save(): void
     {
         $this->validate([
-            'wilayahId'   => 'required|exists:wilayah,id',
-            'paketId'     => 'required|exists:paket,id',
-            'tingkatId'   => 'required|exists:tingkat,id',
-            'tahunAjaran' => 'required|string|regex:/^\d{4}\/\d{4}$/',
-            'waliKelasId' => 'nullable|exists:guru,id',
+            'periodeAjaranId' => 'required|exists:periode_ajaran,id',
+            'wilayahId'       => 'required|exists:wilayah,id',
+            'paketId'         => 'required|exists:paket,id',
+            'tingkatId'       => 'required|exists:tingkat,id',
+            'waliKelasId'     => 'nullable|exists:guru,id',
         ], [
-            'wilayahId.required'   => 'Wilayah wajib dipilih.',
-            'paketId.required'     => 'Paket wajib dipilih.',
-            'tingkatId.required'   => 'Tingkat wajib dipilih.',
-            'tahunAjaran.required' => 'Tahun Ajaran wajib diisi.',
-            'tahunAjaran.regex'    => 'Format Tahun Ajaran harus YYYY/YYYY, mis. 2024/2025.',
+            'periodeAjaranId.required' => 'Periode Ajaran wajib dipilih.',
+            'wilayahId.required'       => 'Wilayah wajib dipilih.',
+            'paketId.required'         => 'Paket wajib dipilih.',
+            'tingkatId.required'       => 'Tingkat wajib dipilih.',
         ]);
 
-        $duplicate = Rombel::where('wilayah_id', $this->wilayahId)
+        $duplicate = Rombel::where('periode_ajaran_id', $this->periodeAjaranId)
+            ->where('wilayah_id', $this->wilayahId)
             ->where('paket_id', $this->paketId)
             ->where('tingkat_id', $this->tingkatId)
-            ->where('tahun_ajaran', $this->tahunAjaran)
             ->when($this->editId, fn($q) => $q->where('id', '!=', $this->editId))
             ->exists();
 
         if ($duplicate) {
-            $this->addError('tahunAjaran', 'Rombel dengan kombinasi Wilayah, Paket, Tingkat, dan Tahun Ajaran ini sudah ada.');
+            $this->addError('tingkatId', 'Rombel dengan kombinasi Periode, Wilayah, Paket, dan Tingkat ini sudah ada.');
             return;
         }
 
-        $tingkat = Tingkat::find($this->tingkatId);
-        $wilayah = Wilayah::find($this->wilayahId);
-        $paket   = Paket::find($this->paketId);
-        $nama    = "{$tingkat->nama} {$wilayah->nama} {$paket->nama} – TA {$this->tahunAjaran}";
+        $tingkat       = Tingkat::find($this->tingkatId);
+        $wilayah       = Wilayah::find($this->wilayahId);
+        $paket         = Paket::find($this->paketId);
+        $periodeAjaran = PeriodeAjaran::find($this->periodeAjaranId);
+        $nama          = "{$tingkat->nama} {$wilayah->nama} {$paket->nama} – TA {$periodeAjaran->tahun_ajaran}";
 
         $isEdit = (bool) $this->editId;
 
@@ -129,12 +127,12 @@ class RombelManager extends Component
             Rombel::updateOrCreate(
                 ['id' => $this->editId],
                 [
-                    'wilayah_id'    => $this->wilayahId,
-                    'paket_id'      => $this->paketId,
-                    'tingkat_id'    => $this->tingkatId,
-                    'tahun_ajaran'  => $this->tahunAjaran,
-                    'wali_kelas_id' => $this->waliKelasId ?: null,
-                    'nama'          => $nama,
+                    'periode_ajaran_id' => $this->periodeAjaranId,
+                    'wilayah_id'        => $this->wilayahId,
+                    'paket_id'          => $this->paketId,
+                    'tingkat_id'        => $this->tingkatId,
+                    'wali_kelas_id'     => $this->waliKelasId ?: null,
+                    'nama'              => $nama,
                 ]
             );
             $this->closeForm();
@@ -242,26 +240,24 @@ class RombelManager extends Component
     public function render(): View
     {
         $rombels = Rombel::query()
-            ->with(['wilayah', 'paket', 'tingkat', 'waliKelas'])
+            ->with(['periodeAjaran', 'wilayah', 'paket', 'tingkat', 'waliKelas'])
             ->withCount('pesertaDidikRombel')
             ->when($this->search, fn(Builder $q) => $q->where('nama', 'like', "%{$this->search}%"))
             ->when($this->filterWilayahId, fn(Builder $q) => $q->where('wilayah_id', $this->filterWilayahId))
             ->when($this->filterPaketId, fn(Builder $q) => $q->where('paket_id', $this->filterPaketId))
-            ->when($this->filterTahunAjaran, fn(Builder $q) => $q->where('tahun_ajaran', $this->filterTahunAjaran))
-            ->orderByDesc('tahun_ajaran')
+            ->when($this->filterPeriodeId, fn(Builder $q) => $q->where('periode_ajaran_id', $this->filterPeriodeId))
+            ->orderByDesc('periode_ajaran_id')
             ->orderBy('nama')
             ->paginate($this->perPage);
 
-        $wilayahs    = Wilayah::orderBy('nama')->get();
-        $pakets      = Paket::orderBy('nama')->get();
-        $tingkats    = $this->paketId
+        $wilayahs = Wilayah::orderBy('nama')->get();
+        $pakets   = Paket::orderBy('nama')->get();
+        $tingkats = $this->paketId
             ? Tingkat::where('paket_id', $this->paketId)->orderBy('nama')->get()
             : collect();
-        $gurus       = Guru::orderBy('nama_lengkap')->get();
+        $gurus    = Guru::orderBy('nama_lengkap')->get();
 
-        $tahunAjaranOptions = Rombel::orderByDesc('tahun_ajaran')
-            ->distinct()
-            ->pluck('tahun_ajaran');
+        $periodes = PeriodeAjaran::orderByDesc('id')->get();
 
         $rombelKelola = null;
         $calonAnggota = collect();
@@ -285,18 +281,18 @@ class RombelManager extends Component
 
         return view('livewire.admin.master-data.rombel-manager', compact(
             'rombels', 'wilayahs', 'pakets', 'tingkats', 'gurus',
-            'tahunAjaranOptions', 'rombelKelola', 'calonAnggota'
+            'periodes', 'rombelKelola', 'calonAnggota'
         ));
     }
 
     private function resetForm(): void
     {
-        $this->editId      = null;
-        $this->wilayahId   = null;
-        $this->paketId     = null;
-        $this->tingkatId   = null;
-        $this->tahunAjaran = '';
-        $this->waliKelasId = null;
+        $this->editId          = null;
+        $this->periodeAjaranId = null;
+        $this->wilayahId       = null;
+        $this->paketId         = null;
+        $this->tingkatId       = null;
+        $this->waliKelasId     = null;
         $this->resetValidation();
     }
 }

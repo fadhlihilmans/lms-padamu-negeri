@@ -58,4 +58,9 @@ class GuruMapelRombel extends Model
     {
         return $this->hasMany(SesiAbsensi::class);
     }
+
+    public function jadwalPelajaran(): HasMany
+    {
+        return $this->hasMany(JadwalPelajaran::class);
+    }
 }

@@ -12,17 +12,26 @@ return new class extends Migration
             $table->id();
             $table->foreignId('guru_mapel_rombel_id')->constrained('guru_mapel_rombel')->cascadeOnDelete();
             $table->string('judul', 200);
-            $table->text('deskripsi')->nullable();
-            $table->enum('tipe_konten', ['text', 'file', 'link_video', 'gambar']);
-            $table->string('file_path', 255)->nullable();
-            $table->string('url', 500)->nullable();
+            $table->longText('isi')->nullable();
             $table->timestamps();
             $table->softDeletes();
+        });
+
+        Schema::create('materi_lampiran', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('materi_id')->constrained('materi')->cascadeOnDelete();
+            $table->enum('tipe', ['file', 'gambar', 'link_video']);
+            $table->string('file_path', 255)->nullable();
+            $table->string('url', 500)->nullable();
+            $table->string('nama_asli', 255)->nullable();
+            $table->unsignedSmallInteger('urutan')->default(0);
+            $table->timestamps();
         });
     }
 
     public function down(): void
     {
+        Schema::dropIfExists('materi_lampiran');
         Schema::dropIfExists('materi');
     }
 };

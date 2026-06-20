@@ -116,4 +116,4 @@ file-file ini, file ini yang menang — konfirmasikan dulu ke saya kalau ada ben
 - Jika butuh keputusan desain yang belum ada di dokumen, **tanya dulu**, jangan asumsi.
 - Setelah selesai generate, bisa tambahkan jika sekarang sudah selesai pada fase ke- berapa, langkah ke- berapa dan sampai di list task yang mana.
 - tambahkan search, pagination, pilihan untuk menampilkan berapa data, filter (jika dibutuhkan dan gunakan filter yang interaktif jika dibutuhkan seperti search, checkbox, etc) untuk tiap menu atau crud.
-- jika membuat fungsi gunakan bahasa inggris saja.
+- jika membuat fungsi gunakan english.

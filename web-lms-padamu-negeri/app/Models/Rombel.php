@@ -14,15 +14,20 @@ class Rombel extends Model
     protected $table = 'rombel';
 
     protected $fillable = [
+        'periode_ajaran_id',
         'wilayah_id',
         'paket_id',
         'tingkat_id',
-        'tahun_ajaran',
         'wali_kelas_id',
         'nama',
     ];
 
     // ─── Relasi ────────────────────────────────────────────────────────────────
+
+    public function periodeAjaran(): BelongsTo
+    {
+        return $this->belongsTo(PeriodeAjaran::class);
+    }
 
     public function wilayah(): BelongsTo
     {
@@ -57,7 +62,8 @@ class Rombel extends Model
 
     public function jadwalPelajaran(): HasMany
     {
-        return $this->hasMany(JadwalPelajaran::class);
+        // Jadwal diakses via guruMapelRombel — ini shortcut via hasManyThrough
+        return $this->hasManyThrough(JadwalPelajaran::class, GuruMapelRombel::class);
     }
 
     public function kenaikanKelasAsal(): HasMany

@@ -55,8 +55,8 @@
                                             {{ substr($jadwal->jam_mulai, 0, 5) }} – {{ substr($jadwal->jam_selesai, 0, 5) }}
                                         </span>
                                         <div class="flex-1 min-w-0">
-                                            <p class="text-[14px] font-medium text-on-surface truncate">{{ $jadwal->mapel?->nama ?? '—' }}</p>
-                                            <p class="text-[12px] text-[#505f76]">{{ $jadwal->guru?->nama_lengkap ?? '—' }}</p>
+                                            <p class="text-[14px] font-medium text-on-surface truncate">{{ $jadwal->guruMapelRombel?->mapel?->nama ?? '—' }}</p>
+                                            <p class="text-[12px] text-[#505f76]">{{ $jadwal->guruMapelRombel?->guru?->nama_lengkap ?? '—' }}</p>
                                         </div>
                                     </div>
                                 @endforeach

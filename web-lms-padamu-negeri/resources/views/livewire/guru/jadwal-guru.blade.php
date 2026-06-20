@@ -11,7 +11,7 @@
                 @endif
             </p>
         </div>
-        @if ($rombelWaliKelas)
+        @if ($rombelWaliKelas && $pemetaanWk->isNotEmpty())
             <button wire:click="openCreateForm"
                     class="inline-flex items-center gap-2 bg-[#3c50e0] text-white text-[14px] font-medium px-4 py-2.5 rounded-lg hover:bg-[#1c33c8] transition-colors shadow-sm cursor-pointer flex-shrink-0">
                 <span class="material-symbols-outlined text-[18px]">add</span>
@@ -33,7 +33,24 @@
                 <form wire:submit="save" class="p-6 flex flex-col gap-4">
 
                     <div class="p-3 rounded-lg bg-[#EEF2FF] border border-[#c5d0ff] text-[13px] text-[#1c33c8] font-medium">
+                        <span class="material-symbols-outlined text-[14px] align-middle">groups</span>
                         {{ $rombelWaliKelas?->nama ?? '—' }}
+                    </div>
+
+                    {{-- Pemetaan Guru–Mapel --}}
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-[14px] font-medium text-on-surface" for="gmrId">
+                            Guru &amp; Mata Pelajaran <span class="text-[#ba1a1a]">*</span>
+                        </label>
+                        <select wire:model="gmrId" id="gmrId"
+                                class="w-full border rounded-lg px-4 py-2.5 text-[14px] text-on-surface focus:outline-none focus:ring-1 transition-shadow cursor-pointer
+                                       {{ $errors->has('gmrId') ? 'border-[#ba1a1a] focus:ring-[#ba1a1a]' : 'border-[#c5c5d7] focus:ring-[#3c50e0] focus:border-[#3c50e0]' }}">
+                            <option value="">— Pilih Guru & Mapel —</option>
+                            @foreach ($pemetaanWk as $p)
+                                <option value="{{ $p->id }}">{{ $p->mapel->nama }} — {{ $p->guru->nama_lengkap }}</option>
+                            @endforeach
+                        </select>
+                        @error('gmrId') <p class="text-[12px] text-[#ba1a1a]">{{ $message }}</p> @enderror
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -69,36 +86,6 @@
                                           {{ $errors->has('jamSelesai') ? 'border-[#ba1a1a] focus:ring-[#ba1a1a]' : 'border-[#c5c5d7] focus:ring-[#3c50e0]' }}">
                             @error('jamSelesai') <p class="text-[12px] text-[#ba1a1a]">{{ $message }}</p> @enderror
                         </div>
-                    </div>
-
-                    <div class="flex flex-col gap-1.5">
-                        <label class="text-[14px] font-medium text-on-surface" for="mapelId">
-                            Mata Pelajaran <span class="text-[#ba1a1a]">*</span>
-                        </label>
-                        <select wire:model="mapelId" id="mapelId"
-                                class="w-full border rounded-lg px-4 py-2.5 text-[14px] focus:outline-none focus:ring-1 transition-shadow cursor-pointer
-                                       {{ $errors->has('mapelId') ? 'border-[#ba1a1a] focus:ring-[#ba1a1a]' : 'border-[#c5c5d7] focus:ring-[#3c50e0]' }}">
-                            <option value="">— Pilih Mata Pelajaran —</option>
-                            @foreach ($mapels as $m)
-                                <option value="{{ $m->id }}">{{ $m->nama }}</option>
-                            @endforeach
-                        </select>
-                        @error('mapelId') <p class="text-[12px] text-[#ba1a1a]">{{ $message }}</p> @enderror
-                    </div>
-
-                    <div class="flex flex-col gap-1.5">
-                        <label class="text-[14px] font-medium text-on-surface" for="guruFormId">
-                            Guru <span class="text-[#ba1a1a]">*</span>
-                        </label>
-                        <select wire:model="guruFormId" id="guruFormId"
-                                class="w-full border rounded-lg px-4 py-2.5 text-[14px] focus:outline-none focus:ring-1 transition-shadow cursor-pointer
-                                       {{ $errors->has('guruFormId') ? 'border-[#ba1a1a] focus:ring-[#ba1a1a]' : 'border-[#c5c5d7] focus:ring-[#3c50e0]' }}">
-                            <option value="">— Pilih Guru —</option>
-                            @foreach ($allGurus as $g)
-                                <option value="{{ $g->id }}">{{ $g->nama_lengkap }}</option>
-                            @endforeach
-                        </select>
-                        @error('guruFormId') <p class="text-[12px] text-[#ba1a1a]">{{ $message }}</p> @enderror
                     </div>
 
                     <div class="flex justify-end gap-3 pt-2 border-t border-[#c5c5d7] mt-1">
@@ -172,8 +159,12 @@
                                             {{ substr($jadwal->jam_mulai, 0, 5) }} – {{ substr($jadwal->jam_selesai, 0, 5) }}
                                         </span>
                                         <div>
-                                            <p class="text-[14px] font-medium text-on-surface">{{ $jadwal->mapel?->nama ?? '—' }}</p>
-                                            <p class="text-[12px] text-[#505f76]">{{ $jadwal->rombel?->nama ?? '—' }}</p>
+                                            <p class="text-[14px] font-medium text-on-surface">
+                                                {{ $jadwal->guruMapelRombel?->mapel?->nama ?? '—' }}
+                                            </p>
+                                            <p class="text-[12px] text-[#505f76]">
+                                                {{ $jadwal->guruMapelRombel?->rombel?->nama ?? '—' }}
+                                            </p>
                                         </div>
                                     </div>
                                 @endforeach
@@ -197,11 +188,13 @@
                 <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm px-6 py-12 text-center">
                     <span class="material-symbols-outlined text-[48px] text-[#c5c5d7] mb-3 block">calendar_today</span>
                     <p class="text-[14px] text-[#505f76]">Belum ada jadwal untuk rombel ini.</p>
-                    <button wire:click="openCreateForm"
-                            class="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#3c50e0] text-white text-[14px] font-medium hover:bg-[#1c33c8] transition-colors cursor-pointer">
-                        <span class="material-symbols-outlined text-[16px]">add</span>
-                        Tambah Jadwal
-                    </button>
+                    @if ($pemetaanWk->isNotEmpty())
+                        <button wire:click="openCreateForm"
+                                class="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#3c50e0] text-white text-[14px] font-medium hover:bg-[#1c33c8] transition-colors cursor-pointer">
+                            <span class="material-symbols-outlined text-[16px]">add</span>
+                            Tambah Jadwal
+                        </button>
+                    @endif
                 </div>
             @else
                 <div class="flex flex-col gap-3">
@@ -228,8 +221,8 @@
                                                     <td class="px-5 py-3 font-mono text-[13px] text-[#1c33c8] font-semibold">
                                                         {{ substr($jadwal->jam_mulai, 0, 5) }} – {{ substr($jadwal->jam_selesai, 0, 5) }}
                                                     </td>
-                                                    <td class="px-5 py-3">{{ $jadwal->mapel?->nama ?? '—' }}</td>
-                                                    <td class="px-5 py-3 text-[#505f76]">{{ $jadwal->guru?->nama_lengkap ?? '—' }}</td>
+                                                    <td class="px-5 py-3">{{ $jadwal->guruMapelRombel?->mapel?->nama ?? '—' }}</td>
+                                                    <td class="px-5 py-3 text-[#505f76]">{{ $jadwal->guruMapelRombel?->guru?->nama_lengkap ?? '—' }}</td>
                                                     <td class="px-5 py-3">
                                                         <div class="flex items-center justify-end gap-1">
                                                             <button wire:click="openEditForm({{ $jadwal->id }})"

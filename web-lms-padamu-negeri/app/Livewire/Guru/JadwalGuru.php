@@ -2,11 +2,11 @@
 
 namespace App\Livewire\Guru;
 
+use App\Models\GuruMapelRombel;
 use App\Models\JadwalPelajaran;
-use App\Models\Mapel;
-use App\Models\Guru;
 use App\Models\Rombel;
 use App\Services\ErrorLogService;
+use App\Services\PeriodeService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
@@ -24,14 +24,13 @@ class JadwalGuru extends Component
         'minggu' => 'Minggu',
     ];
 
-    // ── Wali Kelas — Form jadwal rombel ──────────────────────────────────────
-    public bool   $showForm   = false;
-    public ?int   $editId     = null;
-    public string $hari       = '';
-    public ?int   $mapelId    = null;
-    public ?int   $guruFormId = null;
-    public string $jamMulai   = '';
-    public string $jamSelesai = '';
+    // ── Form (hanya wali kelas) ────────────────────────────────────────────────
+    public bool   $showForm        = false;
+    public ?int   $editId          = null;
+    public ?int   $gmrId           = null;
+    public string $hari            = '';
+    public string $jamMulai        = '';
+    public string $jamSelesai      = '';
     public ?int   $confirmDeleteId = null;
 
     // ── Form actions (hanya untuk wali kelas) ────────────────────────────────
@@ -44,14 +43,13 @@ class JadwalGuru extends Component
 
     public function openEditForm(int $id): void
     {
-        $jadwal              = JadwalPelajaran::findOrFail($id);
-        $this->editId        = $id;
-        $this->hari          = $jadwal->hari;
-        $this->mapelId       = $jadwal->mapel_id;
-        $this->guruFormId    = $jadwal->guru_id;
-        $this->jamMulai      = substr($jadwal->jam_mulai, 0, 5);
-        $this->jamSelesai    = substr($jadwal->jam_selesai, 0, 5);
-        $this->showForm      = true;
+        $jadwal           = JadwalPelajaran::findOrFail($id);
+        $this->editId     = $id;
+        $this->gmrId      = $jadwal->guru_mapel_rombel_id;
+        $this->hari       = $jadwal->hari;
+        $this->jamMulai   = substr($jadwal->jam_mulai, 0, 5);
+        $this->jamSelesai = substr($jadwal->jam_selesai, 0, 5);
+        $this->showForm   = true;
     }
 
     public function closeForm(): void
@@ -62,7 +60,8 @@ class JadwalGuru extends Component
 
     public function save(): void
     {
-        $guru = Auth::user()->guru;
+        $guru            = Auth::user()->guru;
+        $periode         = app(PeriodeService::class)->getSelected();
         $rombelWaliKelas = $guru ? Rombel::where('wali_kelas_id', $guru->id)->first() : null;
 
         if (! $rombelWaliKelas) {
@@ -71,21 +70,29 @@ class JadwalGuru extends Component
         }
 
         $this->validate([
+            'gmrId'      => 'required|exists:guru_mapel_rombel,id',
             'hari'       => 'required|in:senin,selasa,rabu,kamis,jumat,sabtu,minggu',
-            'mapelId'    => 'required|exists:mapel,id',
-            'guruFormId' => 'required|exists:guru,id',
             'jamMulai'   => 'required|date_format:H:i',
             'jamSelesai' => 'required|date_format:H:i|after:jamMulai',
         ], [
+            'gmrId.required'       => 'Pemetaan guru-mapel wajib dipilih.',
             'hari.required'        => 'Hari wajib dipilih.',
-            'mapelId.required'     => 'Mata pelajaran wajib dipilih.',
-            'guruFormId.required'  => 'Guru wajib dipilih.',
             'jamMulai.required'    => 'Jam mulai wajib diisi.',
             'jamSelesai.required'  => 'Jam selesai wajib diisi.',
             'jamSelesai.after'     => 'Jam selesai harus lebih dari jam mulai.',
         ]);
 
-        $duplicate = JadwalPelajaran::where('rombel_id', $rombelWaliKelas->id)
+        // Pastikan GMR memang untuk rombel wali kelas ini
+        $gmr = GuruMapelRombel::where('id', $this->gmrId)
+            ->where('rombel_id', $rombelWaliKelas->id)
+            ->first();
+
+        if (! $gmr) {
+            $this->addError('gmrId', 'Pemetaan tidak valid untuk rombel Anda.');
+            return;
+        }
+
+        $duplicate = JadwalPelajaran::whereHas('guruMapelRombel', fn($q) => $q->where('rombel_id', $rombelWaliKelas->id))
             ->where('hari', $this->hari)
             ->where('jam_mulai', $this->jamMulai . ':00')
             ->when($this->editId, fn($q) => $q->where('id', '!=', $this->editId))
@@ -102,12 +109,10 @@ class JadwalGuru extends Component
             JadwalPelajaran::updateOrCreate(
                 ['id' => $this->editId],
                 [
-                    'rombel_id'   => $rombelWaliKelas->id,
-                    'mapel_id'    => $this->mapelId,
-                    'guru_id'     => $this->guruFormId,
-                    'hari'        => $this->hari,
-                    'jam_mulai'   => $this->jamMulai,
-                    'jam_selesai' => $this->jamSelesai,
+                    'guru_mapel_rombel_id' => $this->gmrId,
+                    'hari'                 => $this->hari,
+                    'jam_mulai'            => $this->jamMulai,
+                    'jam_selesai'          => $this->jamSelesai,
                 ]
             );
             $this->closeForm();
@@ -126,7 +131,7 @@ class JadwalGuru extends Component
         $this->confirmDeleteId = null;
         if (! $id) return;
 
-        $guru = Auth::user()->guru;
+        $guru            = Auth::user()->guru;
         $rombelWaliKelas = $guru ? Rombel::where('wali_kelas_id', $guru->id)->first() : null;
 
         if (! $rombelWaliKelas) {
@@ -135,8 +140,8 @@ class JadwalGuru extends Component
         }
 
         try {
-            $jadwal = JadwalPelajaran::findOrFail($id);
-            if ($jadwal->rombel_id !== $rombelWaliKelas->id) {
+            $jadwal = JadwalPelajaran::with('guruMapelRombel')->findOrFail($id);
+            if ($jadwal->guruMapelRombel->rombel_id !== $rombelWaliKelas->id) {
                 $this->dispatch('notify', type: 'error', message: 'Anda hanya bisa menghapus jadwal rombel Anda sendiri.');
                 return;
             }
@@ -152,19 +157,22 @@ class JadwalGuru extends Component
 
     public function render(): View
     {
-        $guru            = Auth::user()->guru;
-        $hariOrder       = self::HARI_ORDER;
-        $hariLabel       = self::HARI_LABEL;
+        $guru      = Auth::user()->guru;
+        $periode   = app(PeriodeService::class)->getSelected();
+        $hariOrder = self::HARI_ORDER;
+        $hariLabel = self::HARI_LABEL;
+
         $rombelWaliKelas = null;
         $jadwalWkByHari  = collect();
-        $mapels          = collect();
-        $allGurus        = collect();
+        $pemetaanWk      = collect();
+        $jadwalPribadi   = collect();
 
-        // Jadwal pribadi (sebagai guru pengajar)
-        $jadwalPribadi = collect();
         if ($guru) {
-            $jadwalRaw = JadwalPelajaran::with(['rombel', 'mapel'])
-                ->where('guru_id', $guru->id)
+            // Jadwal pribadi (sebagai pengajar di semua rombel)
+            $jadwalRaw = JadwalPelajaran::with(['guruMapelRombel.rombel', 'guruMapelRombel.mapel'])
+                ->whereHas('guruMapelRombel', fn($q) => $q->where('guru_id', $guru->id)
+                    ->when($periode, fn($s) => $s->where('periode_ajaran_id', $periode->id))
+                )
                 ->orderByRaw("FIELD(hari, 'senin','selasa','rabu','kamis','jumat','sabtu','minggu')")
                 ->orderBy('jam_mulai')
                 ->get();
@@ -174,30 +182,35 @@ class JadwalGuru extends Component
             $rombelWaliKelas = Rombel::where('wali_kelas_id', $guru->id)->first();
 
             if ($rombelWaliKelas) {
-                $jadwalWkRaw = JadwalPelajaran::with(['mapel', 'guru'])
-                    ->where('rombel_id', $rombelWaliKelas->id)
+                // Pemetaan untuk form tambah jadwal
+                $pemetaanQuery = GuruMapelRombel::with(['guru', 'mapel'])
+                    ->where('rombel_id', $rombelWaliKelas->id);
+                if ($periode) {
+                    $pemetaanQuery->where('periode_ajaran_id', $periode->id);
+                }
+                $pemetaanWk = $pemetaanQuery->orderBy('mapel_id')->get();
+
+                // Jadwal rombel wali kelas
+                $jadwalWkRaw = JadwalPelajaran::with(['guruMapelRombel.mapel', 'guruMapelRombel.guru'])
+                    ->whereHas('guruMapelRombel', fn($q) => $q->where('rombel_id', $rombelWaliKelas->id))
                     ->orderByRaw("FIELD(hari, 'senin','selasa','rabu','kamis','jumat','sabtu','minggu')")
                     ->orderBy('jam_mulai')
                     ->get();
                 $jadwalWkByHari = $jadwalWkRaw->groupBy('hari');
-                $mapels         = Mapel::orderBy('nama')->get();
-                $allGurus       = Guru::orderBy('nama_lengkap')->get();
             }
         }
 
         return view('livewire.guru.jadwal-guru', compact(
             'guru', 'hariOrder', 'hariLabel',
-            'jadwalPribadi', 'rombelWaliKelas', 'jadwalWkByHari',
-            'mapels', 'allGurus'
+            'jadwalPribadi', 'rombelWaliKelas', 'jadwalWkByHari', 'pemetaanWk'
         ));
     }
 
     private function resetWkForm(): void
     {
         $this->editId     = null;
+        $this->gmrId      = null;
         $this->hari       = '';
-        $this->mapelId    = null;
-        $this->guruFormId = null;
         $this->jamMulai   = '';
         $this->jamSelesai = '';
         $this->resetValidation();

@@ -115,6 +115,8 @@ class WilayahManager extends Component
             ->orderBy('nama')
             ->paginate($this->perPage);
 
+            // dd(session('periode_id_selected'));
+
         return view('livewire.admin.master-data.wilayah-manager', compact('wilayahs'));
     }
 

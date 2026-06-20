@@ -12,7 +12,7 @@ class PeriodeSwitcher extends Component
     public function switchPeriod(int $id): void
     {
         app(PeriodeService::class)->setPeriod($id);
-        $this->redirect(request()->fullUrl(), navigate: false);
+        $this->js('window.location.reload()');
     }
 
     public function render(): View

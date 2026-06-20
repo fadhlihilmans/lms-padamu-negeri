@@ -3,7 +3,6 @@
 namespace App\Livewire\PesertaDidik;
 
 use App\Models\JadwalPelajaran;
-use App\Models\PesertaDidikRombel;
 use App\Models\Rombel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -34,7 +33,7 @@ class JadwalPesertaDidik extends Component
         $rombels = collect();
         if ($pd) {
             $rombels = Rombel::whereHas('pesertaDidikRombel', fn($q) => $q->where('peserta_didik_id', $pd->id))
-                ->orderByDesc('tahun_ajaran')
+                ->orderByDesc('periode_ajaran_id')
                 ->orderBy('nama')
                 ->get();
 
@@ -50,8 +49,8 @@ class JadwalPesertaDidik extends Component
         if ($this->filterRombelId) {
             $rombelSelected = $rombels->firstWhere('id', $this->filterRombelId);
             if ($rombelSelected) {
-                $jadwalRaw = JadwalPelajaran::with(['mapel', 'guru'])
-                    ->where('rombel_id', $this->filterRombelId)
+                $jadwalRaw = JadwalPelajaran::with(['guruMapelRombel.mapel', 'guruMapelRombel.guru'])
+                    ->whereHas('guruMapelRombel', fn($q) => $q->where('rombel_id', $this->filterRombelId))
                     ->orderByRaw("FIELD(hari, 'senin','selasa','rabu','kamis','jumat','sabtu','minggu')")
                     ->orderBy('jam_mulai')
                     ->get();

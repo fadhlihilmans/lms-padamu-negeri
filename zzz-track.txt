@@ -1,14 +1,11 @@
-langkah 10 selesai
+langkah 15 belum selesai
 
-kurang:
+# kurang:
 - halaman login hubungi admin
-- error ketika ganti periode mungkin bisa gunakan 
-    #[Url]
-    public $periode_ajaran = '';
-pada livewire, atau mungkin anda punya cara sendiri tidak masalah.
 
-error:
-Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException
-vendor/laravel/framework/src/Illuminate/Routing/AbstractRouteCollection.php:130
+Tugas:
+Langkah 15 — Tugas (PRD 6.8)
+DaftarTugas, FormTugas
 
-The GET method is not supported for route livewire/update. Supported methods: POST. 
+prompt;
+selesaikan langkah 15. Namun pada form untuk tampilan tolong dibuat lebih baik lagi ya

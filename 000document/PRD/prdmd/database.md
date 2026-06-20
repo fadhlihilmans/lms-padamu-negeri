@@ -129,12 +129,12 @@ Unique: (`tahun_ajaran`,`semester`).
 | Kolom | Tipe | Keterangan |
 |---|---|---|
 | id | BIGINT PK | |
+| periode_ajaran_id | FK → periode_ajaran, onDelete restrict | rombel terikat ke periode (semester+TA), bukan hanya tahun |
 | wilayah_id | FK → wilayah, onDelete restrict | |
 | paket_id | FK → paket, onDelete restrict | |
 | tingkat_id | FK → tingkat, onDelete restrict | |
-| tahun_ajaran | VARCHAR(9) NOT NULL | terikat ke TA, bukan semester |
 | wali_kelas_id | FK → guru, NULL, onDelete set null | wajib diisi sebelum TA berjalan (validasi aplikasi) |
-| nama | VARCHAR(150) NOT NULL | hasil generate, mis. "Kelas 10 Botolambat Paket C – TA 2023/2024" |
+| nama | VARCHAR(150) NOT NULL | hasil generate, mis. "Kelas 10 Botolambat Paket C – TA 2024/2025" |
 
 ### peserta_didik_rombel (pivot)
 | Kolom | Tipe | Keterangan |
@@ -166,12 +166,12 @@ Unique: (`guru_id`,`mapel_id`,`rombel_id`,`periode_ajaran_id`).
 | Kolom | Tipe | Keterangan |
 |---|---|---|
 | id | BIGINT PK | |
-| rombel_id | FK → rombel, onDelete cascade | |
-| mapel_id | FK → mapel, onDelete restrict | |
-| guru_id | FK → guru, onDelete restrict | |
+| guru_mapel_rombel_id | FK → guru_mapel_rombel, onDelete cascade | guru, mapel, rombel, periode semuanya diambil dari sini |
 | hari | ENUM('senin','selasa','rabu','kamis','jumat','sabtu','minggu') | |
 | jam_mulai | TIME NOT NULL | |
 | jam_selesai | TIME NOT NULL | |
+
+> **Catatan desain:** `jadwal_pelajaran` tidak lagi menyimpan `guru_id`, `mapel_id`, `rombel_id` secara terpisah. Semua diturunkan dari relasi `guru_mapel_rombel`. Ini menjamin jadwal selalu konsisten dengan pemetaan — tidak mungkin jadwal mereferensi guru/mapel yang tidak dipetakan ke rombel tersebut.
 
 ---
 
@@ -183,10 +183,20 @@ Unique: (`guru_id`,`mapel_id`,`rombel_id`,`periode_ajaran_id`).
 | id | BIGINT PK | |
 | guru_mapel_rombel_id | FK → guru_mapel_rombel, onDelete cascade | |
 | judul | VARCHAR(200) NOT NULL | |
-| deskripsi | TEXT NULL | |
-| tipe_konten | ENUM('text','file','link_video','gambar') NOT NULL | |
-| file_path | VARCHAR(255) NULL | jika tipe file/gambar |
+| isi | LONGTEXT NULL | Rich-text HTML dari editor Quill |
+
+### materi_lampiran
+| Kolom | Tipe | Keterangan |
+|---|---|---|
+| id | BIGINT PK | |
+| materi_id | FK → materi, onDelete cascade | |
+| tipe | ENUM('file','gambar','link_video') | |
+| file_path | VARCHAR(255) NULL | path storage/public/materi/ |
 | url | VARCHAR(500) NULL | jika tipe link_video |
+| nama_asli | VARCHAR(255) NULL | nama file asli saat upload |
+| urutan | SMALLINT UNSIGNED DEFAULT 0 | |
+
+> Satu materi bisa memiliki banyak lampiran dari berbagai tipe sekaligus.
 
 ### tugas
 | Kolom | Tipe | Keterangan |
