@@ -1,9 +1,9 @@
 <div>
     @if ($terbuka)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4"
+        <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-0 sm:p-4"
              x-data="{ showBaru: false, showKonfirmasi: false }">
 
-            <div class="bg-white rounded-xl shadow-md w-full max-w-md border border-[#c5c5d7] overflow-hidden flex flex-col">
+            <div class="bg-white rounded-t-2xl sm:rounded-xl shadow-xl shadow-black/10 w-full max-w-4xl sm:max-w-md border border-[#c5c5d7] overflow-hidden flex flex-col max-h-[90vh] sm:max-h-[85vh]">
 
                 {{-- Header --}}
                 <div class="flex justify-between items-center p-6 border-b border-[#c5c5d7] bg-[#f6fafe]">
@@ -68,9 +68,9 @@
                         </div>
 
                         {{-- Footer --}}
-                        <div class="flex justify-between items-center pt-2 gap-4 border-t border-[#c5c5d7] mt-1">
+                        <div class="flex flex-col-reverse sm:flex-row sm:justify-end items-stretch sm:items-center pt-2 gap-3 border-t border-[#c5c5d7] mt-1">
                             <button type="button" wire:click="skip"
-                                    class="px-5 py-2.5 rounded-lg border border-[#c5c5d7] bg-white text-[#505f76] text-[14px] font-medium hover:bg-[#f0f4f8] transition-colors cursor-pointer">
+                                    class="w-full sm:w-auto px-5 py-2.5 rounded-lg border border-[#c5c5d7] bg-white text-[#505f76] text-[14px] font-medium hover:bg-[#f0f4f8] transition-colors cursor-pointer text-center">
                                 Nanti Saja
                             </button>
                             <button type="submit"

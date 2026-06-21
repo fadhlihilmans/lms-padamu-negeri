@@ -92,8 +92,9 @@
         x-data="{
             toasts: [],
             add(detail) {
+                const payload = Array.isArray(detail) ? detail[0] : detail;
                 const id = Date.now();
-                this.toasts.push({ id, visible: true, type: detail.type ?? 'success', message: detail.message ?? detail[0] ?? '' });
+                this.toasts.push({ id, visible: true, type: payload.type ?? 'success', message: payload.message ?? '' });
                 setTimeout(() => {
                     const t = this.toasts.find(t => t.id === id);
                     if (t) t.visible = false;
@@ -102,6 +103,7 @@
             }
         }"
         @notify.window="add($event.detail)"
+        x-init="@if (session()->has('toast')) add(@js(session('toast'))) @endif"
         class="fixed top-4 right-4 z-[200] flex flex-col gap-2 w-80 max-w-[calc(100vw-2rem)] pointer-events-none"
     >
         <template x-for="toast in toasts" :key="toast.id">

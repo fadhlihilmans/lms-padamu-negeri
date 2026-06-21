@@ -33,6 +33,10 @@
 
             <x-sidebar-item route="dashboard" icon="dashboard" label="Dashboard" />
 
+            <p class="px-3 pt-4 pb-1 text-label-sm text-secondary/60 uppercase tracking-wider">Pengguna</p>
+            <x-sidebar-item route="admin.pengguna.guru" icon="badge" label="Guru" />
+            <x-sidebar-item route="admin.pengguna.peserta-didik" icon="person" label="Peserta Didik" />
+
             <p class="px-3 pt-4 pb-1 text-label-sm text-secondary/60 uppercase tracking-wider">Master Data</p>
             <x-sidebar-item route="admin.master.periode" icon="calendar_month" label="Periode Ajaran" />
             <x-sidebar-item route="admin.master.wilayah" icon="location_on" label="Wilayah" />
@@ -41,10 +45,6 @@
             <x-sidebar-item route="admin.master.rombel" icon="groups" label="Rombel" />
             <x-sidebar-item route="admin.master.mapel" icon="book" label="Mata Pelajaran" />
             <x-sidebar-item route="admin.master.pemetaan" icon="hub" label="Pemetaan Guru-Mapel" />
-
-            <p class="px-3 pt-4 pb-1 text-label-sm text-secondary/60 uppercase tracking-wider">Pengguna</p>
-            <x-sidebar-item route="admin.pengguna.guru" icon="badge" label="Guru" />
-            <x-sidebar-item route="admin.pengguna.peserta-didik" icon="person" label="Peserta Didik" />
 
             <p class="px-3 pt-4 pb-1 text-label-sm text-secondary/60 uppercase tracking-wider">Akademik</p>
             <x-sidebar-item route="admin.akademik.jadwal" icon="schedule" label="Jadwal Pelajaran" />
@@ -55,6 +55,7 @@
 
             <p class="px-3 pt-4 pb-1 text-label-sm text-secondary/60 uppercase tracking-wider">Sistem</p>
             <x-sidebar-item route="pengaturan.index" icon="settings" label="Pengaturan" />
+            <x-sidebar-item route="bug-report.index" icon="flag" label="Lapor Bug" />
             <x-sidebar-item route="error-log.index" icon="bug_report" label="Log Error" />
 
         {{-- ===== GURU MENU ===== --}}
@@ -67,8 +68,11 @@
             <x-sidebar-item route="guru.absensi" icon="how_to_reg" label="Absensi" />
             <x-sidebar-item route="guru.materi" icon="menu_book" label="Materi" />
             <x-sidebar-item route="guru.tugas" icon="assignment" label="Tugas" />
-            <x-sidebar-item route="cbt.index" icon="quiz" label="CBT" />
+            <x-sidebar-item route="guru.cbt" icon="quiz" label="CBT" />
             <x-sidebar-item route="penilaian.index" icon="grade" label="Penilaian Akhir" />
+
+            <p class="px-3 pt-4 pb-1 text-label-sm text-secondary/60 uppercase tracking-wider">Lainnya</p>
+            <x-sidebar-item route="bug-report.index" icon="flag" label="Lapor Bug" />
 
         {{-- ===== PESERTA DIDIK MENU ===== --}}
         @elseif($isPesertaDidik)
@@ -79,9 +83,12 @@
             <x-sidebar-item route="peserta-didik.jadwal" icon="schedule" label="Jadwal Pelajaran" />
             <x-sidebar-item route="peserta-didik.absensi" icon="how_to_reg" label="Absensi" />
             <x-sidebar-item route="peserta-didik.materi" icon="menu_book" label="Materi" />
-            <x-sidebar-item route="tugas.index" icon="assignment" label="Tugas" />
+            <x-sidebar-item route="peserta-didik.tugas" icon="assignment" label="Tugas" />
             <x-sidebar-item route="cbt.index" icon="quiz" label="CBT" />
             <x-sidebar-item route="penilaian.index" icon="grade" label="Rapor Saya" />
+
+            <p class="px-3 pt-4 pb-1 text-label-sm text-secondary/60 uppercase tracking-wider">Lainnya</p>
+            <x-sidebar-item route="bug-report.index" icon="flag" label="Lapor Bug" />
 
         @endif
 

@@ -30,15 +30,21 @@ class DaftarTugas extends Component
     public int    $perPage = 12;
 
     // Form state
-    public bool    $showForm        = false;
-    public ?int    $editId          = null;
-    public string  $formGmrId      = '';
-    public string  $judul           = '';
-    public string  $deskripsi       = '';
-    public string  $deadline        = '';
+    public bool    $showForm         = false;
+    public ?int    $editId           = null;
+    public string  $formGmrId       = '';
+    public string  $judul            = '';
+    public string  $deskripsi        = '';
+    public string  $deadline         = '';
     public ?string $lampiranExisting = null;
-    public $lampiranBaru            = null;
-    public bool    $hapusLampiran   = false;
+    public $lampiranBaru             = null;
+    public bool    $hapusLampiran    = false;
+
+    // Dipanggil dari JS Trix saat isi berubah
+    public function setDeskripsi(string $value): void
+    {
+        $this->deskripsi = $value;
+    }
 
     // Delete confirm
     public ?int $confirmDeleteId = null;

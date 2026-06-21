@@ -13,13 +13,17 @@ class SesiAbsensi extends Model
     protected $fillable = [
         'guru_mapel_rombel_id',
         'tanggal',
+        'tanggal_buka',
+        'tutup_pada',
         'status_sesi',
     ];
 
     protected function casts(): array
     {
         return [
-            'tanggal' => 'date',
+            'tanggal'      => 'date',
+            'tanggal_buka' => 'datetime',
+            'tutup_pada'   => 'datetime',
         ];
     }
 

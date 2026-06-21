@@ -1,7 +1,7 @@
 <div class="w-full max-w-[400px] px-4 mx-auto" x-data="{ showPassword: false }">
 
     {{-- Card --}}
-    <div class="bg-white rounded-lg border border-[#E2E8F0] shadow-sm p-6">
+    <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm p-6">
 
         {{-- Header --}}
         <div class="text-center mb-6">
@@ -37,8 +37,8 @@
                     type="text"
                     autocomplete="username"
                     placeholder="Masukkan Username"
-                    class="w-full bg-white border rounded-lg px-4 py-2.5 text-[14px] text-on-surface focus:outline-none focus:ring-1 transition-shadow duration-200
-                           {{ $errors->has('username') ? 'border-[#ba1a1a] focus:ring-[#ba1a1a] focus:border-[#ba1a1a]' : 'border-[#E2E8F0] focus:ring-[#3c50e0] focus:border-[#3c50e0]' }}"
+                    class="w-full bg-white border rounded-lg px-4 py-2.5 text-[14px] text-on-surface focus:outline-none focus:ring-2 transition-shadow duration-200
+                           {{ $errors->has('username') ? 'border-[#ba1a1a] focus:ring-[#ba1a1a]/30 focus:border-[#ba1a1a]' : 'border-[#c5c5d7] focus:ring-[#3c50e0]/30 focus:border-[#3c50e0]' }}"
                 >
             </div>
 
@@ -55,7 +55,7 @@
                         :type="showPassword ? 'text' : 'password'"
                         autocomplete="current-password"
                         placeholder="Masukkan Password"
-                        class="w-full bg-white border border-[#E2E8F0] rounded-lg pl-4 pr-10 py-2.5 text-[14px] text-on-surface focus:outline-none focus:ring-1 focus:ring-[#3c50e0] focus:border-[#3c50e0] transition-shadow duration-200"
+                        class="w-full bg-white border border-[#c5c5d7] rounded-lg pl-4 pr-10 py-2.5 text-[14px] text-on-surface focus:outline-none focus:ring-2 focus:ring-[#3c50e0]/30 focus:border-[#3c50e0] transition-shadow duration-200"
                     >
                     <button
                         type="button"

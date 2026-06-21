@@ -151,13 +151,41 @@ This design system uses **Ambient Shadows** to create a sense of organized layer
 - **Outlines:** All cards and containers feature a subtle 1px border using `#E2E8F0` to maintain definition against the soft gray background.
 
 ## Shapes
-The shape language is consistently **Rounded**. 
+The shape language is consistently **Rounded**.
 
-A standard border-radius of **8px (0.5rem)** is applied to all primary containers, cards, and input fields. This creates a friendly yet structured appearance. Small components like tags (chips) or badges may use a "pill" radius to differentiate them from actionable buttons, but the core structural elements remain strictly at the 8px/16px/24px scaling tier.
+Border-radius rules (STRICT — must match across all components):
+- **Cards & Modals:** `rounded-xl` (12px) — the definitive radius for all content containers and dialog panels.
+- **Buttons, Inputs, Select, Badges:** `rounded-lg` (8px).
+- **Avatars, Dot indicators, Pill tags:** `rounded-full`.
+- **Bottom-sheet modal top corners (mobile):** `rounded-t-2xl` (16px) — only for the mobile bottom-sheet variant.
+- Never use `rounded-2xl` or `rounded-3xl` on standard desktop components.
+
+## Elevation & Depth
+This design system uses **Ambient Shadows** to create a sense of organized layering. Depth is communicative, not just decorative.
+
+- **Level 0 (Background):** `#F1F5F9` - The canvas.
+- **Level 1 (Cards/Sidebar):** White surface with `shadow-sm`. Default state for all content containers.
+- **Level 2 (Dropdowns/Modals):** White surface with `shadow-xl shadow-black/10`.
+- **Outlines:** All cards use `border border-[#c5c5d7]` (NOT `#E2E8F0`) — use this consistently.
+- **Modal Backdrop:** Always `bg-black/50 backdrop-blur-sm`. This is non-negotiable.
 
 ## Components
-- **Buttons:** Primary buttons use `#3C50E0` with white text. Hover states should darken the blue slightly. Secondary buttons use a white fill with the `#E2E8F0` border.
-- **Inputs:** Fields use a white background, `#E2E8F0` border, and 8px corners. The focus state is a 1px solid `#3C50E0` with a soft blue outer glow. Labels are placed above the field in `label-md` weight using Indonesian (e.g., "Nama Lengkap").
-- **Cards:** The foundational unit. Always white, 8px radius, 1px border (`#E2E8F0`), and a soft shadow. Header sections within cards should be separated by a subtle horizontal rule.
-- **Sidebar Items:** Icons should be sized at 20px. Active states feature a left-hand 3px accent bar in Primary Blue and a light blue tinted background (5% opacity).
-- **Data Tables:** Clean rows with no vertical borders. Header row uses `label-sm` (uppercase) with a light gray background or a thicker bottom border.
+- **Buttons:** Primary `bg-[#3c50e0]` hover `bg-[#2e3eb0]`, white text. Always `py-2.5` for 44px touch target. Always `cursor-pointer`. Secondary: white fill + `border-[#c5c5d7]`. Danger: `border-[#ba1a1a] text-[#ba1a1a]` hover `bg-[#ffdad6]`.
+- **Inputs:** White bg, `border-[#c5c5d7]`, `rounded-lg`. Focus: `focus:ring-2 focus:ring-[#3c50e0]/30 focus:border-[#3c50e0]`. Always `py-2.5` for touch target. Labels above the field.
+- **Cards:** Always `bg-white rounded-xl border border-[#c5c5d7] shadow-sm`. Header sections separated by `border-b border-[#c5c5d7]`.
+- **Modals:** Bottom-sheet on mobile (`items-end rounded-t-2xl`), centered on desktop (`sm:items-center sm:rounded-xl`). Always `backdrop-blur-sm`. Body must be `overflow-y-auto max-h-[90dvh]`. Footer buttons `flex-col-reverse sm:flex-row`.
+- **Sidebar Items:** Icons sized at 20px. Active: left 3px accent bar + `bg-primary/8`. Inactive: `text-secondary hover:bg-surface-container-low`.
+- **Data Tables:** Wrap in `overflow-x-auto`. No vertical borders. Header: `text-[11px] font-semibold text-[#505f76] uppercase tracking-wider`. Secondary columns: `hidden sm:table-cell`. Row hover: `hover:bg-[#f6fafe]`. Row divider: `divide-y divide-[#f0f4f8]`.
+
+## Mobile-First Rules (CRITICAL)
+- All layouts start at 1 column, expand with `sm:`, `md:`, `lg:` breakpoints.
+- Sidebar collapses to hamburger at `<lg`. Implementation already exists in `app.blade.php` — never duplicate.
+- Page action buttons: `w-full sm:w-auto` so they're full-width on mobile.
+- Button groups in footers: `flex-col-reverse sm:flex-row` — cancel button below primary on mobile.
+- Form grids: always `grid-cols-1 sm:grid-cols-2`.
+- Modal footer: buttons must be `w-full sm:w-auto` and stacked on mobile.
+- Page heading: responsive sizes `text-[20px] sm:text-[24px]`.
+- Stat card grids: `grid-cols-1 sm:grid-cols-2 lg:grid-cols-4`.
+- All pages must have an empty state (`forelse` + empty message with icon) — never an empty list.
+
+> For complete code patterns, see `docs/design-guide.md` Bagian E & F.

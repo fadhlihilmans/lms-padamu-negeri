@@ -38,6 +38,43 @@
                         </span>
                     </div>
 
+                    {{-- Timer dibuka & ditutup --}}
+                    @php
+                        $tsTutupPD = $sesi->tutup_pada ? $sesi->tutup_pada->timestamp : 0;
+                    @endphp
+                    <div class="px-6 py-3 bg-[#f6fafe] border-b border-[#c5d0ff] flex flex-wrap gap-x-6 gap-y-1.5">
+                        @if ($sesi->tanggal_buka)
+                            <div class="flex items-center gap-1.5 text-[12px] text-[#3c50e0]">
+                                <span class="material-symbols-outlined text-[14px]">play_circle</span>
+                                <span>Dibuka: <strong>{{ $sesi->tanggal_buka->format('H:i') }} WIB</strong></span>
+                            </div>
+                        @endif
+                        @if ($sesi->tutup_pada)
+                            <div x-data="{
+                                    dl: {{ $tsTutupPD }},
+                                    rem: '--:--',
+                                    urg: false,
+                                    init() { this.tick(); setInterval(() => this.tick(), 1000); },
+                                    tick() {
+                                        var diff = this.dl - Math.floor(Date.now() / 1000);
+                                        if (diff <= 0) { this.rem = 'Habis'; this.urg = true; return; }
+                                        var h = Math.floor(diff / 3600);
+                                        var m = Math.floor((diff % 3600) / 60);
+                                        var s = diff % 60;
+                                        this.urg = diff < 300;
+                                        this.rem = (h > 0 ? h + 'j ' : '') + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+                                    }
+                                 }"
+                                 class="flex items-center gap-1.5 text-[12px]"
+                                 :class="urg ? 'text-[#ba1a1a] font-semibold' : 'text-[#856404]'">
+                                <span class="material-symbols-outlined text-[14px]">timer</span>
+                                <span>Tutup: <strong>{{ $sesi->tutup_pada->format('H:i') }} WIB</strong>
+                                    &mdash; sisa <span class="font-mono font-bold" x-text="rem"></span>
+                                </span>
+                            </div>
+                        @endif
+                    </div>
+
                     <div class="p-6">
                         @if ($sudahAbsen)
                             {{-- Sudah absen --}}

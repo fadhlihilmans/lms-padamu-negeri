@@ -45,169 +45,176 @@
 
     {{-- ── Modal Form ───────────────────────────────────────────────────────── --}}
     @if ($showForm)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-            <div class="bg-white rounded-xl shadow-md w-full max-w-3xl border border-[#c5c5d7] flex flex-col"
-                 style="max-height: 92vh;">
-                <div class="flex items-center justify-between px-6 py-4 border-b border-[#c5c5d7] flex-shrink-0">
-                    <h3 class="text-[20px] font-semibold text-on-surface">{{ $editId ? 'Edit Materi' : 'Tambah Materi Baru' }}</h3>
-                    <button wire:click="closeForm" class="text-[#505f76] hover:text-[#ba1a1a] transition-colors p-1 cursor-pointer">
-                        <span class="material-symbols-outlined">close</span>
-                    </button>
-                </div>
+        <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-0 sm:p-4">
+            
+            {{-- Modal Container (Posisinya relative agar tombol close bisa absolute di dalamnya) --}}
+            <div class="relative bg-white rounded-t-2xl sm:rounded-xl shadow-xl shadow-black/10 w-full max-w-4xl sm:max-w-3xl border border-[#c5c5d7]">
 
-                <form wire:submit="save" class="overflow-y-auto flex-1 p-6 flex flex-col gap-5">
+                {{-- Tombol Close (Absolute di pojok kanan atas, tidak ikut ter-scroll) --}}
+                <button wire:click="closeForm" type="button"
+                        class="absolute top-4 right-4 text-[#505f76] hover:text-[#ba1a1a] transition-colors p-1 cursor-pointer z-10 bg-white rounded-full">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
 
-                    {{-- Judul --}}
-                    <div class="flex flex-col gap-1.5">
-                        <label class="text-[14px] font-medium text-on-surface">
-                            Judul Materi <span class="text-[#ba1a1a]">*</span>
-                        </label>
-                        <input wire:model="judul" type="text" placeholder="Masukkan judul materi"
-                               class="w-full border rounded-lg px-4 py-2.5 text-[14px] focus:outline-none focus:ring-1 transition-shadow
-                                      {{ $errors->has('judul') ? 'border-[#ba1a1a] focus:ring-[#ba1a1a]' : 'border-[#c5c5d7] focus:ring-[#3c50e0]' }}">
-                        @error('judul') <p class="text-[12px] text-[#ba1a1a]">{{ $message }}</p> @enderror
+                {{-- Area Scrollable --}}
+                <div class="p-6 sm:p-8 max-h-[90vh] overflow-y-auto">
+                    
+                    {{-- Header --}}
+                    <div class="mb-6 border-b border-[#c5c5d7] pb-4 pr-8">
+                        <h3 class="text-[20px] font-semibold text-on-surface">{{ $editId ? 'Edit Materi' : 'Tambah Materi Baru' }}</h3>
                     </div>
 
-                    {{-- Trix Rich Text Editor — wire:ignore mencegah Livewire destroy editor --}}
-                    <div class="flex flex-col gap-1.5">
-                        <label class="text-[14px] font-medium text-on-surface">Isi Materi <span class="text-[12px] font-normal text-[#505f76]">(opsional)</span></label>
-                        <div wire:ignore class="border border-[#c5c5d7] rounded-lg overflow-hidden trix-wrapper">
-                            <input id="trix-content-{{ $editId ?? 'new' }}"
-                                   type="hidden"
-                                   value="{{ $isi }}">
-                            <trix-editor
-                                input="trix-content-{{ $editId ?? 'new' }}"
-                                placeholder="Tulis penjelasan, ringkasan, atau instruksi materi di sini..."
-                                class="trix-content min-h-[160px]"
-                                x-on:trix-change="$wire.set('isi', $event.target.value)"
-                                x-on:trix-file-accept.prevent>
-                            </trix-editor>
+                    {{-- Form --}}
+                    <form wire:submit="save" class="space-y-6">
+
+                        {{-- Judul --}}
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-[14px] font-medium text-on-surface">
+                                Judul Materi <span class="text-[#ba1a1a]">*</span>
+                            </label>
+                            <input wire:model="judul" type="text" placeholder="Masukkan judul materi"
+                                   class="w-full border rounded-lg px-4 py-2.5 text-[14px] focus:outline-none focus:ring-1 transition-shadow
+                                          {{ $errors->has('judul') ? 'border-[#ba1a1a] focus:ring-[#ba1a1a]' : 'border-[#c5c5d7] focus:ring-[#3c50e0]' }}">
+                            @error('judul') <p class="text-[12px] text-[#ba1a1a]">{{ $message }}</p> @enderror
                         </div>
-                    </div>
 
-                    {{-- Lampiran existing (edit mode) --}}
-                    @if ($editId && $lampiranExisting)
-                        <div class="flex flex-col gap-2">
-                            <label class="text-[14px] font-medium text-on-surface">Lampiran Saat Ini</label>
-                            <div class="flex flex-col gap-2">
-                                @foreach ($lampiranExisting as $l)
-                                    @php $ditandaHapus = in_array($l['id'], $lampiranHapus); @endphp
-                                    <div class="flex items-center gap-3 p-3 rounded-lg border transition-colors
-                                                {{ $ditandaHapus ? 'border-[#ba1a1a] bg-[#ffdad6]/30' : 'border-[#c5c5d7] bg-[#f6fafe]' }}">
-                                        @if ($l['tipe'] === 'link_video')
-                                            <span class="material-symbols-outlined text-[#3c50e0] text-[18px]">play_circle</span>
-                                            <span class="text-[13px] flex-1 truncate {{ $ditandaHapus ? 'line-through text-[#505f76]' : 'text-on-surface' }}">{{ $l['url'] }}</span>
-                                        @elseif ($l['tipe'] === 'gambar')
-                                            <span class="material-symbols-outlined text-[#505f76] text-[18px]">image</span>
-                                            <span class="text-[13px] flex-1 truncate {{ $ditandaHapus ? 'line-through text-[#505f76]' : 'text-on-surface' }}">{{ $l['nama_asli'] }}</span>
-                                        @else
-                                            <span class="material-symbols-outlined text-[#ba1a1a] text-[18px]">description</span>
-                                            <span class="text-[13px] flex-1 truncate {{ $ditandaHapus ? 'line-through text-[#505f76]' : 'text-on-surface' }}">{{ $l['nama_asli'] }}</span>
-                                        @endif
-                                        <button type="button" wire:click="toggleHapusLampiran({{ $l['id'] }})"
-                                                class="text-[12px] font-medium cursor-pointer flex-shrink-0
-                                                       {{ $ditandaHapus ? 'text-[#3c50e0] hover:text-[#1c33c8]' : 'text-[#ba1a1a] hover:text-[#93000a]' }}">
-                                            {{ $ditandaHapus ? 'Batalkan' : 'Hapus' }}
-                                        </button>
-                                    </div>
-                                @endforeach
+                        {{-- Trix Rich Text Editor --}}
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-[14px] font-medium text-on-surface">Isi Materi <span class="text-[12px] font-normal text-[#505f76]">(opsional)</span></label>
+                            <div wire:ignore class="border border-[#c5c5d7] rounded-lg overflow-hidden trix-wrapper">
+                                <input id="trix-content-{{ $editId ?? 'new' }}"
+                                       type="hidden"
+                                       value="{{ $isi }}">
+                                <trix-editor
+                                    input="trix-content-{{ $editId ?? 'new' }}"
+                                    placeholder="Tulis penjelasan, ringkasan, atau instruksi materi di sini..."
+                                    class="trix-content min-h-[160px]"
+                                    x-on:trix-change="$wire.set('isi', $event.target.value)"
+                                    x-on:trix-file-accept.prevent>
+                                </trix-editor>
                             </div>
                         </div>
-                    @endif
 
-                    {{-- Upload File & Gambar — satu zona --}}
-                    <div class="flex flex-col gap-2">
-                        <label class="text-[14px] font-medium text-on-surface">
-                            File & Gambar
-                            <span class="text-[12px] font-normal text-[#505f76]">(PDF, DOCX, PPT, XLS, gambar — maks {{ $maxMb }}MB/file, boleh multiple)</span>
-                        </label>
-                        <div class="relative border-2 border-dashed border-[#c5c5d7] rounded-xl bg-[#f6fafe] p-6 flex flex-col items-center text-center hover:border-[#3c50e0]/50 hover:bg-[#EEF2FF]/40 transition-colors cursor-pointer"
-                             x-data @click="$refs.fileZone.click()">
-                            <span class="material-symbols-outlined text-[32px] text-[#505f76] mb-1">cloud_upload</span>
-                            <p class="text-[13px] font-medium text-on-surface">Klik atau seret file ke sini</p>
-                            <p class="text-[12px] text-[#505f76] mt-0.5">File dokumen & gambar bisa dicampur</p>
-                            <input x-ref="fileZone" wire:model="lampiranBaru" type="file" multiple
-                                   accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,image/*" class="hidden">
-                        </div>
-                        @error('lampiranBaru.*') <p class="text-[12px] text-[#ba1a1a]">{{ $message }}</p> @enderror
-
-                        {{-- Preview antrian upload --}}
-                        @if ($lampiranBaru)
-                            <div class="flex flex-col gap-1.5 mt-1">
-                                @foreach ($lampiranBaru as $i => $f)
-                                    @php
-                                        $isImg = str_starts_with($f->getMimeType() ?? '', 'image/');
-                                    @endphp
-                                    <div class="flex items-center gap-2 text-[13px] text-on-surface rounded-lg px-3 py-2
-                                                {{ $isImg ? 'bg-[#d3e4fe]/40' : 'bg-[#EEF2FF]' }}">
-                                        <span class="material-symbols-outlined text-[16px] {{ $isImg ? 'text-[#505f76]' : 'text-[#3c50e0]' }}">
-                                            {{ $isImg ? 'image' : 'description' }}
-                                        </span>
-                                        <span class="flex-1 truncate">{{ $f->getClientOriginalName() }}</span>
-                                        <span class="text-[11px] text-[#505f76]">{{ number_format($f->getSize() / 1024, 0) }} KB</span>
-                                        <button type="button" wire:click="removeLampiranBaru({{ $i }})"
-                                                class="text-[#ba1a1a] hover:text-[#93000a] cursor-pointer ml-1">
-                                            <span class="material-symbols-outlined text-[16px]">close</span>
-                                        </button>
-                                    </div>
-                                @endforeach
+                        {{-- Lampiran existing (edit mode) --}}
+                        @if ($editId && $lampiranExisting)
+                            <div class="flex flex-col gap-2">
+                                <label class="text-[14px] font-medium text-on-surface">Lampiran Saat Ini</label>
+                                <div class="flex flex-col gap-2">
+                                    @foreach ($lampiranExisting as $l)
+                                        @php $ditandaHapus = in_array($l['id'], $lampiranHapus); @endphp
+                                        <div class="flex items-center gap-3 p-3 rounded-lg border transition-colors
+                                                    {{ $ditandaHapus ? 'border-[#ba1a1a] bg-[#ffdad6]/30' : 'border-[#c5c5d7] bg-[#f6fafe]' }}">
+                                            @if ($l['tipe'] === 'link_video')
+                                                <span class="material-symbols-outlined text-[#3c50e0] text-[18px]">play_circle</span>
+                                                <span class="text-[13px] flex-1 truncate {{ $ditandaHapus ? 'line-through text-[#505f76]' : 'text-on-surface' }}">{{ $l['url'] }}</span>
+                                            @elseif ($l['tipe'] === 'gambar')
+                                                <span class="material-symbols-outlined text-[#505f76] text-[18px]">image</span>
+                                                <span class="text-[13px] flex-1 truncate {{ $ditandaHapus ? 'line-through text-[#505f76]' : 'text-on-surface' }}">{{ $l['nama_asli'] }}</span>
+                                            @else
+                                                <span class="material-symbols-outlined text-[#ba1a1a] text-[18px]">description</span>
+                                                <span class="text-[13px] flex-1 truncate {{ $ditandaHapus ? 'line-through text-[#505f76]' : 'text-on-surface' }}">{{ $l['nama_asli'] }}</span>
+                                            @endif
+                                            <button type="button" wire:click="toggleHapusLampiran({{ $l['id'] }})"
+                                                    class="text-[12px] font-medium cursor-pointer flex-shrink-0
+                                                           {{ $ditandaHapus ? 'text-[#3c50e0] hover:text-[#1c33c8]' : 'text-[#ba1a1a] hover:text-[#93000a]' }}">
+                                                {{ $ditandaHapus ? 'Batalkan' : 'Hapus' }}
+                                            </button>
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
                         @endif
-                    </div>
 
-                    {{-- Link Video --}}
-                    <div class="flex flex-col gap-2">
-                        <label class="text-[14px] font-medium text-on-surface">Link Video <span class="text-[12px] font-normal text-[#505f76]">(YouTube, Google Drive, dll)</span></label>
-                        <div class="flex gap-2">
-                            <input wire:model="inputUrl" type="text" placeholder="https://youtu.be/... atau https://youtube.com/watch?v=..."
-                                   class="flex-1 border border-[#c5c5d7] rounded-lg px-4 py-2.5 text-[14px] focus:outline-none focus:ring-1 focus:ring-[#3c50e0]
-                                          {{ $errors->has('inputUrl') ? 'border-[#ba1a1a]' : '' }}"
-                                   wire:keydown.enter.prevent="addLinkVideo">
-                            <button type="button" wire:click="addLinkVideo"
-                                    class="px-4 py-2.5 rounded-lg border border-[#c5c5d7] bg-[#f0f4f8] text-[14px] font-medium text-on-surface hover:bg-[#e4e9ed] transition-colors cursor-pointer flex-shrink-0">
-                                + Tambah
+                        {{-- Upload File & Gambar --}}
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[14px] font-medium text-on-surface">
+                                File & Gambar
+                                <span class="text-[12px] font-normal text-[#505f76]">(PDF, DOCX, PPT, XLS, gambar — maks {{ $maxMb }}MB/file)</span>
+                            </label>
+                            <div class="relative border-2 border-dashed border-[#c5c5d7] rounded-xl bg-[#f6fafe] p-6 flex flex-col items-center text-center hover:border-[#3c50e0]/50 hover:bg-[#EEF2FF]/40 transition-colors cursor-pointer"
+                                 x-data @click="$refs.fileZone.click()">
+                                <span class="material-symbols-outlined text-[32px] text-[#505f76] mb-1">cloud_upload</span>
+                                <p class="text-[13px] font-medium text-on-surface">Klik atau seret file ke sini</p>
+                                <input x-ref="fileZone" wire:model="lampiranBaru" type="file" multiple
+                                       accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,image/*" class="hidden">
+                            </div>
+                            @error('lampiranBaru.*') <p class="text-[12px] text-[#ba1a1a]">{{ $message }}</p> @enderror
+
+                            {{-- Preview antrian upload --}}
+                            @if ($lampiranBaru)
+                                <div class="flex flex-col gap-1.5 mt-1">
+                                    @foreach ($lampiranBaru as $i => $f)
+                                        @php $isImg = str_starts_with($f->getMimeType() ?? '', 'image/'); @endphp
+                                        <div class="flex items-center gap-2 text-[13px] text-on-surface rounded-lg px-3 py-2
+                                                    {{ $isImg ? 'bg-[#d3e4fe]/40' : 'bg-[#EEF2FF]' }}">
+                                            <span class="material-symbols-outlined text-[16px] {{ $isImg ? 'text-[#505f76]' : 'text-[#3c50e0]' }}">
+                                                {{ $isImg ? 'image' : 'description' }}
+                                            </span>
+                                            <span class="flex-1 truncate">{{ $f->getClientOriginalName() }}</span>
+                                            <span class="text-[11px] text-[#505f76]">{{ number_format($f->getSize() / 1024, 0) }} KB</span>
+                                            <button type="button" wire:click="removeLampiranBaru({{ $i }})" class="text-[#ba1a1a] hover:text-[#93000a] cursor-pointer ml-1">
+                                                <span class="material-symbols-outlined text-[16px]">close</span>
+                                            </button>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
+
+                        {{-- Link Video --}}
+                        <div class="flex flex-col gap-2">
+                            <label class="text-[14px] font-medium text-on-surface">Link Video <span class="text-[12px] font-normal text-[#505f76]">(YouTube, dll)</span></label>
+                            <div class="flex gap-2">
+                                <input wire:model="inputUrl" type="text" placeholder="https://youtu.be/..."
+                                       class="flex-1 border border-[#c5c5d7] rounded-lg px-4 py-2.5 text-[14px] focus:outline-none focus:ring-1 focus:ring-[#3c50e0]
+                                              {{ $errors->has('inputUrl') ? 'border-[#ba1a1a]' : '' }}"
+                                       wire:keydown.enter.prevent="addLinkVideo">
+                                <button type="button" wire:click="addLinkVideo"
+                                        class="px-4 py-2.5 rounded-lg border border-[#c5c5d7] bg-[#f0f4f8] text-[14px] font-medium text-on-surface hover:bg-[#e4e9ed] transition-colors cursor-pointer flex-shrink-0">
+                                    + Tambah
+                                </button>
+                            </div>
+                            @error('inputUrl') <p class="text-[12px] text-[#ba1a1a]">{{ $message }}</p> @enderror
+
+                            @if ($linkVideo)
+                                <div class="flex flex-col gap-1.5">
+                                    @foreach ($linkVideo as $i => $url)
+                                        <div class="flex items-center gap-2 text-[13px] text-on-surface bg-[#EEF2FF] rounded-lg px-3 py-2">
+                                            <span class="material-symbols-outlined text-[16px] text-[#3c50e0]">play_circle</span>
+                                            <span class="flex-1 truncate text-[#1c33c8]">{{ $url }}</span>
+                                            <button type="button" wire:click="removeLinkVideo({{ $i }})" class="text-[#ba1a1a] hover:text-[#93000a] cursor-pointer">
+                                                <span class="material-symbols-outlined text-[16px]">close</span>
+                                            </button>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
+
+                        {{-- Footer Buttons --}}
+                        <div class="flex justify-end gap-3 pt-6 mt-2 border-t border-[#c5c5d7]">
+                            <button type="button" wire:click="closeForm"
+                                    class="px-5 py-2.5 rounded-lg border border-[#c5c5d7] text-[#505f76] text-[14px] font-medium hover:bg-[#f0f4f8] transition-colors cursor-pointer">
+                                Batal
+                            </button>
+                            <button type="submit"
+                                    class="px-5 py-2.5 rounded-lg bg-[#3c50e0] text-white text-[14px] font-medium hover:bg-[#1c33c8] transition-colors flex items-center gap-2 cursor-pointer"
+                                    wire:loading.attr="disabled" wire:loading.class="opacity-70 cursor-not-allowed">
+                                <span wire:loading wire:target="save" class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span>
+                                Simpan Materi
                             </button>
                         </div>
-                        @error('inputUrl') <p class="text-[12px] text-[#ba1a1a]">{{ $message }}</p> @enderror
+                    </form>
 
-                        @if ($linkVideo)
-                            <div class="flex flex-col gap-1.5">
-                                @foreach ($linkVideo as $i => $url)
-                                    <div class="flex items-center gap-2 text-[13px] text-on-surface bg-[#EEF2FF] rounded-lg px-3 py-2">
-                                        <span class="material-symbols-outlined text-[16px] text-[#3c50e0]">play_circle</span>
-                                        <span class="flex-1 truncate text-[#1c33c8]">{{ $url }}</span>
-                                        <button type="button" wire:click="removeLinkVideo({{ $i }})"
-                                                class="text-[#ba1a1a] hover:text-[#93000a] cursor-pointer">
-                                            <span class="material-symbols-outlined text-[16px]">close</span>
-                                        </button>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
-                    </div>
-
-                    {{-- Footer --}}
-                    <div class="flex justify-end gap-3 pt-3 border-t border-[#c5c5d7]">
-                        <button type="button" wire:click="closeForm"
-                                class="px-4 py-2.5 rounded-lg border border-[#c5c5d7] text-[#505f76] text-[14px] font-medium hover:bg-[#f0f4f8] transition-colors cursor-pointer">
-                            Batal
-                        </button>
-                        <button type="submit"
-                                class="px-4 py-2.5 rounded-lg bg-[#3c50e0] text-white text-[14px] font-medium hover:bg-[#1c33c8] transition-colors flex items-center gap-2 cursor-pointer"
-                                wire:loading.attr="disabled" wire:loading.class="opacity-70 cursor-not-allowed">
-                            <span wire:loading wire:target="save" class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span>
-                            Simpan Materi
-                        </button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     @endif
 
     {{-- ── Modal Konfirmasi Hapus ───────────────────────────────────────────── --}}
     @if ($confirmDeleteId)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-            <div class="bg-white rounded-xl shadow-md w-full max-w-sm border border-[#c5c5d7] p-6 flex flex-col gap-4">
+        <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-0 sm:p-4">
+            <div class="bg-white rounded-t-2xl sm:rounded-xl shadow-xl shadow-black/10 w-full max-w-4xl sm:max-w-sm border border-[#c5c5d7] p-6 flex flex-col gap-4">
                 <div class="flex items-start gap-3">
                     <div class="w-10 h-10 rounded-full bg-[#ffdad6] flex items-center justify-center flex-shrink-0">
                         <span class="material-symbols-outlined text-[#ba1a1a]">delete</span>
@@ -217,13 +224,13 @@
                         <p class="text-[14px] text-[#505f76] mt-1">Materi dan semua lampirannya akan dihapus permanen.</p>
                     </div>
                 </div>
-                <div class="flex justify-end gap-3">
+                <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
                     <button wire:click="$set('confirmDeleteId', null)"
-                            class="px-4 py-2 rounded-lg border border-[#c5c5d7] text-[14px] text-[#505f76] hover:bg-[#f0f4f8] transition-colors cursor-pointer">
+                            class="w-full sm:w-auto px-4 py-2.5 rounded-lg border border-[#c5c5d7] text-[14px] text-[#505f76] hover:bg-[#f0f4f8] transition-colors cursor-pointer text-center">
                         Batal
                     </button>
                     <button wire:click="delete"
-                            class="px-4 py-2 rounded-lg bg-[#ba1a1a] text-white text-[14px] font-medium hover:bg-[#93000a] transition-colors cursor-pointer">
+                            class="w-full sm:w-auto px-4 py-2.5 rounded-lg bg-[#ba1a1a] text-white text-[14px] font-medium hover:bg-[#93000a] transition-colors cursor-pointer text-center">
                         Ya, Hapus
                     </button>
                 </div>
@@ -285,6 +292,11 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-1 flex-shrink-0">
+                            <a href="{{ route('guru.materi.show', $m->id) }}"
+                               class="p-1.5 text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] rounded-lg transition-colors cursor-pointer"
+                               title="Lihat detail">
+                                <span class="material-symbols-outlined text-[18px]">visibility</span>
+                            </a>
                             <button wire:click="openEditForm({{ $m->id }})"
                                     class="p-1.5 text-[#505f76] hover:text-[#1c33c8] hover:bg-[#EEF2FF] rounded-lg transition-colors cursor-pointer">
                                 <span class="material-symbols-outlined text-[18px]">edit</span>

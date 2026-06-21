@@ -20,7 +20,7 @@
             <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm p-5 mb-6">
                 <p class="text-[13px] font-semibold text-[#505f76] uppercase tracking-wide mb-3">Pilih Rombel</p>
                 <select wire:model.live="filterRombelId"
-                        class="w-full sm:max-w-sm border border-[#c5c5d7] rounded-lg px-4 py-2.5 text-[14px] text-on-surface bg-white focus:outline-none focus:ring-1 focus:ring-[#3c50e0] cursor-pointer transition-shadow">
+                        class="w-full max-w-4xl sm:max-w-sm border border-[#c5c5d7] rounded-lg px-4 py-2.5 text-[14px] text-on-surface bg-white focus:outline-none focus:ring-1 focus:ring-[#3c50e0] cursor-pointer transition-shadow">
                     @foreach ($rombels as $r)
                         <option value="{{ $r->id }}">{{ $r->nama }}</option>
                     @endforeach

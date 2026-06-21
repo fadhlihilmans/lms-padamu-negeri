@@ -15,8 +15,8 @@
 
     {{-- ── Modal Form ──────────────────────────────────────────────────────── --}}
     @if ($showForm)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-            <div class="bg-white rounded-xl shadow-md w-full max-w-sm border border-[#c5c5d7]">
+        <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-0 sm:p-4">
+            <div class="bg-white rounded-t-2xl sm:rounded-xl shadow-xl shadow-black/10 w-full max-w-4xl sm:max-w-sm border border-[#c5c5d7] max-h-[90vh] sm:max-h-[85vh] overflow-y-auto">
                 <div class="flex items-center justify-between p-6 border-b border-[#c5c5d7]">
                     <h3 class="text-[20px] font-semibold text-on-surface">
                         {{ $editId ? 'Edit Wilayah' : 'Tambah Wilayah' }}
@@ -57,8 +57,8 @@
 
     {{-- ── Modal Konfirmasi Hapus ───────────────────────────────────────────── --}}
     @if ($confirmDeleteId)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-            <div class="bg-white rounded-xl shadow-md w-full max-w-sm border border-[#c5c5d7] p-6 flex flex-col gap-4">
+        <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-0 sm:p-4">
+            <div class="bg-white rounded-t-2xl sm:rounded-xl shadow-xl shadow-black/10 w-full max-w-4xl sm:max-w-sm border border-[#c5c5d7] p-6 flex flex-col gap-4">
                 <div class="flex items-start gap-3">
                     <div class="w-10 h-10 rounded-full bg-[#ffdad6] flex items-center justify-center flex-shrink-0">
                         <span class="material-symbols-outlined text-[#ba1a1a]">delete</span>
@@ -68,13 +68,13 @@
                         <p class="text-[14px] text-[#505f76] mt-1">Tindakan ini tidak dapat dibatalkan.</p>
                     </div>
                 </div>
-                <div class="flex justify-end gap-3">
+                <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
                     <button wire:click="$set('confirmDeleteId', null)"
-                            class="px-4 py-2 rounded-lg border border-[#c5c5d7] text-[14px] text-[#505f76] hover:bg-[#f0f4f8] transition-colors cursor-pointer">
+                            class="w-full sm:w-auto px-4 py-2.5 rounded-lg border border-[#c5c5d7] text-[14px] text-[#505f76] hover:bg-[#f0f4f8] transition-colors cursor-pointer text-center">
                         Batal
                     </button>
                     <button wire:click="delete"
-                            class="px-4 py-2 rounded-lg bg-[#ba1a1a] text-white text-[14px] font-medium hover:bg-[#93000a] transition-colors cursor-pointer">
+                            class="w-full sm:w-auto px-4 py-2.5 rounded-lg bg-[#ba1a1a] text-white text-[14px] font-medium hover:bg-[#93000a] transition-colors cursor-pointer text-center">
                         Ya, Hapus
                     </button>
                 </div>

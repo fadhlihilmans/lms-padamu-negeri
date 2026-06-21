@@ -14,8 +14,8 @@
                 wire:model.live.debounce.300ms="search"
                 type="search"
                 placeholder="{{ $searchPlaceholder }}"
-                class="w-full pl-10 pr-4 py-2 border border-[#c5c5d7] rounded-lg text-[14px] text-on-surface bg-white
-                       focus:outline-none focus:ring-1 focus:ring-[#3c50e0] focus:border-[#3c50e0] transition-shadow"
+                class="w-full pl-10 pr-4 py-2.5 border border-[#c5c5d7] rounded-lg text-[14px] text-on-surface bg-white
+                       focus:outline-none focus:ring-2 focus:ring-[#3c50e0]/30 focus:border-[#3c50e0] transition-shadow"
             >
         </div>
     </div>
@@ -30,8 +30,8 @@
         <span class="whitespace-nowrap">Tampilkan</span>
         <select
             wire:model.live="perPage"
-            class="border border-[#c5c5d7] rounded-lg px-3 py-2 text-[14px] text-on-surface bg-white
-                   focus:outline-none focus:ring-1 focus:ring-[#3c50e0] cursor-pointer transition-shadow"
+            class="border border-[#c5c5d7] rounded-lg px-3 py-2.5 text-[14px] text-on-surface bg-white
+                   focus:outline-none focus:ring-2 focus:ring-[#3c50e0]/30 focus:border-[#3c50e0] cursor-pointer transition-shadow"
         >
             <option value="10">10</option>
             <option value="25">25</option>

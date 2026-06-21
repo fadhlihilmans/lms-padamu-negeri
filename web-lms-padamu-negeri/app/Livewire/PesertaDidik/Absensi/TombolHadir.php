@@ -24,8 +24,22 @@ class TombolHadir extends Component
         if (!$pd) return;
 
         $sesi = SesiAbsensi::find($sesiId);
-        if (!$sesi || $sesi->status_sesi !== 'terbuka') {
+        if (! $sesi) return;
+
+        // Auto-close jika tutup_pada sudah lewat
+        if ($sesi->status_sesi === 'terbuka' && $sesi->tutup_pada && $sesi->tutup_pada->isPast()) {
+            $sesi->update(['status_sesi' => 'ditutup']);
+            $sesi->refresh();
+        }
+
+        if ($sesi->status_sesi !== 'terbuka') {
             $this->dispatch('notify', type: 'error', message: 'Sesi absensi sudah ditutup.');
+            return;
+        }
+
+        // Belum waktunya buka
+        if ($sesi->tanggal_buka && $sesi->tanggal_buka->isFuture()) {
+            $this->dispatch('notify', type: 'warning', message: 'Sesi belum dibuka. Absensi dimulai pukul ' . $sesi->tanggal_buka->format('H:i') . '.');
             return;
         }
 
@@ -72,10 +86,19 @@ class TombolHadir extends Component
             // Rombel PD
             $rombelIds = $pd->pesertaDidikRombel()->pluck('rombel_id');
 
-            // Sesi terbuka hari ini untuk rombel PD
+            // Auto-close sesi yang sudah melewati tutup_pada
+            SesiAbsensi::whereHas('guruMapelRombel', fn($q) => $q->whereIn('rombel_id', $rombelIds))
+                ->whereDate('tanggal', today())
+                ->where('status_sesi', 'terbuka')
+                ->whereNotNull('tutup_pada')
+                ->where('tutup_pada', '<=', now())
+                ->update(['status_sesi' => 'ditutup']);
+
+            // Sesi terbuka hari ini yang sudah waktunya buka
             $sesiTerbuka = SesiAbsensi::whereHas('guruMapelRombel', fn($q) => $q->whereIn('rombel_id', $rombelIds))
                 ->whereDate('tanggal', today())
                 ->where('status_sesi', 'terbuka')
+                ->where(fn($q) => $q->whereNull('tanggal_buka')->orWhere('tanggal_buka', '<=', now()))
                 ->with(['guruMapelRombel.mapel', 'guruMapelRombel.guru'])
                 ->get();
 

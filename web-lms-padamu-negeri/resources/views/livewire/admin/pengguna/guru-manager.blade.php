@@ -15,17 +15,19 @@
 
     {{-- ── Modal Form Tambah / Edit ─────────────────────────────────────────── --}}
     @if ($showForm)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-            <div class="bg-white rounded-xl shadow-md w-full max-w-md border border-[#c5c5d7]">
-                <div class="flex items-center justify-between p-6 border-b border-[#c5c5d7]">
+        <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-0 sm:p-4">
+            <div class="relative bg-white rounded-t-2xl sm:rounded-xl shadow-xl shadow-black/10 w-full max-w-4xl sm:max-w-md border border-[#c5c5d7]">
+                <button wire:click="closeForm" type="button"
+                        class="absolute top-4 right-4 text-[#505f76] hover:text-[#ba1a1a] transition-colors p-1 cursor-pointer z-10 bg-white rounded-full">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+                <div class="p-6 sm:p-8 max-h-[90vh] overflow-y-auto">
+                <div class="mb-6 border-b border-[#c5c5d7] pb-4 pr-8">
                     <h3 class="text-[20px] font-semibold text-on-surface">
                         {{ $editId ? 'Edit Data Guru' : 'Tambah Guru Baru' }}
                     </h3>
-                    <button wire:click="closeForm" class="text-[#505f76] hover:text-[#ba1a1a] transition-colors p-1 cursor-pointer">
-                        <span class="material-symbols-outlined">close</span>
-                    </button>
                 </div>
-                <form wire:submit="save" class="p-6 flex flex-col gap-4">
+                <form wire:submit="save" class="flex flex-col gap-4">
 
                     {{-- NIP --}}
                     <div class="flex flex-col gap-1.5">
@@ -67,27 +69,28 @@
                                class="w-full border border-[#c5c5d7] rounded-lg px-4 py-2.5 text-[14px] text-on-surface focus:outline-none focus:ring-1 focus:ring-[#3c50e0] focus:border-[#3c50e0] transition-shadow">
                     </div>
 
-                    <div class="flex justify-end gap-3 pt-2 border-t border-[#c5c5d7] mt-1">
+                    <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 pt-4 border-t border-[#c5c5d7] mt-2">
                         <button type="button" wire:click="closeForm"
-                                class="px-4 py-2.5 rounded-lg border border-[#c5c5d7] text-[#505f76] text-[14px] font-medium hover:bg-[#f0f4f8] transition-colors cursor-pointer">
+                                class="w-full sm:w-auto px-4 py-2.5 rounded-lg border border-[#c5c5d7] text-[#505f76] text-[14px] font-medium hover:bg-[#f0f4f8] transition-colors cursor-pointer text-center">
                             Batal
                         </button>
                         <button type="submit"
-                                class="px-4 py-2.5 rounded-lg bg-[#3c50e0] text-white text-[14px] font-medium hover:bg-[#1c33c8] transition-colors shadow-sm flex items-center gap-2 cursor-pointer"
+                                class="w-full sm:w-auto px-4 py-2.5 rounded-lg bg-[#3c50e0] text-white text-[14px] font-medium hover:bg-[#1c33c8] transition-colors shadow-sm flex items-center justify-center gap-2 cursor-pointer"
                                 wire:loading.attr="disabled" wire:loading.class="opacity-70 cursor-not-allowed">
                             <span wire:loading wire:target="save" class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span>
                             Simpan
                         </button>
                     </div>
                 </form>
+                </div>{{-- end scrollable --}}
             </div>
         </div>
     @endif
 
     {{-- ── Modal Konfirmasi Reset Password ────────────────────────────────────── --}}
     @if ($confirmResetId)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-            <div class="bg-white rounded-xl shadow-md w-full max-w-sm border border-[#c5c5d7] p-6 flex flex-col gap-4">
+        <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-0 sm:p-4">
+            <div class="bg-white rounded-t-2xl sm:rounded-xl shadow-xl shadow-black/10 w-full max-w-4xl sm:max-w-sm border border-[#c5c5d7] p-6 flex flex-col gap-4">
                 <div class="flex items-start gap-3">
                     <div class="w-10 h-10 rounded-full bg-[#fff3cd] flex items-center justify-center flex-shrink-0">
                         <span class="material-symbols-outlined text-[#856404]">lock_reset</span>
@@ -97,13 +100,13 @@
                         <p class="text-[14px] text-[#505f76] mt-1">Password akan direset ke NIP guru. Guru akan diminta ganti password saat login berikutnya.</p>
                     </div>
                 </div>
-                <div class="flex justify-end gap-3">
+                <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
                     <button wire:click="$set('confirmResetId', null)"
-                            class="px-4 py-2 rounded-lg border border-[#c5c5d7] text-[14px] text-[#505f76] hover:bg-[#f0f4f8] transition-colors cursor-pointer">
+                            class="w-full sm:w-auto px-4 py-2.5 rounded-lg border border-[#c5c5d7] text-[14px] text-[#505f76] hover:bg-[#f0f4f8] transition-colors cursor-pointer text-center">
                         Batal
                     </button>
                     <button wire:click="resetPassword"
-                            class="px-4 py-2 rounded-lg bg-amber-500 text-white text-[14px] font-medium hover:bg-amber-600 transition-colors cursor-pointer">
+                            class="w-full sm:w-auto px-4 py-2.5 rounded-lg bg-amber-500 text-white text-[14px] font-medium hover:bg-amber-600 transition-colors cursor-pointer text-center">
                         Ya, Reset
                     </button>
                 </div>
@@ -113,8 +116,8 @@
 
     {{-- ── Modal Konfirmasi Hapus ───────────────────────────────────────────── --}}
     @if ($confirmDeleteId)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-            <div class="bg-white rounded-xl shadow-md w-full max-w-sm border border-[#c5c5d7] p-6 flex flex-col gap-4">
+        <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-0 sm:p-4">
+            <div class="bg-white rounded-t-2xl sm:rounded-xl shadow-xl shadow-black/10 w-full max-w-4xl sm:max-w-sm border border-[#c5c5d7] p-6 flex flex-col gap-4">
                 <div class="flex items-start gap-3">
                     <div class="w-10 h-10 rounded-full bg-[#ffdad6] flex items-center justify-center flex-shrink-0">
                         <span class="material-symbols-outlined text-[#ba1a1a]">delete</span>
@@ -124,13 +127,13 @@
                         <p class="text-[14px] text-[#505f76] mt-1">Akun login guru juga akan dihapus. Tindakan ini tidak dapat dibatalkan.</p>
                     </div>
                 </div>
-                <div class="flex justify-end gap-3">
+                <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
                     <button wire:click="$set('confirmDeleteId', null)"
-                            class="px-4 py-2 rounded-lg border border-[#c5c5d7] text-[14px] text-[#505f76] hover:bg-[#f0f4f8] transition-colors cursor-pointer">
+                            class="w-full sm:w-auto px-4 py-2.5 rounded-lg border border-[#c5c5d7] text-[14px] text-[#505f76] hover:bg-[#f0f4f8] transition-colors cursor-pointer text-center">
                         Batal
                     </button>
                     <button wire:click="delete"
-                            class="px-4 py-2 rounded-lg bg-[#ba1a1a] text-white text-[14px] font-medium hover:bg-[#93000a] transition-colors cursor-pointer">
+                            class="w-full sm:w-auto px-4 py-2.5 rounded-lg bg-[#ba1a1a] text-white text-[14px] font-medium hover:bg-[#93000a] transition-colors cursor-pointer text-center">
                         Ya, Hapus
                     </button>
                 </div>

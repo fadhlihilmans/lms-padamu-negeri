@@ -6,26 +6,35 @@
             <h2 class="text-[24px] font-bold tracking-tight text-on-surface">Manajemen Peserta Didik</h2>
             <p class="text-[14px] text-[#505f76] mt-0.5">Kelola data peserta didik dan akun login mereka.</p>
         </div>
-        <button wire:click="openCreateForm"
-                class="inline-flex items-center gap-2 bg-[#3c50e0] text-white text-[14px] font-medium px-4 py-2.5 rounded-lg hover:bg-[#1c33c8] transition-colors shadow-sm cursor-pointer flex-shrink-0">
-            <span class="material-symbols-outlined text-[18px]">add</span>
-            Tambah Peserta Didik
-        </button>
+        <div class="flex items-center gap-2 flex-shrink-0 flex-wrap">
+            <a href="{{ route('admin.import.peserta-didik') }}"
+               class="inline-flex items-center gap-2 bg-white border border-[#c5c5d7] text-[#505f76] text-[14px] font-medium px-4 py-2.5 rounded-lg hover:bg-[#f0f4f8] transition-colors shadow-sm cursor-pointer">
+                <span class="material-symbols-outlined text-[18px]">upload_file</span>
+                Import Excel
+            </a>
+            <button wire:click="openCreateForm"
+                    class="inline-flex items-center gap-2 bg-[#3c50e0] text-white text-[14px] font-medium px-4 py-2.5 rounded-lg hover:bg-[#1c33c8] transition-colors shadow-sm cursor-pointer">
+                <span class="material-symbols-outlined text-[18px]">add</span>
+                Tambah Peserta Didik
+            </button>
+        </div>
     </div>
 
     {{-- ── Modal Form Tambah / Edit ─────────────────────────────────────────── --}}
     @if ($showForm)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-            <div class="bg-white rounded-xl shadow-md w-full max-w-2xl border border-[#c5c5d7] flex flex-col max-h-[90vh]">
-                <div class="flex items-center justify-between p-6 border-b border-[#c5c5d7] flex-shrink-0">
+        <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-0 sm:p-4">
+            <div class="relative bg-white rounded-t-2xl sm:rounded-xl shadow-xl shadow-black/10 w-full max-w-4xl sm:max-w-2xl border border-[#c5c5d7]">
+                <button wire:click="closeForm" type="button"
+                        class="absolute top-4 right-4 text-[#505f76] hover:text-[#ba1a1a] transition-colors p-1 cursor-pointer z-10 bg-white rounded-full">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+                <div class="p-6 sm:p-8 max-h-[90vh] overflow-y-auto">
+                <div class="mb-6 border-b border-[#c5c5d7] pb-4 pr-8">
                     <h3 class="text-[20px] font-semibold text-on-surface">
                         {{ $editId ? 'Edit Data Peserta Didik' : 'Tambah Peserta Didik Baru' }}
                     </h3>
-                    <button wire:click="closeForm" class="text-[#505f76] hover:text-[#ba1a1a] transition-colors p-1 cursor-pointer">
-                        <span class="material-symbols-outlined">close</span>
-                    </button>
                 </div>
-                <form wire:submit="save" class="p-6 overflow-y-auto flex flex-col gap-4">
+                <form wire:submit="save" class="flex flex-col gap-4">
 
                     {{-- NIPD + NISN --}}
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -159,27 +168,28 @@
                         </div>
                     @endif
 
-                    <div class="flex justify-end gap-3 pt-2 border-t border-[#c5c5d7] mt-1 flex-shrink-0">
+                    <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 pt-4 border-t border-[#c5c5d7] mt-2">
                         <button type="button" wire:click="closeForm"
-                                class="px-4 py-2.5 rounded-lg border border-[#c5c5d7] text-[#505f76] text-[14px] font-medium hover:bg-[#f0f4f8] transition-colors cursor-pointer">
+                                class="w-full sm:w-auto px-4 py-2.5 rounded-lg border border-[#c5c5d7] text-[#505f76] text-[14px] font-medium hover:bg-[#f0f4f8] transition-colors cursor-pointer text-center">
                             Batal
                         </button>
                         <button type="submit"
-                                class="px-4 py-2.5 rounded-lg bg-[#3c50e0] text-white text-[14px] font-medium hover:bg-[#1c33c8] transition-colors shadow-sm flex items-center gap-2 cursor-pointer"
+                                class="w-full sm:w-auto px-4 py-2.5 rounded-lg bg-[#3c50e0] text-white text-[14px] font-medium hover:bg-[#1c33c8] transition-colors shadow-sm flex items-center justify-center gap-2 cursor-pointer"
                                 wire:loading.attr="disabled" wire:loading.class="opacity-70 cursor-not-allowed">
                             <span wire:loading wire:target="save" class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span>
                             Simpan
                         </button>
                     </div>
                 </form>
+                </div>{{-- end scrollable --}}
             </div>
         </div>
     @endif
 
     {{-- ── Modal Konfirmasi Reset Password ────────────────────────────────────── --}}
     @if ($confirmResetId)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-            <div class="bg-white rounded-xl shadow-md w-full max-w-sm border border-[#c5c5d7] p-6 flex flex-col gap-4">
+        <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-0 sm:p-4">
+            <div class="bg-white rounded-t-2xl sm:rounded-xl shadow-xl shadow-black/10 w-full max-w-4xl sm:max-w-sm border border-[#c5c5d7] p-6 flex flex-col gap-4">
                 <div class="flex items-start gap-3">
                     <div class="w-10 h-10 rounded-full bg-[#fff3cd] flex items-center justify-center flex-shrink-0">
                         <span class="material-symbols-outlined text-[#856404]">lock_reset</span>
@@ -189,13 +199,13 @@
                         <p class="text-[14px] text-[#505f76] mt-1">Password akan direset ke NIPD peserta didik. Mereka akan diminta ganti password saat login berikutnya.</p>
                     </div>
                 </div>
-                <div class="flex justify-end gap-3">
+                <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
                     <button wire:click="$set('confirmResetId', null)"
-                            class="px-4 py-2 rounded-lg border border-[#c5c5d7] text-[14px] text-[#505f76] hover:bg-[#f0f4f8] transition-colors cursor-pointer">
+                            class="w-full sm:w-auto px-4 py-2.5 rounded-lg border border-[#c5c5d7] text-[14px] text-[#505f76] hover:bg-[#f0f4f8] transition-colors cursor-pointer text-center">
                         Batal
                     </button>
                     <button wire:click="resetPassword"
-                            class="px-4 py-2 rounded-lg bg-amber-500 text-white text-[14px] font-medium hover:bg-amber-600 transition-colors cursor-pointer">
+                            class="w-full sm:w-auto px-4 py-2.5 rounded-lg bg-amber-500 text-white text-[14px] font-medium hover:bg-amber-600 transition-colors cursor-pointer text-center">
                         Ya, Reset
                     </button>
                 </div>
@@ -205,8 +215,8 @@
 
     {{-- ── Modal Konfirmasi Hapus ───────────────────────────────────────────── --}}
     @if ($confirmDeleteId)
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-            <div class="bg-white rounded-xl shadow-md w-full max-w-sm border border-[#c5c5d7] p-6 flex flex-col gap-4">
+        <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-0 sm:p-4">
+            <div class="bg-white rounded-t-2xl sm:rounded-xl shadow-xl shadow-black/10 w-full max-w-4xl sm:max-w-sm border border-[#c5c5d7] p-6 flex flex-col gap-4">
                 <div class="flex items-start gap-3">
                     <div class="w-10 h-10 rounded-full bg-[#ffdad6] flex items-center justify-center flex-shrink-0">
                         <span class="material-symbols-outlined text-[#ba1a1a]">delete</span>
@@ -216,13 +226,13 @@
                         <p class="text-[14px] text-[#505f76] mt-1">Akun login juga akan dihapus. Tindakan ini tidak dapat dibatalkan.</p>
                     </div>
                 </div>
-                <div class="flex justify-end gap-3">
+                <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
                     <button wire:click="$set('confirmDeleteId', null)"
-                            class="px-4 py-2 rounded-lg border border-[#c5c5d7] text-[14px] text-[#505f76] hover:bg-[#f0f4f8] transition-colors cursor-pointer">
+                            class="w-full sm:w-auto px-4 py-2.5 rounded-lg border border-[#c5c5d7] text-[14px] text-[#505f76] hover:bg-[#f0f4f8] transition-colors cursor-pointer text-center">
                         Batal
                     </button>
                     <button wire:click="delete"
-                            class="px-4 py-2 rounded-lg bg-[#ba1a1a] text-white text-[14px] font-medium hover:bg-[#93000a] transition-colors cursor-pointer">
+                            class="w-full sm:w-auto px-4 py-2.5 rounded-lg bg-[#ba1a1a] text-white text-[14px] font-medium hover:bg-[#93000a] transition-colors cursor-pointer text-center">
                         Ya, Hapus
                     </button>
                 </div>
@@ -305,6 +315,11 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center justify-end gap-1">
+                                    <a href="{{ route('admin.pengguna.peserta-didik.show', $pd->id) }}"
+                                       class="p-1.5 text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] rounded-lg transition-colors cursor-pointer"
+                                       title="Lihat detail">
+                                        <span class="material-symbols-outlined text-[18px]">visibility</span>
+                                    </a>
                                     <button wire:click="openEditForm({{ $pd->id }})"
                                             class="p-1.5 text-[#505f76] hover:text-[#1c33c8] hover:bg-[#eaeef2] rounded-lg transition-colors cursor-pointer"
                                             title="Edit data">
