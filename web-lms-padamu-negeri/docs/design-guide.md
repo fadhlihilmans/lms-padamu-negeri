@@ -785,3 +785,228 @@ Untuk form yang terlalu panjang untuk modal:
 22. **Layout sidebar:** jangan buat sidebar duplikat — pakai yang sudah ada di `app.blade.php`.
 23. **Page title:** WAJIB isi prop `pageTitle` di setiap halaman.
 24. **Mobile first:** improvisasi dari referensi sangat diperlukan — referensi desain tidak selalu mobile-ready, wajib disesuaikan.
+
+### Badge & Status Chip (Mobile-safe)
+25. **Badge dengan dot/icon: WAJIB** `whitespace-nowrap` pada wrapper `<span>` dan `flex-shrink-0` pada dot/icon-nya. Ini mencegah badge "pecah" di layar sempit. Contoh:
+    ```html
+    <span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-red-50 text-red-600 border border-red-200 whitespace-nowrap">
+      <span class="w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0 inline-block"></span> Lewat Tenggat
+    </span>
+    ```
+
+### Topbar / Header Halaman (layout template)
+26. **Header halaman MINIMAL** — hanya breadcrumb + hamburger. Jangan letakkan search global, notifikasi, atau avatar di header halaman individual karena itu akan diatur oleh layout template. Pengecualian: tombol aksi kontekstual singkat (`Ekspor CSV`, `Cetak`) boleh ada di header.
+
+---
+
+## Bagian H — Pola Komponen Khusus Peran (7.x–11.x)
+
+### H.1 — GMR Selector (Guru: Pilih Mapel & Rombel)
+
+Guru dapat mengampu lebih dari satu mapel/rombel. Sebelum menampilkan konten, tampilkan selector ini di bagian atas halaman:
+
+```html
+<div class="bg-white border border-[#c5c5d7] rounded-xl px-4 py-4 mb-4">
+  <p class="text-xs font-semibold text-[#505f76] uppercase tracking-wide mb-3">Pilih Konteks</p>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+    <div>
+      <label class="block text-xs font-medium text-[#505f76] mb-1">Mata Pelajaran</label>
+      <select class="w-full px-3 py-2 border border-[#c5c5d7] rounded-lg text-sm bg-white focus:outline-none focus:border-[#3c50e0] focus:ring-1 focus:ring-[#3c50e0]">
+        <option>Matematika</option>
+      </select>
+    </div>
+    <div>
+      <label class="block text-xs font-medium text-[#505f76] mb-1">Rombel</label>
+      <select class="w-full px-3 py-2 border border-[#c5c5d7] rounded-lg text-sm bg-white focus:outline-none focus:border-[#3c50e0] focus:ring-1 focus:ring-[#3c50e0]">
+        <option>Kelas 10 Botolambat</option>
+      </select>
+    </div>
+  </div>
+</div>
+```
+
+Setelah GMR dipilih, tampilkan **context info banner** di bawahnya:
+```html
+<div class="bg-[#EEF2FF] border border-[#3c50e0]/20 rounded-xl px-4 py-3 flex items-center gap-2.5 text-sm text-[#505f76] mb-4">
+  <span class="material-symbols-outlined text-[18px] text-[#3c50e0] flex-shrink-0">info</span>
+  <p>Menampilkan data untuk <strong class="text-[#171c1f]">Matematika</strong> · <strong class="text-[#171c1f]">Kelas 10 Botolambat</strong></p>
+</div>
+```
+
+### H.2 — Bottom Nav (Peserta Didik, Mobile)
+
+Peserta Didik memiliki bottom navigation yang muncul di mobile (`lg:hidden`). Selalu 5 item:
+
+```html
+<nav class="fixed bottom-0 left-0 right-0 z-30 bg-white border-t border-[#c5c5d7] lg:hidden">
+  <div class="grid grid-cols-5 h-14">
+    <a href="#" class="flex flex-col items-center justify-center gap-0.5 text-[#3c50e0]">
+      <span class="material-symbols-outlined text-[22px]" style="font-variation-settings:'FILL' 1">home</span>
+      <span class="text-[10px] font-medium">Beranda</span>
+    </a>
+    <a href="#" class="flex flex-col items-center justify-center gap-0.5 text-[#757686]">
+      <span class="material-symbols-outlined text-[22px]">menu_book</span>
+      <span class="text-[10px]">Materi</span>
+    </a>
+    <a href="#" class="flex flex-col items-center justify-center gap-0.5 text-[#757686]">
+      <span class="material-symbols-outlined text-[22px]">assignment</span>
+      <span class="text-[10px]">Tugas</span>
+    </a>
+    <a href="#" class="flex flex-col items-center justify-center gap-0.5 text-[#757686]">
+      <span class="material-symbols-outlined text-[22px]">quiz</span>
+      <span class="text-[10px]">CBT</span>
+    </a>
+    <a href="#" class="flex flex-col items-center justify-center gap-0.5 text-[#757686]">
+      <span class="material-symbols-outlined text-[22px]">person</span>
+      <span class="text-[10px]">Profil</span>
+    </a>
+  </div>
+</nav>
+```
+
+- Halaman yang punya bottom nav: WAJIB tambahkan `pb-14` pada `<main>` agar konten tidak tertutup.
+- Item aktif: warna `#3c50e0`, icon `FILL 1`. Item tidak aktif: warna `#757686`, icon `FILL 0`.
+
+### H.3 — Split Panel (Koreksi / Assign)
+
+Digunakan di 9.4 (koreksi uraian) dan 10.1 (assign rombel). Pola:
+
+```html
+<div class="flex-1 flex overflow-hidden">
+  <!-- Panel kiri: daftar/navigasi (fixed width) -->
+  <div class="w-64 flex-shrink-0 border-r border-[#c5c5d7] bg-white flex flex-col overflow-hidden hidden lg:flex">
+    <!-- header panel -->
+    <div class="px-4 py-3 border-b border-[#c5c5d7] bg-[#f0f4f8]">
+      <p class="text-xs font-semibold text-[#505f76] uppercase tracking-wide">Judul Panel</p>
+    </div>
+    <!-- list scrollable -->
+    <div class="flex-1 overflow-y-auto">
+      <!-- item aktif -->
+      <button class="w-full text-left px-3 py-3 flex items-center justify-between bg-[#EEF2FF] border-l-4 border-[#3c50e0]">
+        ...
+      </button>
+    </div>
+  </div>
+
+  <!-- Panel kanan: konten utama (scrollable) -->
+  <div class="flex-1 overflow-y-auto p-4 lg:p-5 space-y-4">
+    ...
+  </div>
+</div>
+```
+
+- Di mobile (`<lg`): panel kiri disembunyikan (`hidden lg:flex`). Panel kanan mengisi seluruh lebar.
+- Progress/konteks panel: letakkan di dalam panel kiri (di header panel), bukan di topbar.
+
+### H.4 — Accordion Konten (Peserta Didik)
+
+Untuk instruksi tugas atau keterangan panjang yang bisa dilipat:
+
+```html
+<div class="bg-white border border-[#c5c5d7] rounded-xl overflow-hidden">
+  <button onclick="toggleAcc()" class="w-full flex items-center justify-between px-4 py-3 hover:bg-[#f6fafe] transition-colors">
+    <span class="text-sm font-semibold">Instruksi Tugas</span>
+    <span class="material-symbols-outlined text-[20px] text-[#505f76]" id="acc-icon">expand_less</span>
+  </button>
+  <div id="acc-body" class="px-4 pb-4 text-sm text-[#505f76] leading-relaxed">
+    <!-- konten instruksi -->
+  </div>
+</div>
+<script>
+function toggleAcc() {
+  const body = document.getElementById('acc-body');
+  const icon = document.getElementById('acc-icon');
+  const hidden = body.classList.toggle('hidden');
+  icon.textContent = hidden ? 'expand_more' : 'expand_less';
+}
+</script>
+```
+
+- Default: **terbuka** (body tidak punya class `hidden` saat render pertama).
+- Icon: `expand_less` saat terbuka, `expand_more` saat tertutup.
+
+### H.5 — CBT: Timer, Option Cards, Nav Grid
+
+**Timer (Alpine.js / vanilla JS):**
+```js
+let total = 90 * 60; // detik
+function tick() {
+  const m = String(Math.floor(total / 60)).padStart(2, '0');
+  const s = String(total % 60).padStart(2, '0');
+  document.getElementById('timer').textContent = m + ':' + s;
+  if (total <= 300) document.getElementById('timer').classList.add('text-red-500');
+  if (total > 0) total--;
+}
+tick(); setInterval(tick, 1000);
+```
+
+**Option cards (PG):**
+```html
+<div class="opt-card ..." onclick="selectOpt(this, 'A')">A. Pilihan A</div>
+<style>
+  .opt-card { ... border: 2px solid #c5c5d7; cursor: pointer; }
+  .opt-card.selected { border-color: #3c50e0; background: #EEF2FF; }
+</style>
+<script>
+function selectOpt(el, val) {
+  document.querySelectorAll('.opt-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+</script>
+```
+
+**Nav grid soal (desktop sidebar):**
+```html
+<div class="grid grid-cols-5 gap-1.5">
+  <button class="nav-q answered">1</button>
+  <button class="nav-q current">2</button>
+  <button class="nav-q">3</button>
+</div>
+<style>
+  .nav-q { width:32px; height:32px; border-radius:6px; font-size:12px; border:1.5px solid #c5c5d7; background:#fff; cursor:pointer; }
+  .nav-q.answered { background:#3c50e0; color:#fff; border-color:#3c50e0; }
+  .nav-q.current { border-color:#3c50e0; color:#3c50e0; font-weight:700; }
+</style>
+```
+
+### H.6 — Preview Cetak (Rapor PDF)
+
+- Dokumen A4 dibungkus `overflow-x-auto` + `min-width:560px` agar bisa scroll di mobile.
+- Tambahkan banner mobile (`lg:hidden`) yang menyarankan Desktop Site.
+- FAB "Cetak PDF" menggunakan `window.print()` dan `sticky top-0`.
+- `@media print`: sembunyikan sidebar, header, FAB, overlay. Hilangkan shadow/border pada `.a4-doc`.
+- Kop surat: logo placeholder dengan `<span class="material-symbols-outlined">` — akan diganti gambar nyata saat implementasi.
+
+### H.7 — Kenaikan Kelas: Dropdown Warna Dinamis
+
+Dropdown keputusan per PD mengubah warna border/bg mengikuti pilihan:
+- Belum dipilih: `border-[#c5c5d7]`, `text-[#505f76]`
+- Naik Tingkat: `border-[#3c50e0] bg-[#EEF2FF] text-[#3c50e0]`
+- Lulus: `border-green-400 bg-green-50 text-green-700`
+- Tinggal: `border-amber-400 bg-amber-50 text-amber-700`
+- Pindah: `border-purple-300 bg-purple-50 text-purple-700`
+
+Implementasikan via `wire:change` + PHP property yang memetakan keputusan → class Tailwind (gunakan `@class` blade directive).
+
+### H.8 — Halaman Login
+
+- Background: `bg-white` (putih bersih), bukan gradient.
+- Card: shadow `box-shadow: 0 24px 64px -12px rgba(28,51,200,0.4)`, header card gradient biru tetap dipertahankan.
+- Footer copyright: gunakan `date('Y')` di PHP (atau `new Date().getFullYear()` di JS) — jangan hardcode tahun.
+- Decoration circles: subtle, opacity 4–5% warna primary, bukan putih.
+
+---
+
+## Bagian I — Akses per Role pada Fitur
+
+| Halaman/Fitur | Admin | Guru | Wali Kelas | Peserta Didik |
+|---------------|-------|------|------------|---------------|
+| Rekap Absensi (6.3) | ✅ Semua rombel | ✅ Rombel/mapel yg diampu | ✅ Rombel walinya | ❌ |
+| Materi (7.x) | ✅ | ✅ Kelola | ❌ | ✅ Lihat saja |
+| Tugas (8.x) | ✅ | ✅ Kelola + nilai | ❌ | ✅ Submit |
+| CBT (9.x) | ✅ | ✅ Buat + koreksi | ❌ | ✅ Kerjakan |
+| Assign Rombel (10.1) | ✅ | ❌ | ❌ | ❌ |
+| Kenaikan Kelas (10.2) | ✅ | ❌ | ✅ Rombel walinya | ❌ |
+| Rapor (11.x) | ✅ | ✅ Input nilai mapelnya | ✅ Progres + terbitkan | ✅ Lihat rapor sendiri |
+
+> Catatan: "Wali Kelas" bukan role tersendiri — ia adalah Guru dengan `wali_kelas_id` di tabel `rombel`. Permission kondisional dicek via Policy (`Auth::id() === rombel->wali_kelas_id`).
