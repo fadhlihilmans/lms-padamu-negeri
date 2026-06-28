@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jadwal Pelajaran — LMS Padamu Negeri</title>
+  <title>4.1 — Jadwal Pelajaran | LMS Padamu Negeri</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
@@ -20,8 +20,9 @@
     .nav-sub::before { content:''; width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; opacity:0.5; }
     #sidebar { transition:transform 0.22s ease; } #overlay { transition:opacity 0.2s ease; } #main-wrapper { transition:margin-left 0.22s ease; }
     .act-btn { width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center; border-radius:8px; cursor:pointer; color:#505f76; transition:background 0.12s,color 0.12s; }
-    .toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:12px 16px; border-bottom:1px solid #c5c5d7; background:#f6fafe; }
+    .toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:12px 16px; border-bottom:1px solid #d1d5db; background:white; }
     .toolbar-search { position:relative; flex:1; min-width:180px; }
+    @media(max-width:639px){ .toolbar-search { flex-basis:100%; } }
     .toolbar-search input { width:100%; padding:8px 12px 8px 36px; border-radius:8px; font-size:13.5px; background:white; outline:none; border:1.5px solid #c5c5d7; color:#171c1f; transition:border-color 0.15s,box-shadow 0.15s; }
     .toolbar-search input:focus { border-color:#3c50e0; box-shadow:0 0 0 3px rgba(60,80,224,0.1); }
     .toolbar-search .icon { position:absolute; left:10px; top:50%; transform:translateY(-50%); color:#9da4b0; font-size:17px; pointer-events:none; }
@@ -29,11 +30,11 @@
     .toolbar-select:focus { border-color:#3c50e0; }
     .per-page-group { display:flex; align-items:center; gap:6px; flex-shrink:0; }
     .per-page-group span { font-size:12.5px; color:#757686; white-space:nowrap; }
-    /* Day badges */
-    .day-badge { display:inline-block; padding:2px 8px; border-radius:6px; font-size:11.5px; font-weight:600; }
+    /* Day badges — neutral hitam, tanpa warna per hari */
+    .day-badge { display:inline-block; padding:2px 8px; border-radius:6px; font-size:11.5px; font-weight:600; background:#f0f4f8; color:#171c1f; }
   </style>
 </head>
-<body style="background:#F1F5F9; min-height:100vh;">
+<body style="background:#f9fafb; min-height:100vh;">
 
 <div id="overlay" class="fixed inset-0 z-40 lg:hidden pointer-events-none" style="background:rgba(0,0,0,0.5);opacity:0" onclick="closeSidebar()"></div>
 
@@ -120,7 +121,7 @@
         <div class="per-page-group">
           <span>Tampil</span>
           <select class="toolbar-select"><option>10</option><option>25</option><option>50</option></select>
-          <span>data</span>
+          <span>Data</span>
         </div>
       </div>
 
@@ -140,7 +141,7 @@
           <tbody class="divide-y" style="border-color:#f0f4f8">
             <tr onmouseover="this.style.background='#f6fafe'" onmouseout="this.style.background='transparent'">
               <td class="px-4 py-3.5 text-[13px]" style="color:#9da4b0">1</td>
-              <td class="px-4 py-3.5"><span class="day-badge" style="background:#EEF2FF;color:#3c50e0">Senin</span></td>
+              <td class="px-4 py-3.5"><span class="day-badge">Senin</span></td>
               <td class="px-4 py-3.5 text-[13px] font-semibold" style="color:#505f76">1–2</td>
               <td class="px-4 py-3.5 text-[13.5px] font-medium" style="color:#171c1f">Matematika</td>
               <td class="px-4 py-3.5 text-[13px]" style="color:#505f76">Ahmad, S.Pd</td>
@@ -152,7 +153,7 @@
             </tr>
             <tr onmouseover="this.style.background='#f6fafe'" onmouseout="this.style.background='transparent'">
               <td class="px-4 py-3.5 text-[13px]" style="color:#9da4b0">2</td>
-              <td class="px-4 py-3.5"><span class="day-badge" style="background:#EEF2FF;color:#3c50e0">Senin</span></td>
+              <td class="px-4 py-3.5"><span class="day-badge">Senin</span></td>
               <td class="px-4 py-3.5 text-[13px] font-semibold" style="color:#505f76">3</td>
               <td class="px-4 py-3.5 text-[13.5px] font-medium" style="color:#171c1f">Bahasa Indonesia</td>
               <td class="px-4 py-3.5 text-[13px]" style="color:#505f76">Sari, S.Pd</td>
@@ -164,7 +165,7 @@
             </tr>
             <tr onmouseover="this.style.background='#f6fafe'" onmouseout="this.style.background='transparent'">
               <td class="px-4 py-3.5 text-[13px]" style="color:#9da4b0">3</td>
-              <td class="px-4 py-3.5"><span class="day-badge" style="background:#f0fdf4;color:#16a34a">Selasa</span></td>
+              <td class="px-4 py-3.5"><span class="day-badge">Selasa</span></td>
               <td class="px-4 py-3.5 text-[13px] font-semibold" style="color:#505f76">1–2</td>
               <td class="px-4 py-3.5 text-[13.5px] font-medium" style="color:#171c1f">IPA Terpadu</td>
               <td class="px-4 py-3.5 text-[13px]" style="color:#505f76">Budi, S.Pd</td>
@@ -176,7 +177,7 @@
             </tr>
             <tr onmouseover="this.style.background='#f6fafe'" onmouseout="this.style.background='transparent'">
               <td class="px-4 py-3.5 text-[13px]" style="color:#9da4b0">4</td>
-              <td class="px-4 py-3.5"><span class="day-badge" style="background:#f0fdf4;color:#16a34a">Selasa</span></td>
+              <td class="px-4 py-3.5"><span class="day-badge">Selasa</span></td>
               <td class="px-4 py-3.5 text-[13px] font-semibold" style="color:#505f76">3–4</td>
               <td class="px-4 py-3.5 text-[13.5px] font-medium" style="color:#171c1f">Matematika</td>
               <td class="px-4 py-3.5 text-[13px]" style="color:#505f76">Ahmad, S.Pd</td>
@@ -188,7 +189,7 @@
             </tr>
             <tr onmouseover="this.style.background='#f6fafe'" onmouseout="this.style.background='transparent'">
               <td class="px-4 py-3.5 text-[13px]" style="color:#9da4b0">5</td>
-              <td class="px-4 py-3.5"><span class="day-badge" style="background:#fffbeb;color:#d97706">Rabu</span></td>
+              <td class="px-4 py-3.5"><span class="day-badge">Rabu</span></td>
               <td class="px-4 py-3.5 text-[13px] font-semibold" style="color:#505f76">1</td>
               <td class="px-4 py-3.5 text-[13.5px] font-medium" style="color:#171c1f">IPS</td>
               <td class="px-4 py-3.5 text-[13px]" style="color:#505f76">Dewi, S.Pd</td>
@@ -220,7 +221,7 @@
 <!-- Modal — lihat 4.2 untuk preview backdrop blur -->
 <div id="modal" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden">
   <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="tutupModal()"></div>
-  <div class="relative z-10 w-full sm:max-w-lg bg-white rounded-t-2xl sm:rounded-xl shadow-xl flex flex-col max-h-[90dvh] sm:max-h-[85vh]">
+  <div class="relative z-10 w-full sm:max-w-lg bg-white rounded-t-2xl sm:rounded-xl overflow-hidden shadow-xl flex flex-col max-h-[90dvh] sm:max-h-[85vh]">
     <div class="flex items-center justify-between px-5 py-4 border-b flex-shrink-0" style="border-color:#c5c5d7">
       <div class="flex items-center gap-3">
         <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:#EEF2FF"><span class="material-symbols-outlined text-[18px]" style="color:#3c50e0">schedule</span></div>

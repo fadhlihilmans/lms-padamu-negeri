@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>7.1 Materi — Guru</title>
+<title>7.1 — Materi Guru | LMS Padamu Negeri</title>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -60,6 +60,7 @@ tailwind.config = {
   .toolbar { display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; }
   .toolbar-search { position:relative; }
   .toolbar-search input { padding:.5rem .75rem .5rem 2.25rem; border:1px solid #c5c5d7; border-radius:.375rem; font-size:14px; line-height:20px; background:#fff; outline:none; width:220px; }
+  @media(max-width:639px){ .toolbar-search, .toolbar-search input { width:100%; } }
   .toolbar-search input:focus { border-color:#3c50e0; box-shadow:0 0 0 2px #3c50e020; }
   .toolbar-search .icon { position:absolute; left:.5rem; top:50%; transform:translateY(-50%); color:#757686; font-size:18px; pointer-events:none; }
   .per-page-group { display:flex; align-items:center; gap:.375rem; font-size:14px; color:#505f76; }
@@ -73,7 +74,7 @@ tailwind.config = {
   @media(max-width:1023px){ #sidebar { transform:translateX(-100%); } #sidebar.open { transform:translateX(0); } }
 </style>
 </head>
-<body class="bg-[#f6fafe] text-[#171c1f] font-sans antialiased flex h-screen overflow-hidden">
+<body class="bg-[#f9fafb] text-[#171c1f] font-sans antialiased flex h-screen overflow-hidden">
 
 <!-- Sidebar Overlay (mobile) -->
 <div id="overlay" class="fixed inset-0 bg-black/40 z-30 hidden lg:hidden" onclick="closeSidebar()"></div>
@@ -140,8 +141,8 @@ tailwind.config = {
       </div>
 
       <!-- GMR Filter Card -->
-      <div class="bg-white border border-[#c5c5d7] rounded-xl p-4 flex flex-wrap gap-3 items-end">
-        <div class="flex-1 min-w-[180px]">
+      <div class="relative z-10 bg-white border border-[#c5c5d7] rounded-xl p-4 flex flex-col sm:flex-row sm:flex-wrap gap-3 sm:items-end">
+        <div class="w-full sm:flex-1 sm:min-w-[180px]">
           <label class="text-xs font-medium text-[#505f76] block mb-1">Mata Pelajaran</label>
           <select class="w-full px-3 py-2 border border-[#c5c5d7] rounded-lg text-sm bg-white">
             <option>Matematika</option>
@@ -149,45 +150,45 @@ tailwind.config = {
             <option>IPA</option>
           </select>
         </div>
-        <div class="flex-1 min-w-[160px]">
+        <div class="w-full sm:flex-1 sm:min-w-[160px]">
           <label class="text-xs font-medium text-[#505f76] block mb-1">Rombel</label>
           <select class="w-full px-3 py-2 border border-[#c5c5d7] rounded-lg text-sm bg-white">
             <option>Paket C – Kelas 10 Botolambat</option>
             <option>Paket C – Kelas 11 Pondok 1</option>
           </select>
         </div>
-        <button class="px-4 py-2 bg-[#3c50e0] text-white text-sm font-medium rounded-lg hover:bg-[#2a3db0] transition-colors">
+        <button class="w-full sm:w-auto px-4 py-2 bg-[#3c50e0] text-white text-sm font-medium rounded-lg hover:bg-[#2a3db0] transition-colors">
           Tampilkan
         </button>
       </div>
 
       <!-- Context banner -->
-      <div class="bg-[#EEF2FF] border border-[#3c50e0]/30 rounded-lg px-4 py-2.5 flex items-center gap-2 text-sm">
+      <div class="bg-[#EEF2FF] border border-[#3c50e0]/30 rounded-lg px-4 py-2.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-sm">
         <span class="material-symbols-outlined text-[18px] text-[#3c50e0]">info</span>
         <span class="text-[#3c50e0] font-medium">Matematika</span>
-        <span class="text-[#505f76]">— Paket C · Kelas 10 Botolambat · Periode 2024/2025</span>
+        <span class="w-full sm:w-auto text-[#505f76]">— Paket C · Kelas 10 Botolambat · Periode 2024/2025</span>
       </div>
 
       <!-- Toolbar -->
-      <div class="bg-white border border-[#c5c5d7] rounded-xl px-4 py-3">
-        <div class="toolbar justify-between">
-          <div class="flex flex-wrap gap-2 items-center">
-            <div class="toolbar-search">
+      <div class="relative z-[5] bg-white border border-[#c5c5d7] rounded-xl px-4 py-3">
+        <div class="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:items-center sm:justify-between">
+          <div class="flex flex-col sm:flex-row gap-2 sm:items-center w-full sm:w-auto">
+            <div class="toolbar-search w-full sm:w-auto">
               <span class="material-symbols-outlined icon">search</span>
               <input type="text" placeholder="Cari judul materi…"/>
             </div>
             <!-- Filter tipe -->
-            <select class="px-3 py-2 border border-[#c5c5d7] rounded-lg text-sm bg-white text-[#505f76]">
+            <select class="w-full sm:w-auto px-3 py-2 border border-[#c5c5d7] rounded-lg text-sm bg-white text-[#505f76]">
               <option value="">Semua Tipe</option>
               <option>Teks</option>
               <option>File</option>
               <option>Link Video</option>
             </select>
           </div>
-          <div class="per-page-group">
+          <div class="per-page-group w-full sm:w-auto justify-between sm:justify-start">
             Tampilkan
             <select><option>10</option><option>25</option><option>50</option></select>
-            data
+            Data
           </div>
         </div>
       </div>
@@ -196,118 +197,138 @@ tailwind.config = {
       <div class="space-y-3">
 
         <!-- Item 1 – File (PDF) -->
-        <div class="bg-white border border-[#c5c5d7] rounded-xl p-4 flex items-start gap-4 hover:border-[#3c50e0]/40 hover:shadow-sm transition-all group">
-          <div class="w-11 h-11 rounded-lg bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0">
-            <span class="material-symbols-outlined text-[22px] filled">picture_as_pdf</span>
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-start justify-between gap-2">
-              <div>
+        <div class="bg-white border border-[#c5c5d7] rounded-xl p-4 hover:border-[#3c50e0]/40 hover:shadow-sm transition-all group">
+          <div class="flex items-start gap-3 sm:gap-4">
+            <div class="w-11 h-11 rounded-lg bg-red-50 text-red-600 flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-[22px] filled">picture_as_pdf</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-2">
                 <h3 class="text-sm font-semibold text-[#171c1f]">Bab 1 – Eksponen dan Logaritma</h3>
-                <p class="text-xs text-[#757686] mt-0.5">Modul lengkap sifat eksponen dan logaritma beserta latihan soal.</p>
+                <span class="hidden sm:block text-xs text-[#757686] whitespace-nowrap ml-2 flex-shrink-0">12 Ags 2024</span>
               </div>
-              <span class="text-xs text-[#757686] whitespace-nowrap ml-2">12 Ags 2024</span>
+              <p class="text-xs text-[#757686] mt-0.5">Modul lengkap sifat eksponen dan logaritma beserta latihan soal.</p>
+              <div class="flex flex-wrap items-center gap-2 mt-2">
+                <span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-red-50 text-red-600 font-medium">
+                  <span class="material-symbols-outlined text-[12px]">description</span> File PDF
+                </span>
+              </div>
+              <p class="text-xs text-[#757686] mt-2 sm:hidden">12 Ags 2024</p>
             </div>
-            <div class="flex items-center gap-2 mt-2">
-              <span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-red-50 text-red-600 font-medium">
-                <span class="material-symbols-outlined text-[12px]">description</span> File PDF
-              </span>
+            <div class="hidden sm:flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+              <button aria-label="Edit" class="w-8 h-8 rounded flex items-center justify-center text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] transition-colors">
+                <span class="material-symbols-outlined text-[18px]">edit</span>
+              </button>
+              <button aria-label="Hapus" class="w-8 h-8 rounded flex items-center justify-center text-[#505f76] hover:text-red-600 hover:bg-red-50 transition-colors">
+                <span class="material-symbols-outlined text-[18px]">delete</span>
+              </button>
             </div>
           </div>
-          <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
-            <button aria-label="Edit" class="w-8 h-8 rounded flex items-center justify-center text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] transition-colors">
-              <span class="material-symbols-outlined text-[18px]">edit</span>
-            </button>
-            <button aria-label="Hapus" class="w-8 h-8 rounded flex items-center justify-center text-[#505f76] hover:text-red-600 hover:bg-red-50 transition-colors">
-              <span class="material-symbols-outlined text-[18px]">delete</span>
-            </button>
+          <div class="flex sm:hidden items-center justify-end gap-2 mt-3 pt-3 border-t border-[#c5c5d7]">
+            <button class="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#c5c5d7] text-xs font-medium text-[#505f76] hover:bg-[#f0f4f8]"><span class="material-symbols-outlined text-[16px]">edit</span> Edit</button>
+            <button class="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#c5c5d7] text-xs font-medium text-red-600 hover:bg-red-50"><span class="material-symbols-outlined text-[16px]">delete</span> Hapus</button>
           </div>
         </div>
 
         <!-- Item 2 – Link Video -->
-        <div class="bg-white border border-[#c5c5d7] rounded-xl p-4 flex items-start gap-4 hover:border-[#3c50e0]/40 hover:shadow-sm transition-all group">
-          <div class="w-11 h-11 rounded-lg bg-[#EEF2FF] text-[#3c50e0] flex items-center justify-center flex-shrink-0">
-            <span class="material-symbols-outlined text-[22px] filled">play_circle</span>
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-start justify-between gap-2">
-              <div>
+        <div class="bg-white border border-[#c5c5d7] rounded-xl p-4 hover:border-[#3c50e0]/40 hover:shadow-sm transition-all group">
+          <div class="flex items-start gap-3 sm:gap-4">
+            <div class="w-11 h-11 rounded-lg bg-[#EEF2FF] text-[#3c50e0] flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-[22px] filled">play_circle</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-2">
                 <h3 class="text-sm font-semibold text-[#171c1f]">Video: Sifat-Sifat Logaritma</h3>
-                <p class="text-xs text-[#757686] mt-0.5">Penjelasan visual penerapan sifat logaritma dalam kehidupan sehari-hari.</p>
+                <span class="hidden sm:block text-xs text-[#757686] whitespace-nowrap ml-2 flex-shrink-0">15 Ags 2024</span>
               </div>
-              <span class="text-xs text-[#757686] whitespace-nowrap ml-2">15 Ags 2024</span>
+              <p class="text-xs text-[#757686] mt-0.5">Penjelasan visual penerapan sifat logaritma dalam kehidupan sehari-hari.</p>
+              <div class="flex flex-wrap items-center gap-2 mt-2">
+                <span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-[#EEF2FF] text-[#3c50e0] font-medium">
+                  <span class="material-symbols-outlined text-[12px]">link</span> Link Video
+                </span>
+              </div>
+              <p class="text-xs text-[#757686] mt-2 sm:hidden">15 Ags 2024</p>
             </div>
-            <div class="flex items-center gap-2 mt-2">
-              <span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-[#EEF2FF] text-[#3c50e0] font-medium">
-                <span class="material-symbols-outlined text-[12px]">link</span> Link Video
-              </span>
+            <div class="hidden sm:flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+              <button aria-label="Edit" class="w-8 h-8 rounded flex items-center justify-center text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] transition-colors">
+                <span class="material-symbols-outlined text-[18px]">edit</span>
+              </button>
+              <button aria-label="Hapus" class="w-8 h-8 rounded flex items-center justify-center text-[#505f76] hover:text-red-600 hover:bg-red-50 transition-colors">
+                <span class="material-symbols-outlined text-[18px]">delete</span>
+              </button>
             </div>
           </div>
-          <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
-            <button aria-label="Edit" class="w-8 h-8 rounded flex items-center justify-center text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] transition-colors">
-              <span class="material-symbols-outlined text-[18px]">edit</span>
-            </button>
-            <button aria-label="Hapus" class="w-8 h-8 rounded flex items-center justify-center text-[#505f76] hover:text-red-600 hover:bg-red-50 transition-colors">
-              <span class="material-symbols-outlined text-[18px]">delete</span>
-            </button>
+          <div class="flex sm:hidden items-center justify-end gap-2 mt-3 pt-3 border-t border-[#c5c5d7]">
+            <button class="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#c5c5d7] text-xs font-medium text-[#505f76] hover:bg-[#f0f4f8]"><span class="material-symbols-outlined text-[16px]">edit</span> Edit</button>
+            <button class="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#c5c5d7] text-xs font-medium text-red-600 hover:bg-red-50"><span class="material-symbols-outlined text-[16px]">delete</span> Hapus</button>
           </div>
         </div>
 
         <!-- Item 3 – Teks -->
-        <div class="bg-white border border-[#c5c5d7] rounded-xl p-4 flex items-start gap-4 hover:border-[#3c50e0]/40 hover:shadow-sm transition-all group">
-          <div class="w-11 h-11 rounded-lg bg-green-50 text-green-600 flex items-center justify-center flex-shrink-0">
-            <span class="material-symbols-outlined text-[22px] filled">article</span>
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-start justify-between gap-2">
-              <div>
+        <div class="bg-white border border-[#c5c5d7] rounded-xl p-4 hover:border-[#3c50e0]/40 hover:shadow-sm transition-all group">
+          <div class="flex items-start gap-3 sm:gap-4">
+            <div class="w-11 h-11 rounded-lg bg-green-50 text-green-600 flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-[22px] filled">article</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-2">
                 <h3 class="text-sm font-semibold text-[#171c1f]">Rangkuman Rumus Logaritma</h3>
-                <p class="text-xs text-[#757686] mt-0.5">Ringkasan rumus penting logaritma untuk persiapan ujian.</p>
+                <span class="hidden sm:block text-xs text-[#757686] whitespace-nowrap ml-2 flex-shrink-0">20 Ags 2024</span>
               </div>
-              <span class="text-xs text-[#757686] whitespace-nowrap ml-2">20 Ags 2024</span>
+              <p class="text-xs text-[#757686] mt-0.5">Ringkasan rumus penting logaritma untuk persiapan ujian.</p>
+              <div class="flex flex-wrap items-center gap-2 mt-2">
+                <span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-green-50 text-green-600 font-medium">
+                  <span class="material-symbols-outlined text-[12px]">article</span> Teks
+                </span>
+              </div>
+              <p class="text-xs text-[#757686] mt-2 sm:hidden">20 Ags 2024</p>
             </div>
-            <div class="flex items-center gap-2 mt-2">
-              <span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-green-50 text-green-600 font-medium">
-                <span class="material-symbols-outlined text-[12px]">article</span> Teks
-              </span>
+            <div class="hidden sm:flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+              <button aria-label="Edit" class="w-8 h-8 rounded flex items-center justify-center text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] transition-colors">
+                <span class="material-symbols-outlined text-[18px]">edit</span>
+              </button>
+              <button aria-label="Hapus" class="w-8 h-8 rounded flex items-center justify-center text-[#505f76] hover:text-red-600 hover:bg-red-50 transition-colors">
+                <span class="material-symbols-outlined text-[18px]">delete</span>
+              </button>
             </div>
           </div>
-          <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
-            <button aria-label="Edit" class="w-8 h-8 rounded flex items-center justify-center text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] transition-colors">
-              <span class="material-symbols-outlined text-[18px]">edit</span>
-            </button>
-            <button aria-label="Hapus" class="w-8 h-8 rounded flex items-center justify-center text-[#505f76] hover:text-red-600 hover:bg-red-50 transition-colors">
-              <span class="material-symbols-outlined text-[18px]">delete</span>
-            </button>
+          <div class="flex sm:hidden items-center justify-end gap-2 mt-3 pt-3 border-t border-[#c5c5d7]">
+            <button class="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#c5c5d7] text-xs font-medium text-[#505f76] hover:bg-[#f0f4f8]"><span class="material-symbols-outlined text-[16px]">edit</span> Edit</button>
+            <button class="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#c5c5d7] text-xs font-medium text-red-600 hover:bg-red-50"><span class="material-symbols-outlined text-[16px]">delete</span> Hapus</button>
           </div>
         </div>
 
         <!-- Item 4 – File (gambar) -->
-        <div class="bg-white border border-[#c5c5d7] rounded-xl p-4 flex items-start gap-4 hover:border-[#3c50e0]/40 hover:shadow-sm transition-all group">
-          <div class="w-11 h-11 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center flex-shrink-0">
-            <span class="material-symbols-outlined text-[22px] filled">image</span>
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-start justify-between gap-2">
-              <div>
+        <div class="bg-white border border-[#c5c5d7] rounded-xl p-4 hover:border-[#3c50e0]/40 hover:shadow-sm transition-all group">
+          <div class="flex items-start gap-3 sm:gap-4">
+            <div class="w-11 h-11 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center flex-shrink-0">
+              <span class="material-symbols-outlined text-[22px] filled">image</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-start justify-between gap-2">
                 <h3 class="text-sm font-semibold text-[#171c1f]">Infografis Grafik Fungsi Kuadrat</h3>
-                <p class="text-xs text-[#757686] mt-0.5">Panduan bergambar menggambar dan membaca grafik fungsi kuadrat.</p>
+                <span class="hidden sm:block text-xs text-[#757686] whitespace-nowrap ml-2 flex-shrink-0">25 Ags 2024</span>
               </div>
-              <span class="text-xs text-[#757686] whitespace-nowrap ml-2">25 Ags 2024</span>
+              <p class="text-xs text-[#757686] mt-0.5">Panduan bergambar menggambar dan membaca grafik fungsi kuadrat.</p>
+              <div class="flex flex-wrap items-center gap-2 mt-2">
+                <span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-purple-50 text-purple-600 font-medium">
+                  <span class="material-symbols-outlined text-[12px]">image</span> Gambar
+                </span>
+              </div>
+              <p class="text-xs text-[#757686] mt-2 sm:hidden">25 Ags 2024</p>
             </div>
-            <div class="flex items-center gap-2 mt-2">
-              <span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-purple-50 text-purple-600 font-medium">
-                <span class="material-symbols-outlined text-[12px]">image</span> Gambar
-              </span>
+            <div class="hidden sm:flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
+              <button aria-label="Edit" class="w-8 h-8 rounded flex items-center justify-center text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] transition-colors">
+                <span class="material-symbols-outlined text-[18px]">edit</span>
+              </button>
+              <button aria-label="Hapus" class="w-8 h-8 rounded flex items-center justify-center text-[#505f76] hover:text-red-600 hover:bg-red-50 transition-colors">
+                <span class="material-symbols-outlined text-[18px]">delete</span>
+              </button>
             </div>
           </div>
-          <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
-            <button aria-label="Edit" class="w-8 h-8 rounded flex items-center justify-center text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] transition-colors">
-              <span class="material-symbols-outlined text-[18px]">edit</span>
-            </button>
-            <button aria-label="Hapus" class="w-8 h-8 rounded flex items-center justify-center text-[#505f76] hover:text-red-600 hover:bg-red-50 transition-colors">
-              <span class="material-symbols-outlined text-[18px]">delete</span>
-            </button>
+          <div class="flex sm:hidden items-center justify-end gap-2 mt-3 pt-3 border-t border-[#c5c5d7]">
+            <button class="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#c5c5d7] text-xs font-medium text-[#505f76] hover:bg-[#f0f4f8]"><span class="material-symbols-outlined text-[16px]">edit</span> Edit</button>
+            <button class="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-[#c5c5d7] text-xs font-medium text-red-600 hover:bg-red-50"><span class="material-symbols-outlined text-[16px]">delete</span> Hapus</button>
           </div>
         </div>
 
@@ -329,7 +350,7 @@ tailwind.config = {
 
 <!-- Modal Konfirmasi Hapus -->
 <div id="modal-hapus" class="hidden fixed inset-0 z-50 bg-black/40 flex items-end sm:items-center justify-center p-0 sm:p-4">
-  <div class="bg-white w-full sm:max-w-sm rounded-t-2xl sm:rounded-xl shadow-xl">
+  <div class="bg-white w-full sm:max-w-sm rounded-t-2xl sm:rounded-xl overflow-hidden shadow-xl">
     <div class="px-6 py-4 border-b border-[#c5c5d7] flex items-center justify-between">
       <h2 class="text-base font-semibold text-[#171c1f]">Hapus Materi?</h2>
       <button onclick="document.getElementById('modal-hapus').classList.add('hidden')" class="text-[#757686] hover:text-[#171c1f]"><span class="material-symbols-outlined">close</span></button>
@@ -346,7 +367,7 @@ tailwind.config = {
 
 <!-- Modal Tambah Materi (link to 7.3 — shown inline here as overlay) -->
 <div id="modal-tambah" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
-  <div class="bg-white w-full sm:max-w-lg rounded-t-2xl sm:rounded-xl shadow-xl flex flex-col max-h-[90vh]">
+  <div class="bg-white w-full sm:max-w-lg rounded-t-2xl sm:rounded-xl overflow-hidden shadow-xl flex flex-col max-h-[90vh]">
     <div class="px-5 py-4 border-b border-[#c5c5d7] flex items-center justify-between flex-shrink-0">
       <h2 class="text-base font-semibold text-[#171c1f]">Tambah Materi Baru</h2>
       <button onclick="document.getElementById('modal-tambah').classList.add('hidden')" class="text-[#757686] hover:text-[#171c1f]"><span class="material-symbols-outlined">close</span></button>

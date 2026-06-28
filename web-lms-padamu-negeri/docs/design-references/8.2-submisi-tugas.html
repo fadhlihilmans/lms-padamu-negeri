@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>8.2 Submisi Tugas — Guru</title>
+<title>8.2 — Submisi Tugas | LMS Padamu Negeri</title>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -42,6 +42,7 @@ tailwind.config = {
   @media(max-width:1023px){ #sidebar { transform:translateX(-100%); } #sidebar.open { transform:translateX(0); } }
   .toolbar-search { position:relative; }
   .toolbar-search input { padding:.5rem .75rem .5rem 2.25rem; border:1px solid #c5c5d7; border-radius:.375rem; font-size:14px; background:#fff; outline:none; width:220px; }
+  @media(max-width:639px){ .toolbar-search, .toolbar-search input { width:100%; } }
   .toolbar-search input:focus { border-color:#3c50e0; box-shadow:0 0 0 2px #3c50e020; }
   .toolbar-search .icon { position:absolute; left:.5rem; top:50%; transform:translateY(-50%); color:#757686; font-size:18px; pointer-events:none; }
   .per-page-group { display:flex; align-items:center; gap:.375rem; font-size:14px; color:#505f76; }
@@ -51,7 +52,7 @@ tailwind.config = {
   .act-btn.active { background:#3c50e0; color:#fff; border-color:#3c50e0; }
 </style>
 </head>
-<body class="bg-[#f6fafe] text-[#171c1f] font-sans antialiased flex h-screen overflow-hidden">
+<body class="bg-[#f9fafb] text-[#171c1f] font-sans antialiased flex h-screen overflow-hidden">
 
 <!-- Sidebar Overlay (mobile) -->
 <div id="overlay" class="fixed inset-0 bg-black/40 z-30 hidden lg:hidden" onclick="closeSidebar()"></div>
@@ -148,21 +149,21 @@ tailwind.config = {
 
       <!-- Toolbar -->
       <div class="bg-white border border-[#c5c5d7] rounded-xl px-4 py-3">
-        <div class="flex flex-wrap gap-2 items-center justify-between">
-          <div class="flex flex-wrap gap-2 items-center">
-            <div class="toolbar-search">
+        <div class="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:items-center sm:justify-between">
+          <div class="flex flex-col sm:flex-row gap-2 sm:items-center w-full sm:w-auto">
+            <div class="toolbar-search w-full sm:w-auto">
               <span class="material-symbols-outlined icon">search</span>
               <input type="text" placeholder="Cari nama peserta didik…"/>
             </div>
-            <select class="px-3 py-2 border border-[#c5c5d7] rounded-lg text-sm bg-white text-[#505f76]">
+            <select class="w-full sm:w-auto px-3 py-2 border border-[#c5c5d7] rounded-lg text-sm bg-white text-[#505f76]">
               <option value="">Semua Status</option>
               <option>Sudah Mengumpulkan</option>
               <option>Terlambat</option>
               <option>Belum Mengumpulkan</option>
             </select>
           </div>
-          <div class="per-page-group">
-            Tampilkan <select><option>10</option><option>25</option><option>50</option></select> data
+          <div class="per-page-group w-full sm:w-auto justify-between sm:justify-start">
+            Tampilkan <select><option>10</option><option>25</option><option>50</option></select> Data
           </div>
         </div>
       </div>
@@ -172,7 +173,7 @@ tailwind.config = {
         <div class="overflow-x-auto">
           <table class="w-full text-left text-sm">
             <thead>
-              <tr class="bg-[#f0f4f8] border-b border-[#c5c5d7]">
+              <tr class="bg-white border-b border-[#c5c5d7]">
                 <th class="px-4 py-3 text-xs font-semibold text-[#505f76] uppercase tracking-wide w-10">No</th>
                 <th class="px-4 py-3 text-xs font-semibold text-[#505f76] uppercase tracking-wide">Nama Peserta Didik</th>
                 <th class="px-4 py-3 text-xs font-semibold text-[#505f76] uppercase tracking-wide">Status</th>

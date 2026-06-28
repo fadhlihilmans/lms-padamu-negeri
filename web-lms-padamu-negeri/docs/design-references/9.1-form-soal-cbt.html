@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>9.1 Kelola Soal CBT — Guru</title>
+<title>9.1 — Kelola Soal CBT | LMS Padamu Negeri</title>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -28,7 +28,7 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
   .act-btn:hover{background:#f0f4f8}
 </style>
 </head>
-<body class="bg-[#f6fafe] text-[#171c1f] font-sans antialiased flex h-screen overflow-hidden">
+<body class="bg-[#f9fafb] text-[#171c1f] font-sans antialiased flex h-screen overflow-hidden">
 
 <div id="overlay" class="fixed inset-0 bg-black/40 z-30 hidden lg:hidden" onclick="closeSidebar()"></div>
 
@@ -76,11 +76,11 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
             <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">grade</span> KKM 70</span>
           </div>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
           <span class="text-xs px-2 py-1 rounded-full bg-purple-50 text-purple-700 font-medium">Uraian</span>
           <span class="text-sm font-bold text-[#3c50e0]">3 soal</span>
           <button onclick="document.getElementById('modal-soal').classList.remove('hidden')"
-            class="flex items-center gap-1.5 px-3 py-2 bg-[#3c50e0] text-white text-sm font-medium rounded-lg hover:bg-[#2a3db0] shadow-sm whitespace-nowrap">
+            class="w-full sm:w-auto flex items-center justify-center gap-1.5 px-3 py-2 bg-[#3c50e0] text-white text-sm font-medium rounded-lg hover:bg-[#2a3db0] shadow-sm whitespace-nowrap">
             <span class="material-symbols-outlined text-[18px]">add</span> Tambah Soal
           </button>
         </div>
@@ -91,7 +91,7 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
 
         <!-- Soal 1 — PG -->
         <div class="bg-white border border-[#c5c5d7] rounded-xl overflow-hidden">
-          <div class="flex items-center justify-between px-4 py-3 bg-[#f0f4f8] border-b border-[#c5c5d7]">
+          <div class="flex items-center justify-between px-4 py-3 bg-white border-b border-[#c5c5d7]">
             <div class="flex items-center gap-2">
               <span class="w-6 h-6 rounded-full bg-[#3c50e0] text-white text-xs font-bold flex items-center justify-center">1</span>
               <span class="text-xs px-2 py-0.5 rounded-full bg-green-50 text-green-700 font-medium">Pilihan Ganda</span>
@@ -116,7 +116,7 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
 
         <!-- Soal 2 — Uraian -->
         <div class="bg-white border border-[#c5c5d7] rounded-xl overflow-hidden">
-          <div class="flex items-center justify-between px-4 py-3 bg-[#f0f4f8] border-b border-[#c5c5d7]">
+          <div class="flex items-center justify-between px-4 py-3 bg-white border-b border-[#c5c5d7]">
             <div class="flex items-center gap-2">
               <span class="w-6 h-6 rounded-full bg-[#3c50e0] text-white text-xs font-bold flex items-center justify-center">2</span>
               <span class="text-xs px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 font-medium">Uraian</span>
@@ -137,7 +137,7 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
 
         <!-- Soal 3 — Uraian -->
         <div class="bg-white border border-[#c5c5d7] rounded-xl overflow-hidden">
-          <div class="flex items-center justify-between px-4 py-3 bg-[#f0f4f8] border-b border-[#c5c5d7]">
+          <div class="flex items-center justify-between px-4 py-3 bg-white border-b border-[#c5c5d7]">
             <div class="flex items-center gap-2">
               <span class="w-6 h-6 rounded-full bg-[#3c50e0] text-white text-xs font-bold flex items-center justify-center">3</span>
               <span class="text-xs px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 font-medium">Uraian</span>
@@ -164,7 +164,7 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
 
 <!-- Modal Tambah/Edit Soal -->
 <div id="modal-soal" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
-  <div class="bg-white w-full sm:max-w-lg rounded-t-2xl sm:rounded-xl shadow-xl flex flex-col max-h-[92vh]">
+  <div class="bg-white w-full sm:max-w-lg rounded-t-2xl sm:rounded-xl overflow-hidden shadow-xl flex flex-col max-h-[92vh]">
     <div class="px-5 py-4 border-b border-[#c5c5d7] flex items-center justify-between flex-shrink-0">
       <h2 class="text-base font-semibold">Tambah Soal</h2>
       <button onclick="document.getElementById('modal-soal').classList.add('hidden')" class="text-[#757686] hover:text-[#171c1f]"><span class="material-symbols-outlined">close</span></button>

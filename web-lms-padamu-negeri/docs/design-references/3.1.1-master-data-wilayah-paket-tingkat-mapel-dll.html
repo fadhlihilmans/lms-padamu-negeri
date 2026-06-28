@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Master Data — Wilayah — LMS Padamu Negeri</title>
+  <title>3.1.1 — Master Data Wilayah | LMS Padamu Negeri</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
@@ -56,12 +56,13 @@
     /* Pola seragam: search(flex-1) | filter dropdowns | per-page */
     .toolbar {
       display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
-      padding: 12px 16px; border-bottom: 1px solid #c5c5d7;
-      background: #f6fafe;
+      padding: 12px 16px; border-bottom: 1px solid #d1d5db;
+      background: white;
     }
     .toolbar-search {
       position: relative; flex: 1; min-width: 180px;
     }
+    @media(max-width:639px){ .toolbar-search { flex-basis: 100%; } }
     .toolbar-search input {
       width: 100%; padding: 8px 12px 8px 36px; border-radius: 8px;
       font-size: 13.5px; background: white; outline: none;
@@ -92,7 +93,7 @@
   ║  [🔍 Search (flex-1)] | [Filter ▾...] | Tampil [10▾]  ║
   ╚═════════════════════════════════════════════════════════╝
 -->
-<body style="background: #F1F5F9; min-height: 100vh;">
+<body style="background: #f9fafb; min-height: 100vh;">
 
 <div id="overlay" class="fixed inset-0 z-40 lg:hidden pointer-events-none"
      style="background: rgba(0,0,0,0.5); opacity: 0" onclick="closeSidebar()"></div>
@@ -224,7 +225,7 @@
           <select class="toolbar-select">
             <option>10</option><option>25</option><option>50</option>
           </select>
-          <span>data</span>
+          <span>Data</span>
         </div>
       </div>
 
@@ -316,7 +317,7 @@
 <!-- Modal Tambah/Edit (sm:max-w-sm — 1 field) -->
 <div id="modal" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 hidden">
   <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="tutupModal()"></div>
-  <div class="relative z-10 w-full sm:max-w-sm bg-white rounded-t-2xl sm:rounded-xl shadow-xl flex flex-col"
+  <div class="relative z-10 w-full sm:max-w-sm bg-white rounded-t-2xl sm:rounded-xl overflow-hidden shadow-xl flex flex-col"
        style="max-height: 80dvh">
     <div class="flex items-center justify-between px-5 py-4 border-b flex-shrink-0" style="border-color: #c5c5d7">
       <div class="flex items-center gap-3">
@@ -342,7 +343,7 @@
       <p class="text-[12px] mt-1.5" style="color: #9da4b0">Nama wilayah harus unik dan tidak boleh duplikat.</p>
     </div>
     <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 px-5 py-4 border-t flex-shrink-0"
-         style="border-color: #c5c5d7; background: #f6fafe">
+         style="border-color: #d1d5db; background: white">
       <button onclick="tutupModal()" class="px-4 py-2.5 rounded-lg text-[13px] font-medium border cursor-pointer"
               style="color: #505f76; border-color: #c5c5d7; background: white"
               onmouseover="this.style.background='#f0f4f8'" onmouseout="this.style.background='white'">Batal</button>

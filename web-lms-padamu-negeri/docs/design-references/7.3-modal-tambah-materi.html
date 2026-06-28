@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>7.3 Modal Tambah/Edit Materi</title>
+<title>7.3 — Modal Tambah Materi | LMS Padamu Negeri</title>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -47,7 +47,7 @@ tailwind.config = {
   .tipe-btn.active { border-width:2px; border-color:#3c50e0; background:#EEF2FF; color:#3c50e0; }
 </style>
 </head>
-<body class="bg-[#f6fafe] text-[#171c1f] font-sans antialiased">
+<body class="bg-[#f9fafb] text-[#171c1f] font-sans antialiased">
 
 <!-- Blurred backdrop (7.1 Materi Guru in background) -->
 <div class="fixed inset-0 bg-[#f6fafe] blur-sm pointer-events-none" aria-hidden="true">
@@ -68,7 +68,7 @@ tailwind.config = {
 <div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
 
   <!-- State A: Tambah Materi (Tipe = File, drag zone shown) -->
-  <div class="bg-white w-full sm:max-w-lg rounded-t-2xl sm:rounded-xl shadow-xl flex flex-col max-h-[92vh]" x-data>
+  <div class="bg-white w-full sm:max-w-lg rounded-t-2xl sm:rounded-xl overflow-hidden shadow-xl flex flex-col max-h-[92vh]" x-data>
 
     <!-- Header -->
     <div class="px-5 py-4 border-b border-[#c5c5d7] flex items-center justify-between flex-shrink-0">

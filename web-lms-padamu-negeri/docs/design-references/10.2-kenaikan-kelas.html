@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>10.2 Kenaikan Kelas — Admin/Wali Kelas</title>
+<title>10.2 — Kenaikan Kelas | LMS Padamu Negeri</title>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -18,12 +18,17 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
   .filled{font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24}
   #sidebar{transition:transform .22s cubic-bezier(.4,0,.2,1)}
   @media(max-width:1023px){#sidebar{transform:translateX(-100%)}#sidebar.open{transform:translateX(0)}}
+  .toolbar-search{position:relative}
+  .toolbar-search input{padding:.5rem .75rem .5rem 2.25rem;border:1px solid #c5c5d7;border-radius:.5rem;font-size:14px;background:#fff;outline:none;width:200px}
+  .toolbar-search input:focus{border-color:#3c50e0;box-shadow:0 0 0 2px #3c50e020}
+  .toolbar-search .icon{position:absolute;left:.5rem;top:50%;transform:translateY(-50%);color:#757686;font-size:18px;pointer-events:none}
+  @media(max-width:639px){.toolbar-search,.toolbar-search input{width:100%}}
   .act-btn{width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;border-radius:.375rem;font-size:14px;border:1px solid #c5c5d7;background:#fff;cursor:pointer;transition:background .15s}
   .act-btn:hover{background:#f0f4f8}
   .act-btn.active{background:#3c50e0;color:#fff;border-color:#3c50e0}
 </style>
 </head>
-<body class="bg-[#f6fafe] text-[#171c1f] font-sans antialiased flex h-screen overflow-hidden">
+<body class="bg-[#f9fafb] text-[#171c1f] font-sans antialiased flex h-screen overflow-hidden">
 
 <div id="overlay" class="fixed inset-0 bg-black/40 z-30 hidden lg:hidden" onclick="closeSidebar()"></div>
 
@@ -78,155 +83,93 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
       <!-- Info banner -->
       <div class="bg-[#EEF2FF] border border-[#3c50e0]/20 rounded-xl px-4 py-3 flex items-start gap-2.5 text-sm text-[#505f76]">
         <span class="material-symbols-outlined text-[18px] text-[#3c50e0] flex-shrink-0 mt-0.5">info</span>
-        <p>Pilih keputusan untuk setiap peserta didik. Peserta dengan keputusan <strong>Naik Tingkat</strong> akan masuk ke ruang tunggu untuk di-assign ke rombel baru.</p>
+        <p>Centang peserta didik yang akan <strong>Naik Tingkat</strong>. Peserta yang dicentang akan masuk ke ruang tunggu untuk di-assign ke rombel baru. Status lain (Lulus, Tinggal) ditandai secara terpisah.</p>
       </div>
 
-      <!-- Tabel keputusan -->
+      <!-- Daftar keputusan (checkbox massal) -->
       <div class="bg-white border border-[#c5c5d7] rounded-xl overflow-hidden">
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-sm">
-            <thead>
-              <tr class="bg-[#f0f4f8] border-b border-[#c5c5d7]">
-                <th class="px-4 py-3 text-xs font-semibold text-[#505f76] uppercase tracking-wide w-10">No</th>
-                <th class="px-4 py-3 text-xs font-semibold text-[#505f76] uppercase tracking-wide">Nama Peserta Didik</th>
-                <th class="px-4 py-3 text-xs font-semibold text-[#505f76] uppercase tracking-wide">Status Saat Ini</th>
-                <th class="px-4 py-3 text-xs font-semibold text-[#505f76] uppercase tracking-wide min-w-[200px]">Keputusan</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-[#c5c5d7]">
-              <!-- Sudah dipilih: Naik Tingkat -->
-              <tr class="hover:bg-[#f6fafe] transition-colors">
-                <td class="px-4 py-3 text-[#757686]">1</td>
-                <td class="px-4 py-3">
-                  <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-full bg-[#EEF2FF] text-[#3c50e0] flex items-center justify-center text-xs font-bold flex-shrink-0">AS</div>
-                    <div><p class="font-medium">Ahmad Syafiq</p><p class="text-xs text-[#757686]">NIPD: 1718001</p></div>
-                  </div>
-                </td>
-                <td class="px-4 py-3">
-                  <span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 whitespace-nowrap">
-                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0"></span> Aktif
-                  </span>
-                </td>
-                <td class="px-4 py-3">
-                  <select class="w-full px-2.5 py-1.5 border border-[#3c50e0] bg-[#EEF2FF] rounded-lg text-sm text-[#3c50e0] font-medium focus:outline-none focus:ring-1 focus:ring-[#3c50e0]">
-                    <option value="">Pilih keputusan…</option>
-                    <option selected>Naik Tingkat</option>
-                    <option>Tinggal</option>
-                    <option>Lulus</option>
-                    <option>Pindah Paket</option>
-                    <option>Pindah Wilayah</option>
-                  </select>
-                </td>
-              </tr>
-              <!-- Belum dipilih -->
-              <tr class="hover:bg-[#f6fafe] transition-colors">
-                <td class="px-4 py-3 text-[#757686]">2</td>
-                <td class="px-4 py-3">
-                  <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-full bg-[#e4e9ed] text-[#757686] flex items-center justify-center text-xs font-bold flex-shrink-0">BS</div>
-                    <div><p class="font-medium">Budi Santoso</p><p class="text-xs text-[#757686]">NIPD: 1718002</p></div>
-                  </div>
-                </td>
-                <td class="px-4 py-3">
-                  <span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 whitespace-nowrap">
-                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0"></span> Aktif
-                  </span>
-                </td>
-                <td class="px-4 py-3">
-                  <select class="w-full px-2.5 py-1.5 border border-[#c5c5d7] rounded-lg text-sm text-[#505f76] focus:outline-none focus:border-[#3c50e0] focus:ring-1 focus:ring-[#3c50e0]">
-                    <option value="" selected>Pilih keputusan…</option>
-                    <option>Naik Tingkat</option>
-                    <option>Tinggal</option>
-                    <option>Lulus</option>
-                    <option>Pindah Paket</option>
-                    <option>Pindah Wilayah</option>
-                  </select>
-                </td>
-              </tr>
-              <!-- Lulus -->
-              <tr class="hover:bg-[#f6fafe] transition-colors">
-                <td class="px-4 py-3 text-[#757686]">3</td>
-                <td class="px-4 py-3">
-                  <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-full bg-[#e4e9ed] text-[#757686] flex items-center justify-center text-xs font-bold flex-shrink-0">CK</div>
-                    <div><p class="font-medium">Citra Kirana</p><p class="text-xs text-[#757686]">NIPD: 1718003</p></div>
-                  </div>
-                </td>
-                <td class="px-4 py-3">
-                  <span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 whitespace-nowrap">
-                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0"></span> Aktif
-                  </span>
-                </td>
-                <td class="px-4 py-3">
-                  <select class="w-full px-2.5 py-1.5 border border-green-400 bg-green-50 rounded-lg text-sm text-green-700 font-medium focus:outline-none focus:ring-1 focus:ring-green-400">
-                    <option value="">Pilih keputusan…</option>
-                    <option>Naik Tingkat</option>
-                    <option>Tinggal</option>
-                    <option selected>Lulus</option>
-                    <option>Pindah Paket</option>
-                    <option>Pindah Wilayah</option>
-                  </select>
-                </td>
-              </tr>
-              <!-- Belum -->
-              <tr class="hover:bg-[#f6fafe] transition-colors">
-                <td class="px-4 py-3 text-[#757686]">4</td>
-                <td class="px-4 py-3">
-                  <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-full bg-[#e4e9ed] text-[#757686] flex items-center justify-center text-xs font-bold flex-shrink-0">DP</div>
-                    <div><p class="font-medium">Dian Pratiwi</p><p class="text-xs text-[#757686]">NIPD: 1718004</p></div>
-                  </div>
-                </td>
-                <td class="px-4 py-3">
-                  <span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 whitespace-nowrap">
-                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0"></span> Aktif
-                  </span>
-                </td>
-                <td class="px-4 py-3">
-                  <select class="w-full px-2.5 py-1.5 border border-[#c5c5d7] rounded-lg text-sm text-[#505f76] focus:outline-none focus:border-[#3c50e0] focus:ring-1 focus:ring-[#3c50e0]">
-                    <option value="" selected>Pilih keputusan…</option>
-                    <option>Naik Tingkat</option>
-                    <option>Tinggal</option>
-                    <option>Lulus</option>
-                    <option>Pindah Paket</option>
-                    <option>Pindah Wilayah</option>
-                  </select>
-                </td>
-              </tr>
-              <!-- Tinggal -->
-              <tr class="hover:bg-[#f6fafe] transition-colors">
-                <td class="px-4 py-3 text-[#757686]">5</td>
-                <td class="px-4 py-3">
-                  <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-full bg-[#e4e9ed] text-[#757686] flex items-center justify-center text-xs font-bold flex-shrink-0">EK</div>
-                    <div><p class="font-medium">Eko Kurniawan</p><p class="text-xs text-[#757686]">NIPD: 1718005</p></div>
-                  </div>
-                </td>
-                <td class="px-4 py-3">
-                  <span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 whitespace-nowrap">
-                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0"></span> Aktif
-                  </span>
-                </td>
-                <td class="px-4 py-3">
-                  <select class="w-full px-2.5 py-1.5 border border-amber-400 bg-amber-50 rounded-lg text-sm text-amber-700 font-medium focus:outline-none focus:ring-1 focus:ring-amber-400">
-                    <option value="">Pilih keputusan…</option>
-                    <option>Naik Tingkat</option>
-                    <option selected>Tinggal</option>
-                    <option>Lulus</option>
-                    <option>Pindah Paket</option>
-                    <option>Pindah Wilayah</option>
-                  </select>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- Card header -->
+        <div class="px-4 py-3 border-b border-[#c5c5d7] bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <p class="text-sm font-semibold text-[#171c1f]">Peserta Didik</p>
+            <p class="text-xs text-[#757686]">Centang untuk menandai <strong class="text-[#3c50e0]">Naik Tingkat</strong></p>
+          </div>
+          <div class="toolbar-search w-full sm:w-auto"><span class="material-symbols-outlined icon">search</span><input type="text" placeholder="Cari nama…"/></div>
         </div>
-        <!-- Footer simpan -->
-        <div class="px-4 py-3 border-t border-[#c5c5d7] flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p class="text-xs text-[#757686]">Keputusan tersimpan otomatis saat semua peserta telah diputuskan.</p>
-          <button class="px-5 py-2 bg-[#3c50e0] text-white rounded-lg text-sm font-semibold hover:bg-[#2a3db0] transition-colors flex items-center gap-2">
-            <span class="material-symbols-outlined text-[18px]">save</span> Simpan Semua Keputusan
+        <!-- Grid scroll wrapper -->
+        <div class="overflow-auto">
+        <!-- Grid header -->
+        <div class="grid items-center px-4 py-2 bg-white border-b border-[#c5c5d7] text-xs font-semibold text-[#505f76] uppercase tracking-wide sticky top-0 z-10"
+          style="grid-template-columns:36px minmax(160px,1fr) 140px 180px;min-width:500px">
+          <div class="flex justify-center"><input type="checkbox" class="rounded border-[#c5c5d7] text-[#3c50e0]"/></div>
+          <div>Nama Peserta Didik</div>
+          <div>Status</div>
+          <div>Keputusan</div>
+        </div>
+        <!-- Grid body -->
+        <div class="divide-y divide-[#c5c5d7]">
+          <!-- Row 1: Naik Tingkat (checked) -->
+          <div class="grid items-center px-4 py-3 bg-[#EEF2FF] hover:bg-[#e6eeff] transition-colors"
+            style="grid-template-columns:36px minmax(160px,1fr) 140px 180px;min-width:500px">
+            <div class="flex justify-center"><input type="checkbox" checked class="rounded border-[#c5c5d7] text-[#3c50e0]"/></div>
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-full bg-[#3c50e0] text-white flex items-center justify-center text-xs font-bold flex-shrink-0">AS</div>
+              <div><p class="text-sm font-medium">Ahmad Syafiq</p><p class="text-xs text-[#757686]">NIPD: 1718001</p></div>
+            </div>
+            <div><span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0"></span> Aktif</span></div>
+            <div><span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-[#d0e1fb] text-[#3c50e0] font-semibold whitespace-nowrap"><span class="material-symbols-outlined text-[12px]">arrow_upward</span> Naik Tingkat</span></div>
+          </div>
+          <!-- Row 2: Belum diputuskan -->
+          <div class="grid items-center px-4 py-3 hover:bg-[#f6fafe] transition-colors"
+            style="grid-template-columns:36px minmax(160px,1fr) 140px 180px;min-width:500px">
+            <div class="flex justify-center"><input type="checkbox" class="rounded border-[#c5c5d7] text-[#3c50e0]"/></div>
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-full bg-[#e4e9ed] text-[#757686] flex items-center justify-center text-xs font-bold flex-shrink-0">BS</div>
+              <div><p class="text-sm font-medium">Budi Santoso</p><p class="text-xs text-[#757686]">NIPD: 1718002</p></div>
+            </div>
+            <div><span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0"></span> Aktif</span></div>
+            <div><span class="text-xs text-[#9da4b0] italic">Belum diputuskan</span></div>
+          </div>
+          <!-- Row 3: Lulus (khusus) -->
+          <div class="grid items-center px-4 py-3 hover:bg-[#f6fafe] transition-colors"
+            style="grid-template-columns:36px minmax(160px,1fr) 140px 180px;min-width:500px">
+            <div class="flex justify-center"><input type="checkbox" class="rounded border-[#c5c5d7] opacity-30 cursor-not-allowed" disabled/></div>
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-full bg-[#e4e9ed] text-[#757686] flex items-center justify-center text-xs font-bold flex-shrink-0">CK</div>
+              <div><p class="text-sm font-medium">Citra Kirana</p><p class="text-xs text-[#757686]">NIPD: 1718003</p></div>
+            </div>
+            <div><span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0"></span> Aktif</span></div>
+            <div><span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-green-50 text-green-700 border border-green-200 font-semibold whitespace-nowrap"><span class="material-symbols-outlined text-[12px]">workspace_premium</span> Lulus</span></div>
+          </div>
+          <!-- Row 4: Belum diputuskan -->
+          <div class="grid items-center px-4 py-3 hover:bg-[#f6fafe] transition-colors"
+            style="grid-template-columns:36px minmax(160px,1fr) 140px 180px;min-width:500px">
+            <div class="flex justify-center"><input type="checkbox" class="rounded border-[#c5c5d7] text-[#3c50e0]"/></div>
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-full bg-[#e4e9ed] text-[#757686] flex items-center justify-center text-xs font-bold flex-shrink-0">DP</div>
+              <div><p class="text-sm font-medium">Dian Pratiwi</p><p class="text-xs text-[#757686]">NIPD: 1718004</p></div>
+            </div>
+            <div><span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0"></span> Aktif</span></div>
+            <div><span class="text-xs text-[#9da4b0] italic">Belum diputuskan</span></div>
+          </div>
+          <!-- Row 5: Tinggal (khusus) -->
+          <div class="grid items-center px-4 py-3 hover:bg-[#f6fafe] transition-colors"
+            style="grid-template-columns:36px minmax(160px,1fr) 140px 180px;min-width:500px">
+            <div class="flex justify-center"><input type="checkbox" class="rounded border-[#c5c5d7] opacity-30 cursor-not-allowed" disabled/></div>
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-full bg-[#e4e9ed] text-[#757686] flex items-center justify-center text-xs font-bold flex-shrink-0">EK</div>
+              <div><p class="text-sm font-medium">Eko Kurniawan</p><p class="text-xs text-[#757686]">NIPD: 1718005</p></div>
+            </div>
+            <div><span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0"></span> Aktif</span></div>
+            <div><span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 font-semibold whitespace-nowrap"><span class="material-symbols-outlined text-[12px]">refresh</span> Tinggal</span></div>
+          </div>
+        </div><!-- /grid body -->
+        </div><!-- /overflow-auto -->
+        <!-- Footer action -->
+        <div class="px-4 py-3 border-t border-[#c5c5d7] bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <p class="text-sm text-[#505f76]"><strong class="text-[#171c1f]">1</strong> dipilih Naik Tingkat · <strong class="text-[#171c1f]">2</strong> sudah diputuskan</p>
+          <button class="flex items-center justify-center gap-2 px-5 py-2 bg-[#3c50e0] text-white text-sm font-semibold rounded-lg hover:bg-[#2a3db0] transition-colors shadow-sm">
+            <span class="material-symbols-outlined text-[18px]">arrow_upward</span> Proses Kenaikan
           </button>
         </div>
       </div>
@@ -237,7 +180,7 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
 
 <!-- Modal konfirmasi simpan -->
 <div id="modal-confirm" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 hidden">
-  <div class="bg-white w-full sm:max-w-sm rounded-t-2xl sm:rounded-xl shadow-xl p-6">
+  <div class="bg-white w-full sm:max-w-sm rounded-t-2xl sm:rounded-xl overflow-hidden shadow-xl p-6">
     <h3 class="text-base font-bold mb-2">Konfirmasi Keputusan</h3>
     <p class="text-sm text-[#505f76] mb-4">2 peserta didik belum mendapat keputusan. Apakah Anda ingin menyimpan keputusan yang sudah ada?</p>
     <div class="flex gap-2 justify-end">

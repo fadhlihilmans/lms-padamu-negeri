@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>11.2 Input Nilai Akhir Rapor — Guru</title>
+<title>11.2 — Input Nilai Akhir Rapor | LMS Padamu Negeri</title>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -23,7 +23,7 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
   input[type=number]{-moz-appearance:textfield}
 </style>
 </head>
-<body class="bg-[#f6fafe] text-[#171c1f] font-sans antialiased flex h-screen overflow-hidden">
+<body class="bg-[#f9fafb] text-[#171c1f] font-sans antialiased flex h-screen overflow-hidden">
 
 <div id="overlay" class="fixed inset-0 bg-black/40 z-30 hidden lg:hidden" onclick="closeSidebar()"></div>
 
@@ -91,7 +91,7 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
         <div class="overflow-x-auto">
           <table class="w-full text-left text-sm border-collapse" style="min-width:700px">
             <thead>
-              <tr class="bg-[#f0f4f8] border-b border-[#c5c5d7] text-xs font-semibold text-[#505f76] uppercase tracking-wide">
+              <tr class="bg-white border-b border-[#c5c5d7] text-xs font-semibold text-[#505f76] uppercase tracking-wide">
                 <th class="px-3 py-2.5 border-r border-[#c5c5d7] text-center w-10" rowspan="2">No</th>
                 <th class="px-3 py-2.5 border-r border-[#c5c5d7]" rowspan="2">Nama Peserta Didik</th>
                 <th class="px-3 py-2 border-r border-[#c5c5d7] text-center border-b border-[#c5c5d7]" colspan="2">Pengetahuan</th>
@@ -99,7 +99,7 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
                 <th class="px-3 py-2.5 border-r border-[#c5c5d7] text-center w-16" rowspan="2">Grade</th>
                 <th class="px-3 py-2.5 text-center w-20" rowspan="2">Catatan</th>
               </tr>
-              <tr class="bg-[#f0f4f8] border-b-2 border-[#c5c5d7] text-xs text-[#757686]">
+              <tr class="bg-white border-b-2 border-[#c5c5d7] text-xs text-[#757686]">
                 <th class="px-2 py-2 border-r border-[#c5c5d7] text-center font-normal">Ref</th>
                 <th class="px-2 py-2 border-r border-[#c5c5d7] text-center font-semibold text-[#505f76]">Akhir</th>
                 <th class="px-2 py-2 border-r border-[#c5c5d7] text-center font-normal">Ref</th>
@@ -244,7 +244,7 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
 
 <!-- Modal catatan (overlay) -->
 <div id="modal-note" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 hidden">
-  <div class="bg-white w-full sm:max-w-sm rounded-t-2xl sm:rounded-xl shadow-xl p-5">
+  <div class="bg-white w-full sm:max-w-sm rounded-t-2xl sm:rounded-xl overflow-hidden shadow-xl p-5">
     <h3 class="text-base font-bold mb-1">Catatan untuk Citra Lestari</h3>
     <p class="text-xs text-[#757686] mb-3">Matematika · Kelas 10 Botolambat</p>
     <textarea rows="4" class="w-full px-3 py-2 border border-[#c5c5d7] rounded-lg text-sm resize-none focus:outline-none focus:border-[#3c50e0] focus:ring-1 focus:ring-[#3c50e0]">Perlu peningkatan dalam pemahaman konsep statistika dasar.</textarea>

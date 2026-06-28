@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Absensi — Peserta Didik — LMS Padamu Negeri</title>
+  <title>6.1 — Absensi Peserta Didik | LMS Padamu Negeri</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
@@ -23,16 +23,16 @@
     .bn-item.active .material-symbols-outlined { color:#3c50e0; font-variation-settings:'FILL' 1,'wght' 500,'GRAD' 0,'opsz' 24; }
     .bn-item.active span.label { color:#3c50e0; font-weight:600; }
     /* Tombol absen besar */
-    .absen-btn { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:28px 16px; border-radius:14px; border:2px solid; cursor:pointer; transition:transform 0.1s, background 0.12s; }
+    .absen-btn { display:flex; flex-direction:row; align-items:center; justify-content:center; gap:14px; padding:18px 16px; border-radius:14px; border:2px solid; cursor:pointer; transition:transform 0.1s, background 0.12s; }
     .absen-btn:active { transform:scale(0.96); }
-    .absen-btn .circle { width:56px; height:56px; border-radius:9999px; display:flex; align-items:center; justify-content:center; color:white; margin-bottom:12px; transition:transform 0.12s; }
+    .absen-btn .circle { width:48px; height:48px; border-radius:9999px; display:flex; align-items:center; justify-content:center; color:white; flex-shrink:0; transition:transform 0.12s; }
     .absen-btn:hover .circle { transform:scale(1.08); }
     .ab-hadir { border-color:#86efac; background:#f0fdf4; } .ab-hadir:hover { background:#dcfce7; } .ab-hadir .circle { background:#16a34a; } .ab-hadir .lbl { color:#15803d; }
     .ab-izin  { border-color:#fcd34d; background:#fffbeb; } .ab-izin:hover  { background:#fef3c7; } .ab-izin .circle  { background:#d97706; } .ab-izin .lbl  { color:#b45309; }
     .ab-sakit { border-color:#93c5fd; background:#eff6ff; } .ab-sakit:hover { background:#dbeafe; } .ab-sakit .circle { background:#2563eb; } .ab-sakit .lbl { color:#1d4ed8; }
   </style>
 </head>
-<body style="background:#F1F5F9; min-height:100vh;">
+<body style="background:#f9fafb; min-height:100vh;">
 <!--
   6.1 — Absensi PESERTA DIDIK (absen mandiri).
   PD memilih status kehadiran: HADIR / IZIN / SAKIT (TANPA Alpa — alpa hanya diisi guru).
@@ -84,7 +84,7 @@
     <!-- ════════ KARTU SESI 1: BELUM ABSEN (pilih status) ════════ -->
     <div class="bg-white rounded-xl border overflow-hidden mb-5" style="border-color:#c5c5d7;box-shadow:0 1px 3px rgba(0,0,0,0.05)">
       <!-- Info sesi -->
-      <div class="px-5 py-3.5 flex items-center gap-3 border-b" style="background:#EEF2FF;border-color:#c5d0ff">
+      <div class="px-5 py-3.5 flex items-center gap-3 border-b" style="background:white;border-color:#d1d5db">
         <span class="material-symbols-outlined text-[20px]" style="color:#3c50e0">class</span>
         <div class="min-w-0">
           <p class="text-[14.5px] font-semibold" style="color:#1c33c8">Matematika</p>
@@ -95,7 +95,7 @@
         </span>
       </div>
       <!-- Timer -->
-      <div class="px-5 py-2.5 flex flex-wrap gap-x-6 gap-y-1.5 border-b" style="background:#f6fafe;border-color:#c5d0ff">
+      <div class="px-5 py-2.5 flex flex-wrap gap-x-6 gap-y-1.5 border-b" style="background:white;border-color:#d1d5db">
         <span class="flex items-center gap-1.5 text-[12px]" style="color:#3c50e0">
           <span class="material-symbols-outlined text-[14px]">play_circle</span>Dibuka: <strong>08:00 WIB</strong>
         </span>
@@ -105,7 +105,7 @@
       </div>
       <!-- Pilih status -->
       <div class="p-5">
-        <p class="text-center text-[12px] font-semibold uppercase tracking-wider mb-4" style="color:#505f76">Pilih Status Kehadiran</p>
+        <p class="text-center text-[12px] font-semibold uppercase tracking-wider mb-4" style="color:#171c1f">Pilih Status Kehadiran</p>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
           <button class="absen-btn ab-hadir">
             <span class="circle"><span class="material-symbols-outlined text-[30px]" style="font-variation-settings:'FILL' 1">check_circle</span></span>
@@ -126,7 +126,7 @@
 
     <!-- ════════ KARTU SESI 2: SUDAH ABSEN (state konfirmasi) ════════ -->
     <div class="bg-white rounded-xl border overflow-hidden mb-5" style="border-color:#c5c5d7;box-shadow:0 1px 3px rgba(0,0,0,0.05)">
-      <div class="px-5 py-3.5 flex items-center gap-3 border-b" style="background:#EEF2FF;border-color:#c5d0ff">
+      <div class="px-5 py-3.5 flex items-center gap-3 border-b" style="background:white;border-color:#d1d5db">
         <span class="material-symbols-outlined text-[20px]" style="color:#3c50e0">class</span>
         <div class="min-w-0">
           <p class="text-[14.5px] font-semibold" style="color:#1c33c8">Bahasa Indonesia</p>
@@ -161,39 +161,39 @@
       <h3 class="text-[14.5px] font-semibold mb-4 flex items-center gap-2" style="color:#171c1f">
         <span class="material-symbols-outlined text-[18px]" style="color:#3c50e0">history</span>Riwayat 7 Hari Terakhir
       </h3>
-      <div class="flex flex-wrap gap-2">
+      <div class="grid grid-cols-4 sm:grid-cols-7 gap-2">
         <!-- Hadir -->
-        <div class="flex-1 min-w-[80px] max-w-[110px] border rounded-xl p-3 text-center" style="background:#f0fdf4;border-color:#86efac;color:#15803d">
+        <div class="border rounded-xl p-3 text-center" style="background:#f0fdf4;border-color:#86efac;color:#15803d">
           <p class="text-[11px] font-semibold uppercase tracking-wider">Sel</p><p class="text-[10px] opacity-70">17/10</p>
           <p class="text-[13px] font-bold mt-1">Hadir</p>
         </div>
         <!-- Sakit -->
-        <div class="flex-1 min-w-[80px] max-w-[110px] border rounded-xl p-3 text-center" style="background:#eff6ff;border-color:#93c5fd;color:#1d4ed8">
+        <div class="border rounded-xl p-3 text-center" style="background:#eff6ff;border-color:#93c5fd;color:#1d4ed8">
           <p class="text-[11px] font-semibold uppercase tracking-wider">Rab</p><p class="text-[10px] opacity-70">18/10</p>
           <p class="text-[13px] font-bold mt-1">Sakit</p>
         </div>
         <!-- Hadir -->
-        <div class="flex-1 min-w-[80px] max-w-[110px] border rounded-xl p-3 text-center" style="background:#f0fdf4;border-color:#86efac;color:#15803d">
+        <div class="border rounded-xl p-3 text-center" style="background:#f0fdf4;border-color:#86efac;color:#15803d">
           <p class="text-[11px] font-semibold uppercase tracking-wider">Kam</p><p class="text-[10px] opacity-70">19/10</p>
           <p class="text-[13px] font-bold mt-1">Hadir</p>
         </div>
         <!-- Alpa (diisi guru) -->
-        <div class="flex-1 min-w-[80px] max-w-[110px] border rounded-xl p-3 text-center" style="background:#ffdad6;border-color:rgba(186,26,26,0.4);color:#93000a">
+        <div class="border rounded-xl p-3 text-center" style="background:#ffdad6;border-color:rgba(186,26,26,0.4);color:#93000a">
           <p class="text-[11px] font-semibold uppercase tracking-wider">Jum</p><p class="text-[10px] opacity-70">20/10</p>
           <p class="text-[13px] font-bold mt-1">Alpa</p>
         </div>
         <!-- Izin -->
-        <div class="flex-1 min-w-[80px] max-w-[110px] border rounded-xl p-3 text-center" style="background:#fffbeb;border-color:#fcd34d;color:#b45309">
+        <div class="border rounded-xl p-3 text-center" style="background:#fffbeb;border-color:#fcd34d;color:#b45309">
           <p class="text-[11px] font-semibold uppercase tracking-wider">Sab</p><p class="text-[10px] opacity-70">21/10</p>
           <p class="text-[13px] font-bold mt-1">Izin</p>
         </div>
         <!-- Kosong -->
-        <div class="flex-1 min-w-[80px] max-w-[110px] border border-dashed rounded-xl p-3 text-center opacity-60" style="background:#f0f4f8;border-color:#c5c5d7;color:#757686">
+        <div class="border border-dashed rounded-xl p-3 text-center opacity-60" style="background:#f0f4f8;border-color:#c5c5d7;color:#757686">
           <p class="text-[11px] font-semibold uppercase tracking-wider">Min</p><p class="text-[10px] opacity-70">22/10</p>
           <p class="text-[13px] font-bold mt-1">—</p>
         </div>
         <!-- Hari ini (ring) -->
-        <div class="flex-1 min-w-[80px] max-w-[110px] border rounded-xl p-3 text-center" style="background:#f0fdf4;border-color:#86efac;color:#15803d;box-shadow:0 0 0 2px #3c50e0">
+        <div class="border rounded-xl p-3 text-center" style="background:#f0fdf4;border-color:#86efac;color:#15803d;box-shadow:0 0 0 2px #3c50e0">
           <p class="text-[11px] font-semibold uppercase tracking-wider">Sen</p><p class="text-[10px] opacity-70">23/10</p>
           <p class="text-[13px] font-bold mt-1">Hadir</p>
           <p class="text-[9px] font-semibold mt-0.5" style="color:#3c50e0">Hari ini</p>

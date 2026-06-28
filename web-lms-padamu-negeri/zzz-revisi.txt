@@ -1,0 +1,298 @@
+- 3.1.2, card modal sisi bawah rounded ketika desktop dan tablet ketika mobile tidak. berlaku untuk semua modal
+- semua show data untuk kata "data" ubah menjadi "Data" capital awal
+- 3.4.2 modal reset password, card modal sisi bawah rounded ketika desktop dan tablet ketika mobile tidak rounded. berlaku untuk semua modal
+- 4.2 card modal sisi bawah rounded ketika desktop dan tablet ketika mobile tidak. berlaku untuk semua modal
+- 5
+<tr style="border-bottom:1px solid #c5c5d7;background:#f6fafe">
+              <th class="px-4 py-2.5 text-[11.5px] font-semibold uppercase tracking-wide w-12" style="color:#757686">Baris</th>
+              <th class="px-4 py-2.5 text-[11.5px] font-semibold uppercase tracking-wide" style="color:#757686">Nama Lengkap</th>
+              <th class="px-4 py-2.5 text-[11.5px] font-semibold uppercase tracking-wide" style="color:#757686">NIPD</th>
+              <th class="px-4 py-2.5 text-[11.5px] font-semibold uppercase tracking-wide" style="color:#757686">Rombel</th>
+              <th class="px-4 py-2.5 text-[11.5px] font-semibold uppercase tracking-wide" style="color:#757686">Status</th>
+            </tr>
+ubah dari yang abu-abu menjadi putih bg-nya (berlaku untuk semua tabel)
+- 6.1
+<div class="px-5 py-3.5 flex items-center gap-3 border-b" style="background:#EEF2FF;border-color:#c5d0ff">
+        <span class="material-symbols-outlined text-[20px]" style="color:#3c50e0">class</span>
+        <div class="min-w-0">
+          <p class="text-[14.5px] font-semibold" style="color:#1c33c8">Matematika</p>
+          <p class="text-[11.5px]" style="color:#3c50e0">Pengajar: Ahmad Suryanto, S.Pd</p>
+        </div>
+        <span class="ml-auto flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full flex-shrink-0" style="background:#dcfce7;color:#15803d;border:1px solid #86efac">
+          <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>Terbuka
+        </span>
+      </div>
+ubah jadi putih bg nya
+
+<div class="bg-white rounded-xl border p-5" style="border-color:#c5c5d7;box-shadow:0 1px 3px rgba(0,0,0,0.05)">
+      <h3 class="text-[14.5px] font-semibold mb-4 flex items-center gap-2" style="color:#171c1f">
+        <span class="material-symbols-outlined text-[18px]" style="color:#3c50e0">history</span>Riwayat 7 Hari Terakhir
+      </h3>
+      <div class="flex flex-wrap gap-2">
+        <!-- Hadir -->
+        <div class="flex-1 min-w-[80px] max-w-[110px] border rounded-xl p-3 text-center" style="background:#f0fdf4;border-color:#86efac;color:#15803d">
+          <p class="text-[11px] font-semibold uppercase tracking-wider">Sel</p><p class="text-[10px] opacity-70">17/10</p>
+          <p class="text-[13px] font-bold mt-1">Hadir</p>
+        </div>
+        <!-- Sakit -->
+        <div class="flex-1 min-w-[80px] max-w-[110px] border rounded-xl p-3 text-center" style="background:#eff6ff;border-color:#93c5fd;color:#1d4ed8">
+          <p class="text-[11px] font-semibold uppercase tracking-wider">Rab</p><p class="text-[10px] opacity-70">18/10</p>
+          <p class="text-[13px] font-bold mt-1">Sakit</p>
+        </div>
+        <!-- Hadir -->
+        <div class="flex-1 min-w-[80px] max-w-[110px] border rounded-xl p-3 text-center" style="background:#f0fdf4;border-color:#86efac;color:#15803d">
+          <p class="text-[11px] font-semibold uppercase tracking-wider">Kam</p><p class="text-[10px] opacity-70">19/10</p>
+          <p class="text-[13px] font-bold mt-1">Hadir</p>
+        </div>
+        <!-- Alpa (diisi guru) -->
+        <div class="flex-1 min-w-[80px] max-w-[110px] border rounded-xl p-3 text-center" style="background:#ffdad6;border-color:rgba(186,26,26,0.4);color:#93000a">
+          <p class="text-[11px] font-semibold uppercase tracking-wider">Jum</p><p class="text-[10px] opacity-70">20/10</p>
+          <p class="text-[13px] font-bold mt-1">Alpa</p>
+        </div>
+        <!-- Izin -->
+        <div class="flex-1 min-w-[80px] max-w-[110px] border rounded-xl p-3 text-center" style="background:#fffbeb;border-color:#fcd34d;color:#b45309">
+          <p class="text-[11px] font-semibold uppercase tracking-wider">Sab</p><p class="text-[10px] opacity-70">21/10</p>
+          <p class="text-[13px] font-bold mt-1">Izin</p>
+        </div>
+        <!-- Kosong -->
+        <div class="flex-1 min-w-[80px] max-w-[110px] border border-dashed rounded-xl p-3 text-center opacity-60" style="background:#f0f4f8;border-color:#c5c5d7;color:#757686">
+          <p class="text-[11px] font-semibold uppercase tracking-wider">Min</p><p class="text-[10px] opacity-70">22/10</p>
+          <p class="text-[13px] font-bold mt-1">—</p>
+        </div>
+        <!-- Hari ini (ring) -->
+        <div class="flex-1 min-w-[80px] max-w-[110px] border rounded-xl p-3 text-center" style="background:#f0fdf4;border-color:#86efac;color:#15803d;box-shadow:0 0 0 2px #3c50e0">
+          <p class="text-[11px] font-semibold uppercase tracking-wider">Sen</p><p class="text-[10px] opacity-70">23/10</p>
+          <p class="text-[13px] font-bold mt-1">Hadir</p>
+          <p class="text-[9px] font-semibold mt-0.5" style="color:#3c50e0">Hari ini</p>
+        </div>
+      </div>
+    </div>
+
+ubah jadi 7 kolom tiap baris jika desktop, sesuaikan jika tablet dan ketika mobile 4 kolom
+
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+          <button class="absen-btn ab-hadir">
+            <span class="circle"><span class="material-symbols-outlined text-[30px]" style="font-variation-settings:'FILL' 1">check_circle</span></span>
+            <span class="lbl text-[17px] font-bold">Hadir</span>
+          </button>
+          <button class="absen-btn ab-izin">
+            <span class="circle"><span class="material-symbols-outlined text-[30px]" style="font-variation-settings:'FILL' 1">info</span></span>
+            <span class="lbl text-[17px] font-bold">Izin</span>
+          </button>
+          <button class="absen-btn ab-sakit">
+            <span class="circle"><span class="material-symbols-outlined text-[30px]" style="font-variation-settings:'FILL' 1">local_hospital</span></span>
+            <span class="lbl text-[17px] font-bold">Sakit</span>
+          </button>
+        </div>
+
+buat opsinya menjadi icon dikiri text dikanan dan sesuaikan juga untuk mobile
+
+6.2 
+<tr>
+              <th class="px-4 py-3 text-left text-[12px] font-semibold uppercase tracking-wide w-12" style="color:#505f76">No</th>
+              <th class="px-4 py-3 text-left text-[12px] font-semibold uppercase tracking-wide" style="color:#505f76">Nama Peserta Didik</th>
+              <th class="px-4 py-3 text-left text-[12px] font-semibold uppercase tracking-wide w-32" style="color:#505f76">Status</th>
+              <th class="px-4 py-3 text-left text-[12px] font-semibold uppercase tracking-wide w-32" style="color:#505f76">Waktu / Sumber</th>
+              <th class="px-4 py-3 text-center text-[12px] font-semibold uppercase tracking-wide w-44" style="color:#505f76">Override Status</th>
+            </tr>
+
+            ubah bg menjadi putih (berlaku untuk semua table)
+
+7.1
+<div class="bg-white border border-[#c5c5d7] rounded-xl p-4 flex items-center gap-4 hover:border-[#3c50e0]/40 hover:shadow-sm transition-all group">
+          <div class="w-11 h-11 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center flex-shrink-0">
+            <span class="material-symbols-outlined text-[22px] filled">image</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <h3 class="text-sm font-semibold text-[#171c1f]">Infografis Grafik Fungsi Kuadrat</h3>
+                <p class="text-xs text-[#757686] mt-0.5">Panduan bergambar menggambar dan membaca grafik fungsi kuadrat.</p>
+              </div>
+              <span class="text-xs text-[#757686] whitespace-nowrap ml-2">25 Ags 2024</span>
+            </div>
+            <div class="flex items-center gap-2 mt-2">
+              <span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-purple-50 text-purple-600 font-medium">
+                <span class="material-symbols-outlined text-[12px]">image</span> Gambar
+              </span>
+            </div>
+          </div>
+          <div class="flex items-center gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex-shrink-0">
+            <button aria-label="Edit" class="w-8 h-8 rounded flex items-center justify-center text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] transition-colors">
+              <span class="material-symbols-outlined text-[18px]">edit</span>
+            </button>
+            <button aria-label="Hapus" class="w-8 h-8 rounded flex items-center justify-center text-[#505f76] hover:text-red-600 hover:bg-red-50 transition-colors">
+              <span class="material-symbols-outlined text-[18px]">delete</span>
+            </button>
+          </div>
+        </div>
+layout ketika mobile revisi :
+dibagi 2 kolom
+kiri atas icon, kanan atas judul, dibawahnya isi, dibawahnya keterangan seperti teks, dibawahnya lagi keterangan file pdf (tiap keterngan 1 baris), dibawahnya tanggal, lalu di paling bawah tombol edit hapus
+
+7.2 sama seperti 7.1 cuma jika 7.2 "oleh ..." itu diletakkan di paling bawah atau pada tempat tombol edit hapus
+ 7.3 modal bawah rounded
+8.1
+<div class="bg-white border border-[#c5c5d7] rounded-xl p-4 flex flex-wrap gap-3 items-end">
+        <div class="flex-1 min-w-[180px]">
+          <label class="text-xs font-medium text-[#505f76] block mb-1">Mata Pelajaran</label>
+          <select class="w-full px-3 py-2 border border-[#c5c5d7] rounded-lg text-sm bg-white">
+            <option>Matematika</option>
+            <option>Bahasa Indonesia</option>
+          </select>
+        </div>
+        <div class="flex-1 min-w-[160px]">
+          <label class="text-xs font-medium text-[#505f76] block mb-1">Rombel</label>
+          <select class="w-full px-3 py-2 border border-[#c5c5d7] rounded-lg text-sm bg-white">
+            <option>Paket C – Kelas 10 Botolambat</option>
+            <option>Paket C – Kelas 11 Pondok 1</option>
+          </select>
+        </div>
+        <button class="px-4 py-2 bg-[#3c50e0] text-white text-sm font-medium rounded-lg hover:bg-[#2a3db0] transition-colors">Tampilkan</button>
+      </div>
+      buat filter rombel full 1 baris ketika mobile dan tombol juga full 1 baris ketika mobile
+  
+<div class="bg-white border border-[#c5c5d7] rounded-xl px-4 py-3">
+        <div class="flex flex-wrap gap-2 items-center justify-between">
+          <div class="flex flex-wrap gap-2 items-center">
+            <div class="toolbar-search">
+              <span class="material-symbols-outlined icon">search</span>
+              <input type="text" placeholder="Cari judul tugas…">
+            </div>
+            <select class="px-3 py-2 border border-[#c5c5d7] rounded-lg text-sm bg-white text-[#505f76]">
+              <option value="">Semua Status</option>
+              <option>Aktif</option>
+              <option>Lewat Tenggat</option>
+              <option>Selesai</option>
+            </select>
+          </div>
+          <div class="per-page-group">
+            Tampilkan <select><option>10</option><option>25</option><option>50</option></select> data
+          </div>
+        </div>
+      </div>
+
+full 1 baris untuk search dan fillter ketika mobile, serta tampilkan data juga full, jangan lupa gunakan "Data" kapital awal kalimat
+
+8.2
+<div class="bg-white border border-[#c5c5d7] rounded-xl px-4 py-3">
+        <div class="flex flex-wrap gap-2 items-center justify-between">
+          <div class="flex flex-wrap gap-2 items-center">
+            <div class="toolbar-search">
+              <span class="material-symbols-outlined icon">search</span>
+              <input type="text" placeholder="Cari nama peserta didik…">
+            </div>
+            <select class="px-3 py-2 border border-[#c5c5d7] rounded-lg text-sm bg-white text-[#505f76]">
+              <option value="">Semua Status</option>
+              <option>Sudah Mengumpulkan</option>
+              <option>Terlambat</option>
+              <option>Belum Mengumpulkan</option>
+            </select>
+          </div>
+          <div class="per-page-group">
+            Tampilkan <select><option>10</option><option>25</option><option>50</option></select> data
+          </div>
+        </div>
+      </div>
+
+    full 1 baris untuk search dan filter (berlaku untuk semua tabel ya)
+
+9.1
+<div class="bg-white border border-[#c5c5d7] rounded-xl p-4 flex flex-wrap items-center gap-4 justify-between">
+        <div>
+          <h1 class="text-lg font-bold">UH 3 – Trigonometri</h1>
+          <div class="flex flex-wrap gap-3 mt-1 text-xs text-[#757686]">
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">event</span> 10 Jul 2025, 08:00</span>
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">timer</span> 120 menit</span>
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">grade</span> KKM 70</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs px-2 py-1 rounded-full bg-purple-50 text-purple-700 font-medium">Uraian</span>
+          <span class="text-sm font-bold text-[#3c50e0]">3 soal</span>
+          <button onclick="document.getElementById('modal-soal').classList.remove('hidden')" class="flex items-center gap-1.5 px-3 py-2 bg-[#3c50e0] text-white text-sm font-medium rounded-lg hover:bg-[#2a3db0] shadow-sm whitespace-nowrap">
+            <span class="material-symbols-outlined text-[18px]">add</span> Tambah Soal
+          </button>
+        </div>
+      </div>
+      ketika mobile ubah button di bawah "3soal" full 1 baris
+
+9.3
+<div class="bg-white border border-[#c5c5d7] rounded-xl p-4 flex flex-wrap gap-3 items-end">
+        <div class="flex-1 min-w-[180px]">
+          <label class="text-xs font-medium text-[#505f76] block mb-1">Mata Pelajaran</label>
+          <select class="w-full px-3 py-2 border border-[#c5c5d7] rounded-lg text-sm bg-white"><option>Matematika</option><option>Bahasa Indonesia</option></select>
+        </div>
+        <div class="flex-1 min-w-[160px]">
+          <label class="text-xs font-medium text-[#505f76] block mb-1">Rombel</label>
+          <select class="w-full px-3 py-2 border border-[#c5c5d7] rounded-lg text-sm bg-white"><option>Paket C – Kelas 10 Botolambat</option></select>
+        </div>
+        <button class="px-4 py-2 bg-[#3c50e0] text-white text-sm font-medium rounded-lg hover:bg-[#2a3db0]">Tampilkan</button>
+      </div>
+full 1 baris untuk filter dan button
+
+<div class="bg-[#EEF2FF] border border-[#3c50e0]/30 rounded-lg px-4 py-2.5 flex items-center gap-2 text-sm">
+        <span class="material-symbols-outlined text-[18px] text-[#3c50e0]">info</span>
+        <span class="text-[#3c50e0] font-medium">Matematika</span>
+        <span class="text-[#505f76]">— Paket C · Kelas 10 Botolambat · Periode 2024/2025</span>
+      </div>
+
+tulisan "matetematika" full 1 baris
+dan baru dilanjut dibawahnya
+
+<div class="bg-white border border-[#c5c5d7] rounded-xl px-4 py-3 flex flex-wrap gap-2 items-center justify-between">
+        <div class="flex flex-wrap gap-2 items-center">
+          <div class="toolbar-search"><span class="material-symbols-outlined icon">search</span><input type="text" placeholder="Cari nama ujian…"></div>
+          <select class="px-3 py-2 border border-[#c5c5d7] rounded-lg text-sm bg-white text-[#505f76]">
+            <option value="">Semua Status</option><option>Terjadwal</option><option>Berlangsung</option><option>Selesai</option>
+          </select>
+        </div>
+        <div class="per-page-group">Tampilkan <select><option>10</option><option>25</option></select> data</div>
+      </div>
+
+full 1 baris untuk search dan filter ketika mobile, tampilan data juga sesuaikan gunakan kata "Data" (berlaku untuk semua tabel)
+
+9.4
+<div class="bg-[#f0f4f8] border-b border-[#c5c5d7] px-4 py-2.5 flex items-center gap-2">
+          <span class="text-xs font-semibold text-[#505f76]">Soal Uraian #2</span>
+          <span class="text-[#c5c5d7]">·</span>
+          <span class="text-xs text-[#757686]">Bobot maks: 20 poin</span>
+        </div>
+
+        ganti bg menjadi puti jangan abu-abu, berlaku semua card
+
+9.5 
+<div class="bg-white border border-[#c5c5d7] rounded-xl px-4 py-3 flex flex-wrap gap-2 items-center justify-between">
+        <div class="flex flex-wrap gap-2 items-center">
+          <div class="toolbar-search"><span class="material-symbols-outlined icon">search</span><input type="text" placeholder="Cari nama peserta didik…"></div>
+          <select class="px-3 py-2 border border-[#c5c5d7] rounded-lg text-sm bg-white text-[#505f76]">
+            <option value="">Semua Status</option><option>Lulus KKM</option><option>Tidak Lulus</option><option>Menunggu Koreksi</option>
+          </select>
+        </div>
+        <div class="per-page-group">Tampilkan <select><option>10</option><option>25</option></select> data</div>
+      </div>
+
+      buat full ya untuk search dan filter ketika mobile
+
+10.1
+<div class="px-4 py-3 border-b border-[#c5c5d7] bg-[#f0f4f8] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <p class="text-sm font-semibold">Daftar Tunggu Peserta Didik</p>
+              <p class="text-xs text-[#757686]">Terpilih: <strong class="text-[#3c50e0]">2</strong> dari 8 peserta didik</p>
+            </div>
+            <div class="toolbar-search"><span class="material-symbols-outlined icon">search</span><input type="text" placeholder="Cari nama…"></div>
+          </div>
+
+          buat menjadi putih bg nya
+
+
+10.2 
+<div class="px-4 py-3 border-b border-[#c5c5d7] bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <p class="text-sm font-semibold text-[#171c1f]">Peserta Didik</p>
+            <p class="text-xs text-[#757686]">Centang untuk menandai <strong class="text-[#3c50e0]">Naik Tingkat</strong></p>
+          </div>
+          <div class="toolbar-search"><span class="material-symbols-outlined icon">search</span><input type="text" placeholder="Cari nama…"></div>
+        </div>
+
+        perbaiki search, kenapa jadi seperti itu ya

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rekap Absensi — Admin / Guru — LMS Padamu Negeri</title>
+  <title>6.3 — Rekap Absensi | LMS Padamu Negeri</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
@@ -20,8 +20,9 @@
     .nav-sub:hover { background:#f0f4f8; color:#171c1f; }
     .nav-sub::before { content:''; width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; opacity:0.5; }
     .act-btn { width:32px; height:32px; display:inline-flex; align-items:center; justify-content:center; border-radius:8px; cursor:pointer; color:#505f76; transition:background 0.12s,color 0.12s; }
-    .toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:12px 16px; border-bottom:1px solid #c5c5d7; background:#f6fafe; }
+    .toolbar { display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:12px 16px; border-bottom:1px solid #d1d5db; background:white; }
     .toolbar-search { position:relative; flex:1; min-width:170px; }
+    @media(max-width:639px){ .toolbar-search { flex-basis:100%; } }
     .toolbar-search input { width:100%; padding:8px 12px 8px 36px; border-radius:8px; font-size:13.5px; background:white; outline:none; border:1.5px solid #c5c5d7; color:#171c1f; transition:border-color 0.15s,box-shadow 0.15s; }
     .toolbar-search input:focus { border-color:#3c50e0; box-shadow:0 0 0 3px rgba(60,80,224,0.1); }
     .toolbar-search .icon { position:absolute; left:10px; top:50%; transform:translateY(-50%); color:#9da4b0; font-size:17px; pointer-events:none; }
@@ -32,7 +33,7 @@
     .pill { display:inline-flex; align-items:center; gap:3px; padding:2px 8px; border-radius:9999px; font-size:11px; font-weight:600; }
   </style>
 </head>
-<body style="background:#F1F5F9; min-height:100vh;">
+<body style="background:#f9fafb; min-height:100vh;">
 <!--
   6.3 — Rekap Absensi (ADMIN & GURU).
   - Admin: melihat semua sesi absensi lintas rombel, mapel, dan guru.
@@ -120,15 +121,15 @@
           <option value="">Semua Rombel</option>
           <option>Rombel A</option><option>Rombel B</option><option>Rombel Mandiri 1</option>
         </select>
-        <div class="flex items-center gap-1.5">
-          <input type="date" class="toolbar-select" value="2023-10-16" style="color:#505f76">
+        <div class="flex items-center gap-1.5 w-full sm:w-auto">
+          <input type="date" class="toolbar-select flex-1 sm:flex-none" value="2023-10-16" style="color:#505f76">
           <span class="text-[12px]" style="color:#757686">s/d</span>
-          <input type="date" class="toolbar-select" value="2023-10-23" style="color:#505f76">
+          <input type="date" class="toolbar-select flex-1 sm:flex-none" value="2023-10-23" style="color:#505f76">
         </div>
         <div class="per-page-group">
           <span>Tampil</span>
           <select class="toolbar-select"><option>15</option><option>25</option><option>50</option></select>
-          <span>data</span>
+          <span>Data</span>
         </div>
       </div>
 

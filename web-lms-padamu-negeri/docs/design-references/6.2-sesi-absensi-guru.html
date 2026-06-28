@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sesi Absensi — Guru — LMS Padamu Negeri</title>
+  <title>6.2 — Sesi Absensi Guru | LMS Padamu Negeri</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
@@ -24,7 +24,7 @@
     .ov-btn { width:30px; height:30px; display:inline-flex; align-items:center; justify-content:center; border-radius:6px; cursor:pointer; color:#757686; transition:background 0.12s,color 0.12s; }
   </style>
 </head>
-<body style="background:#F1F5F9; min-height:100vh;">
+<body style="background:#f9fafb; min-height:100vh;">
 <!--
   6.2 — Guru KELOLA SESI ABSENSI.
   Guru TIDAK absen sendiri. Guru: (1) pilih Mapel & Rombel, (2) Buka/Jadwalkan Sesi,
@@ -131,7 +131,7 @@
             <p class="text-[13px]" style="color:#505f76">Rombel A · Senin, 23 Oktober 2023</p>
           </div>
         </div>
-        <button onclick="bukaKonfirmasi()" class="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg border text-[14px] font-medium cursor-pointer self-start sm:self-auto" style="border-color:#ba1a1a;color:#ba1a1a" onmouseover="this.style.background='#ffdad6'" onmouseout="this.style.background='transparent'">
+        <button onclick="bukaKonfirmasi()" class="flex items-center justify-center gap-2 px-4 py-2 rounded-lg border text-[14px] font-medium cursor-pointer w-full sm:w-auto" style="border-color:#ba1a1a;color:#ba1a1a" onmouseover="this.style.background='#ffdad6'" onmouseout="this.style.background='transparent'">
           <span class="material-symbols-outlined text-[18px]">stop_circle</span>Tutup Sesi
         </button>
       </div>
@@ -170,7 +170,7 @@
       </div>
       <div class="overflow-x-auto">
         <table class="w-full text-[14px] min-w-[640px]">
-          <thead style="background:#f8f9fb;border-bottom:1px solid #c5c5d7">
+          <thead style="background:white;border-bottom:1px solid #c5c5d7">
             <tr>
               <th class="px-4 py-3 text-left text-[12px] font-semibold uppercase tracking-wide w-12" style="color:#505f76">No</th>
               <th class="px-4 py-3 text-left text-[12px] font-semibold uppercase tracking-wide" style="color:#505f76">Nama Peserta Didik</th>
@@ -253,7 +253,7 @@
 
 <!-- Modal Konfirmasi Tutup Sesi (sm:max-w-sm) -->
 <div id="modalTutup" class="fixed inset-0 z-[100] items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-0 sm:p-4 hidden" style="display:none">
-  <div class="bg-white rounded-t-2xl sm:rounded-xl shadow-xl w-full sm:max-w-sm p-6 relative z-10">
+  <div class="bg-white rounded-t-2xl sm:rounded-xl overflow-hidden shadow-xl w-full sm:max-w-sm p-6 relative z-10">
     <div class="flex items-center gap-4 mb-4">
       <div class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style="background:#ffdad6">
         <span class="material-symbols-outlined text-[26px]" style="color:#ba1a1a">stop_circle</span>

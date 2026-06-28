@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>10.1 Assign Rombel Baru — Admin</title>
+<title>10.1 — Assign Rombel | LMS Padamu Negeri</title>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -20,11 +20,12 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
   @media(max-width:1023px){#sidebar{transform:translateX(-100%)}#sidebar.open{transform:translateX(0)}}
   .toolbar-search{position:relative}
   .toolbar-search input{padding:.5rem .75rem .5rem 2.25rem;border:1px solid #c5c5d7;border-radius:.5rem;font-size:14px;background:#fff;outline:none;width:200px}
+  @media(max-width:639px){.toolbar-search,.toolbar-search input{width:100%}}
   .toolbar-search input:focus{border-color:#3c50e0;box-shadow:0 0 0 2px #3c50e020}
   .toolbar-search .icon{position:absolute;left:.5rem;top:50%;transform:translateY(-50%);color:#757686;font-size:18px;pointer-events:none}
 </style>
 </head>
-<body class="bg-[#f6fafe] text-[#171c1f] font-sans antialiased flex h-screen overflow-hidden">
+<body class="bg-[#f9fafb] text-[#171c1f] font-sans antialiased flex h-screen overflow-hidden">
 
 <div id="overlay" class="fixed inset-0 bg-black/40 z-30 hidden lg:hidden" onclick="closeSidebar()"></div>
 
@@ -71,18 +72,18 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
 
         <!-- Panel kiri: daftar tunggu PD -->
         <div class="xl:col-span-2 bg-white border border-[#c5c5d7] rounded-xl overflow-hidden flex flex-col" style="max-height:600px">
-          <div class="px-4 py-3 border-b border-[#c5c5d7] bg-[#f0f4f8] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div class="px-4 py-3 border-b border-[#c5c5d7] bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <p class="text-sm font-semibold">Daftar Tunggu Peserta Didik</p>
               <p class="text-xs text-[#757686]">Terpilih: <strong class="text-[#3c50e0]">2</strong> dari 8 peserta didik</p>
             </div>
-            <div class="toolbar-search"><span class="material-symbols-outlined icon">search</span><input type="text" placeholder="Cari nama…"/></div>
+            <div class="toolbar-search w-full sm:w-auto"><span class="material-symbols-outlined icon">search</span><input type="text" placeholder="Cari nama…"/></div>
           </div>
 
           <!-- Table scroll wrapper -->
           <div class="flex-1 overflow-auto">
           <!-- Table header -->
-          <div class="grid items-center px-4 py-2 bg-[#f0f4f8] border-b border-[#c5c5d7] text-xs font-semibold text-[#505f76] uppercase tracking-wide sticky top-0 z-10" style="grid-template-columns:36px minmax(160px,1fr) 130px 140px;min-width:460px">
+          <div class="grid items-center px-4 py-2 bg-white border-b border-[#c5c5d7] text-xs font-semibold text-[#505f76] uppercase tracking-wide sticky top-0 z-10" style="grid-template-columns:36px minmax(160px,1fr) 130px 140px;min-width:460px">
             <div class="flex justify-center"><input type="checkbox" class="rounded border-[#c5c5d7] text-[#3c50e0]"/></div>
             <div>Nama Peserta Didik</div>
             <div>Status</div>
