@@ -1,14 +1,10 @@
 # Sampai :
-- revisi tampilan total:
-1. baru html 6.x
 
 - Langkah 16 (CBT) — Guru — DaftarCbt ✅, FormCbt ✅. Sisa Langkah 16:
 
 # kurang:
 - halaman login hubungi admin
-- .md
-claude.md docs/build-steps.md docs/database.md docs/design-guide.md docs/prd.md docs/stitch-prompts.md
-- rekap absensi bukan cuma admin tapi guru juga
+- belum ada imagick
 
 # Lanjut :
 

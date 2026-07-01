@@ -11,11 +11,23 @@
   WAJIB mengikuti file ini persis. Jangan mengarang tipe kolom sendiri. Termasuk
   tabel `settings` (Bagian 8) — lihat aturan akses di bawah.
 - `docs/build-steps.md` — Urutan pengerjaan, satu langkah satu commit.
+- `docs/checklist.md` — Progres per Fase/Langkah (turunan `build-steps.md`). **Read-only bagi Claude**
+  untuk tahu apa yang sudah/belum; lihat aturan centang di bawah.
 - `docs/design-guide.md` — Cara menerjemahkan desain Google Stitch → TailAdmin → Livewire.
 
 **Aturan:** Sebelum membuat migration/model/fitur, selalu buka `docs/database.md`
 dan `docs/build-steps.md`. Jika ada konflik antara instruksiku saat chat dan
 file-file ini, file ini yang menang — konfirmasikan dulu ke saya kalau ada bentrok.
+
+**Aturan `docs/checklist.md` (WAJIB):** File ini adalah papan progres milik saya.
+- Kotak centang (`[ ]` / `[x]`) **HANYA saya yang boleh mengubah.** Claude
+  **DILARANG** mencentang, meng-uncheck, atau menandai task apa pun sebagai selesai —
+  meskipun task-nya memang sudah dikerjakan. Yang menilai "selesai" adalah saya
+  setelah review.
+- Claude **boleh** menambah baris task baru atau memperbaiki redaksi bila
+  `build-steps.md` berubah, tetapi baris baru harus tetap `[ ]` (belum dicentang).
+- Claude membaca checklist ini untuk tahu Langkah mana yang sudah/belum — **jangan
+  menebak progres dari kode atau git history**; percayai status centang di file ini.
 
 ## Tech Stack (kunci, jangan diganti)
 
@@ -99,6 +111,23 @@ file-file ini, file ini yang menang — konfirmasikan dulu ke saya kalau ada ben
 15. **Bug Report (`bug_report`) adalah fitur terpisah dari `error_log`** —
     untuk laporan manual pengguna (semua role boleh lapor), bukan exception
     otomatis. Jangan satukan logic keduanya di satu Service/tabel yang sama.
+16. **Tampilan WAJIB dibuat SAMA PERSIS dengan file HTML di
+    `docs/design-references/`** (idealnya 100% identik). Saat membangun/merevisi
+    view Blade, buka file `.html` acuannya dan **cocokkan tepat**: ukuran font
+    (`text-[..px]`), ukuran & warna ikon, padding/margin/gap, tinggi baris,
+    radius, border, warna, urutan & struktur elemen (kolom tabel, urutan menu
+    sidebar, dsb). **Jangan** memakai skala sendiri yang lebih longgar/besar.
+    - Ambil angka langsung dari file acuan; jangan mengira-ira.
+    - Catatan teknis penting: proyek ini **Tailwind v4**. CSS Google Material
+      Symbols yang di-`<link>` bersifat *unlayered* dan mengalahkan utility
+      `text-[..px]` (yang ada di `@layer`), sehingga ikon terpaksa 24px. Karena
+      itu Material Symbols di-load lewat `@import url(...) layer(base)` di
+      `resources/css/app.css` (BUKAN `<link>`), dan **jangan** set
+      `font-family` di selektor `*` (unlayered) karena akan membuat ikon tampil
+      sebagai teks — set di `body` saja.
+    - Setelah mengubah Blade/CSS: jalankan `php artisan view:cache` lalu
+      `npm run build` (build memindai *compiled views* di `storage/framework/
+      views`), baru minta review.
 
 ## Konvensi Penamaan
 

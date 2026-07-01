@@ -1,14 +1,14 @@
 <div>
 
     {{-- ── Header ──────────────────────────────────────────────────────────── --}}
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
         <div>
-            <h2 class="text-[24px] font-bold tracking-tight text-on-surface">Rombel</h2>
-            <p class="text-[14px] text-[#505f76] mt-0.5">Kelola rombongan belajar, wali kelas, dan anggota peserta didik.</p>
+            <h2 class="text-[18px] font-bold text-[#171c1f]">Rombel</h2>
+            <p class="text-[13px] text-[#757686] mt-0.5">Kelola rombongan belajar beserta wali kelas dan peserta didik.</p>
         </div>
         <button wire:click="openCreateForm"
-                class="inline-flex items-center gap-2 bg-[#3c50e0] text-white text-[14px] font-medium px-4 py-2.5 rounded-lg hover:bg-[#1c33c8] transition-colors shadow-sm cursor-pointer">
-            <span class="material-symbols-outlined text-[18px]">add</span>
+                class="inline-flex items-center gap-2 bg-[#3c50e0] text-white text-[13.5px] font-semibold px-4 py-2.5 rounded-lg hover:bg-[#2e3eb0] transition-colors shadow-sm cursor-pointer self-start sm:self-auto">
+            <span class="material-symbols-outlined text-[17px]">add</span>
             Tambah Rombel
         </button>
     </div>
@@ -324,48 +324,51 @@
         <div class="overflow-x-auto">
             <table class="w-full text-left">
                 <thead>
-                    <tr class="bg-[#f0f4f8] border-b border-[#c5c5d7] text-[12px] font-semibold text-[#505f76] uppercase tracking-wider">
-                        <th class="px-6 py-4 w-12">No.</th>
-                        <th class="px-6 py-4">Nama Rombel</th>
-                        <th class="px-6 py-4">Wali Kelas</th>
-                        <th class="px-6 py-4 text-center">Anggota</th>
-                        <th class="px-6 py-4 text-right">Aksi</th>
+                    <tr class="border-b border-[#c5c5d7]">
+                        <th class="px-4 py-3 text-[11.5px] font-semibold text-[#757686] uppercase tracking-wide w-10">No</th>
+                        <th class="px-4 py-3 text-[11.5px] font-semibold text-[#757686] uppercase tracking-wide">Nama Rombel</th>
+                        <th class="px-4 py-3 text-[11.5px] font-semibold text-[#757686] uppercase tracking-wide">Paket / Tingkat</th>
+                        <th class="px-4 py-3 text-[11.5px] font-semibold text-[#757686] uppercase tracking-wide">Wali Kelas</th>
+                        <th class="px-4 py-3 text-[11.5px] font-semibold text-[#757686] uppercase tracking-wide text-center w-16">PD</th>
+                        <th class="px-4 py-3 text-[11.5px] font-semibold text-[#757686] uppercase tracking-wide text-center w-28">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="text-[14px] text-on-surface divide-y divide-[#c5c5d7]">
+                <tbody class="text-[13.5px] text-[#171c1f] divide-y divide-[#f0f4f8]">
                     @forelse ($rombels as $i => $r)
                         <tr class="hover:bg-[#f6fafe] transition-colors">
-                            <td class="px-6 py-4 text-[#505f76]">{{ $rombels->firstItem() + $i }}</td>
-                            <td class="px-6 py-4">
-                                <p class="font-medium">{{ $r->nama }}</p>
-                                <p class="text-[12px] text-[#505f76] mt-0.5">
-                                    TA {{ $r->periodeAjaran?->tahun_ajaran }} {{ $r->periodeAjaran?->semester }} &bull; {{ $r->paket?->nama }} &bull; {{ $r->wilayah?->nama }}
-                                </p>
+                            <td class="px-4 py-3.5 text-[13px] text-[#9da4b0]">{{ $rombels->firstItem() + $i }}</td>
+                            <td class="px-4 py-3.5">
+                                <p class="text-[13.5px] font-medium text-[#171c1f]">{{ $r->nama }}</p>
+                                <p class="text-[11.5px] text-[#757686] mt-0.5">TA {{ $r->periodeAjaran?->tahun_ajaran }} {{ ucfirst($r->periodeAjaran?->semester) }} · {{ $r->wilayah?->nama }}</p>
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-4 py-3.5 text-[13px] text-[#505f76]">
+                                {{ $r->paket?->nama ?? '—' }}
+                                <span class="text-[#9da4b0]">/</span>
+                                {{ $r->tingkat?->nama ?? '—' }}
+                            </td>
+                            <td class="px-4 py-3.5">
                                 @if ($r->waliKelas)
-                                    <p class="text-[14px] font-medium">{{ $r->waliKelas->nama_lengkap }}</p>
-                                    <p class="text-[12px] text-[#505f76]">{{ $r->waliKelas->nip }}</p>
+                                    <p class="text-[13.5px] font-medium text-[#171c1f]">{{ $r->waliKelas->nama_lengkap }}</p>
+                                    <p class="text-[11.5px] text-[#757686]">{{ $r->waliKelas->nip }}</p>
                                 @else
-                                    <span class="text-[13px] text-amber-600 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full inline-flex items-center gap-1">
+                                    <span class="text-[12px] text-amber-600 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full inline-flex items-center gap-1">
                                         <span class="material-symbols-outlined text-[12px]">warning</span>
                                         Belum ditentukan
                                     </span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 text-center">
+                            <td class="px-4 py-3.5 text-center">
                                 <button wire:click="openKelolaMember({{ $r->id }})"
-                                        class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[12px] font-semibold transition-colors cursor-pointer
+                                        class="inline-flex items-center justify-center gap-1 px-2.5 py-1 rounded-full text-[12px] font-semibold transition-colors cursor-pointer
                                                {{ $r->peserta_didik_rombel_count > 0
-                                                   ? 'bg-[#EEF2FF] text-[#1c33c8] hover:bg-[#3c50e0] hover:text-white'
+                                                   ? 'bg-[#EEF2FF] text-[#3c50e0] hover:bg-[#3c50e0] hover:text-white'
                                                    : 'bg-[#eaeef2] text-[#505f76] hover:bg-[#3c50e0] hover:text-white' }}"
                                         title="Kelola anggota">
-                                    <span class="material-symbols-outlined text-[14px]">group</span>
-                                    {{ $r->peserta_didik_rombel_count }} orang
+                                    {{ $r->peserta_didik_rombel_count }}
                                 </button>
                             </td>
-                            <td class="px-6 py-4">
-                                <div class="flex items-center justify-end gap-2">
+                            <td class="px-4 py-3.5">
+                                <div class="flex items-center justify-center gap-1">
                                     <a href="{{ route('admin.master.rombel.show', $r->id) }}"
                                        class="p-1.5 text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] rounded-lg transition-colors cursor-pointer"
                                        title="Lihat detail">
@@ -386,7 +389,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-16 text-center">
+                            <td colspan="6" class="px-6 py-16 text-center">
                                 @if ($search || $filterWilayahId || $filterPaketId || $filterPeriodeId)
                                     <span class="material-symbols-outlined text-[48px] text-[#c5c5d7] mb-3 block">search_off</span>
                                     <p class="text-[14px] text-[#505f76]">Tidak ada data ditemukan.</p>
@@ -411,7 +414,7 @@
         </div>
 
         @if ($rombels->total() > 0)
-            <div class="px-6 py-4 border-t border-[#c5c5d7] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="px-4 py-3.5 border-t border-[#c5c5d7] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <p class="text-[13px] text-[#505f76]">
                     Menampilkan {{ $rombels->firstItem() }}–{{ $rombels->lastItem() }} dari {{ $rombels->total() }} data
                 </p>

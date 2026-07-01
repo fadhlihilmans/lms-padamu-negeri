@@ -3,8 +3,8 @@
     {{-- ── Header ──────────────────────────────────────────────────────────── --}}
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-            <h2 class="text-[24px] font-bold tracking-tight text-on-surface">Jadwal Pelajaran</h2>
-            <p class="text-[14px] text-[#505f76] mt-0.5">Kelola jadwal mengajar per rombel berdasarkan pemetaan guru-mapel.</p>
+            <h2 class="text-[18px] font-bold text-on-surface">Jadwal Pelajaran</h2>
+            <p class="text-[13px] text-[#757686] mt-0.5">Kelola jadwal mengajar per rombel berdasarkan pemetaan guru-mapel.</p>
         </div>
         @if ($filterRombelId && $pemetaan->isNotEmpty())
             <button wire:click="openCreateForm"
@@ -172,7 +172,7 @@
     @else
         {{-- Info pemetaan yang tersedia --}}
         <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm p-4 mb-5">
-            <p class="text-[12px] font-semibold text-[#505f76] uppercase tracking-wider mb-2">Pemetaan Guru-Mapel Tersedia</p>
+            <p class="text-[11.5px] font-semibold text-[#757686] uppercase tracking-wide mb-2">Pemetaan Guru-Mapel Tersedia</p>
             <div class="flex flex-wrap gap-2">
                 @foreach ($pemetaan as $p)
                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-medium bg-[#EEF2FF] text-[#1c33c8] border border-[#c5d0ff]">
@@ -208,14 +208,14 @@
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left">
                                     <thead>
-                                        <tr class="bg-[#f0f4f8] border-b border-[#c5c5d7] text-[11px] font-semibold text-[#505f76] uppercase tracking-wider">
+                                        <tr class="bg-white border-b border-[#c5c5d7] text-[11px] font-semibold text-[#505f76] uppercase tracking-wider">
                                             <th class="px-5 py-3 w-36">Waktu</th>
                                             <th class="px-5 py-3">Mata Pelajaran</th>
                                             <th class="px-5 py-3">Guru</th>
                                             <th class="px-5 py-3 text-right">Aksi</th>
                                         </tr>
                                     </thead>
-                                    <tbody class="text-[14px] text-on-surface divide-y divide-[#c5c5d7]">
+                                    <tbody class="text-[13.5px] text-on-surface divide-y divide-[#c5c5d7]">
                                         @foreach ($jadwalByHari[$h] as $jadwal)
                                             <tr class="hover:bg-[#f6fafe] transition-colors">
                                                 <td class="px-5 py-3">

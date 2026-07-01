@@ -3,8 +3,8 @@
     {{-- ── Header ─────────────────────────────────────────────────────────── --}}
     <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-            <h2 class="text-[24px] font-bold tracking-tight text-on-surface">Import Peserta Didik</h2>
-            <p class="text-[14px] text-[#505f76] mt-0.5">
+            <h2 class="text-[18px] font-bold text-on-surface">Import Peserta Didik</h2>
+            <p class="text-[13px] text-[#757686] mt-0.5">
                 Import massal data peserta didik dari file Excel (.xlsx).
             </p>
         </div>
@@ -163,7 +163,7 @@
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-[14px]">
-                    <thead class="bg-[#f8f9fb] border-b border-[#c5c5d7]">
+                    <thead class="bg-white border-b border-[#c5c5d7]">
                         <tr>
                             <th class="px-4 py-3 text-left text-[12px] font-semibold text-[#505f76] uppercase tracking-wide w-16">Baris</th>
                             <th class="px-4 py-3 text-left text-[12px] font-semibold text-[#505f76] uppercase tracking-wide w-24">Status</th>

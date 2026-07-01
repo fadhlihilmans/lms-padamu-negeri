@@ -3,8 +3,8 @@
     {{-- ── Header ──────────────────────────────────────────────────────────── --}}
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-            <h2 class="text-[24px] font-bold tracking-tight text-on-surface">Materi</h2>
-            <p class="text-[14px] text-[#505f76] mt-0.5">
+            <h2 class="text-[18px] font-bold text-on-surface">Materi</h2>
+            <p class="text-[13px] text-[#757686] mt-0.5">
                 {{ $gmrSelected ? $gmrSelected->mapel->nama . ' — ' . $gmrSelected->rombel->nama : 'Pilih pemetaan untuk melihat materi' }}
             </p>
         </div>

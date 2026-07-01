@@ -2,8 +2,8 @@
 
     {{-- ── Header ──────────────────────────────────────────────────────────── --}}
     <div class="mb-6">
-        <h2 class="text-[24px] font-bold tracking-tight text-on-surface">Materi</h2>
-        <p class="text-[14px] text-[#505f76] mt-0.5">Materi pembelajaran yang tersedia untuk Anda</p>
+        <h2 class="text-[18px] font-bold text-on-surface">Materi</h2>
+        <p class="text-[13px] text-[#757686] mt-0.5">Materi pembelajaran yang tersedia untuk Anda</p>
     </div>
 
     {{-- ── Filter Bar ───────────────────────────────────────────────────────── --}}

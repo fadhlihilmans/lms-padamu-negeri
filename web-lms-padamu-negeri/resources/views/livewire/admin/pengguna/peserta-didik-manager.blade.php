@@ -3,8 +3,8 @@
     {{-- ── Header ──────────────────────────────────────────────────────────── --}}
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-            <h2 class="text-[24px] font-bold tracking-tight text-on-surface">Manajemen Peserta Didik</h2>
-            <p class="text-[14px] text-[#505f76] mt-0.5">Kelola data peserta didik dan akun login mereka.</p>
+            <h2 class="text-[18px] font-bold text-on-surface">Manajemen Peserta Didik</h2>
+            <p class="text-[13px] text-[#757686] mt-0.5">Kelola data peserta didik dan akun login mereka.</p>
         </div>
         <div class="flex items-center gap-2 flex-shrink-0 flex-wrap">
             <a href="{{ route('admin.import.peserta-didik') }}"
@@ -259,16 +259,16 @@
         <div class="overflow-x-auto">
             <table class="w-full text-left">
                 <thead>
-                    <tr class="bg-[#f0f4f8] border-b border-[#c5c5d7] text-[12px] font-semibold text-[#505f76] uppercase tracking-wider">
-                        <th class="px-6 py-4 w-12">No.</th>
-                        <th class="px-6 py-4">Peserta Didik</th>
-                        <th class="px-6 py-4">NIPD / NISN</th>
-                        <th class="px-6 py-4 text-center">Status</th>
-                        <th class="px-6 py-4 text-center">Akun</th>
-                        <th class="px-6 py-4 text-right">Aksi</th>
+                    <tr class="bg-white border-b border-[#c5c5d7] text-[11.5px] font-semibold text-[#757686] uppercase tracking-wide">
+                        <th class="px-4 py-3.5 w-12">No.</th>
+                        <th class="px-4 py-3.5">Peserta Didik</th>
+                        <th class="px-4 py-3.5">NIPD / NISN</th>
+                        <th class="px-4 py-3.5 text-center">Status</th>
+                        <th class="px-4 py-3.5 text-center">Akun</th>
+                        <th class="px-4 py-3.5 text-right">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="text-[14px] text-on-surface divide-y divide-[#c5c5d7]">
+                <tbody class="text-[13.5px] text-on-surface divide-y divide-[#c5c5d7]">
                     @forelse ($pesertaDidiks as $i => $pd)
                         @php
                             $statusColors = [
@@ -279,8 +279,8 @@
                             ];
                         @endphp
                         <tr class="hover:bg-[#f6fafe] transition-colors">
-                            <td class="px-6 py-4 text-[#505f76]">{{ $pesertaDidiks->firstItem() + $i }}</td>
-                            <td class="px-6 py-4">
+                            <td class="px-4 py-3.5 text-[#505f76]">{{ $pesertaDidiks->firstItem() + $i }}</td>
+                            <td class="px-4 py-3.5">
                                 <p class="font-medium">{{ $pd->nama_lengkap }}</p>
                                 <p class="text-[12px] text-[#505f76] mt-0.5">
                                     {{ $pd->jenis_kelamin === 'L' ? 'Laki-laki' : 'Perempuan' }}
@@ -289,18 +289,18 @@
                                     @endif
                                 </p>
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-4 py-3.5">
                                 <p class="font-mono text-[13px] bg-[#f0f4f8] px-2 py-0.5 rounded inline-block">{{ $pd->nipd }}</p>
                                 @if ($pd->nisn)
                                     <p class="text-[12px] text-[#505f76] mt-0.5">NISN: {{ $pd->nisn }}</p>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 text-center">
+                            <td class="px-4 py-3.5 text-center">
                                 <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[12px] font-semibold {{ $statusColors[$pd->status_akademik] ?? 'bg-gray-100 text-gray-700' }}">
                                     {{ ucfirst($pd->status_akademik) }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 text-center">
+                            <td class="px-4 py-3.5 text-center">
                                 <button wire:click="toggleActive({{ $pd->id }})"
                                         title="{{ $pd->user?->is_active ? 'Klik untuk nonaktifkan' : 'Klik untuk aktifkan' }}"
                                         class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[12px] font-semibold transition-colors cursor-pointer
@@ -313,7 +313,7 @@
                                     {{ $pd->user?->is_active ? 'Aktif' : 'Nonaktif' }}
                                 </button>
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-4 py-3.5">
                                 <div class="flex items-center justify-end gap-1">
                                     <a href="{{ route('admin.pengguna.peserta-didik.show', $pd->id) }}"
                                        class="p-1.5 text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] rounded-lg transition-colors cursor-pointer"
@@ -362,7 +362,7 @@
 
         {{-- Pagination footer --}}
         @if ($pesertaDidiks->hasPages())
-            <div class="px-6 py-4 border-t border-[#c5c5d7] flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#f8fafc]">
+            <div class="px-4 py-3.5 border-t border-[#c5c5d7] flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#f8fafc]">
                 <p class="text-[13px] text-[#505f76]">
                     Menampilkan {{ $pesertaDidiks->firstItem() }}–{{ $pesertaDidiks->lastItem() }} dari {{ $pesertaDidiks->total() }} data
                 </p>

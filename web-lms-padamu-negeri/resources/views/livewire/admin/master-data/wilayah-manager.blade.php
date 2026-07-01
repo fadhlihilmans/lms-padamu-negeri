@@ -3,8 +3,8 @@
     {{-- ── Header ──────────────────────────────────────────────────────────── --}}
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-            <h2 class="text-[24px] font-bold tracking-tight text-on-surface">Wilayah</h2>
-            <p class="text-[14px] text-[#505f76] mt-0.5">Kelola data wilayah PKBM.</p>
+            <h2 class="text-[18px] font-bold text-on-surface">Wilayah</h2>
+            <p class="text-[13px] text-[#757686] mt-0.5">Kelola data wilayah PKBM.</p>
         </div>
         <button wire:click="openCreateForm"
                 class="inline-flex items-center gap-2 bg-[#3c50e0] text-white text-[14px] font-medium px-4 py-2.5 rounded-lg hover:bg-[#1c33c8] transition-colors shadow-sm cursor-pointer">
@@ -90,18 +90,18 @@
         <div class="overflow-x-auto">
             <table class="w-full text-left">
                 <thead>
-                    <tr class="bg-[#f0f4f8] border-b border-[#c5c5d7] text-[12px] font-semibold text-[#505f76] uppercase tracking-wider">
-                        <th class="px-6 py-4 w-16">No.</th>
-                        <th class="px-6 py-4">Nama Wilayah</th>
-                        <th class="px-6 py-4 text-right">Aksi</th>
+                    <tr class="bg-white border-b border-[#c5c5d7] text-[11.5px] font-semibold text-[#757686] uppercase tracking-wide">
+                        <th class="px-4 py-3.5 w-16">No.</th>
+                        <th class="px-4 py-3.5">Nama Wilayah</th>
+                        <th class="px-4 py-3.5 text-right">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="text-[14px] text-on-surface divide-y divide-[#c5c5d7]">
+                <tbody class="text-[13.5px] text-on-surface divide-y divide-[#c5c5d7]">
                     @forelse ($wilayahs as $i => $w)
                         <tr class="hover:bg-[#f6fafe] transition-colors">
-                            <td class="px-6 py-4 text-[#505f76]">{{ $wilayahs->firstItem() + $i }}</td>
-                            <td class="px-6 py-4 font-medium">{{ $w->nama }}</td>
-                            <td class="px-6 py-4">
+                            <td class="px-4 py-3.5 text-[#505f76]">{{ $wilayahs->firstItem() + $i }}</td>
+                            <td class="px-4 py-3.5 font-medium">{{ $w->nama }}</td>
+                            <td class="px-4 py-3.5">
                                 <div class="flex items-center justify-end gap-2">
                                     <button wire:click="openEditForm({{ $w->id }})"
                                             class="p-1.5 text-[#505f76] hover:text-[#1c33c8] hover:bg-[#eaeef2] rounded-lg transition-colors cursor-pointer"
@@ -143,7 +143,7 @@
         </div>
 
         @if ($wilayahs->total() > 0)
-            <div class="px-6 py-4 border-t border-[#c5c5d7] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="px-4 py-3.5 border-t border-[#c5c5d7] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <p class="text-[13px] text-[#505f76]">
                     Menampilkan {{ $wilayahs->firstItem() }}–{{ $wilayahs->lastItem() }} dari {{ $wilayahs->total() }} data
                 </p>

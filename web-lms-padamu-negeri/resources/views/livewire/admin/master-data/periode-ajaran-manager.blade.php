@@ -3,8 +3,8 @@
     {{-- ── Header ──────────────────────────────────────────────────────────── --}}
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-            <h2 class="text-[24px] font-bold tracking-tight text-on-surface">Periode Ajaran</h2>
-            <p class="text-[14px] text-[#505f76] mt-0.5">Kelola tahun ajaran dan semester aktif.</p>
+            <h2 class="text-[18px] font-bold text-on-surface">Periode Ajaran</h2>
+            <p class="text-[13px] text-[#757686] mt-0.5">Kelola tahun ajaran dan semester aktif.</p>
         </div>
         <button
             wire:click="openCreateForm"
@@ -158,22 +158,22 @@
         <div class="overflow-x-auto">
             <table class="w-full text-left">
                 <thead>
-                    <tr class="bg-[#f0f4f8] border-b border-[#c5c5d7] text-[12px] font-semibold text-[#505f76] uppercase tracking-wider">
-                        <th class="px-6 py-4 w-16">No.</th>
-                        <th class="px-6 py-4">Tahun Ajaran</th>
-                        <th class="px-6 py-4">Semester</th>
-                        <th class="px-6 py-4">Status</th>
-                        <th class="px-6 py-4 text-right">Aksi</th>
+                    <tr class="bg-white border-b border-[#c5c5d7] text-[11.5px] font-semibold text-[#757686] uppercase tracking-wide">
+                        <th class="px-4 py-3.5 w-16">No.</th>
+                        <th class="px-4 py-3.5">Tahun Ajaran</th>
+                        <th class="px-4 py-3.5">Semester</th>
+                        <th class="px-4 py-3.5">Status</th>
+                        <th class="px-4 py-3.5 text-right">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="text-[14px] text-on-surface divide-y divide-[#c5c5d7]">
+                <tbody class="text-[13.5px] text-on-surface divide-y divide-[#c5c5d7]">
 
                     @forelse ($periodes as $i => $p)
                         <tr class="hover:bg-[#f6fafe] transition-colors">
-                            <td class="px-6 py-4 text-[#505f76]">{{ $periodes->firstItem() + $i }}</td>
-                            <td class="px-6 py-4 font-medium">{{ $p->tahun_ajaran }}</td>
-                            <td class="px-6 py-4">{{ ucfirst($p->semester) }}</td>
-                            <td class="px-6 py-4">
+                            <td class="px-4 py-3.5 text-[#505f76]">{{ $periodes->firstItem() + $i }}</td>
+                            <td class="px-4 py-3.5 font-medium">{{ $p->tahun_ajaran }}</td>
+                            <td class="px-4 py-3.5">{{ ucfirst($p->semester) }}</td>
+                            <td class="px-4 py-3.5">
                                 @if ($p->is_aktif)
                                     <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[12px] font-semibold bg-green-100 text-green-800">
                                         <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
@@ -186,7 +186,7 @@
                                     </span>
                                 @endif
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-4 py-3.5">
                                 <div class="flex items-center justify-end gap-2">
 
                                     @unless ($p->is_aktif)
@@ -244,7 +244,7 @@
 
         {{-- Pagination footer --}}
         @if ($periodes->total() > 0)
-            <div class="px-6 py-4 border-t border-[#c5c5d7] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="px-4 py-3.5 border-t border-[#c5c5d7] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <p class="text-[13px] text-[#505f76]">
                     Menampilkan {{ $periodes->firstItem() }}–{{ $periodes->lastItem() }} dari {{ $periodes->total() }} data
                 </p>

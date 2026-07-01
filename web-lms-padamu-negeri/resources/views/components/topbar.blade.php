@@ -16,7 +16,7 @@
     };
 @endphp
 
-<header class="sticky top-0 z-30 w-full bg-white border-b border-outline-variant shadow-sm h-16 px-gutter flex items-center justify-between flex-shrink-0">
+<header class="sticky top-0 z-30 w-full bg-white border-b border-outline-variant shadow-sm h-[60px] px-4 sm:px-6 flex items-center justify-between flex-shrink-0">
 
     {{-- Kiri: hamburger (mobile) + judul halaman --}}
     <div class="flex items-center gap-3">
@@ -30,11 +30,11 @@
             <span class="material-symbols-outlined">menu</span>
         </button>
 
-        <h2 class="text-headline-md text-on-surface font-bold">{{ $pageTitle }}</h2>
+        <h2 class="text-[16px] sm:text-[18px] font-bold text-[#171c1f]">{{ $pageTitle }}</h2>
     </div>
 
     {{-- Kanan: periode switcher + notif + profil --}}
-    <div class="flex items-center gap-4">
+    <div class="flex items-center gap-2 sm:gap-3">
 
         {{-- Periode Switcher --}}
         @auth
@@ -44,25 +44,25 @@
         {{-- Lapor Bug — semua role --}}
         <button
             type="button"
-            class="relative p-2 text-secondary hover:bg-surface-container rounded-full transition-colors"
+            class="relative w-9 h-9 flex items-center justify-center text-secondary hover:bg-surface-container rounded-full transition-colors"
             title="Lapor Bug"
         >
             <span class="material-symbols-outlined text-[20px]">bug_report</span>
         </button>
 
         {{-- Profil pengguna --}}
-        <div x-data="{ open: false }" @click.outside="open = false" class="relative pl-4 border-l border-outline-variant">
+        <div x-data="{ open: false }" @click.outside="open = false" class="relative pl-3 border-l border-outline-variant">
             <button @click="open = !open"
-                    class="flex items-center gap-3 rounded-lg p-1 hover:bg-surface-container transition-colors cursor-pointer"
+                    class="flex items-center gap-2.5 rounded-lg p-1 hover:bg-surface-container transition-colors cursor-pointer"
                     aria-haspopup="true" :aria-expanded="open">
                 <div class="hidden md:block text-right">
-                    <p class="text-label-md text-on-surface font-medium leading-tight">{{ $namaUser }}</p>
-                    <p class="text-label-sm text-secondary leading-tight">{{ $roleLabel }}</p>
+                    <p class="text-[13px] font-semibold leading-tight text-[#171c1f]">{{ $namaUser }}</p>
+                    <p class="text-[11px] leading-tight text-[#757686]">{{ $roleLabel }}</p>
                 </div>
-                <div class="w-9 h-9 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0">
-                    <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+                <div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-outlined text-on-primary text-[16px]">person</span>
                 </div>
-                <span class="material-symbols-outlined text-[18px] text-secondary hidden md:block transition-transform duration-150"
+                <span class="material-symbols-outlined text-[16px] text-secondary hidden md:block transition-transform duration-150"
                       :class="open ? 'rotate-180' : ''">expand_more</span>
             </button>
 

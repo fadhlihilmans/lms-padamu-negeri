@@ -2,8 +2,8 @@
 
     {{-- ── Header ─────────────────────────────────────────────────────────── --}}
     <div class="mb-6">
-        <h2 class="text-[24px] font-bold tracking-tight text-on-surface">Rekap Absensi</h2>
-        <p class="text-[14px] text-[#505f76] mt-0.5">
+        <h2 class="text-[18px] font-bold text-on-surface">Rekap Absensi</h2>
+        <p class="text-[13px] text-[#757686] mt-0.5">
             Rekap kehadiran peserta didik per sesi pengajaran
             {{ $periode ? '— ' . $periode->tahun_ajaran : '' }}.
         </p>
@@ -63,7 +63,7 @@
         <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-[14px]">
-                    <thead class="bg-[#f8f9fb] border-b border-[#c5c5d7]">
+                    <thead class="bg-white border-b border-[#c5c5d7]">
                         <tr>
                             <th class="px-4 py-3 text-left text-[12px] font-semibold text-[#505f76] uppercase tracking-wide w-12">No</th>
                             <th class="px-4 py-3 text-left text-[12px] font-semibold text-[#505f76] uppercase tracking-wide">Tanggal</th>

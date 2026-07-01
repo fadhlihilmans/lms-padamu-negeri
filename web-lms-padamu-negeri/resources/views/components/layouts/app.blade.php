@@ -9,12 +9,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+    {{-- Material Symbols di-load via @import layer(base) di resources/css/app.css
+         (bukan <link>) agar ukuran ikon mengikuti utilitas text-[..], bukan 24px paksa. --}}
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body class="bg-[#F1F5F9] text-on-surface font-sans min-h-screen">
+<body class="bg-[#f9fafb] text-on-surface font-sans min-h-screen">
 
     {{-- Mobile sidebar overlay --}}
     <div
@@ -39,7 +40,7 @@
         {{-- Sidebar --}}
         <aside
             :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
-            class="fixed inset-y-0 left-0 z-50 w-[280px] transform bg-white border-r border-outline-variant shadow-sm flex flex-col transition-transform duration-200 ease-in-out lg:translate-x-0 lg:static lg:inset-auto lg:z-auto"
+            class="fixed inset-y-0 left-0 z-50 w-[264px] transform bg-white border-r border-outline-variant shadow-sm flex flex-col transition-transform duration-200 ease-in-out lg:translate-x-0 lg:static lg:inset-auto lg:z-auto"
         >
             <x-sidebar />
         </aside>
@@ -75,7 +76,7 @@
             @endauth
 
             {{-- Page content --}}
-            <main class="flex-1 overflow-y-auto p-gutter">
+            <main class="flex-1 overflow-y-auto p-4 sm:p-5">
                 {{ $slot }}
             </main>
 

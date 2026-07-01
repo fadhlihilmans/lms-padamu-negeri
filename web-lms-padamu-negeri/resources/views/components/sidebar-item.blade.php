@@ -7,17 +7,17 @@
 @if(\Route::has($route))
     <a href="{{ route($route) }}"
        @class([
-           'flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors text-label-md',
-           'text-primary bg-primary/8 font-semibold border-l-4 border-primary pl-2' => $isActive,
-           'text-secondary hover:bg-surface-container-low hover:text-on-surface' => !$isActive,
+           'flex items-center gap-2.5 px-3 py-2 rounded-lg transition-colors text-[13.5px]',
+           'text-[#3c50e0] font-semibold bg-[#3c50e014] border-l-[3px] border-[#3c50e0] pl-[9px]' => $isActive,
+           'text-[#505f76] font-medium hover:bg-[#f0f4f8] hover:text-[#171c1f]' => ! $isActive,
        ])>
-        <span class="material-symbols-outlined text-[20px] flex-shrink-0">{{ $icon }}</span>
+        <span class="material-symbols-outlined text-[18px] flex-shrink-0">{{ $icon }}</span>
         <span class="truncate">{{ $label }}</span>
     </a>
 @else
     {{-- Route belum ada — tampil tapi non-aktif, untuk development --}}
-    <span class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-label-md text-secondary/40 cursor-not-allowed">
-        <span class="material-symbols-outlined text-[20px] flex-shrink-0">{{ $icon }}</span>
+    <span class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13.5px] font-medium text-[#9da4b0] opacity-60 cursor-not-allowed">
+        <span class="material-symbols-outlined text-[18px] flex-shrink-0">{{ $icon }}</span>
         <span class="truncate">{{ $label }}</span>
     </span>
 @endif

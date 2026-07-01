@@ -3,8 +3,8 @@
     {{-- ── Header ─────────────────────────────────────────────────────────────── --}}
     <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h2 class="text-[24px] font-bold tracking-tight text-on-surface">CBT</h2>
-            <p class="text-[14px] text-[#505f76] mt-0.5">Kelola ujian berbasis komputer untuk peserta didik</p>
+            <h2 class="text-[18px] font-bold text-on-surface">CBT</h2>
+            <p class="text-[13px] text-[#757686] mt-0.5">Kelola ujian berbasis komputer untuk peserta didik</p>
         </div>
         @if (Route::has('guru.cbt.create'))
             <a href="{{ route('guru.cbt.create') }}"

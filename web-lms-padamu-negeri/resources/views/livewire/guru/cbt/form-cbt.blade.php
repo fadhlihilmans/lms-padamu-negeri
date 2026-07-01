@@ -7,10 +7,10 @@
             <span class="material-symbols-outlined text-[18px]">arrow_back</span>
             Kembali ke daftar CBT
         </a>
-        <h2 class="text-[24px] font-bold tracking-tight text-on-surface">
+        <h2 class="text-[18px] font-bold text-on-surface">
             {{ $editId ? 'Edit CBT' : 'Buat CBT Baru' }}
         </h2>
-        <p class="text-[14px] text-[#505f76] mt-0.5">
+        <p class="text-[13px] text-[#757686] mt-0.5">
             {{ $editId ? 'Perbarui pengaturan ujian.' : 'Atur jadwal & pengaturan ujian. Soal ditambahkan pada langkah berikutnya.' }}
         </p>
     </div>
@@ -26,7 +26,7 @@
         <div class="bg-white rounded-2xl border border-[#c5c5d7] shadow-sm overflow-hidden max-w-3xl">
 
             {{-- Card header --}}
-            <div class="flex items-center gap-3 px-6 py-4 border-b border-[#c5c5d7] bg-[#f6fafe]">
+            <div class="flex items-center gap-3 px-4 py-3.5 border-b border-[#c5c5d7] bg-[#f6fafe]">
                 <div class="w-9 h-9 rounded-xl bg-[#EEF2FF] flex items-center justify-center">
                     <span class="material-symbols-outlined text-[#3c50e0] text-[20px]">quiz</span>
                 </div>

@@ -2,8 +2,8 @@
 
     {{-- ── Header ─────────────────────────────────────────────────────────── --}}
     <div class="mb-6">
-        <h2 class="text-[24px] font-bold tracking-tight text-on-surface">Absensi</h2>
-        <p class="text-[14px] text-[#505f76] mt-0.5">{{ now()->translatedFormat('l, d F Y') }}</p>
+        <h2 class="text-[18px] font-bold text-on-surface">Absensi</h2>
+        <p class="text-[13px] text-[#757686] mt-0.5">{{ now()->translatedFormat('l, d F Y') }}</p>
     </div>
 
     @if (! $pd)
@@ -26,7 +26,7 @@
                 @php $sudahAbsen = isset($detailHariIni[$sesi->id]); @endphp
                 <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm overflow-hidden">
                     {{-- Info sesi --}}
-                    <div class="px-6 py-4 bg-[#EEF2FF] border-b border-[#c5d0ff] flex items-center gap-3">
+                    <div class="px-4 py-3.5 bg-[#EEF2FF] border-b border-[#c5d0ff] flex items-center gap-3">
                         <span class="material-symbols-outlined text-[20px] text-[#3c50e0]">class</span>
                         <div>
                             <p class="text-[15px] font-semibold text-[#1c33c8]">{{ $sesi->guruMapelRombel->mapel->nama }}</p>

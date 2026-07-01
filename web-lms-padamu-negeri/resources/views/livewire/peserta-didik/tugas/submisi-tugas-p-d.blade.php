@@ -142,7 +142,7 @@
     <div class="bg-white rounded-2xl border border-[#c5c5d7] shadow-sm overflow-hidden">
 
         {{-- Header --}}
-        <div class="px-6 py-4 border-b border-[#c5c5d7] bg-[#f6fafe] flex items-center justify-between gap-3 flex-wrap">
+        <div class="px-4 py-3.5 border-b border-[#c5c5d7] bg-[#f6fafe] flex items-center justify-between gap-3 flex-wrap">
             <div class="flex items-center gap-2.5">
                 <div class="w-9 h-9 rounded-xl bg-[#EEF2FF] flex items-center justify-center">
                     <span class="material-symbols-outlined text-[#3c50e0] text-[20px]">

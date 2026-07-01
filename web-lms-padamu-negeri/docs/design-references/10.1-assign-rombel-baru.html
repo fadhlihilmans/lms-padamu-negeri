@@ -23,6 +23,8 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{
   @media(max-width:639px){.toolbar-search,.toolbar-search input{width:100%}}
   .toolbar-search input:focus{border-color:#3c50e0;box-shadow:0 0 0 2px #3c50e020}
   .toolbar-search .icon{position:absolute;left:.5rem;top:50%;transform:translateY(-50%);color:#757686;font-size:18px;pointer-events:none}
+  /* Konsistensi padding dropdown agar teks tidak mepet panah */
+  select { padding-right: 2.5rem !important; background-position: right 0.7rem center !important; }
 </style>
 </head>
 <body class="bg-[#f9fafb] text-[#171c1f] font-sans antialiased flex h-screen overflow-hidden">

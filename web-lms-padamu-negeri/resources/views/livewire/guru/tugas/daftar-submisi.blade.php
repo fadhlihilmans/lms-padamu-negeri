@@ -11,7 +11,7 @@
         <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
             <div>
                 <h2 class="text-[22px] font-bold tracking-tight text-on-surface">{{ $tugas->judul }}</h2>
-                <p class="text-[14px] text-[#505f76] mt-0.5">
+                <p class="text-[13px] text-[#757686] mt-0.5">
                     {{ $tugas->guruMapelRombel?->mapel?->nama }}
                     <span class="text-[#c5c5d7] mx-1">·</span>
                     {{ $tugas->guruMapelRombel?->rombel?->nama }}
@@ -47,7 +47,7 @@
     <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm overflow-hidden">
 
         {{-- Filter bar --}}
-        <div class="px-5 py-3.5 border-b border-[#c5c5d7] bg-[#f6fafe] flex flex-col sm:flex-row gap-3">
+        <div class="px-5 py-3.5 border-b border-[#c5c5d7] bg-white flex flex-col sm:flex-row gap-3">
             <div class="flex-1 relative">
                 <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#505f76] text-[17px] pointer-events-none">search</span>
                 <input wire:model.live.debounce.300ms="search" type="text"
@@ -74,7 +74,7 @@
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead>
-                        <tr class="bg-[#f6fafe] border-b border-[#c5c5d7]">
+                        <tr class="bg-white border-b border-[#c5c5d7]">
                             <th class="px-5 py-3 text-[11px] font-semibold text-[#757686] uppercase tracking-wider w-10">No</th>
                             <th class="px-5 py-3 text-[11px] font-semibold text-[#757686] uppercase tracking-wider">Nama Peserta Didik</th>
                             <th class="px-5 py-3 text-[11px] font-semibold text-[#757686] uppercase tracking-wider">Status</th>

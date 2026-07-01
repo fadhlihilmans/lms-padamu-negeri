@@ -3,8 +3,8 @@
     {{-- ── Header ──────────────────────────────────────────────────────────── --}}
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-            <h2 class="text-[24px] font-bold tracking-tight text-on-surface">Jadwal Pelajaran</h2>
-            <p class="text-[14px] text-[#505f76] mt-0.5">
+            <h2 class="text-[18px] font-bold text-on-surface">Jadwal Pelajaran</h2>
+            <p class="text-[13px] text-[#757686] mt-0.5">
                 {{ $guru?->nama_lengkap ?? 'Guru' }}
                 @if ($rombelWaliKelas)
                     &bull; <span class="text-[#3c50e0]">Wali Kelas {{ $rombelWaliKelas->nama }}</span>
@@ -211,7 +211,7 @@
                                 <div class="overflow-x-auto">
                                     <table class="w-full text-left">
                                         <thead>
-                                            <tr class="bg-[#f0f4f8] border-b border-[#c5c5d7] text-[11px] font-semibold text-[#505f76] uppercase tracking-wider">
+                                            <tr class="bg-white border-b border-[#c5c5d7] text-[11px] font-semibold text-[#505f76] uppercase tracking-wider">
                                                 <th class="px-5 py-3 w-36">Waktu</th>
                                                 <th class="px-5 py-3">Mata Pelajaran</th>
                                                 <th class="px-5 py-3">Guru</th>

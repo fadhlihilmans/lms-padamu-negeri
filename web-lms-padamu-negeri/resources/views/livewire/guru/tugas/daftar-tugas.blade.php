@@ -3,8 +3,8 @@
     {{-- ── Header ─────────────────────────────────────────────────────────────── --}}
     <div class="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h2 class="text-[24px] font-bold tracking-tight text-on-surface">Tugas</h2>
-            <p class="text-[14px] text-[#505f76] mt-0.5">Kelola tugas untuk peserta didik</p>
+            <h2 class="text-[18px] font-bold text-on-surface">Tugas</h2>
+            <p class="text-[13px] text-[#757686] mt-0.5">Kelola tugas untuk peserta didik</p>
         </div>
         @if (! $showForm)
             <button wire:click="openCreateForm"
@@ -22,7 +22,7 @@
         <div class="bg-white rounded-2xl border border-[#c5c5d7] shadow-sm mb-6 overflow-hidden">
 
             {{-- Form header --}}
-            <div class="flex items-center justify-between px-6 py-4 border-b border-[#c5c5d7] bg-[#f6fafe]">
+            <div class="flex items-center justify-between px-4 py-3.5 border-b border-[#c5c5d7] bg-white">
                 <div class="flex items-center gap-3">
                     <div class="w-9 h-9 rounded-xl bg-[#EEF2FF] flex items-center justify-center">
                         <span class="material-symbols-outlined text-[#3c50e0] text-[20px]">assignment_add</span>
@@ -191,7 +191,7 @@
             </div>{{-- /form body --}}
 
             {{-- Form footer --}}
-            <div class="flex items-center justify-between px-6 py-4 border-t border-[#c5c5d7] bg-[#f6fafe]">
+            <div class="flex items-center justify-between px-4 py-3.5 border-t border-[#c5c5d7] bg-white">
                 <p class="text-[12px] text-[#757686]"><span class="text-[#ba1a1a]">*</span> Wajib diisi</p>
                 <div class="flex gap-3">
                     <button wire:click="cancelForm" type="button"

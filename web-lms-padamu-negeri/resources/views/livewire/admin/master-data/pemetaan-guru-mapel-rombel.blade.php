@@ -3,8 +3,8 @@
     {{-- ── Header ──────────────────────────────────────────────────────────── --}}
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-            <h2 class="text-[24px] font-bold tracking-tight text-on-surface">Pemetaan Guru – Mapel – Rombel</h2>
-            <p class="text-[14px] text-[#505f76] mt-0.5">Tentukan guru yang mengajar mata pelajaran tertentu di setiap rombel dan periode.</p>
+            <h2 class="text-[18px] font-bold text-on-surface">Pemetaan Guru – Mapel – Rombel</h2>
+            <p class="text-[13px] text-[#757686] mt-0.5">Tentukan guru yang mengajar mata pelajaran tertentu di setiap rombel dan periode.</p>
         </div>
         @if ($filterRombelId && $filterPeriodeId)
             <button wire:click="openAddForm"
@@ -164,7 +164,7 @@
         {{-- Tabel pemetaan --}}
         <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm overflow-hidden">
 
-            <div class="px-6 py-4 border-b border-[#c5c5d7] bg-[#f8fafc] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div class="px-4 py-3.5 border-b border-[#c5c5d7] bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
                     <p class="text-[13px] font-semibold text-on-surface">
                         {{ $rombels->firstWhere('id', $filterRombelId)?->nama ?? '—' }}
@@ -182,27 +182,27 @@
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead>
-                        <tr class="bg-[#f0f4f8] border-b border-[#c5c5d7] text-[12px] font-semibold text-[#505f76] uppercase tracking-wider">
-                            <th class="px-6 py-4 w-12">No.</th>
-                            <th class="px-6 py-4">Guru</th>
-                            <th class="px-6 py-4">Mata Pelajaran</th>
-                            <th class="px-6 py-4 text-right">Aksi</th>
+                        <tr class="bg-white border-b border-[#c5c5d7] text-[11.5px] font-semibold text-[#757686] uppercase tracking-wide">
+                            <th class="px-4 py-3.5 w-12">No.</th>
+                            <th class="px-4 py-3.5">Guru</th>
+                            <th class="px-4 py-3.5">Mata Pelajaran</th>
+                            <th class="px-4 py-3.5 text-right">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody class="text-[14px] text-on-surface divide-y divide-[#c5c5d7]">
+                    <tbody class="text-[13.5px] text-on-surface divide-y divide-[#c5c5d7]">
                         @forelse ($pemetaan ?? [] as $i => $pm)
                             <tr class="hover:bg-[#f6fafe] transition-colors">
-                                <td class="px-6 py-4 text-[#505f76]">{{ $i + 1 }}</td>
-                                <td class="px-6 py-4">
+                                <td class="px-4 py-3.5 text-[#505f76]">{{ $i + 1 }}</td>
+                                <td class="px-4 py-3.5">
                                     <p class="font-medium">{{ $pm->guru?->nama_lengkap ?? '—' }}</p>
                                     <p class="text-[12px] text-[#505f76]">NIP: {{ $pm->guru?->nip ?? '—' }}</p>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-4 py-3.5">
                                     <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[12px] font-semibold bg-[#EEF2FF] text-[#1c33c8]">
                                         {{ $pm->mapel?->nama ?? '—' }}
                                     </span>
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-4 py-3.5">
                                     <div class="flex justify-end">
                                         <button wire:click="confirmDelete({{ $pm->id }})"
                                                 class="p-1.5 text-[#505f76] hover:text-[#ba1a1a] hover:bg-[#ffdad6] rounded-lg transition-colors cursor-pointer"
