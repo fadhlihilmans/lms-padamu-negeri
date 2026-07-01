@@ -7,5 +7,6 @@
 - belum ada imagick
 
 # Lanjut :
+- revisi tampilan 2.x, lihat pada checklist-revisi.md
 
 PROMPT:
