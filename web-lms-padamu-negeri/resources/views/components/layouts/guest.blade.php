@@ -13,9 +13,17 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body class="min-h-screen bg-[#F1F5F9] font-sans text-on-surface flex items-center justify-center p-4">
+<body class="min-h-screen bg-white font-sans text-on-surface flex items-center justify-center p-4 relative overflow-hidden">
+
+    {{-- Background decoration circles (subtle, on white) --}}
+    <div class="absolute top-[-80px] right-[-80px] w-72 h-72 rounded-full pointer-events-none" style="background: rgba(60,80,224,0.05)"></div>
+    <div class="absolute bottom-[-60px] left-[-60px] w-56 h-56 rounded-full pointer-events-none" style="background: rgba(60,80,224,0.04)"></div>
 
     {{ $slot }}
+
+    <p class="absolute bottom-4 left-0 right-0 text-center text-[11px]" style="color: #b0b0c0">
+        © {{ date('Y') }} LMS Padamu Negeri — Semua hak dilindungi
+    </p>
 
     @livewireScripts
 </body>
