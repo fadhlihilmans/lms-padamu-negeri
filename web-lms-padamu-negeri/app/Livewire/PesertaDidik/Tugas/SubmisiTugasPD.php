@@ -89,6 +89,10 @@ class SubmisiTugasPD extends Component
         $this->validate([
             'fileBaru' => ['nullable', 'file', "max:{$maxKb}"],
             'isiText'  => ['nullable', 'string', 'max:10000'],
+        ], [
+            'fileBaru.file' => 'Jawaban harus berupa file.',
+            'fileBaru.max'  => "Ukuran file maksimal {$maxMb}MB.",
+            'isiText.max'   => 'Jawaban teks maksimal 10.000 karakter.',
         ]);
 
         if (! $this->fileBaru && ! trim($this->isiText)) {

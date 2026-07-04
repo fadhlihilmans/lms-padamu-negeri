@@ -75,11 +75,15 @@ class JadwalGuru extends Component
             'jamMulai'   => 'required|date_format:H:i',
             'jamSelesai' => 'required|date_format:H:i|after:jamMulai',
         ], [
-            'gmrId.required'       => 'Pemetaan guru-mapel wajib dipilih.',
-            'hari.required'        => 'Hari wajib dipilih.',
-            'jamMulai.required'    => 'Jam mulai wajib diisi.',
-            'jamSelesai.required'  => 'Jam selesai wajib diisi.',
-            'jamSelesai.after'     => 'Jam selesai harus lebih dari jam mulai.',
+            'gmrId.required'         => 'Pemetaan guru-mapel wajib dipilih.',
+            'gmrId.exists'           => 'Pemetaan guru-mapel tidak valid.',
+            'hari.required'          => 'Hari wajib dipilih.',
+            'hari.in'                => 'Hari tidak valid.',
+            'jamMulai.required'      => 'Jam mulai wajib diisi.',
+            'jamMulai.date_format'   => 'Format jam mulai tidak valid (HH:MM).',
+            'jamSelesai.required'    => 'Jam selesai wajib diisi.',
+            'jamSelesai.date_format' => 'Format jam selesai tidak valid (HH:MM).',
+            'jamSelesai.after'       => 'Jam selesai harus lebih dari jam mulai.',
         ]);
 
         // Pastikan GMR memang untuk rombel wali kelas ini

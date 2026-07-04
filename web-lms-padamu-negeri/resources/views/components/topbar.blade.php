@@ -42,13 +42,13 @@
         @endauth
 
         {{-- Lapor Bug — semua role --}}
-        <button
-            type="button"
-            class="relative w-9 h-9 flex items-center justify-center text-secondary hover:bg-surface-container rounded-full transition-colors"
-            title="Lapor Bug"
-        >
-            <span class="material-symbols-outlined text-[20px]">bug_report</span>
-        </button>
+        @auth
+            <a href="{{ route('bug-report.index', ['from' => url()->current()]) }}" wire:navigate
+               class="relative w-9 h-9 flex items-center justify-center text-secondary hover:bg-surface-container rounded-full transition-colors cursor-pointer"
+               title="Lapor Bug">
+                <span class="material-symbols-outlined text-[20px]">bug_report</span>
+            </a>
+        @endauth
 
         {{-- Profil pengguna --}}
         <div x-data="{ open: false }" @click.outside="open = false" class="relative pl-3 border-l border-outline-variant">

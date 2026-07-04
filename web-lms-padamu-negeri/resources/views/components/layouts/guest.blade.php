@@ -37,7 +37,7 @@
 
     {{-- Footer note --}}
     <p style="position:absolute; bottom:1rem; left:0; right:0; text-align:center; font-size:11px; color:#b0b0c0">
-        © {{ date('Y') }} LMS Padamu Negeri — Semua hak dilindungi
+        © {{ date('Y') }} {{ app(\App\Services\SettingService::class)->get('nama_pkbm', 'LMS Padamu Negeri') }} — Semua hak dilindungi
     </p>
 
     @livewireScripts

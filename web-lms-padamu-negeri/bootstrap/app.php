@@ -12,12 +12,16 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Alias middleware Spatie Laravel-Permission
+        // Alias middleware Spatie Laravel-Permission + kustom
         $middleware->alias([
             'role'               => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission'         => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+            'module'             => \App\Http\Middleware\EnsureModuleActive::class,
         ]);
+
+        // Mode Maintenance dicek global di grup web (CLAUDE.md #10).
+        $middleware->appendToGroup('web', \App\Http\Middleware\CheckMaintenanceMode::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

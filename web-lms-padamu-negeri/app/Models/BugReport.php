@@ -13,8 +13,10 @@ class BugReport extends Model
         'user_id',
         'judul',
         'deskripsi',
-        'lampiran_path',
+        'screenshot_path',
+        'halaman_url',
         'status',
+        'catatan_admin',
     ];
 
     public function user(): BelongsTo

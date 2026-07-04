@@ -97,22 +97,22 @@ bawah = sudah **diverifikasi** toast-nya muncul saat submit dengan input tidak v
 - [x] C.3 Import Peserta Didik (`admin/import-excel/import-peserta-didik`)
 
 ### D — Jadwal
-- [ ] D.1 Jadwal Pelajaran — Admin (`admin/akademik/jadwal-manager`)
-- [ ] D.2 Jadwal — Guru/Wali Kelas (`guru/jadwal-guru`)
+- [x] D.1 Jadwal Pelajaran — Admin (`admin/akademik/jadwal-manager`)
+- [x] D.2 Jadwal — Guru/Wali Kelas (`guru/jadwal-guru`)
 
 ### E — Absensi
-- [ ] E.1 Sesi Absensi — Guru (`guru/absensi/sesi-absensi`)
+- [x] E.1 Sesi Absensi — Guru (`guru/absensi/sesi-absensi`)
 
 ### F — Materi
-- [ ] F.1 Form Tambah/Edit Materi (`guru/materi/form-materi`)
+- [x] F.1 Form Tambah/Edit Materi (`guru/materi/form-materi`)
 
 ### G — Tugas
-- [ ] G.1 Form Tugas (`guru/tugas/form-tugas`)
-- [ ] G.2 Beri Nilai Submisi (`guru/tugas/daftar-submisi`)
-- [ ] G.3 Detail Submisi — nilai (`guru/tugas/detail-submisi`)
-- [ ] G.4 Submisi Tugas — Peserta Didik (`peserta-didik/tugas/submisi-tugas-p-d`)
+- [x] G.1 Form Tugas (`guru/tugas/form-tugas`)
+- [x] G.2 Beri Nilai Submisi (`guru/tugas/daftar-submisi`)
+- [x] G.3 Detail Submisi — nilai (`guru/tugas/detail-submisi`)
+- [x] G.4 Submisi Tugas — Peserta Didik (`peserta-didik/tugas/submisi-tugas-p-d`)
 
 ### H — CBT
-- [ ] H.1 Form Buat/Edit CBT (`guru/cbt/daftar-cbt` — modal)
-- [ ] H.2 Form Soal CBT (`guru/cbt/form-soal-cbt`)
-- [ ] H.3 Koreksi Uraian (`guru/cbt/form-koreksi-uraian`)
+- [x] H.1 Form Buat/Edit CBT (`guru/cbt/daftar-cbt` — modal)
+- [x] H.2 Form Soal CBT (`guru/cbt/form-soal-cbt`)
+- [x] H.3 Koreksi Uraian (`guru/cbt/form-koreksi-uraian`)

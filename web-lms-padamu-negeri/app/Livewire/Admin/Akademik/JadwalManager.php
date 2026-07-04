@@ -96,8 +96,12 @@ class JadwalManager extends Component
             'hari.required'         => 'Hari wajib dipilih.',
             'jamMulai.required'     => 'Jam mulai wajib diisi.',
             'jamMulai.date_format'  => 'Format jam mulai tidak valid (HH:MM).',
-            'jamSelesai.required'   => 'Jam selesai wajib diisi.',
-            'jamSelesai.after'      => 'Jam selesai harus lebih dari jam mulai.',
+            'jamSelesai.required'    => 'Jam selesai wajib diisi.',
+            'jamSelesai.date_format' => 'Format jam selesai tidak valid (HH:MM).',
+            'jamSelesai.after'       => 'Jam selesai harus lebih dari jam mulai.',
+            'rombelIdForm.exists'    => 'Rombel tidak valid.',
+            'gmrId.exists'           => 'Mata Pelajaran tidak valid.',
+            'hari.in'                => 'Hari tidak valid.',
         ]);
 
         $gmr = GuruMapelRombel::where('id', $this->gmrId)

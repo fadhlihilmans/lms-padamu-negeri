@@ -9,6 +9,18 @@
     $isGuru         = $user?->hasRole('guru');
     $isPesertaDidik = $user?->hasRole('peserta_didik');
 
+    // Wali kelas = guru yang menjadi wali di salah satu rombel.
+    $isWaliKelas = $isGuru && $user?->guru
+        && \App\Models\Rombel::where('wali_kelas_id', $user->guru->id)->exists();
+
+    // Toggle modul (lapis 1/UX — CLAUDE.md #11) + identitas dari SettingService.
+    $setting    = app(\App\Services\SettingService::class);
+    $namaPkbm   = $setting->get('nama_pkbm', 'LMS Padamu Negeri');
+    $modMateri  = $setting->get('modul_materi_aktif', true);
+    $modTugas   = $setting->get('modul_tugas_aktif', true);
+    $modAbsensi = $setting->get('modul_absensi_aktif', true);
+    $modCbt     = $setting->get('modul_cbt_aktif', true);
+
     $currentRoute = request()->route()?->getName() ?? '';
 @endphp
 
@@ -20,7 +32,7 @@
             <span class="material-symbols-outlined text-white text-[18px]" style="font-variation-settings:'FILL' 1">school</span>
         </div>
         <div class="min-w-0">
-            <h1 class="text-[14px] font-bold text-[#3c50e0] leading-tight truncate">{{ config('app.name', 'LMS Padamu Negeri') }}</h1>
+            <h1 class="text-[14px] font-bold text-[#3c50e0] leading-tight truncate">{{ $namaPkbm }}</h1>
             <p class="text-[11px] text-[#757686] truncate">Sistem Akademik PKBM</p>
         </div>
     </div>
@@ -50,12 +62,14 @@
             <x-sidebar-item route="admin.akademik.jadwal" icon="schedule" label="Jadwal Pelajaran" />
             <x-sidebar-item route="admin.import.peserta-didik" icon="upload_file" label="Import Excel" />
             <x-sidebar-item route="admin.absensi.rekap" icon="how_to_reg" label="Rekap Absensi" />
-            <x-sidebar-item route="kenaikan.index" icon="trending_up" label="Kenaikan Kelas" />
+            <x-sidebar-item route="admin.kenaikan" icon="trending_up" label="Kenaikan Kelas" />
             <x-sidebar-item route="penilaian.index" icon="grade" label="Penilaian Akhir" />
 
             <p class="px-3 pt-4 pb-1 text-[10px] font-bold uppercase tracking-[0.08em] text-[#9da4b0]">Sistem</p>
-            <x-sidebar-item route="pengaturan.index" icon="settings" label="Pengaturan" />
-            <x-sidebar-item route="error-log.index" icon="bug_report" label="Log Error" />
+            <x-sidebar-item route="admin.pengaturan" icon="settings" label="Pengaturan" />
+            <x-sidebar-item route="admin.grade" icon="tune" label="Konfigurasi Grade" />
+            <x-sidebar-item route="admin.error-log" icon="bug_report" label="Log Error" />
+            <x-sidebar-item route="admin.bug-report" icon="pest_control" label="Laporan Bug" />
             <x-sidebar-item route="bug-report.index" icon="flag" label="Lapor Bug" />
 
         {{-- ===== GURU MENU ===== --}}
@@ -65,11 +79,17 @@
 
             <p class="px-3 pt-4 pb-1 text-[10px] font-bold uppercase tracking-[0.08em] text-[#9da4b0]">Kelas Saya</p>
             <x-sidebar-item route="guru.jadwal" icon="schedule" label="Jadwal Pelajaran" />
-            <x-sidebar-item route="guru.absensi" icon="how_to_reg" label="Absensi" />
-            <x-sidebar-item route="guru.materi" icon="menu_book" label="Materi" />
-            <x-sidebar-item route="guru.tugas" icon="assignment" label="Tugas" />
-            <x-sidebar-item route="guru.cbt" icon="quiz" label="CBT" />
-            <x-sidebar-item route="penilaian.index" icon="grade" label="Penilaian Akhir" />
+            @if($modAbsensi)<x-sidebar-item route="guru.absensi" icon="how_to_reg" label="Absensi" />@endif
+            @if($modMateri)<x-sidebar-item route="guru.materi" icon="menu_book" label="Materi" />@endif
+            @if($modTugas)<x-sidebar-item route="guru.tugas" icon="assignment" label="Tugas" />@endif
+            @if($modCbt)<x-sidebar-item route="guru.cbt" icon="quiz" label="CBT" />@endif
+            @if($isWaliKelas)
+                <x-sidebar-item route="guru.kenaikan" icon="trending_up" label="Kenaikan Kelas" />
+            @endif
+            <x-sidebar-item route="guru.penilaian" icon="grade" label="Penilaian Akhir" />
+            @if($isWaliKelas)
+                <x-sidebar-item route="guru.rapor" icon="fact_check" label="Progres Rapor" />
+            @endif
 
             <p class="px-3 pt-4 pb-1 text-[10px] font-bold uppercase tracking-[0.08em] text-[#9da4b0]">Lainnya</p>
             <x-sidebar-item route="bug-report.index" icon="flag" label="Lapor Bug" />
@@ -81,11 +101,11 @@
 
             <p class="px-3 pt-4 pb-1 text-[10px] font-bold uppercase tracking-[0.08em] text-[#9da4b0]">Belajar</p>
             <x-sidebar-item route="peserta-didik.jadwal" icon="schedule" label="Jadwal Pelajaran" />
-            <x-sidebar-item route="peserta-didik.absensi" icon="how_to_reg" label="Absensi" />
-            <x-sidebar-item route="peserta-didik.materi" icon="menu_book" label="Materi" />
-            <x-sidebar-item route="peserta-didik.tugas" icon="assignment" label="Tugas" />
-            <x-sidebar-item route="peserta-didik.cbt" icon="quiz" label="CBT" />
-            <x-sidebar-item route="penilaian.index" icon="grade" label="Rapor Saya" />
+            @if($modAbsensi)<x-sidebar-item route="peserta-didik.absensi" icon="how_to_reg" label="Absensi" />@endif
+            @if($modMateri)<x-sidebar-item route="peserta-didik.materi" icon="menu_book" label="Materi" />@endif
+            @if($modTugas)<x-sidebar-item route="peserta-didik.tugas" icon="assignment" label="Tugas" />@endif
+            @if($modCbt)<x-sidebar-item route="peserta-didik.cbt" icon="quiz" label="CBT" />@endif
+            <x-sidebar-item route="peserta-didik.rapor" icon="grade" label="Rapor Saya" />
 
             <p class="px-3 pt-4 pb-1 text-[10px] font-bold uppercase tracking-[0.08em] text-[#9da4b0]">Lainnya</p>
             <x-sidebar-item route="bug-report.index" icon="flag" label="Lapor Bug" />

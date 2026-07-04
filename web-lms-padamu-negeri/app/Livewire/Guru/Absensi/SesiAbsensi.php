@@ -86,8 +86,10 @@ class SesiAbsensi extends Component
             'formJamTutup'     => ['required', 'date_format:H:i'],
         ], [
             'formTanggalBuka.required'  => 'Tanggal buka wajib diisi.',
+            'formTanggalBuka.date'      => 'Tanggal buka tidak valid.',
             'formJamBuka.required'      => 'Jam buka wajib diisi.',
             'formTanggalTutup.required' => 'Tanggal tutup wajib diisi.',
+            'formTanggalTutup.date'     => 'Tanggal tutup tidak valid.',
             'formJamTutup.required'     => 'Jam tutup wajib diisi.',
             'formJamBuka.date_format'   => 'Format jam tidak valid.',
             'formJamTutup.date_format'  => 'Format jam tidak valid.',

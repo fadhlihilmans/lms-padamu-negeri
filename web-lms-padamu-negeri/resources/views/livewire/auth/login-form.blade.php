@@ -8,7 +8,7 @@
             <div class="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center" style="background: #EEF2FF">
                 <span class="material-symbols-outlined text-[30px]" style="color:#3c50e0;font-variation-settings:'FILL' 1, 'wght' 400">school</span>
             </div>
-            <h1 class="text-[20px] font-bold leading-tight tracking-tight" style="color:#171c1f">LMS Padamu Negeri</h1>
+            <h1 class="text-[20px] font-bold leading-tight tracking-tight" style="color:#171c1f">{{ app(\App\Services\SettingService::class)->get('nama_pkbm', 'LMS Padamu Negeri') }}</h1>
             <p class="text-[13px] mt-1" style="color:#757686">Sistem Akademik PKBM</p>
         </div>
 

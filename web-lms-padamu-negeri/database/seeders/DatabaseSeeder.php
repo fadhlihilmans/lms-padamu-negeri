@@ -19,6 +19,9 @@ class DatabaseSeeder extends Seeder
             GuruSeeder::class,
             PesertaDidikSeeder::class,
             RombelSeeder::class,
+            // Langkah 18–19
+            GradeSeeder::class,
+            SettingSeeder::class,
         ]);
     }
 }

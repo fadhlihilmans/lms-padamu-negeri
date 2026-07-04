@@ -72,6 +72,15 @@ class FormTugas extends Component
             'deskripsi'    => ['nullable', 'string'],
             'deadline'     => ['required', 'date'],
             'lampiranBaru' => ['nullable', 'file', "max:{$maxKb}"],
+        ], [
+            'gmrId.required'    => 'Mata pelajaran / rombel wajib dipilih.',
+            'gmrId.exists'      => 'Mata pelajaran / rombel tidak valid.',
+            'judul.required'    => 'Judul tugas wajib diisi.',
+            'judul.max'         => 'Judul maksimal 200 karakter.',
+            'deadline.required' => 'Batas waktu pengumpulan wajib diisi.',
+            'deadline.date'     => 'Batas waktu tidak valid.',
+            'lampiranBaru.file' => 'Lampiran harus berupa file.',
+            'lampiranBaru.max'  => "Ukuran lampiran maksimal {$maxMb}MB.",
         ]);
 
         $guru = Auth::user()?->guru;
