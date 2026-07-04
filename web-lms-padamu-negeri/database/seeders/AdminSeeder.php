@@ -20,9 +20,9 @@ class AdminSeeder extends Seeder
         $admin->assignRole('admin');
 
         $adminDev = User::firstOrCreate(
-            ['username' => 'admindev'],
+            ['username' => 'fadelidev'],
             [
-                'password'           => 'admindev',
+                'password'           => 'abogoboga',
                 'is_change_password' => true,
                 'is_active'          => true,
             ]
