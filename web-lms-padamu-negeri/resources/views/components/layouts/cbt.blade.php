@@ -34,7 +34,7 @@
         }"
         @notify.window="add($event.detail)"
         x-init="@if (session()->has('toast')) add(@js(session('toast'))) @endif"
-        class="fixed top-4 right-4 z-[200] flex flex-col gap-2 w-80 max-w-[calc(100vw-2rem)] pointer-events-none"
+        class="fixed top-4 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 sm:right-4 z-[200] flex flex-col gap-2 items-center sm:items-end w-[calc(100vw-2rem)] sm:w-80 pointer-events-none"
     >
         <template x-for="toast in toasts" :key="toast.id">
             <div
