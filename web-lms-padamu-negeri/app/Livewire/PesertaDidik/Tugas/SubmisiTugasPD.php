@@ -38,6 +38,20 @@ class SubmisiTugasPD extends Component
     // Confirm re-submit (if already submitted)
     public bool $confirmResubmit = false;
 
+    // Modal kumpulkan/kirim ulang jawaban
+    public bool $showSubmitModal = false;
+
+    public function openSubmitModal(): void
+    {
+        $this->showSubmitModal = true;
+    }
+
+    public function closeSubmitModal(): void
+    {
+        $this->showSubmitModal = false;
+        $this->resetValidation();
+    }
+
     public function mount(int $tugasId): void
     {
         $pd      = Auth::user()?->pesertaDidik;
@@ -123,6 +137,7 @@ class SubmisiTugasPD extends Component
             $this->fileBaru        = null;
             $this->isiText         = '';
             $this->confirmResubmit = false;
+            $this->showSubmitModal = false;
             $this->dispatch('clear-trix-submisi');
 
             $msg = $isLate

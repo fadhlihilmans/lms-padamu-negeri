@@ -130,17 +130,17 @@
 
                 {{-- Baris: badge + nama + tombol --}}
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                    <div class="flex items-center gap-3">
+                    <div>
                         @if ($isScheduled)
-                            <span class="flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-semibold bg-amber-100 text-amber-800 border border-amber-200">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-semibold bg-amber-100 text-amber-800 border border-amber-200 mb-2">
                                 <span class="material-symbols-outlined text-[14px]">schedule</span>Terjadwal
                             </span>
                         @elseif ($isActive)
-                            <span class="flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-semibold bg-green-100 text-green-800 border border-green-200">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-semibold bg-green-100 text-green-800 border border-green-200 mb-2">
                                 <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>Sesi Terbuka
                             </span>
                         @else
-                            <span class="flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-semibold bg-[#f0f4f8] text-[#505f76] border border-[#c5c5d7]">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[12px] font-semibold bg-[#f0f4f8] text-[#505f76] border border-[#c5c5d7] mb-2">
                                 <span class="material-symbols-outlined text-[14px]">lock</span>Sesi Ditutup
                             </span>
                         @endif

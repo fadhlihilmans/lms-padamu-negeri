@@ -18,11 +18,27 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ImportPesertaDidikService
 {
+    /**
+     * Validasi saja, tanpa menyimpan ke database. Dipakai untuk pratinjau.
+     */
+    public function preview(UploadedFile $file, int $periodeId): array
+    {
+        return $this->process($file, $periodeId, commit: false);
+    }
+
+    /**
+     * Validasi lalu simpan baris yang valid ke database.
+     */
     public function import(UploadedFile $file, int $periodeId): array
+    {
+        return $this->process($file, $periodeId, commit: true);
+    }
+
+    private function process(UploadedFile $file, int $periodeId, bool $commit): array
     {
         $sheets = Excel::toArray([], $file);
         if (empty($sheets)) {
-            return [['row' => '-', 'status' => 'gagal', 'nama' => '-', 'nipd' => '-', 'alasan' => 'File Excel kosong atau tidak dapat dibaca.']];
+            return [['row' => '-', 'status' => 'gagal', 'nama' => '-', 'nipd' => '-', 'rombel' => '-', 'alasan' => 'File Excel kosong atau tidak dapat dibaca.']];
         }
 
         $rows = $sheets[0]; // sheet pertama
@@ -30,6 +46,8 @@ class ImportPesertaDidikService
 
         $results  = [];
         $rowIndex = 2; // mulai dari baris 2 (setelah header)
+        $seenNipd = [];
+        $seenNisn = [];
 
         foreach ($rows as $row) {
             // Normalisasi: pastikan array minimal 26 elemen
@@ -83,7 +101,14 @@ class ImportPesertaDidikService
                 continue;
             }
 
-            // ── Cek duplikat NIPD ───────────────────────────────────────
+            // ── Cek duplikat NIPD dalam file yang sama ──────────────────
+            if (in_array($nipd, $seenNipd, true)) {
+                $results[] = $this->fail($rowIndex, $nipd, $namaLengkap, "NIPD '$nipd' duplikat di dalam file.");
+                $rowIndex++;
+                continue;
+            }
+
+            // ── Cek duplikat NIPD di database ───────────────────────────
             if (PesertaDidik::where('nipd', $nipd)->exists()) {
                 $results[] = $this->fail($rowIndex, $nipd, $namaLengkap, "NIPD '$nipd' sudah terdaftar di sistem.");
                 $rowIndex++;
@@ -91,6 +116,11 @@ class ImportPesertaDidikService
             }
 
             // ── Cek duplikat NISN (jika diisi) ──────────────────────────
+            if ($nisn !== '' && in_array($nisn, $seenNisn, true)) {
+                $results[] = $this->fail($rowIndex, $nipd, $namaLengkap, "NISN '$nisn' duplikat di dalam file.");
+                $rowIndex++;
+                continue;
+            }
             if ($nisn !== '' && PesertaDidik::where('nisn', $nisn)->exists()) {
                 $results[] = $this->fail($rowIndex, $nipd, $namaLengkap, "NISN '$nisn' sudah terdaftar di sistem.");
                 $rowIndex++;
@@ -161,6 +191,24 @@ class ImportPesertaDidikService
                 ->exists()
             ) {
                 $results[] = $this->fail($rowIndex, $nipd, $namaLengkap, "NIPD '$nipd' sudah terdaftar di Rombel tersebut.");
+                $rowIndex++;
+                continue;
+            }
+
+            $seenNipd[] = $nipd;
+            if ($nisn !== '') {
+                $seenNisn[] = $nisn;
+            }
+
+            if (!$commit) {
+                $results[] = [
+                    'row'    => $rowIndex,
+                    'status' => 'valid',
+                    'nipd'   => $nipd,
+                    'nama'   => $namaLengkap,
+                    'rombel' => $rombel->nama,
+                    'alasan' => null,
+                ];
                 $rowIndex++;
                 continue;
             }
@@ -256,6 +304,7 @@ class ImportPesertaDidikService
                     'status' => 'berhasil',
                     'nipd'   => $nipd,
                     'nama'   => $namaLengkap,
+                    'rombel' => $rombel->nama,
                     'alasan' => null,
                 ];
             } catch (\Throwable $th) {
@@ -275,6 +324,7 @@ class ImportPesertaDidikService
             'status' => 'gagal',
             'nipd'   => $nipd,
             'nama'   => $nama,
+            'rombel' => '—',
             'alasan' => $alasan,
         ];
     }

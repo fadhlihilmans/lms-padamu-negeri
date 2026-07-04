@@ -76,9 +76,12 @@ class GuruManager extends Component
             'namaLengkap' => 'required|string|max:150',
             'noHp'        => 'nullable|string|max:20',
         ], [
-            'nip.required' => 'NIP wajib diisi.',
-            'nip.unique'   => 'NIP sudah terdaftar.',
+            'nip.required'         => 'NIP wajib diisi.',
+            'nip.max'              => 'NIP maksimal 30 karakter.',
+            'nip.unique'           => 'NIP sudah terdaftar.',
             'namaLengkap.required' => 'Nama lengkap wajib diisi.',
+            'namaLengkap.max'      => 'Nama lengkap maksimal 150 karakter.',
+            'noHp.max'             => 'No. HP maksimal 20 karakter.',
         ]);
 
         try {

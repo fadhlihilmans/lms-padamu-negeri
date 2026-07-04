@@ -11,11 +11,11 @@ class GuruSeeder extends Seeder
     public function run(): void
     {
         $gurus = [
-            ['nip' => 'G001', 'nama_lengkap' => 'Ahmad Supriyadi, S.Pd.',   'no_hp' => '081234567001'],
-            ['nip' => 'G002', 'nama_lengkap' => 'Siti Rahayu, S.Pd.',       'no_hp' => '081234567002'],
-            ['nip' => 'G003', 'nama_lengkap' => 'Budi Santoso, S.Pd.I.',    'no_hp' => '081234567003'],
-            ['nip' => 'G004', 'nama_lengkap' => 'Dewi Anggraini, S.Pd.',    'no_hp' => '081234567004'],
-            ['nip' => 'G005', 'nama_lengkap' => 'Rudi Hartono, S.Kom.',     'no_hp' => null],
+            ['nip' => 'g001', 'nama_lengkap' => 'Ahmad Supriyadi, S.Pd.',   'no_hp' => '081234567001'],
+            ['nip' => 'g002', 'nama_lengkap' => 'Siti Rahayu, S.Pd.',       'no_hp' => '081234567002'],
+            ['nip' => 'g003', 'nama_lengkap' => 'Budi Santoso, S.Pd.I.',    'no_hp' => '081234567003'],
+            ['nip' => 'g004', 'nama_lengkap' => 'Dewi Anggraini, S.Pd.',    'no_hp' => '081234567004'],
+            ['nip' => 'g005', 'nama_lengkap' => 'Rudi Hartono, S.Kom.',     'no_hp' => null],
         ];
 
         foreach ($gurus as $data) {

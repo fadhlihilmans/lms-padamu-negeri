@@ -23,6 +23,25 @@ class MateriLampiran extends Model
         return $this->belongsTo(Materi::class);
     }
 
+    public function ekstensi(): string
+    {
+        return strtolower(pathinfo($this->nama_asli ?? '', PATHINFO_EXTENSION));
+    }
+
+    /**
+     * Ikon & warna file dokumen berdasarkan ekstensi (untuk tampilan detail materi).
+     */
+    public function ikonWarna(): array
+    {
+        return match ($this->ekstensi()) {
+            'pdf'          => ['picture_as_pdf', 'text-red-600', 'bg-red-50'],
+            'doc', 'docx'  => ['description', 'text-blue-600', 'bg-blue-50'],
+            'xls', 'xlsx'  => ['description', 'text-green-600', 'bg-green-50'],
+            'ppt', 'pptx'  => ['description', 'text-orange-600', 'bg-orange-50'],
+            default        => ['description', 'text-[#505f76]', 'bg-[#f0f4f8]'],
+        };
+    }
+
     public function youtubeId(): ?string
     {
         if ($this->tipe !== 'link_video' || ! $this->url) return null;

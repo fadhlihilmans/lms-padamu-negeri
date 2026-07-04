@@ -1,11 +1,12 @@
-<div class="max-w-3xl mx-auto">
+<div>
 
     {{-- ── Back ───────────────────────────────────────────────────────────────── --}}
-    <div class="mb-6">
+    <div class="mb-5">
         <a href="{{ route('peserta-didik.tugas') }}"
-           class="inline-flex items-center gap-1.5 text-[13px] text-[#505f76] hover:text-[#3c50e0] transition-colors cursor-pointer">
-            <span class="material-symbols-outlined text-[16px]">arrow_back</span>
-            Kembali ke Daftar Tugas
+           class="w-9 h-9 flex items-center justify-center rounded-lg border cursor-pointer transition-colors"
+           style="border-color: #c5c5d7; background: white; color: #505f76"
+           onmouseover="this.style.background='#f0f4f8'" onmouseout="this.style.background='white'">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
         </a>
     </div>
 
@@ -16,33 +17,35 @@
         $sudahDinilai = $submisi && $submisi->nilai !== null;
     @endphp
 
-    {{-- ── Info Tugas ───────────────────────────────────────────────────────────── --}}
-    <div class="bg-white rounded-2xl border border-[#c5c5d7] shadow-sm p-6 mb-5">
-        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
-            <div>
-                <h1 class="text-[22px] font-bold text-on-surface mb-1">{{ $tugas->judul }}</h1>
-                <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-[#505f76]">
+    {{-- ── Info Tugas (8.4.2) ──────────────────────────────────────────────────── --}}
+    <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm p-4 sm:p-5 mb-5">
+        <div class="flex flex-col gap-3 mb-4">
+            <div class="min-w-0">
+                <h1 class="text-[16px] sm:text-[18px] font-bold text-on-surface">{{ $tugas->judul }}</h1>
+                <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 text-[12.5px] sm:text-[13px] text-[#505f76]">
                     <span class="flex items-center gap-1">
-                        <span class="material-symbols-outlined text-[15px]">book</span>
+                        <span class="material-symbols-outlined text-[14px]">book</span>
                         {{ $tugas->guruMapelRombel?->mapel?->nama }}
                     </span>
-                    <span class="text-[#c5c5d7]">·</span>
                     <span class="flex items-center gap-1">
-                        <span class="material-symbols-outlined text-[15px]">person</span>
+                        <span class="material-symbols-outlined text-[14px]">person</span>
                         {{ $tugas->guruMapelRombel?->guru?->nama_lengkap }}
                     </span>
                 </div>
             </div>
+            {{-- Deadline: teks berwarna saja, tanpa card/border. Keterangan relatif pindah ke baris baru di mobile --}}
             <div @class([
-                'flex items-center gap-2 px-4 py-2 rounded-full border text-[13px] font-semibold flex-shrink-0',
-                'bg-[#ffdad6] border-[#ffb4ab] text-[#ba1a1a]' => $isOverdue,
-                'bg-[#fff3cd] border-[#ffd966] text-[#856404]' => ! $isOverdue,
+                'flex items-start gap-1.5 text-[12.5px] sm:text-[13px] font-semibold',
+                'text-[#ba1a1a]' => $isOverdue,
+                'text-[#856404]' => ! $isOverdue,
             ])>
-                <span class="material-symbols-outlined text-[16px]">{{ $isOverdue ? 'event_busy' : 'timer' }}</span>
-                Deadline: {{ $tugas->deadline->translatedFormat('d M Y, H:i') }}
-                @if (! $isOverdue)
-                    <span class="opacity-70 font-normal">({{ $tugas->deadline->diffForHumans() }})</span>
-                @endif
+                <span class="material-symbols-outlined text-[16px] mt-0.5 sm:mt-0">{{ $isOverdue ? 'event_busy' : 'timer' }}</span>
+                <span>
+                    Deadline: {{ $tugas->deadline->translatedFormat('d M Y, H:i') }}
+                    @if (! $isOverdue)
+                        <span class="block sm:inline opacity-70 font-normal">({{ $tugas->deadline->diffForHumans() }})</span>
+                    @endif
+                </span>
             </div>
         </div>
 
@@ -69,53 +72,59 @@
         @endif
     </div>
 
-    {{-- ── Status Submisi ─────────────────────────────────────────────────────── --}}
+    {{-- ── Jawaban Anda Saat Ini: status + tanggal + nilai + preview digabung ──── --}}
     @if ($submisi)
-        <div @class([
-            'rounded-xl border p-4 mb-5 flex items-start gap-3',
-            'bg-[#d1f5e0] border-[#1c8c4e]' => $isSudah,
-            'bg-[#ffdad6] border-[#ba1a1a]'  => $isLate,
-        ])>
-            <span @class([
-                'material-symbols-outlined text-[22px] flex-shrink-0 mt-0.5',
-                'text-[#0d6e34]' => $isSudah,
-                'text-[#ba1a1a]' => $isLate,
-            ])>{{ $isSudah ? 'check_circle' : 'history_toggle_off' }}</span>
-            <div class="flex-1">
-                <p @class(['text-[14px] font-semibold', 'text-[#0d6e34]' => $isSudah, 'text-[#ba1a1a]' => $isLate])>
-                    {{ $isSudah ? 'Tugas Sudah Dikumpulkan' : 'Dikumpulkan Terlambat' }}
-                </p>
-                <p @class(['text-[13px]', 'text-[#0d6e34]/80' => $isSudah, 'text-[#ba1a1a]/80' => $isLate])>
-                    Dikumpulkan: {{ $submisi->waktu_submit->translatedFormat('d M Y, H:i') }}
-                    @if ($isLate)
-                        <span class="font-medium">({{ $submisi->waktu_submit->diffForHumans($tugas->deadline) }} setelah deadline)</span>
-                    @endif
-                </p>
-            </div>
-            @if ($submisi->nilai !== null)
-                <div class="flex-shrink-0 text-center pl-3 border-l {{ $isSudah ? 'border-[#1c8c4e]/30' : 'border-[#ba1a1a]/30' }}">
-                    <div @class([
-                        'text-[30px] font-bold leading-none',
-                        'text-[#0d6e34]' => $submisi->nilai >= 75,
-                        'text-[#856404]' => $submisi->nilai >= 60 && $submisi->nilai < 75,
-                        'text-[#ba1a1a]' => $submisi->nilai < 60,
-                    ])>{{ $submisi->nilai }}</div>
-                    <div class="text-[11px] text-[#505f76] font-semibold mt-0.5">
-                        {{ $submisi->nilai >= 75 ? 'Tuntas' : ($submisi->nilai >= 60 ? 'Cukup' : 'Belum Tuntas') }}
-                    </div>
-                </div>
-            @endif
-        </div>
-
-        {{-- Preview jawaban sebelumnya --}}
-        @if ($submisi->file_path || $submisi->isi_text)
-            <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm p-5 mb-5">
-                <h3 class="text-[13px] font-semibold text-[#757686] uppercase tracking-widest mb-3 flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-[15px]">inventory</span>Jawaban Anda Saat Ini
+        <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm overflow-hidden mb-5">
+            <div class="px-4 sm:px-5 py-3.5 border-b border-[#c5c5d7] flex items-center justify-between gap-3">
+                <h3 class="text-[13px] sm:text-[14px] font-semibold text-on-surface flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-[16px] text-[#3c50e0]">inventory</span>
+                    Jawaban Anda Saat Ini
                 </h3>
+                @if ($isSudah)
+                    <span class="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap" style="background:#d1f5e0;color:#0d6e34">
+                        <span class="material-symbols-outlined text-[12px]" style="font-variation-settings:'FILL' 1">check_circle</span> Sudah Dikumpulkan
+                    </span>
+                @else
+                    <span class="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap" style="background:#ffdad6;color:#ba1a1a">
+                        <span class="material-symbols-outlined text-[12px]">history_toggle_off</span> Terlambat
+                    </span>
+                @endif
+            </div>
+
+            <div class="p-4 sm:p-5">
+                {{-- Tanggal kumpul + nilai digabung dalam satu baris --}}
+                <div class="flex flex-wrap items-center justify-between gap-3 mb-4 pb-4 border-b border-[#f0f4f8]">
+                    <p class="text-[12.5px] sm:text-[13px] text-[#505f76]">
+                        Dikumpulkan:
+                        <span class="font-medium text-on-surface">{{ $submisi->waktu_submit->translatedFormat('d M Y, H:i') }}</span>
+                        @if ($isLate)
+                            <span class="text-[#ba1a1a] font-medium">({{ $submisi->waktu_submit->diffForHumans($tugas->deadline) }} setelah deadline)</span>
+                        @endif
+                    </p>
+                    @if ($submisi->nilai !== null)
+                        <div class="flex items-center gap-2">
+                            <span @class([
+                                'text-[20px] font-bold leading-none',
+                                'text-[#0d6e34]' => $submisi->nilai >= 75,
+                                'text-[#856404]' => $submisi->nilai >= 60 && $submisi->nilai < 75,
+                                'text-[#ba1a1a]' => $submisi->nilai < 60,
+                            ])>{{ $submisi->nilai }}</span>
+                            <span @class([
+                                'text-[11px] font-semibold px-2 py-0.5 rounded-full',
+                                'bg-[#d1f5e0] text-[#0d6e34]' => $submisi->nilai >= 75,
+                                'bg-[#fff3cd] text-[#856404]' => $submisi->nilai >= 60 && $submisi->nilai < 75,
+                                'bg-[#ffdad6] text-[#ba1a1a]' => $submisi->nilai < 60,
+                            ])>{{ $submisi->nilai >= 75 ? 'Tuntas' : ($submisi->nilai >= 60 ? 'Cukup' : 'Belum Tuntas') }}</span>
+                        </div>
+                    @else
+                        <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-[#f0f4f8] text-[#505f76]">Belum dinilai</span>
+                    @endif
+                </div>
+
+                {{-- Preview jawaban --}}
                 @if ($submisi->file_path)
                     <a href="{{ Storage::url($submisi->file_path) }}" target="_blank"
-                       class="flex items-center gap-3 p-3.5 bg-[#f6fafe] border border-[#c5d0ff] rounded-xl mb-3 hover:border-[#3c50e0] hover:bg-[#EEF2FF] transition-colors cursor-pointer group">
+                       class="flex items-center gap-3 p-3.5 bg-[#f6fafe] border border-[#c5d0ff] rounded-xl {{ $submisi->isi_text ? 'mb-3' : '' }} hover:border-[#3c50e0] hover:bg-[#EEF2FF] transition-colors cursor-pointer group">
                         <div class="w-9 h-9 rounded-lg bg-[#EEF2FF] group-hover:bg-white flex items-center justify-center flex-shrink-0 transition-colors">
                             <span class="material-symbols-outlined text-[#3c50e0] text-[20px]">description</span>
                         </div>
@@ -134,149 +143,177 @@
                         </div>
                     </div>
                 @endif
+
+                {{-- Tombol buka modal kirim ulang --}}
+                <button wire:click="openSubmitModal" type="button"
+                        class="w-full sm:w-auto mt-4 inline-flex items-center justify-center gap-2 px-5 py-2.5 text-[14px] font-semibold rounded-xl border transition-colors cursor-pointer"
+                        style="color: #3c50e0; border-color: #c5d0ff; background: #EEF2FF"
+                        onmouseover="this.style.background='#dde5ff'" onmouseout="this.style.background='#EEF2FF'">
+                    <span class="material-symbols-outlined text-[18px]">refresh</span>
+                    Kirim Ulang Jawaban
+                </button>
             </div>
-        @endif
+        </div>
+    @else
+        {{-- Belum ada jawaban sama sekali --}}
+        <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm p-6 sm:p-8 text-center mb-5">
+            <div class="w-14 h-14 rounded-full bg-[#f0f4f8] flex items-center justify-center mx-auto mb-3">
+                <span class="material-symbols-outlined text-[28px] text-[#757686]">cloud_upload</span>
+            </div>
+            <p class="text-[14px] sm:text-[15px] font-semibold text-on-surface mb-1">Belum Ada Jawaban Dikumpulkan</p>
+            <p class="text-[12.5px] sm:text-[13px] text-[#505f76] mb-4">Klik tombol di bawah untuk mulai mengumpulkan jawaban.</p>
+            @if ($isOverdue)
+                <span class="inline-flex items-center gap-1 text-[11.5px] sm:text-[12px] font-semibold text-[#ba1a1a] bg-[#ffdad6] px-3 py-1.5 rounded-full mb-4 whitespace-nowrap">
+                    <span class="material-symbols-outlined text-[14px]">warning</span>
+                    Melewati deadline — akan ditandai terlambat
+                </span>
+                <br>
+            @endif
+            <button wire:click="openSubmitModal" type="button"
+                    class="inline-flex items-center gap-2 px-6 py-2.5 text-[14px] font-semibold text-white rounded-xl transition-colors shadow-sm cursor-pointer"
+                    style="background: #3c50e0" onmouseover="this.style.background='#2e3eb0'" onmouseout="this.style.background='#3c50e0'">
+                <span class="material-symbols-outlined text-[18px]">send</span>
+                Kumpulkan Jawaban
+            </button>
+        </div>
     @endif
 
-    {{-- ── Form Kumpulkan / Perbarui ────────────────────────────────────────────── --}}
-    <div class="bg-white rounded-2xl border border-[#c5c5d7] shadow-sm overflow-hidden">
+    {{-- ── Modal: Kumpulkan / Kirim Ulang Jawaban ──────────────────────────────── --}}
+    @if ($showSubmitModal)
+        <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 backdrop-blur-sm p-0 sm:p-4"
+             wire:keydown.escape="closeSubmitModal">
+            {{-- Desktop: modal dilebarkan & dibuat penuh atas-bawah --}}
+            <div class="bg-white w-full sm:max-w-3xl rounded-t-2xl sm:rounded-xl overflow-hidden shadow-xl flex flex-col max-h-[92vh] sm:h-[90vh]"
+                 x-data="{ tab: 'file' }"
+                 x-on:clear-trix-submisi.window="
+                    const editor = $el.querySelector('trix-editor');
+                    if (editor) editor.editor.loadHTML('');
+                 ">
 
-        {{-- Header --}}
-        <div class="px-4 py-3.5 border-b border-[#c5c5d7] bg-[#f6fafe] flex items-center justify-between gap-3 flex-wrap">
-            <div class="flex items-center gap-2.5">
-                <div class="w-9 h-9 rounded-xl bg-[#EEF2FF] flex items-center justify-center">
-                    <span class="material-symbols-outlined text-[#3c50e0] text-[20px]">
-                        {{ $submisi ? 'edit_note' : 'cloud_upload' }}
-                    </span>
+                {{-- Header --}}
+                <div class="px-5 py-4 border-b border-[#c5c5d7] flex items-center justify-between flex-shrink-0">
+                    <h2 class="text-[15px] sm:text-[16px] font-semibold text-on-surface">
+                        {{ $submisi ? ($sudahDinilai ? 'Kirim Ulang Jawaban' : 'Perbarui Jawaban') : 'Kumpulkan Jawaban' }}
+                    </h2>
+                    <button wire:click="closeSubmitModal" type="button" class="text-[#757686] hover:text-on-surface transition-colors cursor-pointer">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
                 </div>
-                <div>
-                    <h3 class="text-[15px] font-semibold text-on-surface">
-                        {{ $submisi ? ($sudahDinilai ? 'Kirim Ulang Jawaban' : 'Perbarui Jawaban') : 'Kumpulkan Tugas' }}
-                    </h3>
-                    <p class="text-[12px] text-[#505f76]">Gunakan salah satu atau keduanya</p>
+
+                <div class="p-4 sm:p-5 overflow-y-auto space-y-4 flex-1">
+                    @if ($sudahDinilai)
+                        <span class="inline-flex items-center gap-1 text-[11.5px] sm:text-[12px] font-semibold text-[#856404] bg-[#fff3cd] px-3 py-1.5 rounded-full whitespace-nowrap">
+                            <span class="material-symbols-outlined text-[14px]">info</span>
+                            Nilai akan direset jika kirim ulang
+                        </span>
+                    @endif
+
+                    {{-- Tabs --}}
+                    <div class="grid grid-cols-2 border-b border-[#c5c5d7] gap-1">
+                        <button x-on:click="tab = 'file'" type="button"
+                                :class="tab === 'file'
+                                    ? 'border-[#3c50e0] text-[#3c50e0] bg-[#EEF2FF]'
+                                    : 'border-transparent text-[#505f76] hover:text-on-surface hover:bg-[#f0f4f8]'"
+                                class="flex items-center justify-center gap-2 px-3 py-2.5 text-[13px] sm:text-[14px] font-medium border-b-2 rounded-t-lg transition-colors cursor-pointer">
+                            <span class="material-symbols-outlined text-[18px]">upload_file</span>
+                            Upload File
+                            @if ($fileBaru)
+                                <span class="inline-block w-2 h-2 rounded-full bg-[#3c50e0]"></span>
+                            @endif
+                        </button>
+                        <button x-on:click="tab = 'text'" type="button"
+                                :class="tab === 'text'
+                                    ? 'border-[#3c50e0] text-[#3c50e0] bg-[#EEF2FF]'
+                                    : 'border-transparent text-[#505f76] hover:text-on-surface hover:bg-[#f0f4f8]'"
+                                class="flex items-center justify-center gap-2 px-3 py-2.5 text-[13px] sm:text-[14px] font-medium border-b-2 rounded-t-lg transition-colors cursor-pointer">
+                            <span class="material-symbols-outlined text-[18px]">edit_document</span>
+                            Tulis Jawaban
+                        </button>
+                    </div>
+
+                    {{-- Tab Upload File --}}
+                    <div x-show="tab === 'file'" x-cloak>
+                        <label class="flex flex-col items-center gap-3 sm:gap-4 p-6 sm:p-10 border-2 border-dashed border-[#c5c5d7] rounded-xl cursor-pointer hover:border-[#3c50e0] hover:bg-[#f6fafe] transition-all group">
+                            @if ($fileBaru)
+                                <div class="w-14 h-14 rounded-full bg-[#EEF2FF] flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-[#3c50e0] text-[30px]">task_alt</span>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-[15px] font-semibold text-[#3c50e0]">{{ $fileBaru->getClientOriginalName() }}</p>
+                                    <p class="text-[13px] text-[#505f76] mt-0.5">{{ round($fileBaru->getSize() / 1024, 1) }} KB · Klik untuk ganti</p>
+                                </div>
+                            @else
+                                <div class="w-14 h-14 rounded-full bg-[#f0f4f8] group-hover:bg-[#EEF2FF] flex items-center justify-center transition-colors">
+                                    <span class="material-symbols-outlined text-[#505f76] group-hover:text-[#3c50e0] text-[30px] transition-colors">cloud_upload</span>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-[15px] font-semibold text-on-surface">Tarik & lepas file, atau klik untuk pilih</p>
+                                    <p class="text-[13px] text-[#505f76] mt-1">PDF, Word, gambar — maks {{ app(\App\Services\SettingService::class)->get('max_upload_tugas_mb', 10) }} MB</p>
+                                </div>
+                            @endif
+                            <input wire:model="fileBaru" type="file"
+                                   accept=".pdf,.doc,.docx,.ppt,.pptx,image/*"
+                                   class="hidden">
+                        </label>
+                        @error('fileBaru')
+                            <p class="text-[12px] text-[#ba1a1a] mt-2 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]">error</span> {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+
+                    {{-- Tab Tulis Jawaban — Trix editor --}}
+                    <div x-show="tab === 'text'" x-cloak>
+                        <p class="text-[13px] font-medium text-on-surface mb-2">
+                            Tulis jawaban Anda secara lengkap:
+                        </p>
+                        <div wire:ignore class="border border-[#c5c5d7] rounded-xl overflow-hidden trix-wrapper">
+                            <input id="trix-submisi-pd" type="hidden" value="{{ $isiText }}">
+                            <trix-editor
+                                input="trix-submisi-pd"
+                                placeholder="Mulai menulis jawaban Anda di sini. Gunakan toolbar untuk format teks..."
+                                class="trix-content min-h-[200px]"
+                                x-on:trix-change="$wire.setIsiText($event.target.value)"
+                                x-on:trix-file-accept.prevent>
+                            </trix-editor>
+                        </div>
+                        @error('isiText')
+                            <p class="text-[12px] text-[#ba1a1a] mt-2 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-[14px]">error</span> {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
                 </div>
-            </div>
-            <div class="flex flex-wrap gap-2">
-                @if ($isOverdue && ! $submisi)
-                    <span class="inline-flex items-center gap-1 text-[12px] font-semibold text-[#ba1a1a] bg-[#ffdad6] px-3 py-1.5 rounded-full">
-                        <span class="material-symbols-outlined text-[14px]">warning</span>
-                        Melewati deadline — akan ditandai terlambat
-                    </span>
-                @endif
-                @if ($sudahDinilai)
-                    <span class="inline-flex items-center gap-1 text-[12px] font-semibold text-[#856404] bg-[#fff3cd] px-3 py-1.5 rounded-full">
-                        <span class="material-symbols-outlined text-[14px]">info</span>
-                        Nilai akan direset jika kirim ulang
-                    </span>
-                @endif
+
+                {{-- Footer --}}
+                <div class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-3 px-5 py-4 border-t border-[#c5c5d7] flex-shrink-0">
+                    <p class="text-[12px] text-[#505f76] hidden sm:block">
+                        @if ($submisi && $sudahDinilai)
+                            Mengirim ulang akan mereset nilai — guru perlu menilai ulang.
+                        @elseif ($submisi)
+                            Memperbarui akan menggantikan jawaban sebelumnya.
+                        @else
+                            Pastikan jawaban sudah benar sebelum mengumpulkan.
+                        @endif
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-3">
+                        <button wire:click="closeSubmitModal" type="button"
+                                class="px-4 py-2.5 text-[14px] font-medium rounded-lg border transition-colors cursor-pointer"
+                                style="border-color: #c5c5d7; color: #505f76; background: white"
+                                onmouseover="this.style.background='#f0f4f8'" onmouseout="this.style.background='white'">
+                            Batal
+                        </button>
+                        <button wire:click="submit" wire:loading.attr="disabled"
+                                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 text-[14px] font-semibold text-white bg-[#3c50e0] rounded-xl hover:bg-[#2e3eb0] transition-colors disabled:opacity-60 cursor-pointer shadow-sm">
+                            <span wire:loading wire:target="submit" class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span>
+                            <span class="material-symbols-outlined text-[18px]" wire:loading.class="hidden" wire:target="submit">send</span>
+                            {{ $submisi ? 'Perbarui Jawaban' : 'Kumpulkan Tugas' }}
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div
-            x-data="{ tab: 'file' }"
-            x-on:clear-trix-submisi.window="
-                const editor = $el.querySelector('trix-editor');
-                if (editor) editor.editor.loadHTML('');
-            "
-            class="p-6">
-
-            {{-- Tabs --}}
-            <div class="flex border-b border-[#c5c5d7] mb-5 gap-1">
-                <button x-on:click="tab = 'file'" type="button"
-                        :class="tab === 'file'
-                            ? 'border-[#3c50e0] text-[#3c50e0] bg-[#EEF2FF]'
-                            : 'border-transparent text-[#505f76] hover:text-on-surface hover:bg-[#f0f4f8]'"
-                        class="flex items-center gap-2 px-5 py-2.5 text-[14px] font-medium border-b-2 rounded-t-lg transition-colors cursor-pointer">
-                    <span class="material-symbols-outlined text-[18px]">upload_file</span>
-                    Upload File
-                    @if ($fileBaru)
-                        <span class="inline-block w-2 h-2 rounded-full bg-[#3c50e0]"></span>
-                    @endif
-                </button>
-                <button x-on:click="tab = 'text'" type="button"
-                        :class="tab === 'text'
-                            ? 'border-[#3c50e0] text-[#3c50e0] bg-[#EEF2FF]'
-                            : 'border-transparent text-[#505f76] hover:text-on-surface hover:bg-[#f0f4f8]'"
-                        class="flex items-center gap-2 px-5 py-2.5 text-[14px] font-medium border-b-2 rounded-t-lg transition-colors cursor-pointer">
-                    <span class="material-symbols-outlined text-[18px]">edit_document</span>
-                    Tulis Jawaban
-                </button>
-            </div>
-
-            {{-- Tab Upload File --}}
-            <div x-show="tab === 'file'" x-cloak>
-                <label class="flex flex-col items-center gap-4 p-8 border-2 border-dashed border-[#c5c5d7] rounded-xl cursor-pointer hover:border-[#3c50e0] hover:bg-[#f6fafe] transition-all group">
-                    @if ($fileBaru)
-                        <div class="w-14 h-14 rounded-full bg-[#EEF2FF] flex items-center justify-center">
-                            <span class="material-symbols-outlined text-[#3c50e0] text-[30px]">task_alt</span>
-                        </div>
-                        <div class="text-center">
-                            <p class="text-[15px] font-semibold text-[#3c50e0]">{{ $fileBaru->getClientOriginalName() }}</p>
-                            <p class="text-[13px] text-[#505f76] mt-0.5">{{ round($fileBaru->getSize() / 1024, 1) }} KB · Klik untuk ganti</p>
-                        </div>
-                    @else
-                        <div class="w-14 h-14 rounded-full bg-[#f0f4f8] group-hover:bg-[#EEF2FF] flex items-center justify-center transition-colors">
-                            <span class="material-symbols-outlined text-[#505f76] group-hover:text-[#3c50e0] text-[30px] transition-colors">cloud_upload</span>
-                        </div>
-                        <div class="text-center">
-                            <p class="text-[15px] font-semibold text-on-surface">Tarik & lepas file, atau klik untuk pilih</p>
-                            <p class="text-[13px] text-[#505f76] mt-1">PDF, Word, gambar — maks {{ app(\App\Services\SettingService::class)->get('max_upload_tugas_mb', 10) }} MB</p>
-                        </div>
-                    @endif
-                    <input wire:model="fileBaru" type="file"
-                           accept=".pdf,.doc,.docx,.ppt,.pptx,image/*"
-                           class="hidden">
-                </label>
-                @error('fileBaru')
-                    <p class="text-[12px] text-[#ba1a1a] mt-2 flex items-center gap-1">
-                        <span class="material-symbols-outlined text-[14px]">error</span> {{ $message }}
-                    </p>
-                @enderror
-            </div>
-
-            {{-- Tab Tulis Jawaban — Trix editor --}}
-            <div x-show="tab === 'text'" x-cloak>
-                <p class="text-[13px] font-medium text-on-surface mb-2">
-                    Tulis jawaban Anda secara lengkap:
-                </p>
-                <div wire:ignore class="border border-[#c5c5d7] rounded-xl overflow-hidden trix-wrapper">
-                    <input id="trix-submisi-pd" type="hidden" value="{{ $isiText }}">
-                    <trix-editor
-                        input="trix-submisi-pd"
-                        placeholder="Mulai menulis jawaban Anda di sini. Gunakan toolbar untuk format teks..."
-                        class="trix-content min-h-[200px]"
-                        x-on:trix-change="$wire.setIsiText($event.target.value)"
-                        x-on:trix-file-accept.prevent>
-                    </trix-editor>
-                </div>
-                @error('isiText')
-                    <p class="text-[12px] text-[#ba1a1a] mt-2 flex items-center gap-1">
-                        <span class="material-symbols-outlined text-[14px]">error</span> {{ $message }}
-                    </p>
-                @enderror
-            </div>
-
-            {{-- Footer --}}
-            <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mt-5 pt-5 border-t border-[#c5c5d7]">
-                <p class="text-[12px] text-[#505f76]">
-                    @if ($submisi && $sudahDinilai)
-                        Mengirim ulang akan mereset nilai — guru perlu menilai ulang.
-                    @elseif ($submisi)
-                        Memperbarui akan menggantikan jawaban sebelumnya.
-                    @else
-                        Pastikan jawaban sudah benar sebelum mengumpulkan.
-                    @endif
-                </p>
-                <button wire:click="submit" wire:loading.attr="disabled"
-                        class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 text-[14px] font-semibold text-white bg-[#3c50e0] rounded-xl hover:bg-[#2e3eb0] transition-colors disabled:opacity-60 cursor-pointer shadow-sm">
-                    <span wire:loading wire:target="submit" class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span>
-                    <span class="material-symbols-outlined text-[18px]" wire:loading.class="hidden" wire:target="submit">send</span>
-                    {{ $submisi ? 'Perbarui Jawaban' : 'Kumpulkan Tugas' }}
-                </button>
-            </div>
-
-        </div>
-    </div>
+    @endif
 
 </div>
 

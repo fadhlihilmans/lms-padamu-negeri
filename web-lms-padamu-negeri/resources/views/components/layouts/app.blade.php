@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $title ?? config('app.name') }}</title>
 
     {{-- Google Fonts: Inter + Material Symbols Outlined --}}
@@ -76,12 +77,19 @@
             @endauth
 
             {{-- Page content --}}
-            <main class="flex-1 overflow-y-auto p-4 sm:p-5">
+            <main class="flex-1 overflow-y-auto p-4 sm:p-5 @auth @if(Auth::user()->hasRole('peserta_didik')) pb-20 lg:pb-5 @endif @endauth">
                 {{ $slot }}
             </main>
 
         </div>
     </div>
+
+    {{-- Bottom nav (mobile only, Peserta Didik) --}}
+    @auth
+        @if (Auth::user()->hasRole('peserta_didik'))
+            <x-bottom-nav-pd />
+        @endif
+    @endauth
 
     {{-- Modal ganti password — muncul jika user belum pernah ganti password --}}
     @auth

@@ -26,13 +26,13 @@
                 @php $sudahAbsen = isset($detailHariIni[$sesi->id]); @endphp
                 <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm overflow-hidden">
                     {{-- Info sesi --}}
-                    <div class="px-4 py-3.5 bg-[#EEF2FF] border-b border-[#c5d0ff] flex items-center gap-3">
+                    <div class="px-5 py-3.5 bg-white border-b border-[#d1d5db] flex items-center gap-3">
                         <span class="material-symbols-outlined text-[20px] text-[#3c50e0]">class</span>
-                        <div>
-                            <p class="text-[15px] font-semibold text-[#1c33c8]">{{ $sesi->guruMapelRombel->mapel->nama }}</p>
-                            <p class="text-[12px] text-[#3c50e0]">Pengajar: {{ $sesi->guruMapelRombel->guru->nama_lengkap }}</p>
+                        <div class="min-w-0">
+                            <p class="text-[14.5px] font-semibold text-[#1c33c8]">{{ $sesi->guruMapelRombel->mapel->nama }}</p>
+                            <p class="text-[11.5px] text-[#3c50e0]">Pengajar: {{ $sesi->guruMapelRombel->guru->nama_lengkap }}</p>
                         </div>
-                        <span class="ml-auto flex items-center gap-1 text-[11px] font-semibold text-green-700 bg-green-100 border border-green-200 px-2 py-0.5 rounded-full">
+                        <span class="ml-auto flex items-center gap-1 text-[11px] font-semibold text-green-700 bg-green-100 border border-green-200 px-2 py-0.5 rounded-full flex-shrink-0">
                             <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
                             Terbuka
                         </span>
@@ -42,7 +42,7 @@
                     @php
                         $tsTutupPD = $sesi->tutup_pada ? $sesi->tutup_pada->timestamp : 0;
                     @endphp
-                    <div class="px-6 py-3 bg-[#f6fafe] border-b border-[#c5d0ff] flex flex-wrap gap-x-6 gap-y-1.5">
+                    <div class="px-5 py-2.5 bg-white border-b border-[#d1d5db] flex flex-wrap gap-x-6 gap-y-1.5">
                         @if ($sesi->tanggal_buka)
                             <div class="flex items-center gap-1.5 text-[12px] text-[#3c50e0]">
                                 <span class="material-symbols-outlined text-[14px]">play_circle</span>
@@ -75,7 +75,7 @@
                         @endif
                     </div>
 
-                    <div class="p-6">
+                    <div class="p-5">
                         @if ($sudahAbsen)
                             {{-- Sudah absen --}}
                             @php $d = $detailHariIni[$sesi->id]; @endphp
@@ -103,37 +103,43 @@
                             </div>
                         @else
                             {{-- Belum absen — tampilkan tombol besar --}}
-                            <p class="text-center text-[13px] font-semibold text-[#505f76] uppercase tracking-wider mb-5">Pilih Status Kehadiran</p>
-                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <p class="text-center text-[12px] font-semibold uppercase tracking-wider mb-4" style="color: #171c1f">Pilih Status Kehadiran</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
                                 {{-- Hadir --}}
                                 <button wire:click="absen({{ $sesi->id }}, 'hadir')"
                                         wire:loading.attr="disabled"
-                                        class="group flex flex-col items-center justify-center p-8 rounded-xl border-2 border-green-400 bg-green-50 hover:bg-green-100 transition-all active:scale-95 cursor-pointer h-44">
-                                    <div class="w-14 h-14 rounded-full bg-green-500 flex items-center justify-center text-white mb-3 group-hover:scale-110 transition-transform">
-                                        <span class="material-symbols-outlined text-[32px]" style="font-variation-settings:'FILL' 1;">check_circle</span>
-                                    </div>
-                                    <span class="text-[18px] font-bold text-green-800">Hadir</span>
+                                        class="group flex flex-row items-center justify-center gap-3.5 py-[18px] px-4 rounded-2xl border-2 cursor-pointer transition-transform active:scale-95"
+                                        style="border-color: #86efac; background: #f0fdf4"
+                                        onmouseover="this.style.background='#dcfce7'" onmouseout="this.style.background='#f0fdf4'">
+                                    <span class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 text-white transition-transform group-hover:scale-110" style="background: #16a34a">
+                                        <span class="material-symbols-outlined text-[30px]" style="font-variation-settings:'FILL' 1">check_circle</span>
+                                    </span>
+                                    <span class="text-[17px] font-bold" style="color: #15803d">Hadir</span>
                                 </button>
                                 {{-- Izin --}}
                                 <button wire:click="absen({{ $sesi->id }}, 'izin')"
                                         wire:loading.attr="disabled"
-                                        class="group flex flex-col items-center justify-center p-8 rounded-xl border-2 border-amber-400 bg-amber-50 hover:bg-amber-100 transition-all active:scale-95 cursor-pointer h-44">
-                                    <div class="w-14 h-14 rounded-full bg-amber-500 flex items-center justify-center text-white mb-3 group-hover:scale-110 transition-transform">
-                                        <span class="material-symbols-outlined text-[32px]" style="font-variation-settings:'FILL' 1;">info</span>
-                                    </div>
-                                    <span class="text-[18px] font-bold text-amber-800">Izin</span>
+                                        class="group flex flex-row items-center justify-center gap-3.5 py-[18px] px-4 rounded-2xl border-2 cursor-pointer transition-transform active:scale-95"
+                                        style="border-color: #fcd34d; background: #fffbeb"
+                                        onmouseover="this.style.background='#fef3c7'" onmouseout="this.style.background='#fffbeb'">
+                                    <span class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 text-white transition-transform group-hover:scale-110" style="background: #d97706">
+                                        <span class="material-symbols-outlined text-[30px]" style="font-variation-settings:'FILL' 1">info</span>
+                                    </span>
+                                    <span class="text-[17px] font-bold" style="color: #b45309">Izin</span>
                                 </button>
                                 {{-- Sakit --}}
                                 <button wire:click="absen({{ $sesi->id }}, 'sakit')"
                                         wire:loading.attr="disabled"
-                                        class="group flex flex-col items-center justify-center p-8 rounded-xl border-2 border-blue-400 bg-blue-50 hover:bg-blue-100 transition-all active:scale-95 cursor-pointer h-44">
-                                    <div class="w-14 h-14 rounded-full bg-blue-500 flex items-center justify-center text-white mb-3 group-hover:scale-110 transition-transform">
-                                        <span class="material-symbols-outlined text-[32px]" style="font-variation-settings:'FILL' 1;">local_hospital</span>
-                                    </div>
-                                    <span class="text-[18px] font-bold text-blue-800">Sakit</span>
+                                        class="group flex flex-row items-center justify-center gap-3.5 py-[18px] px-4 rounded-2xl border-2 cursor-pointer transition-transform active:scale-95"
+                                        style="border-color: #93c5fd; background: #eff6ff"
+                                        onmouseover="this.style.background='#dbeafe'" onmouseout="this.style.background='#eff6ff'">
+                                    <span class="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 text-white transition-transform group-hover:scale-110" style="background: #2563eb">
+                                        <span class="material-symbols-outlined text-[30px]" style="font-variation-settings:'FILL' 1">local_hospital</span>
+                                    </span>
+                                    <span class="text-[17px] font-bold" style="color: #1d4ed8">Sakit</span>
                                 </button>
                             </div>
-                            <p class="text-center text-[12px] text-[#757686] mt-4">
+                            <p class="text-center text-[12px] mt-4" style="color: #757686">
                                 Status yang dipilih tidak dapat diubah sendiri. Hubungi guru jika terjadi kesalahan.
                             </p>
                         @endif
@@ -150,7 +156,7 @@
                 <span class="material-symbols-outlined text-[18px] text-[#3c50e0]">history</span>
                 Riwayat 7 Hari Terakhir
             </h3>
-            <div class="flex flex-wrap gap-2">
+            <div class="grid grid-cols-4 sm:grid-cols-7 gap-2">
                 @for ($i = 6; $i >= 0; $i--)
                     @php
                         $day = today()->subDays($i);
@@ -173,7 +179,7 @@
                         ];
                         $dayColor = $dayStatus ? ($colors[$dayStatus] ?? 'bg-[#f0f4f8] border-[#c5c5d7] text-[#505f76]') : 'bg-[#f0f4f8] border-dashed border-[#c5c5d7] text-[#757686] opacity-60';
                     @endphp
-                    <div class="flex-1 min-w-[80px] max-w-[110px] border rounded-xl p-3 text-center {{ $dayColor }} {{ $isToday ? 'ring-2 ring-[#3c50e0]' : '' }}">
+                    <div class="border rounded-xl p-3 text-center {{ $dayColor }} {{ $isToday ? 'ring-2 ring-[#3c50e0]' : '' }}">
                         <p class="text-[11px] font-semibold uppercase tracking-wider">{{ $dayLabel }}</p>
                         <p class="text-[10px] opacity-70">{{ $dateLabel }}</p>
                         <p class="text-[13px] font-bold mt-1">

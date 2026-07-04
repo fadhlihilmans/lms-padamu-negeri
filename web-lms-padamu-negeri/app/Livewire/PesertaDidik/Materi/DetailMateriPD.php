@@ -37,6 +37,9 @@ class DetailMateriPD extends Component
 
     public function render(): View
     {
-        return view('livewire.peserta-didik.materi.detail-materi-p-d');
+        $jumlahKata  = $this->materi->isi ? str_word_count(strip_tags($this->materi->isi)) : 0;
+        $estimasiBaca = max(1, (int) ceil($jumlahKata / 200));
+
+        return view('livewire.peserta-didik.materi.detail-materi-p-d', compact('estimasiBaca'));
     }
 }

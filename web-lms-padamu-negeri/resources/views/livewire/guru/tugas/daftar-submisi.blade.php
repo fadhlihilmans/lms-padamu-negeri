@@ -1,30 +1,34 @@
 <div>
 
-    {{-- ── Back + Header ───────────────────────────────────────────────────────── --}}
-    <div class="mb-6">
+    {{-- ── Header ───────────────────────────────────────────────────────────── --}}
+    <div class="flex items-center gap-3 mb-5">
         <a href="{{ route('guru.tugas') }}"
-           class="inline-flex items-center gap-1.5 text-[13px] text-[#505f76] hover:text-[#3c50e0] transition-colors mb-4 cursor-pointer">
-            <span class="material-symbols-outlined text-[16px]">arrow_back</span>
-            Kembali ke Daftar Tugas
+           class="w-9 h-9 flex items-center justify-center rounded-lg border cursor-pointer transition-colors flex-shrink-0"
+           style="border-color: #c5c5d7; background: white; color: #505f76"
+           onmouseover="this.style.background='#f0f4f8'" onmouseout="this.style.background='white'">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
         </a>
-
-        <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
-            <div>
-                <h2 class="text-[22px] font-bold tracking-tight text-on-surface">{{ $tugas->judul }}</h2>
-                <p class="text-[13px] text-[#757686] mt-0.5">
-                    {{ $tugas->guruMapelRombel?->mapel?->nama }}
-                    <span class="text-[#c5c5d7] mx-1">·</span>
-                    {{ $tugas->guruMapelRombel?->rombel?->nama }}
-                    <span class="text-[#c5c5d7] mx-1">·</span>
-                    Deadline: {{ $tugas->deadline->translatedFormat('d M Y, H:i') }}
-                    @if ($tugas->deadline->isPast())
-                        <span class="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full bg-[#ffdad6] text-[#ba1a1a] text-[11px] font-semibold ml-1">
-                            Lewat Batas
-                        </span>
-                    @endif
-                </p>
-            </div>
+        <div>
+            <h1 class="text-[18px] font-bold" style="color: #171c1f">Detail Submisi</h1>
+            <p class="text-[13px] mt-0.5" style="color: #757686">Pantau & nilai pengumpulan tugas peserta didik.</p>
         </div>
+    </div>
+
+    {{-- ── Info Card ────────────────────────────────────────────────────────── --}}
+    <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm p-4 sm:p-5 mb-6">
+        <h2 class="text-[16px] sm:text-[18px] font-bold text-on-surface">{{ $tugas->judul }}</h2>
+        <p class="text-[13px] mt-2" style="color: #757686">
+            {{ $tugas->guruMapelRombel?->mapel?->nama }}
+            <span style="color: #c5c5d7" class="mx-1">·</span>
+            {{ $tugas->guruMapelRombel?->rombel?->nama }}
+            <span style="color: #c5c5d7" class="mx-1">·</span>
+            Deadline: {{ $tugas->deadline->translatedFormat('d M Y, H:i') }}
+            @if ($tugas->deadline->isPast())
+                <span class="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full bg-[#ffdad6] text-[#ba1a1a] text-[11px] font-semibold ml-1 whitespace-nowrap">
+                    Lewat Batas
+                </span>
+            @endif
+        </p>
     </div>
 
     {{-- ── Statistik ────────────────────────────────────────────────────────────── --}}
@@ -99,17 +103,17 @@
                                     <p class="text-[14px] font-medium text-on-surface">{{ $pd?->nama_lengkap }}</p>
                                     <p class="text-[12px] text-[#505f76]">{{ $pd?->nipd }}</p>
                                 </td>
-                                <td class="px-5 py-3.5">
+                                <td class="px-5 py-3.5 whitespace-nowrap">
                                     @if ($status === 'tepat')
-                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[#d1f5e0] text-[#0d6e34]">
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[#d1f5e0] text-[#0d6e34] whitespace-nowrap">
                                             <span class="material-symbols-outlined text-[12px]">check_circle</span>Sudah Mengumpulkan
                                         </span>
                                     @elseif ($status === 'terlambat')
-                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[#ffdad6] text-[#ba1a1a]">
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[#ffdad6] text-[#ba1a1a] whitespace-nowrap">
                                             <span class="material-symbols-outlined text-[12px]">history_toggle_off</span>Terlambat
                                         </span>
                                     @else
-                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[#f0f4f8] text-[#505f76] border border-[#c5c5d7]">
+                                        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[#f0f4f8] text-[#505f76] border border-[#c5c5d7] whitespace-nowrap">
                                             <span class="material-symbols-outlined text-[12px]">schedule</span>Belum Mengumpulkan
                                         </span>
                                     @endif

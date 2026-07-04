@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>7.4.2 — Detail Materi Peserta Didik | LMS Padamu Negeri</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+  * { font-family: 'Inter', sans-serif; box-sizing: border-box; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+  .filled { font-variation-settings: 'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24; }
+  #sidebar { transition: transform .22s cubic-bezier(.4,0,.2,1); }
+  @media(max-width:1023px){ #sidebar { transform:translateX(-100%); } #sidebar.open { transform:translateX(0); } }
+  .trix-content .attachment { max-width: 100%; margin: 0.75rem 0; }
+  .trix-content .attachment img { border-radius: 0.5rem; max-width: 100%; height: auto; }
+  .trix-content .attachment__caption { font-size: 12px; color: #757686; margin-top: 0.25rem; }
+</style>
+</head>
+<body class="bg-[#f9fafb] text-[#171c1f] font-sans antialiased flex h-screen overflow-hidden">
+
+<div id="overlay" class="fixed inset-0 bg-black/40 z-30 hidden lg:hidden" onclick="closeSidebar()"></div>
+
+<aside id="sidebar" class="fixed left-0 top-0 h-screen w-64 bg-white border-r border-[#c5c5d7] z-40 flex flex-col">
+  <div class="px-5 py-4 border-b border-[#c5c5d7]">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded bg-[#3c50e0] text-white flex items-center justify-center"><span class="material-symbols-outlined text-[18px]">school</span></div>
+      <div><p class="text-sm font-semibold text-[#3c50e0] leading-tight">LMS Padamu</p><p class="text-xs text-[#757686]">Peserta Didik</p></div>
+    </div>
+  </div>
+  <nav class="flex-1 overflow-y-auto py-2">
+    <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] transition-colors"><span class="material-symbols-outlined text-[20px]">home</span> Beranda</a>
+    <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] transition-colors"><span class="material-symbols-outlined text-[20px]">how_to_reg</span> Absensi</a>
+    <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-[#3c50e0] bg-[#EEF2FF] border-l-4 border-[#3c50e0]"><span class="material-symbols-outlined text-[20px]">menu_book</span> Materi</a>
+    <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] transition-colors"><span class="material-symbols-outlined text-[20px]">assignment</span> Tugas</a>
+    <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] transition-colors"><span class="material-symbols-outlined text-[20px]">quiz</span> CBT</a>
+  </nav>
+  <div class="px-4 py-3 border-t border-[#c5c5d7] flex items-center gap-3">
+    <div class="w-8 h-8 rounded-full bg-[#3c50e0] text-white flex items-center justify-center text-xs font-bold">AF</div>
+    <div class="flex-1 min-w-0"><p class="text-sm font-medium text-[#171c1f] truncate">Ahmad Fauzi</p><p class="text-xs text-[#757686]">Paket C · Kelas 10 Botolambat</p></div>
+  </div>
+</aside>
+
+<div class="flex-1 flex flex-col lg:ml-64 min-w-0">
+  <header class="fixed top-0 right-0 left-0 lg:left-64 h-14 bg-white border-b border-[#c5c5d7] z-20 flex items-center justify-between px-4 gap-4">
+    <div class="flex items-center gap-3">
+      <button class="lg:hidden p-2 rounded hover:bg-[#f0f4f8] text-[#505f76]" onclick="openSidebar()"><span class="material-symbols-outlined text-[22px]">menu</span></button>
+      <span class="text-sm font-semibold text-[#171c1f]">Materi</span>
+    </div>
+  </header>
+
+  <!-- pb-20: beri ruang untuk bottom nav mobile -->
+  <main class="flex-1 overflow-y-auto mt-14 pb-20 lg:pb-6 p-4 lg:p-6">
+    <div class="max-w-3xl mx-auto space-y-4">
+
+      <div class="flex items-center gap-3">
+        <a href="#" class="w-9 h-9 flex items-center justify-center rounded-lg border border-[#c5c5d7] bg-white text-[#505f76] hover:bg-[#f0f4f8] transition-colors flex-shrink-0">
+          <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+        </a>
+        <div>
+          <h1 class="text-[18px] font-bold text-[#171c1f]">Detail Materi</h1>
+          <p class="text-[13px] text-[#757686] mt-0.5">Baca materi & unduh lampiran yang tersedia.</p>
+        </div>
+      </div>
+
+      <div class="bg-white border border-[#c5c5d7] rounded-xl p-4 sm:p-5">
+        <h2 class="text-[16px] sm:text-[18px] font-bold text-[#171c1f]">Bab 2 – Persamaan Kuadrat</h2>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[12.5px] text-[#757686] mt-2">
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">book</span> Matematika</span>
+          <span class="text-[#c5c5d7]">·</span>
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">person</span> Budi Wahyono</span>
+          <span class="text-[#c5c5d7]">·</span>
+          <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">calendar_month</span> 20 Jun 2026</span>
+        </div>
+      </div>
+
+      <!-- Reading progress helper: perkiraan waktu baca, agar terasa seperti "mode belajar" -->
+      <div class="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-[#EEF2FF] border border-[#3c50e0]/20 text-[12.5px] text-[#3c50e0]">
+        <span class="material-symbols-outlined text-[16px]">schedule</span>
+        Perkiraan waktu baca: 4 menit
+      </div>
+
+      <div class="bg-white border border-[#c5c5d7] rounded-xl p-4 sm:p-6">
+        <div class="trix-content text-[14px] sm:text-[15px] text-[#171c1f] leading-relaxed">
+          <p>Persamaan kuadrat adalah persamaan polinomial berderajat dua. Bentuk umum: <strong>ax² + bx + c = 0</strong>, dengan a ≠ 0.</p>
+          <figure class="attachment attachment--preview">
+            <img src="https://placehold.co/640x360/EEF2FF/3c50e0?text=Grafik+Fungsi+Kuadrat" alt="Grafik fungsi kuadrat">
+            <figcaption class="attachment__caption">Grafik fungsi kuadrat berbentuk parabola</figcaption>
+          </figure>
+          <p>Ada tiga metode utama untuk menyelesaikan persamaan kuadrat: pemfaktoran, melengkapkan kuadrat sempurna, dan rumus ABC.</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <h2 class="text-[15px] font-semibold text-[#171c1f] flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px] text-[#3c50e0]">play_circle</span> Video
+        </h2>
+        <div class="bg-white border border-[#c5c5d7] rounded-xl overflow-hidden">
+          <div class="relative w-full" style="padding-bottom:56.25%">
+            <div class="absolute inset-0 bg-[#171c1f] flex items-center justify-center">
+              <span class="material-symbols-outlined text-white text-[48px] filled">play_circle</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white border border-[#c5c5d7] rounded-xl p-4 sm:p-6">
+        <h2 class="text-[15px] font-semibold text-[#171c1f] flex items-center gap-2 mb-4">
+          <span class="material-symbols-outlined text-[18px] text-[#505f76]">image</span> Gambar
+        </h2>
+        <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
+          <div class="rounded-lg overflow-hidden border border-[#c5c5d7] aspect-square bg-[#f0f4f8] flex items-center justify-center">
+            <span class="material-symbols-outlined text-[#c5c5d7] text-[28px]">image</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white border border-[#c5c5d7] rounded-xl p-4 sm:p-6">
+        <h2 class="text-[15px] font-semibold text-[#171c1f] flex items-center gap-2 mb-4">
+          <span class="material-symbols-outlined text-[18px] text-red-600">description</span> File Dokumen
+        </h2>
+        <a href="#" class="flex items-center gap-3 p-4 rounded-xl border border-[#c5c5d7] bg-[#f6fafe] hover:bg-[#f0f4f8] transition-colors">
+          <span class="material-symbols-outlined text-red-600 text-[22px] flex-shrink-0">description</span>
+          <span class="text-[14px] font-medium text-[#171c1f] flex-1 truncate">Latihan-Soal-Persamaan-Kuadrat.pdf</span>
+          <span class="material-symbols-outlined text-[16px] text-[#505f76]">download</span>
+        </a>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Bottom nav (mobile only) — konsisten dengan 2.3 / 6.1 / 7.2 -->
+<nav class="fixed bottom-0 left-0 right-0 z-30 bg-white border-t flex items-center justify-around px-1 lg:hidden"
+     style="height:60px;border-color:#c5c5d7;box-shadow:0 -2px 8px rgba(0,0,0,0.06)">
+  <a href="#" class="flex flex-col items-center gap-1 px-2 py-2 rounded-xl flex-1" style="color:#9da4b0">
+    <span class="material-symbols-outlined text-[22px]">dashboard</span>
+    <span class="text-[10px] font-semibold">Beranda</span>
+  </a>
+  <a href="#" class="flex flex-col items-center gap-1 px-2 py-2 rounded-xl flex-1" style="color:#3c50e0">
+    <span class="material-symbols-outlined text-[22px] filled">menu_book</span>
+    <span class="text-[10px] font-semibold">Materi</span>
+  </a>
+  <a href="#" class="flex flex-col items-center gap-1 px-2 py-2 rounded-xl flex-1" style="color:#9da4b0">
+    <span class="material-symbols-outlined text-[22px]">assignment</span>
+    <span class="text-[10px] font-semibold">Tugas</span>
+  </a>
+  <a href="#" class="flex flex-col items-center gap-1 px-2 py-2 rounded-xl flex-1" style="color:#9da4b0">
+    <span class="material-symbols-outlined text-[22px]">schedule</span>
+    <span class="text-[10px] font-semibold">Jadwal</span>
+  </a>
+  <a href="#" class="flex flex-col items-center gap-1 px-2 py-2 rounded-xl flex-1" style="color:#9da4b0">
+    <span class="material-symbols-outlined text-[22px]">how_to_reg</span>
+    <span class="text-[10px] font-semibold">Absensi</span>
+  </a>
+</nav>
+
+<script>
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.remove('hidden');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.add('hidden');}
+</script>
+</body>
+</html>

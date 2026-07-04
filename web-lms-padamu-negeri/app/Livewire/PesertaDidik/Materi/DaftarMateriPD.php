@@ -56,7 +56,7 @@ class DaftarMateriPD extends Component
                     ->sortBy('nama')
                     ->values();
 
-                $materi = Materi::with(['guruMapelRombel.mapel', 'lampiran'])
+                $materi = Materi::with(['guruMapelRombel.mapel', 'guruMapelRombel.guru', 'lampiran'])
                     ->whereHas('guruMapelRombel', function ($q) use ($rombelIds, $periode) {
                         $q->whereIn('rombel_id', $rombelIds)
                           ->where('periode_ajaran_id', $periode->id);

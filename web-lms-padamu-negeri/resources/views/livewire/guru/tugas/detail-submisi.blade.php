@@ -1,12 +1,17 @@
 <div class="max-w-4xl mx-auto">
 
     {{-- ── Back ───────────────────────────────────────────────────────────────── --}}
-    <div class="mb-6">
+    <div class="flex items-center gap-3 mb-5">
         <a href="{{ route('guru.tugas.submisi', $tugas->id) }}"
-           class="inline-flex items-center gap-1.5 text-[13px] text-[#505f76] hover:text-[#3c50e0] transition-colors cursor-pointer">
-            <span class="material-symbols-outlined text-[16px]">arrow_back</span>
-            Kembali ke Daftar Submisi
+           class="w-9 h-9 flex items-center justify-center rounded-lg border cursor-pointer transition-colors flex-shrink-0"
+           style="border-color: #c5c5d7; background: white; color: #505f76"
+           onmouseover="this.style.background='#f0f4f8'" onmouseout="this.style.background='white'">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
         </a>
+        <div>
+            <h1 class="text-[18px] font-bold" style="color: #171c1f">Detail Submisi</h1>
+            <p class="text-[13px] mt-0.5" style="color: #757686">Lihat jawaban & beri nilai peserta didik.</p>
+        </div>
     </div>
 
     @php
@@ -43,28 +48,27 @@
 
             {{-- Info PD + status --}}
             <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm p-5">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-xl bg-[#EEF2FF] flex items-center justify-center flex-shrink-0">
-                        <span class="material-symbols-outlined text-[#3c50e0] text-[26px]">person</span>
-                    </div>
-                    <div class="flex-1 min-w-0">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2">
+                    <div class="min-w-0">
                         <p class="text-[16px] font-semibold text-on-surface">{{ $pd->nama_lengkap }}</p>
                         <p class="text-[13px] text-[#505f76]">NIPD: {{ $pd->nipd }}</p>
                     </div>
                     {{-- Status badge --}}
-                    @if ($isTepat)
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-semibold bg-[#d1f5e0] text-[#0d6e34]">
-                            <span class="material-symbols-outlined text-[14px]">check_circle</span>Tepat Waktu
-                        </span>
-                    @elseif ($isTerlambat)
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-semibold bg-[#ffdad6] text-[#ba1a1a]">
-                            <span class="material-symbols-outlined text-[14px]">history_toggle_off</span>Terlambat
-                        </span>
-                    @else
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-semibold bg-[#f0f4f8] text-[#505f76] border border-[#c5c5d7]">
-                            <span class="material-symbols-outlined text-[14px]">schedule</span>Belum Mengumpulkan
-                        </span>
-                    @endif
+                    <div class="flex-shrink-0">
+                        @if ($isTepat)
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-semibold bg-[#d1f5e0] text-[#0d6e34] whitespace-nowrap">
+                                <span class="material-symbols-outlined text-[14px]">check_circle</span>Tepat Waktu
+                            </span>
+                        @elseif ($isTerlambat)
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-semibold bg-[#ffdad6] text-[#ba1a1a] whitespace-nowrap">
+                                <span class="material-symbols-outlined text-[14px]">history_toggle_off</span>Terlambat
+                            </span>
+                        @else
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-semibold bg-[#f0f4f8] text-[#505f76] border border-[#c5c5d7] whitespace-nowrap">
+                                <span class="material-symbols-outlined text-[14px]">schedule</span>Belum Mengumpulkan
+                            </span>
+                        @endif
+                    </div>
                 </div>
 
                 @if ($submisi)
@@ -99,21 +103,21 @@
 
                         @if ($isImage)
                             {{-- Thumbnail + klik untuk preview modal --}}
-                            <div class="flex items-start gap-4">
+                            <div class="flex flex-col sm:flex-row items-start gap-4">
                                 <button x-on:click="preview = '{{ $fileUrl }}'"
                                         class="flex-shrink-0 cursor-pointer group">
                                     <img src="{{ $fileUrl }}" alt="{{ $fileName }}"
                                          class="w-28 h-28 object-cover rounded-xl border border-[#c5c5d7] group-hover:border-[#3c50e0] transition-colors shadow-sm">
                                 </button>
-                                <div>
-                                    <p class="text-[14px] font-medium text-on-surface mb-1">{{ $fileName }}</p>
+                                <div class="min-w-0 w-full">
+                                    <p class="text-[14px] font-medium text-on-surface mb-1 break-all">{{ $fileName }}</p>
                                     <div class="flex flex-wrap gap-2 mt-2">
                                         <button x-on:click="preview = '{{ $fileUrl }}'"
-                                                class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-medium text-[#3c50e0] bg-[#EEF2FF] rounded-lg hover:bg-[#3c50e0] hover:text-white transition-colors cursor-pointer">
+                                                class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-medium text-[#3c50e0] bg-[#EEF2FF] rounded-lg hover:bg-[#3c50e0] hover:text-white transition-colors cursor-pointer whitespace-nowrap">
                                             <span class="material-symbols-outlined text-[14px]">zoom_in</span>Lihat Gambar
                                         </button>
                                         <a href="{{ $fileUrl }}" download
-                                           class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-medium text-[#505f76] border border-[#c5c5d7] rounded-lg hover:bg-[#f0f4f8] transition-colors cursor-pointer">
+                                           class="inline-flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-medium text-[#505f76] border border-[#c5c5d7] rounded-lg hover:bg-[#f0f4f8] transition-colors cursor-pointer whitespace-nowrap">
                                             <span class="material-symbols-outlined text-[14px]">download</span>Unduh
                                         </a>
                                     </div>
@@ -235,23 +239,6 @@
                 </p>
 
                 @if ($submisi)
-                    {{-- Nilai saat ini --}}
-                    @if ($submisi->nilai !== null)
-                        <div class="text-center mb-5 p-4 rounded-xl {{ $submisi->nilai >= 75 ? 'bg-[#d1f5e0]' : ($submisi->nilai >= 60 ? 'bg-[#fff3cd]' : 'bg-[#ffdad6]') }}">
-                            <p class="text-[44px] font-bold leading-none {{ $submisi->nilai >= 75 ? 'text-[#0d6e34]' : ($submisi->nilai >= 60 ? 'text-[#856404]' : 'text-[#ba1a1a]') }}">
-                                {{ $submisi->nilai }}
-                            </p>
-                            <p class="text-[13px] font-semibold mt-1 {{ $submisi->nilai >= 75 ? 'text-[#0d6e34]' : ($submisi->nilai >= 60 ? 'text-[#856404]' : 'text-[#ba1a1a]') }}">
-                                {{ $submisi->nilai >= 75 ? 'Tuntas' : ($submisi->nilai >= 60 ? 'Cukup' : 'Belum Tuntas') }}
-                            </p>
-                        </div>
-                    @else
-                        <div class="text-center mb-5 p-4 rounded-xl bg-[#f0f4f8] border border-dashed border-[#c5c5d7]">
-                            <p class="text-[28px] font-bold text-[#c5c5d7]">—</p>
-                            <p class="text-[13px] text-[#505f76] mt-1">Belum dinilai</p>
-                        </div>
-                    @endif
-
                     {{-- Input nilai --}}
                     <div class="space-y-3">
                         <label class="block text-[13px] font-medium text-on-surface">
@@ -264,21 +251,6 @@
                         @error('nilaiInput')
                             <p class="text-[12px] text-[#ba1a1a] text-center">{{ $message }}</p>
                         @enderror
-
-                        {{-- Live indicator --}}
-                        @if (is_numeric($nilaiInput) && $nilaiInput !== '')
-                            @php $n = (int) $nilaiInput; @endphp
-                            <div class="text-center">
-                                <span @class([
-                                    'px-3 py-1 rounded-full text-[12px] font-semibold',
-                                    'bg-[#d1f5e0] text-[#0d6e34]' => $n >= 75,
-                                    'bg-[#fff3cd] text-[#856404]' => $n >= 60 && $n < 75,
-                                    'bg-[#ffdad6] text-[#ba1a1a]' => $n < 60,
-                                ])>
-                                    {{ $n >= 75 ? 'Tuntas' : ($n >= 60 ? 'Cukup' : 'Belum Tuntas') }}
-                                </span>
-                            </div>
-                        @endif
 
                         <button wire:click="saveNilai" wire:loading.attr="disabled"
                                 class="w-full py-2.5 text-[14px] font-semibold text-white bg-[#3c50e0] rounded-xl hover:bg-[#2e3eb0] transition-colors disabled:opacity-60 cursor-pointer flex items-center justify-center gap-2">

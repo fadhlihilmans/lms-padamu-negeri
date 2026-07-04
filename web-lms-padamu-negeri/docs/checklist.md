@@ -115,10 +115,10 @@
 - [x] Submisi setelah deadline ditandai "Terlambat"
 
 ### Langkah 16 — CBT (PRD 6.9) — modul paling kompleks
-- [ ] Guru: `DaftarCbt`, `FormCbt`, `FormSoalCbt`, `DaftarHasilCbt`, `FormKoreksiUraian`
-- [ ] Peserta Didik: `DaftarCbtTersedia`, `PengerjaanCbt` (timer Alpine + auto-submit)
-- [ ] Auto-grading PG di Service; validasi waktu di server saat submit
-- [ ] Status penilaian per peserta didik di `hasil_cbt`
+- [x] Guru: `DaftarCbt`, `FormCbt`, `FormSoalCbt`, `DaftarHasilCbt`, `FormKoreksiUraian`
+- [x] Peserta Didik: `DaftarCbtTersedia`, `PengerjaanCbt` (timer Alpine + auto-submit)
+- [x] Auto-grading PG di Service; validasi waktu di server saat submit
+- [x] Status penilaian per peserta didik di `hasil_cbt`
 
 ---
 

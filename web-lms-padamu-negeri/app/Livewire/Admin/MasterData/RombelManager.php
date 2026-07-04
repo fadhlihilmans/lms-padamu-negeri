@@ -2,13 +2,11 @@
 
 namespace App\Livewire\Admin\MasterData;
 
-use App\Models\Guru;
 use App\Models\Paket;
 use App\Models\PeriodeAjaran;
 use App\Models\PesertaDidik;
 use App\Models\PesertaDidikRombel;
 use App\Models\Rombel;
-use App\Models\Tingkat;
 use App\Models\Wilayah;
 use App\Services\ErrorLogService;
 use Illuminate\Database\Eloquent\Builder;
@@ -32,15 +30,6 @@ class RombelManager extends Component
     public string        $filterPeriodeId     = '';
     public int           $perPage             = 10;
 
-    // ── Form ─────────────────────────────────────────────────────────────────
-    public bool   $showForm        = false;
-    public ?int   $editId          = null;
-    public ?int   $periodeAjaranId = null;
-    public ?int   $wilayahId       = null;
-    public ?int   $paketId         = null;
-    public ?int   $tingkatId       = null;
-    public ?int   $waliKelasId     = null;
-
     // ── Kelola Anggota ────────────────────────────────────────────────────────
     public ?int   $kelolaRombelId = null;
     public string $searchAnggota  = '';
@@ -55,93 +44,6 @@ class RombelManager extends Component
     public function updatedFilterWilayahId(): void  { $this->resetPage(); }
     public function updatedFilterPaketId(): void    { $this->resetPage(); }
     public function updatedFilterPeriodeId(): void  { $this->resetPage(); }
-
-    public function updatedPaketId(): void { $this->tingkatId = null; }
-
-    // ── Form actions ─────────────────────────────────────────────────────────
-
-    public function openCreateForm(): void
-    {
-        $this->resetForm();
-        $aktif = PeriodeAjaran::where('is_aktif', true)->first();
-        if ($aktif) {
-            $this->periodeAjaranId = $aktif->id;
-        }
-        $this->showForm = true;
-    }
-
-    public function openEditForm(int $id): void
-    {
-        $rombel               = Rombel::findOrFail($id);
-        $this->editId         = $id;
-        $this->periodeAjaranId = $rombel->periode_ajaran_id;
-        $this->wilayahId      = $rombel->wilayah_id;
-        $this->paketId        = $rombel->paket_id;
-        $this->tingkatId      = $rombel->tingkat_id;
-        $this->waliKelasId    = $rombel->wali_kelas_id;
-        $this->showForm       = true;
-    }
-
-    public function closeForm(): void
-    {
-        $this->showForm = false;
-        $this->resetForm();
-    }
-
-    public function save(): void
-    {
-        $this->validate([
-            'periodeAjaranId' => 'required|exists:periode_ajaran,id',
-            'wilayahId'       => 'required|exists:wilayah,id',
-            'paketId'         => 'required|exists:paket,id',
-            'tingkatId'       => 'required|exists:tingkat,id',
-            'waliKelasId'     => 'nullable|exists:guru,id',
-        ], [
-            'periodeAjaranId.required' => 'Periode Ajaran wajib dipilih.',
-            'wilayahId.required'       => 'Wilayah wajib dipilih.',
-            'paketId.required'         => 'Paket wajib dipilih.',
-            'tingkatId.required'       => 'Tingkat wajib dipilih.',
-        ]);
-
-        $duplicate = Rombel::where('periode_ajaran_id', $this->periodeAjaranId)
-            ->where('wilayah_id', $this->wilayahId)
-            ->where('paket_id', $this->paketId)
-            ->where('tingkat_id', $this->tingkatId)
-            ->when($this->editId, fn($q) => $q->where('id', '!=', $this->editId))
-            ->exists();
-
-        if ($duplicate) {
-            $this->addError('tingkatId', 'Rombel dengan kombinasi Periode, Wilayah, Paket, dan Tingkat ini sudah ada.');
-            return;
-        }
-
-        $tingkat       = Tingkat::find($this->tingkatId);
-        $wilayah       = Wilayah::find($this->wilayahId);
-        $paket         = Paket::find($this->paketId);
-        $periodeAjaran = PeriodeAjaran::find($this->periodeAjaranId);
-        $nama          = "{$tingkat->nama} {$wilayah->nama} {$paket->nama} – TA {$periodeAjaran->tahun_ajaran}";
-
-        $isEdit = (bool) $this->editId;
-
-        try {
-            Rombel::updateOrCreate(
-                ['id' => $this->editId],
-                [
-                    'periode_ajaran_id' => $this->periodeAjaranId,
-                    'wilayah_id'        => $this->wilayahId,
-                    'paket_id'          => $this->paketId,
-                    'tingkat_id'        => $this->tingkatId,
-                    'wali_kelas_id'     => $this->waliKelasId ?: null,
-                    'nama'              => $nama,
-                ]
-            );
-            $this->closeForm();
-            $this->dispatch('notify', type: 'success', message: 'Rombel berhasil ' . ($isEdit ? 'diperbarui' : 'ditambahkan') . '.');
-        } catch (\Throwable $th) {
-            app(ErrorLogService::class)->record('Simpan Rombel', $th);
-            $this->dispatch('notify', type: 'error', message: 'Maaf, terjadi kesalahan saat menyimpan.');
-        }
-    }
 
     // ── Delete ───────────────────────────────────────────────────────────────
 
@@ -252,11 +154,6 @@ class RombelManager extends Component
 
         $wilayahs = Wilayah::orderBy('nama')->get();
         $pakets   = Paket::orderBy('nama')->get();
-        $tingkats = $this->paketId
-            ? Tingkat::where('paket_id', $this->paketId)->orderBy('nama')->get()
-            : collect();
-        $gurus    = Guru::orderBy('nama_lengkap')->get();
-
         $periodes = PeriodeAjaran::orderByDesc('id')->get();
 
         $rombelKelola = null;
@@ -280,19 +177,8 @@ class RombelManager extends Component
         }
 
         return view('livewire.admin.master-data.rombel-manager', compact(
-            'rombels', 'wilayahs', 'pakets', 'tingkats', 'gurus',
+            'rombels', 'wilayahs', 'pakets',
             'periodes', 'rombelKelola', 'calonAnggota'
         ));
-    }
-
-    private function resetForm(): void
-    {
-        $this->editId          = null;
-        $this->periodeAjaranId = null;
-        $this->wilayahId       = null;
-        $this->paketId         = null;
-        $this->tingkatId       = null;
-        $this->waliKelasId     = null;
-        $this->resetValidation();
     }
 }

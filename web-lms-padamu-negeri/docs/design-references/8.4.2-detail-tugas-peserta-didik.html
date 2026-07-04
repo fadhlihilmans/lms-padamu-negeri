@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>8.4.2 — Detail & Kumpulkan Tugas Peserta Didik | LMS Padamu Negeri</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+  * { font-family: 'Inter', sans-serif; box-sizing: border-box; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+  .filled { font-variation-settings: 'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24; }
+  #sidebar { transition: transform .22s cubic-bezier(.4,0,.2,1); }
+  @media(max-width:1023px){ #sidebar { transform:translateX(-100%); } #sidebar.open { transform:translateX(0); } }
+</style>
+</head>
+<body class="bg-[#f9fafb] text-[#171c1f] font-sans antialiased flex h-screen overflow-hidden">
+
+<div id="overlay" class="fixed inset-0 bg-black/40 z-30 hidden lg:hidden" onclick="closeSidebar()"></div>
+
+<aside id="sidebar" class="fixed left-0 top-0 h-screen w-64 bg-white border-r border-[#c5c5d7] z-40 flex flex-col">
+  <div class="px-5 py-4 border-b border-[#c5c5d7]">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded bg-[#3c50e0] text-white flex items-center justify-center"><span class="material-symbols-outlined text-[18px]">school</span></div>
+      <div><p class="text-sm font-semibold text-[#3c50e0] leading-tight">LMS Padamu</p><p class="text-xs text-[#757686]">Peserta Didik</p></div>
+    </div>
+  </div>
+  <nav class="flex-1 overflow-y-auto py-2">
+    <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] transition-colors"><span class="material-symbols-outlined text-[20px]">home</span> Beranda</a>
+    <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] transition-colors"><span class="material-symbols-outlined text-[20px]">how_to_reg</span> Absensi</a>
+    <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] transition-colors"><span class="material-symbols-outlined text-[20px]">menu_book</span> Materi</a>
+    <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-[#3c50e0] bg-[#EEF2FF] border-l-4 border-[#3c50e0]"><span class="material-symbols-outlined text-[20px]">assignment</span> Tugas</a>
+    <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] transition-colors"><span class="material-symbols-outlined text-[20px]">quiz</span> CBT</a>
+  </nav>
+  <div class="px-4 py-3 border-t border-[#c5c5d7] flex items-center gap-3">
+    <div class="w-8 h-8 rounded-full bg-[#3c50e0] text-white flex items-center justify-center text-xs font-bold">AF</div>
+    <div class="flex-1 min-w-0"><p class="text-sm font-medium text-[#171c1f] truncate">Ahmad Fauzi</p><p class="text-xs text-[#757686]">Paket C · Kelas 10 Botolambat</p></div>
+  </div>
+</aside>
+
+<div class="flex-1 flex flex-col lg:ml-64 min-w-0">
+  <header class="fixed top-0 right-0 left-0 lg:left-64 h-14 bg-white border-b border-[#c5c5d7] z-20 flex items-center px-4 gap-4">
+    <button class="lg:hidden p-2 rounded hover:bg-[#f0f4f8] text-[#505f76]" onclick="openSidebar()"><span class="material-symbols-outlined text-[22px]">menu</span></button>
+    <span class="text-sm font-semibold text-[#171c1f]">Tugas</span>
+  </header>
+
+  <main class="flex-1 overflow-y-auto mt-14 pb-20 lg:pb-6 p-4 lg:p-6">
+    <div class="space-y-4">
+
+      <!-- Back -->
+      <a href="#" class="w-9 h-9 flex items-center justify-center rounded-lg border border-[#c5c5d7] bg-white text-[#505f76] hover:bg-[#f0f4f8] transition-colors">
+        <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+      </a>
+
+      <!-- Info Tugas -->
+      <div class="bg-white rounded-xl border border-[#c5c5d7] p-4 sm:p-5">
+        <div class="flex flex-col gap-3">
+          <div class="min-w-0">
+            <h1 class="text-[16px] sm:text-[18px] font-bold text-[#171c1f]">Persamaan Kuadrat Lanjutan</h1>
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 text-[12.5px] sm:text-[13px] text-[#505f76]">
+              <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">book</span> Matematika</span>
+              <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">person</span> Budi Wahyono</span>
+            </div>
+          </div>
+          <!-- Deadline: teks berwarna saja, tanpa card/border. "2 hari lagi" pindah ke baris baru di mobile -->
+          <div class="flex items-start gap-1.5 text-[12.5px] sm:text-[13px] font-semibold" style="color:#856404">
+            <span class="material-symbols-outlined text-[16px] mt-0.5 sm:mt-0">timer</span>
+            <span>
+              Tenggat: 24 Agt 2024, 23:59
+              <span class="block sm:inline opacity-70 font-normal">(2 hari lagi)</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Deskripsi -->
+        <div class="mt-4 p-3.5 sm:p-4 bg-[#f6fafe] rounded-xl border border-[#c5d0ff]">
+          <p class="text-[11.5px] sm:text-[12px] font-semibold text-[#3c50e0] mb-2 flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[14px]">assignment</span> Instruksi Tugas
+          </p>
+          <div class="text-[13.5px] sm:text-[14px] text-[#171c1f] leading-relaxed space-y-2">
+            <p>Kerjakan soal-soal latihan pada halaman 45–47 buku paket Matematika Kelas 10. Kerjakan dengan rapi dan sertakan cara penyelesaiannya.</p>
+          </div>
+        </div>
+
+        <!-- Lampiran guru -->
+        <a href="#" class="flex items-center gap-2 px-4 py-2.5 mt-3 bg-[#f6fafe] border border-[#c5d0ff] rounded-xl text-[12.5px] sm:text-[13px] text-[#3c50e0] hover:bg-[#EEF2FF] hover:border-[#3c50e0] transition-colors min-w-0">
+          <span class="material-symbols-outlined text-[18px] flex-shrink-0">download</span>
+          <span class="truncate">Unduh Lampiran Guru — Soal_Persamaan_Kuadrat.pdf</span>
+        </a>
+      </div>
+
+      <!-- Jawaban Anda Saat Ini: status + tanggal + nilai + preview jawaban digabung 1 card -->
+      <div class="bg-white rounded-xl border border-[#c5c5d7] overflow-hidden">
+        <div class="px-4 sm:px-5 py-3.5 border-b border-[#c5c5d7] flex items-center justify-between gap-3">
+          <h3 class="text-[13px] sm:text-[14px] font-semibold text-[#171c1f] flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px] text-[#3c50e0]">inventory</span> Jawaban Anda Saat Ini
+          </h3>
+          <span class="inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-full whitespace-nowrap filled" style="background:#d1f5e0;color:#0d6e34">
+            <span class="material-symbols-outlined text-[12px] filled">check_circle</span> Sudah Dikumpulkan
+          </span>
+        </div>
+
+        <div class="p-4 sm:p-5">
+          <!-- Tanggal kumpul + nilai digabung dalam satu baris info -->
+          <div class="flex flex-wrap items-center justify-between gap-3 mb-4 pb-4 border-b border-[#f0f4f8]">
+            <p class="text-[12.5px] sm:text-[13px] text-[#505f76]">
+              Dikumpulkan: <span class="font-medium text-[#171c1f]">24 Agt 2024, 10:15</span>
+            </p>
+            <div class="flex items-center gap-2">
+              <span class="text-[20px] font-bold leading-none" style="color:#0d6e34">90</span>
+              <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full" style="background:#d1f5e0;color:#0d6e34">Tuntas</span>
+            </div>
+          </div>
+
+          <!-- Preview jawaban -->
+          <a href="#" class="flex items-center gap-3 p-3.5 bg-[#f6fafe] border border-[#c5d0ff] rounded-xl hover:border-[#3c50e0] hover:bg-[#EEF2FF] transition-colors group">
+            <div class="w-9 h-9 rounded-lg bg-[#EEF2FF] group-hover:bg-white flex items-center justify-center flex-shrink-0 transition-colors">
+              <span class="material-symbols-outlined text-[#3c50e0] text-[20px]">description</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-[13px] font-medium text-[#171c1f] truncate">jawaban_tugas5.pdf</p>
+              <p class="text-[12px] text-[#505f76]">Klik untuk unduh / lihat</p>
+            </div>
+            <span class="material-symbols-outlined text-[18px] text-[#505f76] flex-shrink-0">open_in_new</span>
+          </a>
+
+          <!-- Tombol buka modal kumpulkan ulang -->
+          <button onclick="document.getElementById('modal-submit').classList.remove('hidden')"
+            class="w-full sm:w-auto mt-4 inline-flex items-center justify-center gap-2 px-5 py-2.5 text-[14px] font-semibold rounded-xl border transition-colors"
+            style="color:#3c50e0;border-color:#c5d0ff;background:#EEF2FF">
+            <span class="material-symbols-outlined text-[18px]">refresh</span> Kirim Ulang Jawaban
+          </button>
+        </div>
+      </div>
+
+      <!-- ══ State alternatif: belum ada jawaban sama sekali (komentar) ══
+      <div class="bg-white rounded-xl border border-[#c5c5d7] p-6 sm:p-8 text-center">
+        <div class="w-14 h-14 rounded-full bg-[#f0f4f8] flex items-center justify-center mx-auto mb-3">
+          <span class="material-symbols-outlined text-[28px] text-[#757686]">cloud_upload</span>
+        </div>
+        <p class="text-[14px] sm:text-[15px] font-semibold text-[#171c1f] mb-1">Belum Ada Jawaban Dikumpulkan</p>
+        <p class="text-[12.5px] sm:text-[13px] text-[#505f76] mb-4">Klik tombol di bawah untuk mulai mengumpulkan jawaban.</p>
+        <button onclick="document.getElementById('modal-submit').classList.remove('hidden')"
+          class="inline-flex items-center gap-2 px-6 py-2.5 text-[14px] font-semibold text-white rounded-xl transition-colors shadow-sm" style="background:#3c50e0">
+          <span class="material-symbols-outlined text-[18px]">send</span> Kumpulkan Jawaban
+        </button>
+      </div>
+      ══ -->
+
+    </div>
+  </main>
+</div>
+
+<!-- Modal: Kumpulkan / Kirim Ulang Jawaban -->
+<div id="modal-submit" class="hidden fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4">
+  <div class="bg-white w-full sm:max-w-lg rounded-t-2xl sm:rounded-xl overflow-hidden shadow-xl flex flex-col max-h-[92vh]">
+
+    <!-- Header -->
+    <div class="px-5 py-4 border-b border-[#c5c5d7] flex items-center justify-between flex-shrink-0">
+      <h2 class="text-[15px] sm:text-base font-semibold text-[#171c1f]">Kirim Ulang Jawaban</h2>
+      <button onclick="document.getElementById('modal-submit').classList.add('hidden')" class="text-[#757686] hover:text-[#171c1f]">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <div class="p-4 sm:p-5 overflow-y-auto space-y-4 flex-1">
+      <span class="inline-flex items-center gap-1 text-[11.5px] sm:text-[12px] font-semibold text-[#856404] bg-[#fff3cd] px-3 py-1.5 rounded-full whitespace-nowrap">
+        <span class="material-symbols-outlined text-[14px]">info</span> Nilai akan direset jika kirim ulang
+      </span>
+
+      <!-- Tabs -->
+      <div class="grid grid-cols-2 border-b border-[#c5c5d7] gap-1">
+        <button class="flex items-center justify-center gap-2 px-3 py-2.5 text-[13px] sm:text-[14px] font-semibold border-b-2 rounded-t-lg transition-colors" style="color:#3c50e0;border-color:#3c50e0;background:#EEF2FF">
+          <span class="material-symbols-outlined text-[18px]">upload_file</span> Upload File
+        </button>
+        <button class="flex items-center justify-center gap-2 px-3 py-2.5 text-[13px] sm:text-[14px] font-medium border-b-2 border-transparent text-[#757686]">
+          <span class="material-symbols-outlined text-[18px]">edit_document</span> Tulis Jawaban
+        </button>
+      </div>
+
+      <!-- Drop zone -->
+      <label class="flex flex-col items-center gap-3 p-6 sm:p-8 border-2 border-dashed border-[#c5c5d7] rounded-xl cursor-pointer hover:border-[#3c50e0] hover:bg-[#f6fafe] transition-all group">
+        <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#f0f4f8] group-hover:bg-[#EEF2FF] flex items-center justify-center transition-colors">
+          <span class="material-symbols-outlined text-[#505f76] group-hover:text-[#3c50e0] text-[26px] sm:text-[30px] transition-colors">cloud_upload</span>
+        </div>
+        <div class="text-center">
+          <p class="text-[14px] sm:text-[15px] font-semibold text-[#171c1f]">Tarik & lepas file, atau klik untuk pilih</p>
+          <p class="text-[12px] sm:text-[13px] text-[#505f76] mt-1">PDF, Word, gambar — maks 10 MB</p>
+        </div>
+        <input type="file" class="hidden">
+      </label>
+    </div>
+
+    <!-- Footer -->
+    <div class="px-5 py-4 border-t border-[#c5c5d7] flex flex-col-reverse sm:flex-row sm:justify-end gap-3 flex-shrink-0">
+      <button onclick="document.getElementById('modal-submit').classList.add('hidden')"
+        class="px-4 py-2.5 text-[14px] font-medium rounded-lg border transition-colors" style="border-color:#c5c5d7;color:#505f76;background:white">
+        Batal
+      </button>
+      <button class="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-[14px] font-semibold text-white rounded-lg transition-colors shadow-sm" style="background:#3c50e0">
+        <span class="material-symbols-outlined text-[18px]">send</span> Kirim Ulang Jawaban
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom nav (mobile only) -->
+<nav class="fixed bottom-0 left-0 right-0 z-30 bg-white border-t flex items-center justify-around px-1 lg:hidden"
+     style="height:60px;border-color:#c5c5d7;box-shadow:0 -2px 8px rgba(0,0,0,0.06)">
+  <a href="#" class="flex flex-col items-center gap-1 px-2 py-2 rounded-xl flex-1" style="color:#9da4b0">
+    <span class="material-symbols-outlined text-[22px]">dashboard</span><span class="text-[10px] font-semibold">Beranda</span>
+  </a>
+  <a href="#" class="flex flex-col items-center gap-1 px-2 py-2 rounded-xl flex-1" style="color:#9da4b0">
+    <span class="material-symbols-outlined text-[22px]">menu_book</span><span class="text-[10px] font-semibold">Materi</span>
+  </a>
+  <a href="#" class="flex flex-col items-center gap-1 px-2 py-2 rounded-xl flex-1" style="color:#3c50e0">
+    <span class="material-symbols-outlined text-[22px] filled">assignment</span><span class="text-[10px] font-semibold">Tugas</span>
+  </a>
+  <a href="#" class="flex flex-col items-center gap-1 px-2 py-2 rounded-xl flex-1" style="color:#9da4b0">
+    <span class="material-symbols-outlined text-[22px]">schedule</span><span class="text-[10px] font-semibold">Jadwal</span>
+  </a>
+  <a href="#" class="flex flex-col items-center gap-1 px-2 py-2 rounded-xl flex-1" style="color:#9da4b0">
+    <span class="material-symbols-outlined text-[22px]">how_to_reg</span><span class="text-[10px] font-semibold">Absensi</span>
+  </a>
+</nav>
+
+<script>
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.remove('hidden');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.add('hidden');}
+</script>
+</body>
+</html>

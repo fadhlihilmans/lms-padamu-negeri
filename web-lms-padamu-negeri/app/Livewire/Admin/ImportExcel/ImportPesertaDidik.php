@@ -19,8 +19,14 @@ class ImportPesertaDidik extends Component
     use WithFileUploads;
 
     public $file = null;
-    public array $results = [];
+
+    public bool $showPreview = false;
+    public array $previewResults = [];
+    public int $previewValid = 0;
+    public int $previewInvalid = 0;
+
     public bool $processed = false;
+    public array $results = [];
     public int $totalBerhasil = 0;
     public int $totalGagal = 0;
 
@@ -45,6 +51,44 @@ class ImportPesertaDidik extends Component
         return Excel::download(new PesertaDidikTemplateExport, 'template-import-peserta-didik.xlsx');
     }
 
+    public function updatedFile(): void
+    {
+        $this->showPreview     = false;
+        $this->previewResults  = [];
+        $this->previewValid    = 0;
+        $this->previewInvalid  = 0;
+
+        $this->validateOnly('file');
+
+        $periode = app(PeriodeService::class)->getSelected();
+        if (!$periode) {
+            $this->addError('file', 'Tidak ada Periode Ajaran aktif. Set periode aktif terlebih dahulu.');
+            $this->file = null;
+            return;
+        }
+
+        try {
+            $this->previewResults = app(ImportPesertaDidikService::class)->preview($this->file, $periode->id);
+            $this->previewValid   = collect($this->previewResults)->where('status', 'valid')->count();
+            $this->previewInvalid = collect($this->previewResults)->where('status', 'gagal')->count();
+            $this->showPreview    = true;
+        } catch (\Throwable $th) {
+            app(ErrorLogService::class)->record('Pratinjau Import Peserta Didik', $th);
+            $this->dispatch('notify', type: 'error', message: 'Gagal membaca file. Pastikan format Excel sesuai template.');
+            $this->file = null;
+        }
+    }
+
+    public function cancelPreview(): void
+    {
+        $this->file            = null;
+        $this->showPreview     = false;
+        $this->previewResults  = [];
+        $this->previewValid    = 0;
+        $this->previewInvalid  = 0;
+        $this->resetErrorBag();
+    }
+
     public function import(): void
     {
         $this->validate();
@@ -63,6 +107,7 @@ class ImportPesertaDidik extends Component
             $this->totalGagal    = collect($this->results)->where('status', 'gagal')->count();
             $this->processed     = true;
             $this->file          = null;
+            $this->showPreview   = false;
 
             if ($this->totalBerhasil > 0) {
                 $this->dispatch('notify', type: 'success',
@@ -76,11 +121,15 @@ class ImportPesertaDidik extends Component
 
     public function resetForm(): void
     {
-        $this->file          = null;
-        $this->results       = [];
-        $this->processed     = false;
-        $this->totalBerhasil = 0;
-        $this->totalGagal    = 0;
+        $this->file            = null;
+        $this->showPreview     = false;
+        $this->previewResults  = [];
+        $this->previewValid    = 0;
+        $this->previewInvalid  = 0;
+        $this->results         = [];
+        $this->processed       = false;
+        $this->totalBerhasil   = 0;
+        $this->totalGagal      = 0;
         $this->resetErrorBag();
     }
 

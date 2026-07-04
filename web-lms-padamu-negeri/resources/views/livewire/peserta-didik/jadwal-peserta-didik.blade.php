@@ -1,9 +1,9 @@
 <div>
 
     {{-- ── Header ──────────────────────────────────────────────────────────── --}}
-    <div class="mb-6">
-        <h2 class="text-[18px] font-bold text-on-surface">Jadwal Pelajaran</h2>
-        <p class="text-[13px] text-[#757686] mt-0.5">{{ $pd?->nama_lengkap ?? 'Peserta Didik' }}</p>
+    <div class="mb-5">
+        <h1 class="text-[18px] font-bold" style="color: #171c1f">Jadwal Pelajaran</h1>
+        <p class="text-[13px] mt-0.5" style="color: #757686">{{ $pd?->nama_lengkap ?? 'Peserta Didik' }}</p>
     </div>
 
     @if ($rombels->isEmpty())

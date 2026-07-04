@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TrixUploadController;
 use App\Livewire\Auth\LoginForm;
 use App\Livewire\Dashboard;
 use App\Livewire\Admin\MasterData\MapelManager;
 use App\Livewire\Admin\MasterData\PemetaanGuruMapelRombel;
 use App\Livewire\Admin\MasterData\PeriodeAjaranManager;
 use App\Livewire\Admin\MasterData\RombelManager;
+use App\Livewire\Admin\MasterData\FormRombel;
 use App\Livewire\Admin\MasterData\DetailRombel;
 use App\Livewire\Admin\MasterData\WilayahManager;
 use App\Livewire\Admin\MasterData\PaketManager;
@@ -21,16 +23,22 @@ use App\Livewire\Guru\Absensi\SesiAbsensi;
 use App\Livewire\Guru\JadwalGuru;
 use App\Livewire\Guru\Materi\DaftarMateri;
 use App\Livewire\Guru\Materi\DetailMateri;
+use App\Livewire\Guru\Materi\FormMateri;
 use App\Livewire\Guru\Tugas\DaftarTugas;
+use App\Livewire\Guru\Tugas\FormTugas;
 use App\Livewire\Guru\Tugas\DaftarSubmisi;
 use App\Livewire\Guru\Tugas\DetailSubmisi;
 use App\Livewire\Guru\Cbt\DaftarCbt;
-use App\Livewire\Guru\Cbt\FormCbt;
+use App\Livewire\Guru\Cbt\FormSoalCbt;
+use App\Livewire\Guru\Cbt\DaftarHasilCbt;
+use App\Livewire\Guru\Cbt\FormKoreksiUraian;
 use App\Livewire\PesertaDidik\Tugas\DaftarTugasPD;
 use App\Livewire\PesertaDidik\Tugas\SubmisiTugasPD;
 use App\Livewire\PesertaDidik\Absensi\TombolHadir;
 use App\Livewire\PesertaDidik\JadwalPesertaDidik;
 use App\Livewire\PesertaDidik\Materi\DaftarMateriPD;
+use App\Livewire\PesertaDidik\Cbt\DaftarCbtTersedia;
+use App\Livewire\PesertaDidik\Cbt\PengerjaanCbt;
 use App\Livewire\PesertaDidik\Materi\DetailMateriPD;
 use App\Services\PeriodeService;
 use Illuminate\Support\Facades\Route;
@@ -73,8 +81,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/wilayah',        WilayahManager::class)->name('wilayah');
             Route::get('/paket',          PaketManager::class)->name('paket');
             Route::get('/tingkat',        TingkatManager::class)->name('tingkat');
-            Route::get('/rombel',         RombelManager::class)->name('rombel');
-            Route::get('/rombel/{id}',    DetailRombel::class)->name('rombel.show');
+            Route::get('/rombel',           RombelManager::class)->name('rombel');
+            Route::get('/rombel/tambah',    FormRombel::class)->name('rombel.create');
+            Route::get('/rombel/{id}/edit', FormRombel::class)->name('rombel.edit');
+            Route::get('/rombel/{id}',      DetailRombel::class)->name('rombel.show');
             Route::get('/mapel',          MapelManager::class)->name('mapel');
             Route::get('/pemetaan',       PemetaanGuruMapelRombel::class)->name('pemetaan');
         });
@@ -107,15 +117,21 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:guru')->prefix('guru')->name('guru.')->group(function () {
         Route::get('/jadwal',  JadwalGuru::class)->name('jadwal');
         Route::get('/absensi', SesiAbsensi::class)->name('absensi');
-        Route::get('/materi',      DaftarMateri::class)->name('materi');
-        Route::get('/materi/{id}', DetailMateri::class)->name('materi.show');
-        Route::get('/tugas',             DaftarTugas::class)->name('tugas');
+        Route::get('/materi',           DaftarMateri::class)->name('materi');
+        Route::get('/materi/tambah',    FormMateri::class)->name('materi.create');
+        Route::get('/materi/{id}',      DetailMateri::class)->name('materi.show');
+        Route::get('/materi/{id}/edit', FormMateri::class)->name('materi.edit');
+        Route::post('/materi/trix-upload', [TrixUploadController::class, 'store'])->name('materi.trix-upload');
+        Route::get('/tugas',                  DaftarTugas::class)->name('tugas');
+        Route::get('/tugas/tambah',           FormTugas::class)->name('tugas.create');
+        Route::get('/tugas/{id}/edit',        FormTugas::class)->name('tugas.edit');
         Route::get('/tugas/{tugasId}/submisi', DaftarSubmisi::class)->name('tugas.submisi');
         Route::get('/tugas/{tugasId}/submisi/{pdId}', DetailSubmisi::class)->name('tugas.submisi.detail');
         // ── CBT (Langkah 16) ──
         Route::get('/cbt', DaftarCbt::class)->name('cbt');
-        Route::get('/cbt/create', FormCbt::class)->name('cbt.create');
-        Route::get('/cbt/{cbtId}/edit', FormCbt::class)->name('cbt.edit');
+        Route::get('/cbt/{cbtId}/soal', FormSoalCbt::class)->name('cbt.soal');
+        Route::get('/cbt/{cbtId}/hasil', DaftarHasilCbt::class)->name('cbt.hasil');
+        Route::get('/cbt/{cbtId}/koreksi', FormKoreksiUraian::class)->name('cbt.koreksi');
     });
 
     // ── Peserta Didik routes ─────────────────────────────────────────────────
@@ -126,6 +142,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/materi/{id}',     DetailMateriPD::class)->name('materi.detail');
         Route::get('/tugas',           DaftarTugasPD::class)->name('tugas');
         Route::get('/tugas/{tugasId}', SubmisiTugasPD::class)->name('tugas.detail');
+        // ── CBT (Langkah 16, sisi PD) ──
+        Route::get('/cbt', DaftarCbtTersedia::class)->name('cbt');
+        Route::get('/cbt/{cbtId}/kerjakan', PengerjaanCbt::class)->name('cbt.kerjakan');
     });
 
 });

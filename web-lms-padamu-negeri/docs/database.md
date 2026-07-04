@@ -250,6 +250,7 @@ Unique: (`tugas_id`,`peserta_didik_id`).
 | nilai_uraian | TINYINT UNSIGNED NULL | diisi guru manual |
 | nilai_akhir | TINYINT UNSIGNED NULL | gabungan PG + uraian |
 | status_penilaian | ENUM('otomatis','menunggu_koreksi','selesai_dinilai') NOT NULL | per peserta didik |
+| nilai_ditampilkan | BOOLEAN NOT NULL DEFAULT 0 | override guru: tampilkan nilai ke PD walau `cbt.tampilkan_nilai_otomatis` = false (Langkah 16 revisi) |
 
 Unique: (`cbt_id`,`peserta_didik_id`).
 

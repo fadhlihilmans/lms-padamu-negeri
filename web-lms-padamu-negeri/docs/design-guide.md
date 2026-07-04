@@ -101,6 +101,16 @@ statis. Cara menanganinya:
   atau `hidden md:table-cell` — prioritaskan kolom nama/identitas + aksi.
 - Tinggi baris tabel minimal 48px untuk touch-friendly.
 - Thead: selalu gunakan `sticky top-0` jika tabel panjang.
+- **Sel data (`td`) WAJIB `whitespace-nowrap`.** Isi sel harus memanjang ke
+  **samping** (mengandalkan `overflow-x-auto` untuk scroll horizontal), JANGAN
+  membungkus ke atas-bawah yang membuat baris jadi tinggi & berantakan di mobile.
+  Ini berlaku juga untuk sel bertumpuk (mis. Nama + NIPD dua `<p>`): tiap `<p>`
+  tetap satu baris. Pengecualian: sel yang memang berisi paragraf panjang
+  (deskripsi) boleh `whitespace-normal` + `min-w-[..]`. Sel empty-state
+  (`colspan`) tidak perlu nowrap.
+- Stat/summary card grid: di mobile pakai `grid-cols-1` (satu kotak per baris),
+  baru `sm:grid-cols-2`/`sm:grid-cols-4` di layar lebih besar — jangan paksa
+  2 kolom sempit di mobile.
 
 ### D.3 — Form & Input
 
@@ -109,6 +119,19 @@ statis. Cara menanganinya:
 - Label di atas input, BUKAN di samping — konsisten di semua form.
 - Error message: `text-[12px] text-[#ba1a1a] mt-1 flex items-center gap-1`.
 - Grid form: `grid grid-cols-1 sm:grid-cols-2 gap-4` — stack di mobile, 2 kolom di `sm:`.
+- **Alert validasi (pop-up) — otomatis & global.** Setiap kali validasi Livewire
+  gagal, sebuah **toast error** muncul otomatis (hook global di `resources/js/app.js`
+  → event `notify` yang didengar layout). **Tidak perlu kode tambahan per form.**
+  Aturan:
+  - Inline `@error('field')` per-field **TETAP WAJIB** — toast hanya pelengkap
+    (ringkasan), bukan pengganti pesan per-field.
+  - Untuk >1 error, toast menampilkan ringkasan ("Periksa N isian yang belum
+    valid."); untuk 1 error, menampilkan pesan tunggalnya.
+  - Beri pesan validasi Indonesia yang jelas di `$this->validate($rules, $messages)`
+    supaya toast satu-error terbaca manusiawi.
+  - Berlaku ke semua form Livewire (modal maupun halaman). Tracking penerapan &
+    verifikasi per form: `docs/checklist-revisi.md` bagian "Fase Revisi Tambah
+    Alert pada form".
 
 ### D.4 — Button & Touch Target
 
@@ -792,6 +815,14 @@ Untuk form yang terlalu panjang untuk modal:
     <span class="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-red-50 text-red-600 border border-red-200 whitespace-nowrap">
       <span class="w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0 inline-block"></span> Lewat Tenggat
     </span>
+    ```
+26. **Span/badge/chip apa pun di dalam `<td>` tabel: WAJIB satu baris, tidak boleh pecah ke bawah.** Kolom tabel menyempit secara otomatis (`overflow-x-auto`, `min-w` di kolom lain, dsb.), dan `inline-flex` saja **tidak cukup** untuk mencegah teks di dalamnya wrap ke baris kedua. Terapkan `whitespace-nowrap` di **dua tempat sekaligus**: pada `<td>` pembungkusnya DAN pada `<span>` badge itu sendiri. Aturan ini berlaku untuk semua badge/chip/pill di dalam tabel — status sesi, status submisi, rekap H/I/S/A, dsb. — bukan hanya kasus yang kebetulan ditemukan.
+    ```html
+    <td class="px-4 py-3.5 whitespace-nowrap">
+        <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-[#d1f5e0] text-[#0d6e34] whitespace-nowrap">
+            <span class="material-symbols-outlined text-[12px]">check_circle</span>Sudah Mengumpulkan
+        </span>
+    </td>
     ```
 
 ### Topbar / Header Halaman (layout template)

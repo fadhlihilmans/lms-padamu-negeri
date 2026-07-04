@@ -84,7 +84,7 @@
             <x-sidebar-item route="peserta-didik.absensi" icon="how_to_reg" label="Absensi" />
             <x-sidebar-item route="peserta-didik.materi" icon="menu_book" label="Materi" />
             <x-sidebar-item route="peserta-didik.tugas" icon="assignment" label="Tugas" />
-            <x-sidebar-item route="cbt.index" icon="quiz" label="CBT" />
+            <x-sidebar-item route="peserta-didik.cbt" icon="quiz" label="CBT" />
             <x-sidebar-item route="penilaian.index" icon="grade" label="Rapor Saya" />
 
             <p class="px-3 pt-4 pb-1 text-[10px] font-bold uppercase tracking-[0.08em] text-[#9da4b0]">Lainnya</p>

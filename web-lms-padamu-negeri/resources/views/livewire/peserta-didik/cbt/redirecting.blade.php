@@ -1,0 +1,3 @@
+<div class="flex items-center justify-center h-screen text-[#757686] text-sm">
+    <span class="material-symbols-outlined animate-spin mr-2">progress_activity</span> Mengalihkan…
+</div>

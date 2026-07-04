@@ -98,13 +98,18 @@ class PesertaDidikManager extends Component
         ];
 
         $messages = [
-            'nipd.required'         => 'NIPD wajib diisi.',
-            'nipd.unique'           => 'NIPD sudah terdaftar.',
-            'namaLengkap.required'  => 'Nama lengkap wajib diisi.',
-            'jenisKelamin.required' => 'Jenis kelamin wajib dipilih.',
-            'jenisKelamin.in'       => 'Jenis kelamin harus L atau P.',
+            'nipd.required'           => 'NIPD wajib diisi.',
+            'nipd.max'                => 'NIPD maksimal 30 karakter.',
+            'nipd.unique'             => 'NIPD sudah terdaftar.',
+            'namaLengkap.required'    => 'Nama lengkap wajib diisi.',
+            'namaLengkap.max'         => 'Nama lengkap maksimal 150 karakter.',
+            'jenisKelamin.required'   => 'Jenis kelamin wajib dipilih.',
+            'jenisKelamin.in'         => 'Jenis kelamin harus L atau P.',
+            'tanggalLahir.date'       => 'Tanggal lahir tidak valid.',
             'statusAkademik.required' => 'Status akademik wajib dipilih.',
-            'nisn.unique'           => 'NISN sudah terdaftar.',
+            'statusAkademik.in'       => 'Status akademik tidak valid.',
+            'nisn.max'                => 'NISN maksimal 20 karakter.',
+            'nisn.unique'             => 'NISN sudah terdaftar.',
         ];
 
         $this->validate($rules, $messages);

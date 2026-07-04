@@ -1,30 +1,35 @@
-<div class="max-w-3xl mx-auto">
-
-    {{-- ── Breadcrumb / Back ───────────────────────────────────────────────── --}}
-    <div class="mb-6">
-        <a href="{{ route('peserta-didik.materi') }}"
-           class="inline-flex items-center gap-1.5 text-[13px] text-[#505f76] hover:text-[#3c50e0] transition-colors cursor-pointer">
-            <span class="material-symbols-outlined text-[16px]">arrow_back</span>
-            Kembali ke Daftar Materi
-        </a>
-    </div>
+<div>
 
     {{-- ── Header ──────────────────────────────────────────────────────────── --}}
-    <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm p-6 mb-6">
-        <h1 class="text-[22px] font-bold text-on-surface mb-2">{{ $materi->judul }}</h1>
-        <div class="flex flex-wrap items-center gap-3 text-[13px] text-[#505f76]">
+    <div class="flex items-center gap-3 mb-5">
+        <a href="{{ route('peserta-didik.materi') }}"
+           class="w-9 h-9 flex items-center justify-center rounded-lg border cursor-pointer transition-colors flex-shrink-0"
+           style="border-color: #c5c5d7; background: white; color: #505f76"
+           onmouseover="this.style.background='#f0f4f8'" onmouseout="this.style.background='white'">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+        </a>
+        <div>
+            <h1 class="text-[18px] font-bold" style="color: #171c1f">Detail Materi</h1>
+            <p class="text-[13px] mt-0.5" style="color: #757686">Baca materi & unduh lampiran yang tersedia.</p>
+        </div>
+    </div>
+
+    {{-- ── Info Card ────────────────────────────────────────────────────────── --}}
+    <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm p-4 sm:p-5 mb-6">
+        <h2 class="text-[16px] sm:text-[18px] font-bold text-on-surface">{{ $materi->judul }}</h2>
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[12.5px] mt-2" style="color: #757686">
             <span class="flex items-center gap-1">
-                <span class="material-symbols-outlined text-[15px]">book</span>
+                <span class="material-symbols-outlined text-[14px]">book</span>
                 {{ $materi->guruMapelRombel?->mapel?->nama ?? '—' }}
             </span>
-            <span class="text-[#c5c5d7]">·</span>
+            <span style="color: #c5c5d7">·</span>
             <span class="flex items-center gap-1">
-                <span class="material-symbols-outlined text-[15px]">person</span>
+                <span class="material-symbols-outlined text-[14px]">person</span>
                 {{ $materi->guruMapelRombel?->guru?->nama_lengkap ?? '—' }}
             </span>
-            <span class="text-[#c5c5d7]">·</span>
+            <span style="color: #c5c5d7">·</span>
             <span class="flex items-center gap-1">
-                <span class="material-symbols-outlined text-[15px]">calendar_month</span>
+                <span class="material-symbols-outlined text-[14px]">calendar_month</span>
                 {{ $materi->created_at->translatedFormat('d M Y') }}
             </span>
         </div>
@@ -38,7 +43,11 @@
 
     {{-- ── Isi Teks (Rich Text) ───────────────────────────────────────────── --}}
     @if ($materi->isi)
-        <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm p-6 mb-6">
+        <div class="flex items-center gap-2 px-4 py-2.5 rounded-lg mb-4" style="background: #EEF2FF; border: 1px solid #3c50e04d; color: #3c50e0">
+            <span class="material-symbols-outlined text-[16px]">schedule</span>
+            <span class="text-[12.5px]">Perkiraan waktu baca: {{ $estimasiBaca }} menit</span>
+        </div>
+        <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm p-4 sm:p-6 mb-6">
             <div class="trix-content prose-sm text-on-surface leading-relaxed">
                 {!! $materi->isi !!}
             </div>
@@ -85,7 +94,7 @@
 
     {{-- ── Gambar ───────────────────────────────────────────────────────────── --}}
     @if ($lampiranGambar->isNotEmpty())
-        <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm p-6 mb-6">
+        <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm p-4 sm:p-6 mb-6">
             <h2 class="text-[15px] font-semibold text-on-surface flex items-center gap-2 mb-4">
                 <span class="material-symbols-outlined text-[18px] text-[#505f76]">image</span>
                 Gambar
@@ -138,54 +147,59 @@
 
     {{-- ── File Dokumen ────────────────────────────────────────────────────── --}}
     @if ($lampiranFiles->isNotEmpty())
-        <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm p-6 mb-6">
+        <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm p-4 sm:p-6 mb-6" x-data="{ previewUrl: null, previewName: '' }">
             <h2 class="text-[15px] font-semibold text-on-surface flex items-center gap-2 mb-4">
-                <span class="material-symbols-outlined text-[18px] text-[#ba1a1a]">description</span>
+                <span class="material-symbols-outlined text-[18px] text-red-600">description</span>
                 File Dokumen
             </h2>
             <div class="flex flex-col gap-3">
                 @foreach ($lampiranFiles as $f)
                     @php
-                        $ext  = strtolower(pathinfo($f->nama_asli ?? '', PATHINFO_EXTENSION));
-                        $isPdf = $ext === 'pdf';
+                        [$icon, $iconColor, $iconBg] = $f->ikonWarna();
+                        $isPdf = $f->ekstensi() === 'pdf';
                     @endphp
-
-                    {{-- PDF Preview inline --}}
-                    @if ($isPdf)
-                        <div x-data="{ expanded: false }" class="border border-[#c5c5d7] rounded-xl overflow-hidden">
-                            <div class="flex items-center gap-3 px-4 py-3 bg-[#f6fafe] cursor-pointer hover:bg-[#f0f4f8] transition-colors"
-                                 x-on:click="expanded = !expanded">
-                                <span class="material-symbols-outlined text-[#ba1a1a] text-[22px] flex-shrink-0">picture_as_pdf</span>
-                                <span class="text-[14px] font-medium text-on-surface flex-1 truncate">{{ $f->nama_asli }}</span>
-                                <div class="flex items-center gap-2 flex-shrink-0">
-                                    <a href="{{ Storage::url($f->file_path) }}" target="_blank"
-                                       x-on:click.stop
-                                       class="text-[12px] text-[#3c50e0] hover:underline flex items-center gap-0.5">
-                                        <span class="material-symbols-outlined text-[14px]">download</span>
-                                        Unduh
-                                    </a>
-                                    <span class="material-symbols-outlined text-[18px] text-[#505f76] transition-transform"
-                                          :class="expanded ? 'rotate-180' : ''">expand_more</span>
-                                </div>
+                    <div class="p-4 rounded-xl border border-[#c5c5d7] bg-[#f6fafe]">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg {{ $iconBg }} {{ $iconColor }} flex items-center justify-center flex-shrink-0">
+                                <span class="material-symbols-outlined text-[20px]">{{ $icon }}</span>
                             </div>
-                            <div x-show="expanded" x-cloak class="border-t border-[#c5c5d7]">
-                                <iframe src="{{ Storage::url($f->file_path) }}"
-                                        class="w-full"
-                                        style="height: 600px;"
-                                        loading="lazy">
-                                </iframe>
-                            </div>
+                            <span class="text-[14px] font-medium text-on-surface flex-1 min-w-0 truncate">{{ $f->nama_asli ?? 'File' }}</span>
                         </div>
-                    @else
-                        <a href="{{ Storage::url($f->file_path) }}" target="_blank"
-                           class="flex items-center gap-3 p-4 rounded-xl border border-[#c5c5d7] bg-[#f6fafe] hover:bg-[#f0f4f8] hover:border-[#3c50e0]/40 transition-colors cursor-pointer">
-                            <span class="material-symbols-outlined text-[#ba1a1a] text-[22px] flex-shrink-0">description</span>
-                            <span class="text-[14px] font-medium text-on-surface flex-1 truncate">{{ $f->nama_asli ?? 'Unduh File' }}</span>
-                            <span class="material-symbols-outlined text-[16px] text-[#505f76]">download</span>
-                        </a>
-                    @endif
+                        <div class="flex items-center gap-2 mt-3">
+                            @if ($isPdf)
+                                <button type="button"
+                                        x-on:click="previewUrl = '{{ Storage::url($f->file_path) }}'; previewName = '{{ addslashes($f->nama_asli) }}'"
+                                        class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#c5c5d7] text-[12.5px] font-medium text-[#505f76] hover:bg-white transition-colors cursor-pointer">
+                                    <span class="material-symbols-outlined text-[16px]">visibility</span> Preview
+                                </button>
+                            @endif
+                            <a href="{{ Storage::url($f->file_path) }}" target="_blank"
+                               class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#c5c5d7] text-[12.5px] font-medium text-[#505f76] hover:bg-white transition-colors cursor-pointer">
+                                <span class="material-symbols-outlined text-[16px]">download</span> Unduh
+                            </a>
+                        </div>
+                    </div>
                 @endforeach
             </div>
+
+            {{-- Modal preview PDF --}}
+            <template x-teleport="body">
+                <div x-show="previewUrl"
+                     x-on:keydown.escape.window="previewUrl = null"
+                     class="fixed inset-0 z-[200] flex items-center justify-center p-0 sm:p-4"
+                     style="background: rgba(0,0,0,0.6); display: none;">
+                    <div class="bg-white w-full h-full sm:h-[85vh] sm:max-w-4xl sm:rounded-xl overflow-hidden shadow-xl flex flex-col">
+                        <div class="px-4 py-3 border-b border-[#c5c5d7] flex items-center justify-between flex-shrink-0">
+                            <span class="text-[14px] font-medium text-on-surface truncate" x-text="previewName"></span>
+                            <button type="button" x-on:click="previewUrl = null"
+                                    class="text-[#757686] hover:text-[#171c1f] transition-colors cursor-pointer flex-shrink-0 ml-3">
+                                <span class="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+                        <iframe :src="previewUrl" class="w-full flex-1" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </template>
         </div>
     @endif
 
@@ -210,5 +224,9 @@
     .trix-content pre { background: #f0f4f8; border-radius: 0.5rem; padding: 0.75rem 1rem; font-size: 13px; overflow-x: auto; }
     .trix-content p { margin-bottom: 0.5rem; }
     .trix-content strong { font-weight: 600; }
+    .trix-content { overflow-wrap: break-word; word-break: break-word; }
+    .trix-content .attachment { max-width: 100%; margin: 0.75rem 0; }
+    .trix-content .attachment img { border-radius: 0.5rem; max-width: 100% !important; width: auto !important; height: auto !important; }
+    .trix-content .attachment__caption { font-size: 12px; color: #757686; margin-top: 0.25rem; overflow-wrap: break-word; word-break: break-word; }
 </style>
 @endpush

@@ -1,11 +1,12 @@
 <div class="max-w-5xl mx-auto">
 
     {{-- ── Back ───────────────────────────────────────────────────────────── --}}
-    <div class="mb-6">
+    <div class="mb-5">
         <a href="{{ route('admin.master.rombel') }}"
-           class="inline-flex items-center gap-1.5 text-[13px] text-[#505f76] hover:text-[#3c50e0] transition-colors cursor-pointer">
-            <span class="material-symbols-outlined text-[16px]">arrow_back</span>
-            Kembali ke Daftar Rombel
+           class="w-9 h-9 flex items-center justify-center rounded-lg border cursor-pointer transition-colors"
+           style="border-color: #c5c5d7; background: white; color: #505f76"
+           onmouseover="this.style.background='#f0f4f8'" onmouseout="this.style.background='white'">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
         </a>
     </div>
 

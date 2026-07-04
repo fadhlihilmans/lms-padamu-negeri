@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>8.4.1 — Daftar Tugas Peserta Didik | LMS Padamu Negeri</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+  * { font-family: 'Inter', sans-serif; box-sizing: border-box; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+  .filled { font-variation-settings: 'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24; }
+  #sidebar { transition: transform .22s cubic-bezier(.4,0,.2,1); }
+  @media(max-width:1023px){ #sidebar { transform:translateX(-100%); } #sidebar.open { transform:translateX(0); } }
+  select { padding-right: 2.5rem !important; background-position: right 0.7rem center !important; }
+</style>
+</head>
+<body class="bg-[#f9fafb] text-[#171c1f] font-sans antialiased flex h-screen overflow-hidden">
+
+<div id="overlay" class="fixed inset-0 bg-black/40 z-30 hidden lg:hidden" onclick="closeSidebar()"></div>
+
+<aside id="sidebar" class="fixed left-0 top-0 h-screen w-64 bg-white border-r border-[#c5c5d7] z-40 flex flex-col">
+  <div class="px-5 py-4 border-b border-[#c5c5d7]">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded bg-[#3c50e0] text-white flex items-center justify-center"><span class="material-symbols-outlined text-[18px]">school</span></div>
+      <div><p class="text-sm font-semibold text-[#3c50e0] leading-tight">LMS Padamu</p><p class="text-xs text-[#757686]">Peserta Didik</p></div>
+    </div>
+  </div>
+  <nav class="flex-1 overflow-y-auto py-2">
+    <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] transition-colors"><span class="material-symbols-outlined text-[20px]">home</span> Beranda</a>
+    <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] transition-colors"><span class="material-symbols-outlined text-[20px]">how_to_reg</span> Absensi</a>
+    <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] transition-colors"><span class="material-symbols-outlined text-[20px]">menu_book</span> Materi</a>
+    <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm font-semibold text-[#3c50e0] bg-[#EEF2FF] border-l-4 border-[#3c50e0]"><span class="material-symbols-outlined text-[20px]">assignment</span> Tugas</a>
+    <a href="#" class="flex items-center gap-3 px-4 py-2.5 text-sm text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] transition-colors"><span class="material-symbols-outlined text-[20px]">quiz</span> CBT</a>
+  </nav>
+  <div class="px-4 py-3 border-t border-[#c5c5d7] flex items-center gap-3">
+    <div class="w-8 h-8 rounded-full bg-[#3c50e0] text-white flex items-center justify-center text-xs font-bold">AF</div>
+    <div class="flex-1 min-w-0"><p class="text-sm font-medium text-[#171c1f] truncate">Ahmad Fauzi</p><p class="text-xs text-[#757686]">Paket C · Kelas 10 Botolambat</p></div>
+  </div>
+</aside>
+
+<div class="flex-1 flex flex-col lg:ml-64 min-w-0">
+  <header class="fixed top-0 right-0 left-0 lg:left-64 h-14 bg-white border-b border-[#c5c5d7] z-20 flex items-center justify-between px-4 gap-4">
+    <div class="flex items-center gap-3">
+      <button class="lg:hidden p-2 rounded hover:bg-[#f0f4f8] text-[#505f76]" onclick="openSidebar()"><span class="material-symbols-outlined text-[22px]">menu</span></button>
+      <span class="text-sm font-semibold text-[#171c1f]">Tugas</span>
+    </div>
+  </header>
+
+  {{-- pb-20 utk ruang bottom-nav mobile --}}
+  <main class="flex-1 overflow-y-auto mt-14 pb-20 lg:pb-6 p-4 lg:p-6">
+    <div class="space-y-4">
+
+      <div>
+        <h1 class="text-[18px] lg:text-[20px] font-bold text-[#171c1f]">Tugas</h1>
+        <p class="text-[13px] lg:text-[14px] text-[#757686] mt-0.5">Daftar tugas yang diberikan guru untuk Anda</p>
+      </div>
+
+      <!-- Toolbar: search selalu 1 baris penuh di atas. Dropdown 1 baris penuh di mobile/tablet, 2 kolom sejajar di bawah search saat desktop -->
+      <div class="bg-white border border-[#c5c5d7] rounded-xl p-4">
+        <div class="flex flex-col gap-3">
+          <div class="relative w-full">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#505f76] text-[18px] pointer-events-none">search</span>
+            <input type="text" placeholder="Cari judul tugas..." class="w-full pl-10 pr-4 py-2.5 border border-[#c5c5d7] rounded-lg text-[14px] focus:outline-none focus:ring-1 focus:ring-[#3c50e0]">
+          </div>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+            <select class="w-full border border-[#c5c5d7] rounded-lg px-3 py-2.5 text-[14px] bg-white cursor-pointer">
+              <option value="">Semua Mapel</option>
+              <option>Matematika</option>
+              <option>Seni Budaya</option>
+            </select>
+            <select class="w-full border border-[#c5c5d7] rounded-lg px-3 py-2.5 text-[14px] bg-white cursor-pointer">
+              <option value="">Semua Status</option>
+              <option>Belum Dikerjakan</option>
+              <option>Terlewat</option>
+              <option>Sudah Dikumpulkan</option>
+              <option>Dikumpulkan Terlambat</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- List: 1 kolom di mobile & tablet, 2 kolom di desktop (lg+) -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
+
+        <!-- Item: belum dikerjakan -->
+        <a href="#" class="flex items-start gap-3 sm:gap-4 bg-white rounded-xl border border-[#c5c5d7] p-4 hover:border-[#3c50e0]/40 hover:shadow-sm transition-all group">
+          <div class="w-11 h-11 rounded-xl flex-shrink-0 flex items-center justify-center bg-[#fff3cd]">
+            <span class="material-symbols-outlined text-[22px] text-[#856404]">pending</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="text-[14px] sm:text-[15px] font-semibold text-[#171c1f] group-hover:text-[#3c50e0] transition-colors line-clamp-1">Latihan Menggambar Ragam Hias</h3>
+            <span class="inline-block mt-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-[#fff3cd] text-[#856404] whitespace-nowrap">Belum Dikerjakan</span>
+            <div class="flex flex-col gap-1 mt-2 text-[12px] text-[#505f76]">
+              <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">book</span> Seni Budaya</span>
+              <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">calendar_today</span> Deadline: 30 Jun 2026, 23:59 <span class="opacity-60">(3 hari lagi)</span></span>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-[20px] text-[#505f76] group-hover:text-[#3c50e0] flex-shrink-0 transition-colors mt-1">chevron_right</span>
+        </a>
+
+        <!-- Item: sudah dikumpulkan + dinilai -->
+        <a href="#" class="flex items-start gap-3 sm:gap-4 bg-white rounded-xl border border-[#c5c5d7] p-4 hover:border-[#3c50e0]/40 hover:shadow-sm transition-all group">
+          <div class="w-11 h-11 rounded-xl flex-shrink-0 flex items-center justify-center bg-[#d1f5e0]">
+            <span class="material-symbols-outlined text-[22px] text-[#0d6e34] filled">check_circle</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="text-[14px] sm:text-[15px] font-semibold text-[#171c1f] group-hover:text-[#3c50e0] transition-colors line-clamp-1">Persamaan Kuadrat Lanjutan</h3>
+            <span class="inline-block mt-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-[#d1f5e0] text-[#0d6e34] whitespace-nowrap">Sudah Dikumpulkan</span>
+            <div class="flex flex-col gap-1 mt-2 text-[12px] text-[#505f76]">
+              <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">book</span> Matematika</span>
+              <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">calendar_today</span> Deadline: 24 Agt 2024, 23:59</span>
+              <span class="flex items-center gap-1 font-semibold text-[#3c50e0]"><span class="material-symbols-outlined text-[13px]">grade</span> Nilai: 90</span>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-[20px] text-[#505f76] group-hover:text-[#3c50e0] flex-shrink-0 transition-colors mt-1">chevron_right</span>
+        </a>
+
+        <!-- Item: terlewat -->
+        <a href="#" class="flex items-start gap-3 sm:gap-4 bg-white rounded-xl border border-[#c5c5d7] p-4 hover:border-[#3c50e0]/40 hover:shadow-sm transition-all group">
+          <div class="w-11 h-11 rounded-xl flex-shrink-0 flex items-center justify-center bg-[#ffdad6]">
+            <span class="material-symbols-outlined text-[22px] text-[#ba1a1a]">cancel</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="text-[14px] sm:text-[15px] font-semibold text-[#171c1f] group-hover:text-[#3c50e0] transition-colors line-clamp-1">Tugas Trigonometri Dasar</h3>
+            <span class="inline-block mt-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-[#ffdad6] text-[#ba1a1a] whitespace-nowrap">Terlewat</span>
+            <div class="flex flex-col gap-1 mt-2 text-[12px] text-[#ba1a1a] font-medium">
+              <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">book</span> Matematika</span>
+              <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">calendar_today</span> Deadline: 15 Agt 2024, 23:59</span>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-[20px] text-[#505f76] group-hover:text-[#3c50e0] flex-shrink-0 transition-colors mt-1">chevron_right</span>
+        </a>
+
+        <!-- Item: dikumpulkan terlambat -->
+        <a href="#" class="flex items-start gap-3 sm:gap-4 bg-white rounded-xl border border-[#c5c5d7] p-4 hover:border-[#3c50e0]/40 hover:shadow-sm transition-all group">
+          <div class="w-11 h-11 rounded-xl flex-shrink-0 flex items-center justify-center bg-[#ffdad6]">
+            <span class="material-symbols-outlined text-[22px] text-[#ba1a1a]">history_toggle_off</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="text-[14px] sm:text-[15px] font-semibold text-[#171c1f] group-hover:text-[#3c50e0] transition-colors line-clamp-1">Latihan Logaritma</h3>
+            <span class="inline-block mt-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full bg-[#ffdad6] text-[#ba1a1a] whitespace-nowrap">Terlambat</span>
+            <div class="flex flex-col gap-1 mt-2 text-[12px] text-[#505f76]">
+              <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">book</span> Matematika</span>
+              <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[13px]">calendar_today</span> Deadline: 30 Agt 2024, 23:59</span>
+            </div>
+          </div>
+          <span class="material-symbols-outlined text-[20px] text-[#505f76] group-hover:text-[#3c50e0] flex-shrink-0 transition-colors mt-1">chevron_right</span>
+        </a>
+
+      </div>
+
+      <!-- Pagination -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1 text-[13px] text-[#505f76]">
+        <span>Menampilkan 1–4 dari 4 tugas</span>
+        <div class="flex items-center gap-1">
+          <button class="w-8 h-8 inline-flex items-center justify-center rounded-lg border border-[#c5c5d7] bg-white text-[#c5c5d7] cursor-not-allowed"><span class="material-symbols-outlined text-[16px]">chevron_left</span></button>
+          <button class="w-8 h-8 inline-flex items-center justify-center rounded-lg text-[13px] font-semibold text-white" style="background:#3c50e0">1</button>
+          <button class="w-8 h-8 inline-flex items-center justify-center rounded-lg border border-[#c5c5d7] bg-white text-[#505f76] hover:bg-[#f0f4f8]"><span class="material-symbols-outlined text-[16px]">chevron_right</span></button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Bottom nav (mobile only) -->
+<nav class="fixed bottom-0 left-0 right-0 z-30 bg-white border-t flex items-center justify-around px-1 lg:hidden"
+     style="height:60px;border-color:#c5c5d7;box-shadow:0 -2px 8px rgba(0,0,0,0.06)">
+  <a href="#" class="flex flex-col items-center gap-1 px-2 py-2 rounded-xl flex-1" style="color:#9da4b0">
+    <span class="material-symbols-outlined text-[22px]">dashboard</span><span class="text-[10px] font-semibold">Beranda</span>
+  </a>
+  <a href="#" class="flex flex-col items-center gap-1 px-2 py-2 rounded-xl flex-1" style="color:#9da4b0">
+    <span class="material-symbols-outlined text-[22px]">menu_book</span><span class="text-[10px] font-semibold">Materi</span>
+  </a>
+  <a href="#" class="flex flex-col items-center gap-1 px-2 py-2 rounded-xl flex-1" style="color:#3c50e0">
+    <span class="material-symbols-outlined text-[22px] filled">assignment</span><span class="text-[10px] font-semibold">Tugas</span>
+  </a>
+  <a href="#" class="flex flex-col items-center gap-1 px-2 py-2 rounded-xl flex-1" style="color:#9da4b0">
+    <span class="material-symbols-outlined text-[22px]">schedule</span><span class="text-[10px] font-semibold">Jadwal</span>
+  </a>
+  <a href="#" class="flex flex-col items-center gap-1 px-2 py-2 rounded-xl flex-1" style="color:#9da4b0">
+    <span class="material-symbols-outlined text-[22px]">how_to_reg</span><span class="text-[10px] font-semibold">Absensi</span>
+  </a>
+</nav>
+
+<script>
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.remove('hidden');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.add('hidden');}
+</script>
+</body>
+</html>

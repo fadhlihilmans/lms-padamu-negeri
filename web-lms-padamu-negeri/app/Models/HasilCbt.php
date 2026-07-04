@@ -22,13 +22,15 @@ class HasilCbt extends Model
         'nilai_uraian',
         'nilai_akhir',
         'status_penilaian',
+        'nilai_ditampilkan',
     ];
 
     protected function casts(): array
     {
         return [
-            'waktu_mulai'   => 'datetime',
-            'waktu_submit'  => 'datetime',
+            'waktu_mulai'       => 'datetime',
+            'waktu_submit'      => 'datetime',
+            'nilai_ditampilkan' => 'boolean',
         ];
     }
 
