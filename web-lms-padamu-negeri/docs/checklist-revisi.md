@@ -16,13 +16,13 @@ Menerapkan desain final `docs/design-references/*.html` ke tampilan Blade aplika
 - [x] 1.3 Layout Shell (sidebar + topbar)
 
 ### 2 — Dashboard
-- [ ] 2.1 Dashboard Admin
-- [ ] 2.2 Dashboard Guru
-- [ ] 2.3 Dashboard Peserta Didik
+- [x] 2.1 Dashboard Admin
+- [x] 2.2 Dashboard Guru
+- [x] 2.3 Dashboard Peserta Didik
 
 ### 3 — Master Data
-- [ ] 3.1.1 Master Data (Wilayah/Paket/Tingkat/Mapel dll)
-- [ ] 3.1.2 Modal Master Data
+- [x] 3.1.1 Master Data (Wilayah/Paket/Tingkat/Mata Pelajaran/Periode Ajaran)
+- [x] 3.1.2 Modal Master Data
 - [ ] 3.2.1 Master Data Rombel
 - [ ] 3.2.2 Form Rombel
 - [ ] 3.3.1 Pemetaan Guru–Mapel–Rombel

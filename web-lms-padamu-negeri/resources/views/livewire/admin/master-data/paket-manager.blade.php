@@ -1,50 +1,65 @@
 <div>
 
-    {{-- ── Header ──────────────────────────────────────────────────────────── --}}
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+    {{-- ── Header (3.1.1) ──────────────────────────────────────────────────── --}}
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
         <div>
-            <h2 class="text-[18px] font-bold text-on-surface">Paket</h2>
-            <p class="text-[13px] text-[#757686] mt-0.5">Kelola jenis Paket (A, B, C).</p>
+            <h1 class="text-[18px] font-bold text-[#171c1f]">Paket</h1>
+            <p class="text-[13px] text-[#757686] mt-0.5">Kelola jenis Paket (A, B, C) sebagai referensi tingkat kelas.</p>
         </div>
         <button wire:click="openCreateForm"
-                class="inline-flex items-center gap-2 bg-[#3c50e0] text-white text-[14px] font-medium px-4 py-2.5 rounded-lg hover:bg-[#1c33c8] transition-colors shadow-sm cursor-pointer">
-            <span class="material-symbols-outlined text-[18px]">add</span>
-            Tambah Paket
+                class="flex items-center gap-2 px-4 py-2.5 rounded-lg text-[13.5px] font-semibold text-white transition-colors cursor-pointer self-start sm:self-auto bg-[#3c50e0] hover:bg-[#2e3eb0] shadow-sm">
+            <span class="material-symbols-outlined text-[17px]">add</span>Tambah Paket
         </button>
     </div>
 
-    {{-- ── Modal Form ──────────────────────────────────────────────────────── --}}
+    {{-- ── Modal Form (3.1.2) ─────────────────────────────────────────────── --}}
     @if ($showForm)
-        <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-0 sm:p-4">
-            <div class="bg-white rounded-t-2xl sm:rounded-xl shadow-xl shadow-black/10 w-full max-w-4xl sm:max-w-sm border border-[#c5c5d7] max-h-[90vh] sm:max-h-[85vh] overflow-y-auto">
-                <div class="flex items-center justify-between p-6 border-b border-[#c5c5d7]">
-                    <h3 class="text-[20px] font-semibold text-on-surface">
-                        {{ $editId ? 'Edit Paket' : 'Tambah Paket' }}
-                    </h3>
-                    <button wire:click="closeForm" class="text-[#505f76] hover:text-[#ba1a1a] transition-colors p-1 cursor-pointer">
-                        <span class="material-symbols-outlined">close</span>
+        <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
+             style="background: rgba(0,0,0,0.5); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px)"
+             wire:keydown.escape="closeForm">
+            <div class="relative z-10 w-full sm:max-w-sm bg-white rounded-t-2xl sm:rounded-xl overflow-hidden shadow-xl flex flex-col max-h-[80dvh] sm:max-h-[70vh]"
+                 style="box-shadow: 0 20px 60px -10px rgba(0,0,0,0.25)">
+
+                {{-- Header --}}
+                <div class="flex items-center justify-between px-5 py-4 border-b flex-shrink-0" style="border-color: #c5c5d7">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background: #EEF2FF">
+                            <span class="material-symbols-outlined text-[18px]" style="color: #3c50e0">layers</span>
+                        </div>
+                        <h3 class="text-[15px] font-semibold" style="color: #171c1f">{{ $editId ? 'Edit Paket' : 'Tambah Paket' }}</h3>
+                    </div>
+                    <button type="button" wire:click="closeForm"
+                            class="w-8 h-8 flex items-center justify-center rounded-lg cursor-pointer transition-colors" style="color: #757686"
+                            onmouseover="this.style.background='#f0f4f8'" onmouseout="this.style.background='transparent'">
+                        <span class="material-symbols-outlined text-[18px]">close</span>
                     </button>
                 </div>
-                <form wire:submit="save" class="p-6 flex flex-col gap-4">
-                    <div class="flex flex-col gap-1.5">
-                        <label class="text-[14px] font-medium text-on-surface" for="nama">
-                            Nama Paket <span class="text-[#ba1a1a]">*</span>
-                        </label>
-                        <input wire:model="nama" id="nama" type="text" placeholder="Contoh: Paket A"
-                               autofocus
-                               class="w-full border rounded-lg px-4 py-2.5 text-[14px] text-on-surface focus:outline-none focus:ring-1 transition-shadow
-                                      {{ $errors->has('nama') ? 'border-[#ba1a1a] focus:ring-[#ba1a1a]' : 'border-[#c5c5d7] focus:ring-[#3c50e0] focus:border-[#3c50e0]' }}">
+
+                <form wire:submit="save" class="flex flex-col flex-1 min-h-0">
+                    {{-- Body --}}
+                    <div class="px-5 py-5 overflow-y-auto flex-1">
+                        <label for="nama" class="block text-[13px] font-medium mb-1.5" style="color: #171c1f">Nama Paket <span style="color: #ba1a1a">*</span></label>
+                        <input wire:model="nama" id="nama" type="text" autofocus placeholder="Contoh: Paket A"
+                               class="w-full px-3 py-2.5 rounded-lg text-[14px] bg-white outline-none transition-all"
+                               style="border: 1.5px solid {{ $errors->has('nama') ? '#ba1a1a' : '#c5c5d7' }}; color: #171c1f"
+                               onfocus="this.style.borderColor='#3c50e0'; this.style.boxShadow='0 0 0 3px rgba(60,80,224,0.1)'"
+                               onblur="this.style.borderColor='{{ $errors->has('nama') ? '#ba1a1a' : '#c5c5d7' }}'; this.style.boxShadow='none'">
                         @error('nama')
-                            <p class="text-[12px] text-[#ba1a1a]">{{ $message }}</p>
+                            <p class="text-[12px] mt-1.5" style="color: #ba1a1a">{{ $message }}</p>
+                        @else
+                            <p class="text-[12px] mt-1.5" style="color: #9da4b0">Nama paket harus unik dan tidak boleh duplikat.</p>
                         @enderror
                     </div>
-                    <div class="flex justify-end gap-3 pt-2 border-t border-[#c5c5d7] mt-1">
+
+                    {{-- Footer --}}
+                    <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 px-5 py-4 border-t flex-shrink-0" style="border-color: #d1d5db; background: white">
                         <button type="button" wire:click="closeForm"
-                                class="px-4 py-2.5 rounded-lg border border-[#c5c5d7] text-[#505f76] text-[14px] font-medium hover:bg-[#f0f4f8] transition-colors cursor-pointer">
-                            Batal
-                        </button>
+                                class="px-4 py-2.5 rounded-lg text-[13px] font-medium border cursor-pointer transition-colors"
+                                style="color: #505f76; border-color: #c5c5d7; background: white"
+                                onmouseover="this.style.background='#f0f4f8'" onmouseout="this.style.background='white'">Batal</button>
                         <button type="submit"
-                                class="px-4 py-2.5 rounded-lg bg-[#3c50e0] text-white text-[14px] font-medium hover:bg-[#1c33c8] transition-colors shadow-sm flex items-center gap-2 cursor-pointer"
+                                class="px-5 py-2.5 rounded-lg text-[13.5px] font-semibold text-white cursor-pointer transition-colors flex items-center justify-center gap-2"
+                                style="background: #3c50e0" onmouseover="this.style.background='#2e3eb0'" onmouseout="this.style.background='#3c50e0'"
                                 wire:loading.attr="disabled" wire:loading.class="opacity-70 cursor-not-allowed">
                             <span wire:loading wire:target="save" class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span>
                             Simpan
@@ -57,89 +72,103 @@
 
     {{-- ── Modal Konfirmasi Hapus ───────────────────────────────────────────── --}}
     @if ($confirmDeleteId)
-        <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-0 sm:p-4">
-            <div class="bg-white rounded-t-2xl sm:rounded-xl shadow-xl shadow-black/10 w-full max-w-4xl sm:max-w-sm border border-[#c5c5d7] p-6 flex flex-col gap-4">
-                <div class="flex items-start gap-3">
-                    <div class="w-10 h-10 rounded-full bg-[#ffdad6] flex items-center justify-center flex-shrink-0">
-                        <span class="material-symbols-outlined text-[#ba1a1a]">delete</span>
+        <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
+             style="background: rgba(0,0,0,0.5); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px)">
+            <div class="w-full sm:max-w-sm bg-white rounded-t-2xl sm:rounded-xl overflow-hidden shadow-xl flex flex-col"
+                 style="box-shadow: 0 20px 60px -10px rgba(0,0,0,0.25)">
+                <div class="px-5 py-5 flex items-start gap-3">
+                    <div class="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0" style="background: #ffdad6">
+                        <span class="material-symbols-outlined text-[18px]" style="color: #ba1a1a">delete</span>
                     </div>
                     <div>
-                        <h4 class="text-[16px] font-semibold text-on-surface">Hapus Paket?</h4>
-                        <p class="text-[14px] text-[#505f76] mt-1">Menghapus Paket akan menghapus semua Tingkat di bawahnya.</p>
+                        <h4 class="text-[15px] font-semibold" style="color: #171c1f">Hapus Paket?</h4>
+                        <p class="text-[13px] mt-0.5" style="color: #505f76">Menghapus Paket akan menghapus semua Tingkat di bawahnya.</p>
                     </div>
                 </div>
-                <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+                <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 px-5 py-4 border-t flex-shrink-0" style="border-color: #d1d5db; background: white">
                     <button wire:click="$set('confirmDeleteId', null)"
-                            class="w-full sm:w-auto px-4 py-2.5 rounded-lg border border-[#c5c5d7] text-[14px] text-[#505f76] hover:bg-[#f0f4f8] transition-colors cursor-pointer text-center">
-                        Batal
-                    </button>
+                            class="px-4 py-2.5 rounded-lg text-[13px] font-medium border cursor-pointer transition-colors text-center"
+                            style="color: #505f76; border-color: #c5c5d7; background: white"
+                            onmouseover="this.style.background='#f0f4f8'" onmouseout="this.style.background='white'">Batal</button>
                     <button wire:click="delete"
-                            class="w-full sm:w-auto px-4 py-2.5 rounded-lg bg-[#ba1a1a] text-white text-[14px] font-medium hover:bg-[#93000a] transition-colors cursor-pointer text-center">
-                        Ya, Hapus
-                    </button>
+                            class="px-5 py-2.5 rounded-lg text-[13.5px] font-semibold text-white cursor-pointer transition-colors text-center"
+                            style="background: #ba1a1a" onmouseover="this.style.background='#93000a'" onmouseout="this.style.background='#ba1a1a'">Ya, Hapus</button>
                 </div>
             </div>
         </div>
     @endif
 
-    {{-- ── Tabel ───────────────────────────────────────────────────────────── --}}
-    <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm overflow-hidden">
+    {{-- ── Table Card (3.1.1) ─────────────────────────────────────────────── --}}
+    <div class="bg-white rounded-xl border overflow-hidden" style="border-color: #c5c5d7; box-shadow: 0 1px 3px rgba(0,0,0,0.05)">
 
-        <x-table-controls searchPlaceholder="Cari nama paket..." />
+        {{-- Toolbar standar --}}
+        <div class="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-2.5 px-4 py-3 border-b bg-white" style="border-color: #d1d5db">
+            <div class="relative w-full sm:flex-1 sm:min-w-[180px]">
+                <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-[17px] pointer-events-none" style="color: #9da4b0">search</span>
+                <input wire:model.live.debounce.300ms="search" type="text" placeholder="Cari nama paket..."
+                       class="w-full pl-9 pr-3 py-2 rounded-lg text-[13.5px] bg-white outline-none transition-all"
+                       style="border: 1.5px solid #c5c5d7; color: #171c1f"
+                       onfocus="this.style.borderColor='#3c50e0'; this.style.boxShadow='0 0 0 3px rgba(60,80,224,0.1)'"
+                       onblur="this.style.borderColor='#c5c5d7'; this.style.boxShadow='none'">
+            </div>
+            <div class="flex items-center gap-1.5 w-full sm:w-auto justify-between sm:justify-start sm:flex-shrink-0">
+                <span class="text-[12.5px] whitespace-nowrap" style="color: #757686">Tampil</span>
+                <select wire:model.live="perPage" class="py-2 pl-2.5 rounded-lg text-[13px] cursor-pointer outline-none"
+                        style="border: 1.5px solid #c5c5d7; color: #505f76; background: white">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                </select>
+                <span class="text-[12.5px] whitespace-nowrap" style="color: #757686">Data</span>
+            </div>
+        </div>
 
+        {{-- Table --}}
         <div class="overflow-x-auto">
-            <table class="w-full text-left">
+            <table class="w-full text-left min-w-[420px]">
                 <thead>
-                    <tr class="bg-white border-b border-[#c5c5d7] text-[11.5px] font-semibold text-[#757686] uppercase tracking-wide">
-                        <th class="px-4 py-3.5 w-16">No.</th>
-                        <th class="px-4 py-3.5">Nama Paket</th>
-                        <th class="px-4 py-3.5 text-center">Jumlah Tingkat Kelas</th>
-                        <th class="px-4 py-3.5 text-right">Aksi</th>
+                    <tr class="border-b" style="border-color: #c5c5d7">
+                        <th class="px-4 py-3 text-[11.5px] font-semibold uppercase tracking-wide w-12" style="color: #757686">No</th>
+                        <th class="px-4 py-3 text-[11.5px] font-semibold uppercase tracking-wide" style="color: #757686">Nama Paket</th>
+                        <th class="px-4 py-3 text-[11.5px] font-semibold uppercase tracking-wide text-center" style="color: #757686">Jumlah Tingkat</th>
+                        <th class="px-4 py-3 text-[11.5px] font-semibold uppercase tracking-wide text-center w-24" style="color: #757686">Aksi</th>
                     </tr>
                 </thead>
-                <tbody class="text-[13.5px] text-on-surface divide-y divide-[#c5c5d7]">
+                <tbody class="divide-y divide-[#c5c5d7]">
                     @forelse ($pakets as $i => $p)
-                        <tr class="hover:bg-[#f6fafe] transition-colors">
-                            <td class="px-4 py-3.5 text-[#505f76]">{{ $pakets->firstItem() + $i }}</td>
-                            <td class="px-4 py-3.5 font-medium">{{ $p->nama }}</td>
+                        <tr class="transition-colors" onmouseover="this.style.background='#f6fafe'" onmouseout="this.style.background='transparent'">
+                            <td class="px-4 py-3.5 text-[13px]" style="color: #9da4b0">{{ $pakets->firstItem() + $i }}</td>
+                            <td class="px-4 py-3.5 text-[13.5px] font-medium" style="color: #171c1f">{{ $p->nama }}</td>
                             <td class="px-4 py-3.5 text-center">
-                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[12px] font-semibold bg-[#eaeef2] text-[#505f76]">
-                                    {{ $p->tingkat_count }} tingkat kelas
+                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[12px] font-semibold whitespace-nowrap" style="background: #eaeef2; color: #505f76">
+                                    {{ $p->tingkat_count }} tingkat
                                 </span>
                             </td>
-                            <td class="px-4 py-3.5">
-                                <div class="flex items-center justify-end gap-2">
-                                    <button wire:click="openEditForm({{ $p->id }})"
-                                            class="p-1.5 text-[#505f76] hover:text-[#1c33c8] hover:bg-[#eaeef2] rounded-lg transition-colors cursor-pointer"
-                                            title="Edit">
-                                        <span class="material-symbols-outlined text-[18px]">edit</span>
+                            <td class="px-4 py-3.5 text-center">
+                                <div class="inline-flex items-center gap-1">
+                                    <button wire:click="openEditForm({{ $p->id }})" title="Edit"
+                                            class="w-8 h-8 inline-flex items-center justify-center rounded-lg cursor-pointer transition-colors" style="color: #505f76"
+                                            onmouseover="this.style.background='#EEF2FF'; this.style.color='#3c50e0'" onmouseout="this.style.background='transparent'; this.style.color='#505f76'">
+                                        <span class="material-symbols-outlined text-[17px]">edit</span>
                                     </button>
-                                    <button wire:click="confirmDelete({{ $p->id }})"
-                                            class="p-1.5 text-[#505f76] hover:text-[#ba1a1a] hover:bg-[#ffdad6] rounded-lg transition-colors cursor-pointer"
-                                            title="Hapus">
-                                        <span class="material-symbols-outlined text-[18px]">delete</span>
+                                    <button wire:click="confirmDelete({{ $p->id }})" title="Hapus"
+                                            class="w-8 h-8 inline-flex items-center justify-center rounded-lg cursor-pointer transition-colors" style="color: #505f76"
+                                            onmouseover="this.style.background='#ffdad6'; this.style.color='#ba1a1a'" onmouseout="this.style.background='transparent'; this.style.color='#505f76'">
+                                        <span class="material-symbols-outlined text-[17px]">delete</span>
                                     </button>
                                 </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-6 py-16 text-center">
+                            <td colspan="4" class="px-4 py-16 text-center">
                                 @if ($search)
-                                    <span class="material-symbols-outlined text-[48px] text-[#c5c5d7] mb-3 block">search_off</span>
-                                    <p class="text-[14px] text-[#505f76]">Tidak ada data ditemukan.</p>
-                                    <button wire:click="$set('search', '')"
-                                            class="mt-3 text-[13px] text-[#3c50e0] hover:underline cursor-pointer">
-                                        Hapus Filter
-                                    </button>
+                                    <span class="material-symbols-outlined text-[40px] mb-2 block" style="color: #c5c5d7">search_off</span>
+                                    <p class="text-[13px]" style="color: #757686">Tidak ada data ditemukan.</p>
+                                    <button wire:click="$set('search', '')" class="mt-2 text-[12.5px] cursor-pointer hover:underline" style="color: #3c50e0">Hapus Filter</button>
                                 @else
-                                    <span class="material-symbols-outlined text-[48px] text-[#c5c5d7] mb-3 block">layers</span>
-                                    <p class="text-[14px] text-[#505f76]">Belum ada data Paket.</p>
-                                    <button wire:click="openCreateForm"
-                                            class="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#3c50e0] text-white text-[14px] font-medium hover:bg-[#1c33c8] transition-colors cursor-pointer">
-                                        <span class="material-symbols-outlined text-[16px]">add</span>
-                                        Tambah Sekarang
-                                    </button>
+                                    <span class="material-symbols-outlined text-[40px] mb-2 block" style="color: #c5c5d7">layers</span>
+                                    <p class="text-[13px]" style="color: #757686">Belum ada data Paket.</p>
                                 @endif
                             </td>
                         </tr>
@@ -148,12 +177,33 @@
             </table>
         </div>
 
+        {{-- Pagination standar --}}
         @if ($pakets->total() > 0)
-            <div class="px-4 py-3.5 border-t border-[#c5c5d7] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <p class="text-[13px] text-[#505f76]">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-4 py-3.5 border-t" style="border-color: #c5c5d7">
+                <p class="text-[12.5px]" style="color: #757686">
                     Menampilkan {{ $pakets->firstItem() }}–{{ $pakets->lastItem() }} dari {{ $pakets->total() }} data
                 </p>
-                <div class="text-[13px]">{{ $pakets->links() }}</div>
+                @if ($pakets->lastPage() > 1)
+                    <div class="flex items-center gap-1">
+                        <button wire:click="previousPage" @disabled($pakets->onFirstPage())
+                                class="w-8 h-8 inline-flex items-center justify-center rounded-lg transition-colors {{ $pakets->onFirstPage() ? 'cursor-not-allowed' : 'cursor-pointer hover:bg-[#f0f4f8]' }}"
+                                style="color: {{ $pakets->onFirstPage() ? '#c5c5d7' : '#505f76' }}">
+                            <span class="material-symbols-outlined text-[16px]">chevron_left</span>
+                        </button>
+                        @foreach (range(1, $pakets->lastPage()) as $page)
+                            <button wire:click="gotoPage({{ $page }})"
+                                    class="w-8 h-8 inline-flex items-center justify-center rounded-lg text-[13px] transition-colors {{ $page == $pakets->currentPage() ? 'font-semibold text-white' : 'cursor-pointer hover:bg-[#f0f4f8]' }}"
+                                    style="{{ $page == $pakets->currentPage() ? 'background:#3c50e0' : 'color:#505f76' }}">
+                                {{ $page }}
+                            </button>
+                        @endforeach
+                        <button wire:click="nextPage" @disabled(! $pakets->hasMorePages())
+                                class="w-8 h-8 inline-flex items-center justify-center rounded-lg transition-colors {{ ! $pakets->hasMorePages() ? 'cursor-not-allowed' : 'cursor-pointer hover:bg-[#f0f4f8]' }}"
+                                style="color: {{ ! $pakets->hasMorePages() ? '#c5c5d7' : '#505f76' }}">
+                            <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                        </button>
+                    </div>
+                @endif
             </div>
         @endif
 

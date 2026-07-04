@@ -198,7 +198,7 @@
                                     <p class="text-[12px] text-[#505f76]">NIP: {{ $pm->guru?->nip ?? '—' }}</p>
                                 </td>
                                 <td class="px-4 py-3.5">
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[12px] font-semibold bg-[#EEF2FF] text-[#1c33c8]">
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[12px] font-semibold whitespace-nowrap bg-[#EEF2FF] text-[#1c33c8]">
                                         {{ $pm->mapel?->nama ?? '—' }}
                                     </span>
                                 </td>
