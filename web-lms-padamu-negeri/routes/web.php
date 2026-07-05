@@ -9,6 +9,7 @@ use App\Livewire\Admin\MasterData\PemetaanGuruMapelRombel;
 use App\Livewire\Admin\MasterData\PeriodeAjaranManager;
 use App\Livewire\Admin\MasterData\RombelManager;
 use App\Livewire\Admin\Kenaikan\AssignRombelBaru;
+use App\Livewire\Admin\Penilaian\RekapPenilaian;
 use App\Livewire\Admin\Pengaturan\SettingManager;
 use App\Livewire\Admin\Pengaturan\GradeManager;
 use App\Livewire\Admin\Log\DaftarErrorLog;
@@ -123,6 +124,9 @@ Route::middleware('auth')->group(function () {
             Route::get('/rekap', RekapAbsensi::class)->name('rekap');
         });
 
+        // Rekap Penilaian (read-only, memantau progres rapor tiap rombel)
+        Route::get('/penilaian', RekapPenilaian::class)->name('penilaian');
+
         // Pengaturan (Langkah 19)
         Route::get('/pengaturan', SettingManager::class)->name('pengaturan');
         Route::get('/pengaturan/grade', GradeManager::class)->name('grade');
@@ -191,6 +195,9 @@ Route::middleware('auth')->group(function () {
         // ── Rapor (Langkah 18, sisi PD) ──
         Route::get('/rapor', PreviewRapor::class)->name('rapor');
     });
+
+    // ── Profil Saya — semua role yang login ──
+    Route::get('/profil', \App\Livewire\Profil\ProfilSaya::class)->name('profil');
 
     // ── Lapor Bug (Langkah 20) — semua role yang login ──
     Route::get('/lapor-bug', FormLaporBug::class)->name('bug-report.index');

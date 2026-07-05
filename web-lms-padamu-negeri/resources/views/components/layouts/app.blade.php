@@ -153,18 +153,20 @@
                 <div x-show="show"
                      @keydown.escape.window="show = false"
                      style="display:none"
-                     class="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+                     class="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center sm:p-4">
                     {{-- Backdrop --}}
                     <div class="absolute inset-0 bg-black/50" @click="show = false"></div>
-                    {{-- Dialog --}}
+                    {{-- Dialog — bottom-sheet di mobile, terpusat di desktop --}}
                     <div x-show="show"
-                         x-transition:enter="transition ease-out duration-150"
-                         x-transition:enter-start="opacity-0 scale-95"
-                         x-transition:enter-end="opacity-100 scale-100"
-                         x-transition:leave="transition ease-in duration-100"
-                         x-transition:leave-start="opacity-100 scale-100"
-                         x-transition:leave-end="opacity-0 scale-95"
-                         class="relative z-10 bg-white rounded-xl shadow-xl w-full max-w-sm border border-[#c5c5d7] p-6 flex flex-col gap-4">
+                         x-transition:enter="transition ease-out duration-250"
+                         x-transition:enter-start="translate-y-full sm:translate-y-0 sm:opacity-0 sm:scale-95"
+                         x-transition:enter-end="translate-y-0 sm:opacity-100 sm:scale-100"
+                         x-transition:leave="transition ease-in duration-200"
+                         x-transition:leave-start="translate-y-0 sm:opacity-100 sm:scale-100"
+                         x-transition:leave-end="translate-y-full sm:translate-y-0 sm:opacity-0 sm:scale-95"
+                         class="relative z-10 bg-white rounded-t-2xl sm:rounded-xl shadow-xl w-full sm:max-w-sm border border-[#c5c5d7] p-6 pb-8 sm:pb-6 flex flex-col gap-4">
+                        {{-- Grip mobile --}}
+                        <div class="sm:hidden w-10 h-1.5 rounded-full mx-auto -mt-2 mb-1" style="background:#e5e7eb"></div>
                         <div class="flex items-start gap-3">
                             <div class="w-10 h-10 rounded-full bg-[#ffdad6] flex items-center justify-center flex-shrink-0">
                                 <span class="material-symbols-outlined text-[#ba1a1a]">logout</span>
@@ -174,15 +176,15 @@
                                 <p class="text-[14px] text-[#505f76] mt-1">Anda akan diarahkan ke halaman login.</p>
                             </div>
                         </div>
-                        <div class="flex justify-end gap-3">
+                        <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 mt-1">
                             <button type="button" @click="show = false"
-                                    class="px-4 py-2 rounded-lg border border-[#c5c5d7] text-[14px] text-[#505f76] hover:bg-[#f0f4f8] transition-colors cursor-pointer">
+                                    class="w-full sm:w-auto px-4 py-2.5 sm:py-2 rounded-lg border border-[#c5c5d7] text-[14px] text-[#505f76] hover:bg-[#f0f4f8] transition-colors cursor-pointer text-center">
                                 Batal
                             </button>
-                            <form method="POST" action="{{ route('logout') }}">
+                            <form method="POST" action="{{ route('logout') }}" class="w-full sm:w-auto">
                                 @csrf
                                 <button type="submit"
-                                        class="px-4 py-2 rounded-lg bg-[#ba1a1a] text-white text-[14px] font-medium hover:bg-[#93000a] transition-colors cursor-pointer">
+                                        class="w-full px-4 py-2.5 sm:py-2 rounded-lg bg-[#ba1a1a] text-white text-[14px] font-medium hover:bg-[#93000a] transition-colors cursor-pointer">
                                     Ya, Keluar
                                 </button>
                             </form>

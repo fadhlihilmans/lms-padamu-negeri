@@ -22,6 +22,20 @@ class DatabaseSeeder extends Seeder
             // Langkah 18–19
             GradeSeeder::class,
             SettingSeeder::class,
+
+            // ── Data dummy end-to-end (ikuti urutan dependency) ──
+            PesertaDidikAlamatSeeder::class,
+            PesertaDidikOrtuSeeder::class,
+            PesertaDidikRombelSeeder::class,
+            GuruMapelRombelSeeder::class,   // + set wali kelas rombel
+            JadwalPelajaranSeeder::class,
+            MateriSeeder::class,            // + materi_lampiran
+            TugasSeeder::class,             // + tugas_submisi
+            CbtSeeder::class,               // + cbt_soal
+            HasilCbtSeeder::class,          // + cbt_jawaban_peserta
+            SesiAbsensiSeeder::class,       // + absensi_detail
+            KenaikanKelasSeeder::class,
+            RaporSeeder::class,             // + rapor_nilai_mapel + rapor_nilai_komponen
         ]);
     }
 }

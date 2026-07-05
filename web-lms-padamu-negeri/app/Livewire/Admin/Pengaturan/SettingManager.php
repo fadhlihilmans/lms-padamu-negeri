@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Pengaturan;
 
 use App\Models\Setting;
 use App\Services\ErrorLogService;
+use App\Services\ImageService;
 use App\Services\SettingService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
@@ -70,7 +71,9 @@ class SettingManager extends Component
                 $rules["values.{$s->key}"] = ['nullable', 'email', 'max:150'];
             }
         }
-        $this->validate($rules, $messages);
+        if (! empty($rules)) {
+            $this->validate($rules, $messages);
+        }
 
         try {
             foreach ($settings as $s) {
@@ -81,7 +84,8 @@ class SettingManager extends Component
                         if ($old) {
                             Storage::disk('public')->delete($old);
                         }
-                        $path = $this->logoFiles[$s->key]->store('logo', 'public');
+                        // Logo dikompres ke WebP (raster) via ImageService; SVG/non-raster tetap apa adanya.
+                        $path = app(ImageService::class)->store($this->logoFiles[$s->key], 'logo', 'public');
                         $this->values[$s->key] = $path;
                         $svc->set($s->key, $path);
                     }

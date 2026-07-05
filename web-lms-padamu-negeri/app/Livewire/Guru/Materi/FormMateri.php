@@ -6,6 +6,7 @@ use App\Models\GuruMapelRombel;
 use App\Models\Materi;
 use App\Models\MateriLampiran;
 use App\Services\ErrorLogService;
+use App\Services\ImageService;
 use App\Services\SettingService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -172,7 +173,8 @@ class FormMateri extends Component
             foreach ($this->lampiranBaru as $file) {
                 $mime = $file->getMimeType() ?? '';
                 $tipe = str_starts_with($mime, 'image/') ? 'gambar' : 'file';
-                $path = $file->store('materi', 'public');
+                // Gambar raster dikompres ke WebP; dokumen (pdf/docx/dll) disimpan apa adanya.
+                $path = app(ImageService::class)->store($file, 'materi', 'public');
                 MateriLampiran::create([
                     'materi_id' => $materi->id,
                     'tipe'      => $tipe,

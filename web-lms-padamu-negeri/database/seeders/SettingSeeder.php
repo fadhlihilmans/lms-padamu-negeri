@@ -14,6 +14,7 @@ class SettingSeeder extends Seeder
             // ── Umum ──
             ['maintenance_mode', 'boolean', 'general', '0', 'Mode Maintenance', 'Jika aktif, seluruh akses non-Admin diarahkan ke halaman maintenance.'],
             ['nama_pkbm', 'string', 'general', 'PKBM Padamu Negeri', 'Nama PKBM', 'Ditampilkan di sidebar, topbar, login, dan kop rapor.'],
+            ['whatsapp_admin', 'string', 'general', '6281234567891', 'WhatsApp Admin', 'Nomor WhatsApp admin untuk bantuan/reset password (format 62xxx). Ditampilkan di halaman login.'],
 
             // ── Kop Rapor ──
             ['nama_kabupaten', 'string', 'kop_rapor', 'Pemerintah Kabupaten Batang', 'Nama Pemerintah Kabupaten', 'Baris teratas kop rapor.'],
@@ -29,6 +30,7 @@ class SettingSeeder extends Seeder
             // ── Upload ──
             ['max_upload_materi_mb', 'integer', 'upload', '10', 'Batas Upload Materi (MB)', 'Ukuran maksimal file materi.'],
             ['max_upload_tugas_mb', 'integer', 'upload', '10', 'Batas Upload Tugas (MB)', 'Ukuran maksimal file submisi tugas.'],
+            ['kompres_target_kb', 'integer', 'upload', '300', 'Target Kompres Gambar (KB)', 'Gambar yang diunggah dikompres ke WebP hingga sekitar ukuran ini (logo, gambar materi, screenshot bug).'],
 
             // ── Modul ──
             ['modul_materi_aktif', 'boolean', 'modul', '1', 'Modul Materi', 'Aktifkan/nonaktifkan modul Materi.'],

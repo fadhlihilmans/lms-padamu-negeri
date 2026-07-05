@@ -48,10 +48,16 @@
                             </td>
                             <td class="px-4 py-3 text-xs text-[#505f76] whitespace-nowrap">{{ $log->user?->name ?? $log->user?->username ?? '—' }}</td>
                             <td class="px-4 py-3 text-center">
-                                <button wire:click="$set('confirmDeleteId', {{ $log->id }})"
-                                        class="p-1.5 text-[#505f76] hover:text-[#ba1a1a] hover:bg-[#ffdad6] rounded-lg transition-colors cursor-pointer" title="Hapus">
-                                    <span class="material-symbols-outlined text-[18px]">delete</span>
-                                </button>
+                                <div class="inline-flex items-center gap-1">
+                                    <button wire:click="showDetail({{ $log->id }})"
+                                            class="p-1.5 text-[#505f76] hover:text-[#3c50e0] hover:bg-[#EEF2FF] rounded-lg transition-colors cursor-pointer" title="Lihat Detail">
+                                        <span class="material-symbols-outlined text-[18px]">visibility</span>
+                                    </button>
+                                    <button wire:click="$set('confirmDeleteId', {{ $log->id }})"
+                                            class="p-1.5 text-[#505f76] hover:text-[#ba1a1a] hover:bg-[#ffdad6] rounded-lg transition-colors cursor-pointer" title="Hapus">
+                                        <span class="material-symbols-outlined text-[18px]">delete</span>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     @empty
@@ -102,6 +108,89 @@
                 <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-2">
                     <button wire:click="$set('showDeleteAll', false)" class="w-full sm:w-auto px-4 py-2 text-sm rounded-lg border border-[#c5c5d7] text-[#505f76] hover:bg-[#f0f4f8] cursor-pointer text-center">Batal</button>
                     <button wire:click="deleteAll" class="w-full sm:w-auto px-4 py-2 text-sm rounded-lg bg-[#ba1a1a] text-white hover:bg-[#93000a] font-medium cursor-pointer text-center">Ya, Hapus Semua</button>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    {{-- ── Modal Detail Error ──────────────────────────────────────────────── --}}
+    @if ($detail)
+        <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-0 sm:p-4"
+             wire:key="detail-{{ $detail->id }}">
+            <div class="bg-white rounded-t-2xl sm:rounded-xl shadow-xl w-full sm:max-w-2xl flex flex-col max-h-[88vh]">
+                {{-- Header --}}
+                <div class="flex items-start justify-between gap-3 px-5 py-4 border-b border-[#c5c5d7] flex-shrink-0">
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[20px] text-[#ba1a1a]">bug_report</span>
+                            <h4 class="text-[15px] font-semibold text-on-surface truncate">{{ $detail->aksi }}</h4>
+                        </div>
+                        <p class="text-[12px] text-[#757686] mt-0.5">{{ $detail->created_at->format('d/m/Y H:i:s') }}</p>
+                    </div>
+                    <button wire:click="closeDetail" class="p-1.5 -mr-1.5 text-[#505f76] hover:bg-[#f0f4f8] rounded-lg cursor-pointer flex-shrink-0" title="Tutup">
+                        <span class="material-symbols-outlined text-[20px]">close</span>
+                    </button>
+                </div>
+
+                {{-- Body (scrollable) --}}
+                <div class="px-5 py-4 overflow-y-auto space-y-4">
+                    {{-- Meta --}}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <p class="text-[11px] font-semibold uppercase tracking-wide text-[#9da4b0] mb-0.5">Pengguna</p>
+                            <p class="text-[13px] text-on-surface">{{ $detail->user?->username ?? '—' }}</p>
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-[11px] font-semibold uppercase tracking-wide text-[#9da4b0] mb-0.5">URL</p>
+                            <p class="text-[13px] text-on-surface break-all">{{ $detail->url ?? '—' }}</p>
+                        </div>
+                        @if (! empty($detail->context['exception']))
+                            <div class="min-w-0">
+                                <p class="text-[11px] font-semibold uppercase tracking-wide text-[#9da4b0] mb-0.5">Tipe Exception</p>
+                                <p class="text-[13px] text-on-surface break-all">{{ $detail->context['exception'] }}</p>
+                            </div>
+                        @endif
+                        @if (! empty($detail->context['lokasi']))
+                            <div class="min-w-0">
+                                <p class="text-[11px] font-semibold uppercase tracking-wide text-[#9da4b0] mb-0.5">Lokasi</p>
+                                <p class="text-[13px] text-on-surface break-all">{{ $detail->context['lokasi'] }}</p>
+                            </div>
+                        @endif
+                    </div>
+
+                    {{-- Pesan error --}}
+                    <div>
+                        <p class="text-[11px] font-semibold uppercase tracking-wide text-[#9da4b0] mb-1">Pesan Error</p>
+                        <div class="bg-[#fff9f9] border border-[#ffdad6] rounded-lg p-3 max-h-48 overflow-y-auto">
+                            <p class="text-[13px] text-[#93000a] whitespace-pre-wrap break-words leading-relaxed">{{ $detail->pesan_error }}</p>
+                        </div>
+                    </div>
+
+                    {{-- Trace / context tambahan --}}
+                    @php
+                        $extra = collect($detail->context ?? [])->except(['exception', 'lokasi', 'trace']);
+                    @endphp
+                    @if (! empty($detail->context['trace']))
+                        <div>
+                            <p class="text-[11px] font-semibold uppercase tracking-wide text-[#9da4b0] mb-1">Stack Trace (ringkas)</p>
+                            <div class="bg-[#0f172a] rounded-lg p-3 max-h-56 overflow-auto">
+                                <pre class="text-[11.5px] text-[#cbd5e1] leading-relaxed whitespace-pre">{{ $detail->context['trace'] }}</pre>
+                            </div>
+                        </div>
+                    @endif
+                    @if ($extra->isNotEmpty())
+                        <div>
+                            <p class="text-[11px] font-semibold uppercase tracking-wide text-[#9da4b0] mb-1">Context</p>
+                            <div class="bg-[#f6fafe] border border-[#c5c5d7] rounded-lg p-3 max-h-48 overflow-auto">
+                                <pre class="text-[11.5px] text-[#505f76] leading-relaxed whitespace-pre-wrap break-words">{{ json_encode($extra, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) }}</pre>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+
+                {{-- Footer --}}
+                <div class="px-5 py-3.5 border-t border-[#c5c5d7] flex justify-end flex-shrink-0">
+                    <button wire:click="closeDetail" class="px-4 py-2 text-sm rounded-lg border border-[#c5c5d7] text-[#505f76] hover:bg-[#f0f4f8] cursor-pointer">Tutup</button>
                 </div>
             </div>
         </div>

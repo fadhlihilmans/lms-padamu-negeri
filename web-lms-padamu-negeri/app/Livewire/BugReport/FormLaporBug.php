@@ -4,6 +4,7 @@ namespace App\Livewire\BugReport;
 
 use App\Models\BugReport;
 use App\Services\ErrorLogService;
+use App\Services\ImageService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
@@ -50,7 +51,8 @@ class FormLaporBug extends Component
         ]);
 
         try {
-            $path = $this->screenshot ? $this->screenshot->store('bug-report', 'public') : null;
+            // Screenshot dikompres ke WebP (raster) via ImageService; non-raster tetap apa adanya.
+            $path = $this->screenshot ? app(ImageService::class)->store($this->screenshot, 'bug-report', 'public') : null;
 
             BugReport::create([
                 'user_id'         => Auth::id(),

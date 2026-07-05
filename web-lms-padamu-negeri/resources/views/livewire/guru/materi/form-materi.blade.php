@@ -38,7 +38,7 @@
 
     {{-- ── Form ─────────────────────────────────────────────────────────────── --}}
     <div class="bg-white rounded-xl border border-[#c5c5d7] shadow-sm p-4 sm:p-6">
-        <form wire:submit="save" class="space-y-5">
+        <form wire:submit="save" class="space-y-5" x-data="{ uploading: 0 }">
 
             {{-- Judul --}}
             <div class="flex flex-col gap-1.5">
@@ -61,6 +61,7 @@
                      x-on:trix-file-accept="if (! $event.file.type.startsWith('image/')) { $event.preventDefault(); }"
                      x-on:trix-attachment-add="
                         if (! $event.attachment.file) return;
+                        uploading++;
                         const form = new FormData();
                         form.append('file', $event.attachment.file);
                         fetch('{{ route('guru.materi.trix-upload') }}', {
@@ -70,7 +71,8 @@
                         })
                         .then(r => r.json())
                         .then(data => $event.attachment.setAttributes({ url: data.url, href: data.url }))
-                        .catch(() => $event.attachment.remove());
+                        .catch(() => $event.attachment.remove())
+                        .finally(() => uploading--);
                      ">
                     <input id="trix-content-{{ $editId ?? 'new' }}"
                            type="hidden"
@@ -79,7 +81,7 @@
                         input="trix-content-{{ $editId ?? 'new' }}"
                         placeholder="Tulis penjelasan, ringkasan, atau instruksi materi di sini. Seret & lepas gambar untuk menyisipkannya."
                         class="trix-content min-h-[160px]"
-                        x-on:trix-change="$wire.set('isi', $event.target.value)">
+                        x-on:trix-change="$wire.set('isi', $event.target.value, false)">
                     </trix-editor>
                 </div>
                 <p class="text-[11px]" style="color: #9da4b0">Bisa seret & lepas atau paste gambar langsung ke dalam teks. Untuk file PDF/dokumen, gunakan area upload di bawah.</p>
@@ -198,11 +200,15 @@
                     Batal
                 </a>
                 <button type="submit"
-                        class="px-5 py-2.5 rounded-lg text-white text-[14px] font-medium transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                        x-on:click="$wire.set('isi', document.getElementById('trix-content-{{ $editId ?? 'new' }}').value, false)"
+                        x-bind:disabled="uploading > 0"
+                        x-bind:class="uploading > 0 ? 'opacity-70 cursor-not-allowed' : 'cursor-pointer'"
+                        class="px-5 py-2.5 rounded-lg text-white text-[14px] font-medium transition-colors flex items-center justify-center gap-2"
                         style="background: #3c50e0"
                         wire:loading.attr="disabled" wire:loading.class="opacity-70 cursor-not-allowed">
                     <span wire:loading wire:target="save" class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span>
-                    Simpan Materi
+                    <span x-show="uploading > 0" class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span>
+                    <span x-text="uploading > 0 ? 'Mengunggah gambar…' : 'Simpan Materi'">Simpan Materi</span>
                 </button>
             </div>
         </form>

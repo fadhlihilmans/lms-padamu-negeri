@@ -116,3 +116,24 @@ bawah = sudah **diverifikasi** toast-nya muncul saat submit dengan input tidak v
 - [x] H.1 Form Buat/Edit CBT (`guru/cbt/daftar-cbt` — modal)
 - [x] H.2 Form Soal CBT (`guru/cbt/form-soal-cbt`)
 - [x] H.3 Koreksi Uraian (`guru/cbt/form-koreksi-uraian`)
+
+## Fase Revisi — Compress Image
+
+Kompresi **hanya untuk gambar**; file lain (PDF, doc/docx, ppt/pptx, xls/xlsx) **tidak** dikompres.
+Ukuran target kompresi **dinamis** dari tabel `settings` (grup Upload).
+
+### Prasyarat
+- [x] Setting `kompres_target_kb` (grup `upload`, integer, default **300 KB**) — target ukuran hasil kompres
+- [x] `ImageService` reusable (Intervention Image v3, driver Imagick → fallback GD): resize dimensi maks → strip metadata → encode **WebP** hingga ± `kompres_target_kb` → **fallback simpan original bila gagal** (+ catat ke `error_log`)
+
+### Titik upload gambar yang dikompres
+- [x] Logo PKBM & Logo Kabupaten — `Admin/Pengaturan/SettingManager` (khusus gambar)
+- [x] Screenshot Lapor Bug — `BugReport/FormLaporBug` (khusus gambar)
+- [x] Lampiran gambar Materi — `Guru/Materi/FormMateri` (kompres hanya bila file bertipe gambar)
+- [x] Gambar inline Materi via Trix — `TrixUploadController` (khusus gambar, wajib pola fallback)
+- [ ] Lampiran Tugas — `Guru/Tugas/FormTugas` (kompres hanya bila file bertipe gambar)
+- [ ] Submisi Tugas — `PesertaDidik/Tugas/SubmisiTugasPD` (kompres hanya bila file bertipe gambar)
+
+### Catatan
+- [ ] Verifikasi driver WebP tersedia di server produksi (Imagick/GD); Intervention otomatis pakai driver yang ada
+- [ ] **Output:** gambar yang diunggah tersimpan sebagai WebP ±`kompres_target_kb`, upload non-gambar tetap apa adanya, kegagalan kompres tidak pernah menggagalkan upload

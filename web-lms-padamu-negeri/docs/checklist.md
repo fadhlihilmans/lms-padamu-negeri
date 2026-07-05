@@ -125,45 +125,47 @@
 ## FASE 5 — Penutup Akademik
 
 ### Langkah 17 — Kenaikan Kelas (PRD 6.10)
-- [ ] `KenaikanKelas/PenentuanStatus` (Wali Kelas)
-- [ ] `AssignRombelBaru` (Admin, Ruang Tunggu)
+- [x] `KenaikanKelas/PenentuanStatus` (Wali Kelas)
+- [x] `AssignRombelBaru` (Admin, Ruang Tunggu)
 
 ### Langkah 18 — Penilaian Akhir / Rapor (PRD 6.11)
-- [ ] `Penilaian/FormNilaiKomponen` (hitung `nilai_referensi` via Service saat form dibuka)
-- [ ] Konversi grade (Service / `konfigurasi_grade`)
-- [ ] `PreviewRapor` + `CetakRaporPdf` (dompdf, kop 3 kolom dari `public/images/`)
-- [ ] Prasyarat: aset logo sudah dikumpulkan (PRD Tahap 10.5)
-- [ ] Kop rapor menarik data dari `SettingService` (bukan hardcode)
+- [x] `Penilaian/FormNilaiKomponen` (hitung `nilai_referensi` via Service saat form dibuka)
+- [x] Konversi grade (Service / `konfigurasi_grade`)
+- [x] `PreviewRapor` + `CetakRaporPdf` (dompdf, kop 3 kolom dari `public/images/`)
+- [x] Prasyarat: aset logo sudah dikumpulkan (PRD Tahap 10.5)
+- [x] Kop rapor menarik data dari `SettingService` (bukan hardcode)
 
 ---
 
 ## FASE 6 — Pengaturan Aplikasi & Log
 
 ### Langkah 19 — Modul Settings (Maintenance, Identitas PKBM, Toggle Modul, Grade)
-- [ ] Migration `settings`, `konfigurasi_grade` (database.md Bagian 8)
-- [ ] `SettingSeeder` (isi default termasuk `modul_materi_aktif`)
-- [ ] `GradeSeeder` (default A/B/C/D)
-- [ ] `SettingService` — `get`/`set`/`getGroup` + cache & cast tipe
-- [ ] `GradeService` — `konversi($nilai): string` + validasi anti-tumpang-tindih
-- [ ] `CheckMaintenanceMode` middleware (grup `web`, Admin bypass → `maintenance.blade.php`)
-- [ ] Middleware/Policy toggle modul per route group (dua lapis — wajib)
-- [ ] `Admin/Pengaturan/SettingManager` (form per group + upload logo)
-- [ ] `Admin/Pengaturan/GradeManager` (CRUD rentang grade)
-- [ ] Sidebar baca `modul_*_aktif` dari `SettingService`
-- [ ] Layout & login tampilkan `nama_pkbm` dari Settings
-- [ ] **Output:** Maintenance memblokir non-Admin; modul nonaktif disembunyikan & URL diblokir
+- [x] Migration `settings`, `konfigurasi_grade` (database.md Bagian 8)
+- [x] `SettingSeeder` (isi default termasuk `modul_materi_aktif`)
+- [x] `GradeSeeder` (default A/B/C/D)
+- [x] `SettingService` — `get`/`set`/`getGroup` + cache & cast tipe
+- [x] `GradeService` — `konversi($nilai): string` + validasi anti-tumpang-tindih
+- [x] `CheckMaintenanceMode` middleware (grup `web`, Admin bypass → `maintenance.blade.php`)
+- [x] Middleware/Policy toggle modul per route group (dua lapis — wajib)
+- [x] `Admin/Pengaturan/SettingManager` (form per group + upload logo)
+- [x] `Admin/Pengaturan/GradeManager` (CRUD rentang grade)
+- [x] Sidebar baca `modul_*_aktif` dari `SettingService`
+- [x] Layout & login tampilkan `nama_pkbm` dari Settings
+- [x] **Output:** Maintenance memblokir non-Admin; modul nonaktif disembunyikan & URL diblokir
 
 ### Langkah 20 — Error Log & Bug Report
-- [ ] Migration `error_log`, `bug_report` (database.md Bagian 9)
-- [ ] Model `ErrorLog`, `BugReport` (tanpa `SoftDeletes`)
-- [ ] `ErrorLogService::catat($aksi, $throwable, $context)` (auto `user_id` + `url`)
-- [ ] Audit try-catch Fase 1–5 memanggil `ErrorLogService::catat()`
-- [ ] `Admin/ErrorLog/DaftarErrorLog` (filter tanggal, hapus per baris + hapus semua)
-- [ ] `BugReport/FormLaporBug` (semua role, tombol di topbar, auto `halaman_url`)
-- [ ] `Admin/BugReport/DaftarBugReport` (filter status, preview screenshot, ubah status)
-- [ ] **Output:** error PHP otomatis tercatat & terlihat Admin; semua role bisa lapor bug bergambar
+- [x] Migration `error_log`, `bug_report` (database.md Bagian 9)
+- [x] Model `ErrorLog`, `BugReport` (tanpa `SoftDeletes`)
+- [x] `ErrorLogService::catat($aksi, $throwable, $context)` (auto `user_id` + `url`)
+- [x] Audit try-catch Fase 1–5 memanggil `ErrorLogService::catat()`
+- [x] `Admin/ErrorLog/DaftarErrorLog` (filter tanggal, hapus per baris + hapus semua)
+- [x] `BugReport/FormLaporBug` (semua role, tombol di topbar, auto `halaman_url`)
+- [x] `Admin/BugReport/DaftarBugReport` (filter status, preview screenshot, ubah status)
+- [x] **Output:** error PHP otomatis tercatat & terlihat Admin; semua role bisa lapor bug bergambar
 
 ---
 
 > Catatan revisi desain HTML (`docs/design-references/*.html`) dilacak terpisah dan **bukan** bagian
 > dari build-steps ini.
+
+---

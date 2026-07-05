@@ -83,13 +83,12 @@
                     <p class="text-[12px] text-[#505f76]">{{ $roleLabel }}</p>
                 </div>
 
-                {{-- Profil (disabled) --}}
-                <button disabled
-                        class="w-full flex items-center gap-3 px-4 py-2.5 text-[14px] text-[#b0b0c0] cursor-not-allowed opacity-60">
-                    <span class="material-symbols-outlined text-[18px]">manage_accounts</span>
+                {{-- Profil Saya --}}
+                <a href="{{ route('profil') }}" wire:navigate @click="open = false"
+                   class="w-full flex items-center gap-3 px-4 py-2.5 text-[14px] text-on-surface hover:bg-[#f0f4f8] transition-colors cursor-pointer">
+                    <span class="material-symbols-outlined text-[18px] text-[#505f76]">manage_accounts</span>
                     Profil Saya
-                    <span class="ml-auto text-[11px] bg-[#f0f4f8] text-[#757686] px-1.5 py-0.5 rounded">soon</span>
-                </button>
+                </a>
 
                 <div class="border-t border-[#c5c5d7] my-1"></div>
 

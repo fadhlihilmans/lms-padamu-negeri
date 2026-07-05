@@ -1,13 +1,21 @@
 # Sampai :
 
-- Langkah 16 (CBT) done, lanjut ke langkah 17, tapi revisi form dulu
-
 # kurang:
-- halaman login hubungi admin
-- list dulu yg upload image, belum ada imagick dan compress gambar menjadi $compress_size dinamis diambil dari db setting, kecuali gambar di isi materi
 - optimasi pemanggilan query, databases, model, dsb.
+- test
+- server instalasi imagick
+- document manual book
+- logo umum :
+<span class="material-symbols-outlined text-white text-[18px]" style="font-variation-settings:'FILL' 1">school</span>
 
 # Lanjut :
-- revisi toas pada form, cek checklist-revisi.md
+- revisi imagick pada cheklist-revisi.md
 
 PROMPT:
+- oke berhasli untuk materi inline, gambar terupload, terkompress dan tampil, namun saya ingin sedikit perbaikan:
+1. pada list materi "http://localhost:8000/guru/materi" isi jadi seperti ini :
+"poster - fadhli.png 2.65 MBAljabar adalah cabang matematika yang mempelajari operasi hitung menggunakan simbol..."
+table materi.isi :
+<div><figure data-trix-attachment="{&quot;contentType&quot;:&quot;image/png&quot;,&quot;filename&quot;:&quot;poster - fadhli.png&quot;,&quot;filesize&quot;:2780825,&quot;height&quot;:7016,&quot;href&quot;:&quot;/storage/materi-inline/3PN5G1er724xZh1BZPxItr7tfIorjm1gHcF7lubr.webp&quot;,&quot;url&quot;:&quot;/storage/materi-inline/3PN5G1er724xZh1BZPxItr7tfIorjm1gHcF7lubr.webp&quot;,&quot;width&quot;:4961}" data-trix-content-type="image/png" data-trix-attributes="{&quot;presentation&quot;:&quot;gallery&quot;}" class="attachment attachment--preview attachment--png"><a href="/storage/materi-inline/3PN5G1er724xZh1BZPxItr7tfIorjm1gHcF7lubr.webp"><img src="/storage/materi-inline/3PN5G1er724xZh1BZPxItr7tfIorjm1gHcF7lubr.webp" width="4961" height="7016"><figcaption class="attachment__caption"><span class="attachment__name">poster - fadhli.png</span> <span class="attachment__size">2.65 MB</span></figcaption></a></figure>Aljabar adalah cabang matematika yang mempelajari operasi hitung menggunakan simbol/variabel. Pada pertemuan ini kita membahas suku, koefisien, dan variabel.</div>
+
+mungkin bisa sedikit gunakan logic disini pada blade "http://localhost:8000/guru/materi" misal seperti text didalam tag <figure> ignore atau bagaimana, biar sedikit lebih rapi saja

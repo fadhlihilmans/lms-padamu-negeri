@@ -61,7 +61,7 @@
             <div class="xl:col-span-2 bg-white rounded-xl border overflow-hidden" style="border-color:#c5c5d7; box-shadow:0 1px 3px rgba(0,0,0,0.05)">
                 <div class="px-5 py-4 border-b flex items-center justify-between" style="border-color:#c5c5d7">
                     <h3 class="text-[14px] font-semibold" style="color:#171c1f">Rombel Terbaru</h3>
-                    <a href="#" class="text-[12.5px] font-medium" style="color:#3c50e0">Lihat Semua</a>
+                    <a href="{{ route('admin.master.rombel') }}" class="text-[12.5px] font-medium" style="color:#3c50e0">Lihat Semua</a>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full min-w-[520px]">
@@ -96,16 +96,36 @@
 
             {{-- Absensi Hari Ini (rekap ditampilkan oleh modul Absensi) --}}
             <div class="bg-white rounded-xl border flex flex-col" style="border-color:#c5c5d7; box-shadow:0 1px 3px rgba(0,0,0,0.05)">
-                <div class="px-5 py-4 border-b flex-shrink-0" style="border-color:#c5c5d7">
-                    <h3 class="text-[14px] font-semibold" style="color:#171c1f">Absensi Hari Ini</h3>
-                    <p class="text-[12px] mt-0.5" style="color:#757686">Rekapitulasi kehadiran peserta didik</p>
-                </div>
-                <div class="p-5 flex-1 flex flex-col items-center justify-center text-center gap-2">
-                    <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background:#f0f4f8">
-                        <span class="material-symbols-outlined text-[24px]" style="color:#9da4b0">event_available</span>
+                <div class="px-5 py-4 border-b flex-shrink-0 flex items-center justify-between" style="border-color:#c5c5d7">
+                    <div>
+                        <h3 class="text-[14px] font-semibold" style="color:#171c1f">Absensi Hari Ini</h3>
+                        <p class="text-[12px] mt-0.5" style="color:#757686">{{ $absensiSesiCount }} sesi berjalan hari ini</p>
                     </div>
-                    <p class="text-[13px]" style="color:#757686">Rekap kehadiran hari ini akan tampil di sini setelah sesi absensi berjalan.</p>
+                    <a href="{{ route('admin.absensi.rekap') }}" class="text-[12.5px] font-medium flex-shrink-0" style="color:#3c50e0">Rekap</a>
                 </div>
+                @php $totalAbsen = array_sum($absensiHariIni); @endphp
+                @if ($totalAbsen === 0)
+                    <div class="p-5 flex-1 flex flex-col items-center justify-center text-center gap-2">
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background:#f0f4f8">
+                            <span class="material-symbols-outlined text-[24px]" style="color:#9da4b0">event_available</span>
+                        </div>
+                        <p class="text-[13px]" style="color:#757686">Belum ada kehadiran tercatat hari ini.</p>
+                    </div>
+                @else
+                    <div class="p-5 grid grid-cols-2 gap-3">
+                        @foreach ([
+                            ['Hadir', $absensiHariIni['hadir'], '#16a34a', '#f0fdf4'],
+                            ['Izin',  $absensiHariIni['izin'],  '#d97706', '#fffbeb'],
+                            ['Sakit', $absensiHariIni['sakit'], '#3c50e0', '#EEF2FF'],
+                            ['Alpa',  $absensiHariIni['alpa'],  '#ba1a1a', '#ffdad6'],
+                        ] as [$labelA, $val, $c, $bg])
+                            <div class="rounded-xl p-3.5 flex flex-col items-center justify-center" style="background:{{ $bg }}">
+                                <span class="text-[24px] font-bold leading-none" style="color:{{ $c }}">{{ $val }}</span>
+                                <span class="text-[11px] font-semibold uppercase tracking-wider mt-1" style="color:{{ $c }}">{{ $labelA }}</span>
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -141,7 +161,7 @@
                         <span class="material-symbols-outlined text-[18px]" style="color:#3c50e0">event_upcoming</span>
                         <h3 class="text-[14px] font-semibold" style="color:#171c1f">Jadwal Hari Ini</h3>
                     </div>
-                    <a href="#" class="text-[12.5px] font-medium" style="color:#3c50e0">Lihat Semua</a>
+                    <a href="{{ route('guru.jadwal') }}" class="text-[12.5px] font-medium" style="color:#3c50e0">Lihat Semua</a>
                 </div>
                 <div class="p-4 space-y-3">
                     @forelse ($jadwalHariIni as $j)
@@ -175,18 +195,19 @@
                         <span class="material-symbols-outlined text-[18px]" style="color:#d97706">assignment_turned_in</span>
                         <h3 class="text-[14px] font-semibold" style="color:#171c1f">Perlu Dinilai</h3>
                     </div>
-                    <a href="#" class="text-[12.5px] font-medium" style="color:#3c50e0">Semua</a>
+                    <a href="{{ route('guru.tugas') }}" class="text-[12.5px] font-medium" style="color:#3c50e0">Semua</a>
                 </div>
                 <div class="divide-y" style="border-color:#f0f4f8">
                     @forelse ($perluDinilai as $t)
-                        <div class="px-5 py-3.5 flex items-center justify-between transition-colors"
+                        <a href="{{ route('guru.tugas.submisi', ['tugasId' => $t->id]) }}"
+                           class="px-5 py-3.5 flex items-center justify-between transition-colors"
                              onmouseover="this.style.background='#f6fafe'" onmouseout="this.style.background='transparent'">
                             <div class="min-w-0">
                                 <p class="text-[13.5px] font-semibold truncate" style="color:#171c1f">{{ $t->judul }}</p>
                                 <p class="text-[12px] mt-0.5" style="color:#757686">{{ $t->guruMapelRombel?->rombel?->nama ?? '—' }}</p>
                             </div>
                             <span class="inline-flex items-center justify-center min-w-[28px] h-7 px-2 rounded-full text-[12px] font-bold flex-shrink-0" style="background:#ffdad6; color:#ba1a1a">{{ $t->belum_dinilai_count }}</span>
-                        </div>
+                        </a>
                     @empty
                         <div class="px-5 py-8 text-center">
                             <span class="material-symbols-outlined text-[28px] mb-1 block" style="color:#c5c5d7">task_alt</span>
@@ -219,54 +240,92 @@
                         {{ $rombelPd?->nama ?? 'Belum ada rombel' }}@if ($rombelPd?->paket) — {{ $rombelPd->paket->nama }} @endif
                         @if ($periode) · TA {{ $periode->tahun_ajaran }} @endif
                     </p>
-                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[12px] font-semibold" style="background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.25)">
-                        <span class="w-2 h-2 rounded-full bg-red-400"></span>
-                        Belum Absen Hari Ini
-                    </div>
+                    @if ($absensiStatus === 'sudah')
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[12px] font-semibold" style="background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.25)">
+                            <span class="w-2 h-2 rounded-full bg-green-300"></span>
+                            Sudah Absen Hari Ini
+                        </div>
+                    @elseif ($absensiStatus === 'belum')
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[12px] font-semibold" style="background:rgba(255,255,255,0.18); border:1px solid rgba(255,255,255,0.25)">
+                            <span class="w-2 h-2 rounded-full bg-red-400"></span>
+                            Belum Absen Hari Ini
+                        </div>
+                    @else
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[12px] font-semibold" style="background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2)">
+                            <span class="w-2 h-2 rounded-full" style="background:rgba(255,255,255,0.6)"></span>
+                            Tidak Ada Sesi Absensi
+                        </div>
+                    @endif
                 </div>
             </div>
 
-            {{-- Absensi CTA --}}
-            <a href="#" class="rounded-xl p-4 flex items-center gap-4 transition-all" style="background:white; border:1.5px solid #3c50e0; box-shadow:0 2px 8px rgba(60,80,224,0.12)"
-               onmouseover="this.style.background='#EEF2FF'" onmouseout="this.style.background='white'">
-                <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:#EEF2FF">
-                    <span class="material-symbols-outlined text-[24px]" style="color:#3c50e0; font-variation-settings:'FILL' 1">touch_app</span>
-                </div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-[14px] font-semibold" style="color:#171c1f">Absensi Hari Ini</p>
-                    <p class="text-[12px] mt-0.5" style="color:#505f76">Jangan lupa absen sebelum pelajaran dimulai.</p>
-                </div>
-                <span class="flex-shrink-0 px-4 py-2 rounded-lg text-[13px] font-semibold text-white" style="background:#3c50e0">Absen</span>
-            </a>
-
-            {{-- Quick menu --}}
-            <div class="grid grid-cols-4 gap-3">
-                <a href="#" class="flex flex-col items-center gap-2 py-4 rounded-xl bg-white border transition-colors text-center" style="border-color:#c5c5d7"
-                   onmouseover="this.style.background='#f6fafe'" onmouseout="this.style.background='white'">
-                    <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:#EEF2FF"><span class="material-symbols-outlined text-[20px]" style="color:#3c50e0">schedule</span></div>
-                    <span class="text-[11px] font-semibold" style="color:#505f76">Jadwal</span>
-                </a>
-                <a href="#" class="flex flex-col items-center gap-2 py-4 rounded-xl bg-white border transition-colors text-center" style="border-color:#c5c5d7"
-                   onmouseover="this.style.background='#f6fafe'" onmouseout="this.style.background='white'">
-                    <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:#f0fdf4"><span class="material-symbols-outlined text-[20px]" style="color:#16a34a">menu_book</span></div>
-                    <span class="text-[11px] font-semibold" style="color:#505f76">Materi</span>
-                </a>
-                <a href="#" class="flex flex-col items-center gap-2 py-4 rounded-xl bg-white border transition-colors text-center relative" style="border-color:#c5c5d7"
-                   onmouseover="this.style.background='#f6fafe'" onmouseout="this.style.background='white'">
-                    <div class="w-10 h-10 rounded-xl flex items-center justify-center relative" style="background:#fffbeb">
-                        <span class="material-symbols-outlined text-[20px]" style="color:#d97706">assignment</span>
-                        @if ($tugasMendatang->isNotEmpty())
-                            <span class="absolute -top-1 -right-1 w-4 h-4 rounded-full text-[10px] font-bold text-white flex items-center justify-center" style="background:#ba1a1a">{{ $tugasMendatang->count() }}</span>
-                        @endif
+            {{-- Absensi CTA — hanya jika modul absensi aktif (route terdaftar) --}}
+            @if (\Route::has('peserta-didik.absensi'))
+                @if ($absensiStatus === 'belum')
+                    {{-- Ada sesi terbuka yang belum diisi → ajak absen --}}
+                    <a href="{{ route('peserta-didik.absensi') }}" class="rounded-xl p-4 flex items-center gap-4 transition-all" style="background:white; border:1.5px solid #3c50e0; box-shadow:0 2px 8px rgba(60,80,224,0.12)"
+                       onmouseover="this.style.background='#EEF2FF'" onmouseout="this.style.background='white'">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:#EEF2FF">
+                            <span class="material-symbols-outlined text-[24px]" style="color:#3c50e0; font-variation-settings:'FILL' 1">touch_app</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-[14px] font-semibold" style="color:#171c1f">Absensi Hari Ini</p>
+                            <p class="text-[12px] mt-0.5" style="color:#505f76">{{ $sesiTerbukaCount }} sesi menunggu — absen sebelum ditutup.</p>
+                        </div>
+                        <span class="flex-shrink-0 px-4 py-2 rounded-lg text-[13px] font-semibold text-white" style="background:#3c50e0">Absen</span>
+                    </a>
+                @elseif ($absensiStatus === 'sudah')
+                    {{-- Semua sesi hari ini sudah diisi --}}
+                    <a href="{{ route('peserta-didik.absensi') }}" class="rounded-xl p-4 flex items-center gap-4 transition-all" style="background:#f0fdf4; border:1.5px solid #16a34a33"
+                       onmouseover="this.style.background='#e7f9ee'" onmouseout="this.style.background='#f0fdf4'">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:#dcfce7">
+                            <span class="material-symbols-outlined text-[24px]" style="color:#16a34a; font-variation-settings:'FILL' 1">check_circle</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-[14px] font-semibold" style="color:#171c1f">Absensi Selesai</p>
+                            <p class="text-[12px] mt-0.5" style="color:#505f76">Anda sudah mengisi semua absensi hari ini.</p>
+                        </div>
+                        <span class="flex-shrink-0 material-symbols-outlined text-[20px]" style="color:#16a34a">chevron_right</span>
+                    </a>
+                @else
+                    {{-- Tidak ada sesi absensi hari ini --}}
+                    <div class="rounded-xl p-4 flex items-center gap-4" style="background:white; border:1.5px dashed #c5c5d7">
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style="background:#f0f4f8">
+                            <span class="material-symbols-outlined text-[24px]" style="color:#9da4b0">event_busy</span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-[14px] font-semibold" style="color:#171c1f">Tidak Ada Absensi Hari Ini</p>
+                            <p class="text-[12px] mt-0.5" style="color:#757686">Belum ada sesi absensi yang dibuka guru untuk hari ini.</p>
+                        </div>
                     </div>
-                    <span class="text-[11px] font-semibold" style="color:#505f76">Tugas</span>
-                </a>
-                <a href="#" class="flex flex-col items-center gap-2 py-4 rounded-xl bg-white border transition-colors text-center" style="border-color:#c5c5d7"
-                   onmouseover="this.style.background='#f6fafe'" onmouseout="this.style.background='white'">
-                    <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:#fdf2f8"><span class="material-symbols-outlined text-[20px]" style="color:#9333ea">quiz</span></div>
-                    <span class="text-[11px] font-semibold" style="color:#505f76">CBT</span>
-                </a>
-            </div>
+                @endif
+            @endif
+
+            {{-- Quick menu — hanya menu yang modulnya aktif (route terdaftar) --}}
+            @php
+                $quickMenu = collect([
+                    ['peserta-didik.jadwal', 'Jadwal', 'schedule',   '#3c50e0', '#EEF2FF', 0],
+                    ['peserta-didik.materi', 'Materi', 'menu_book',  '#16a34a', '#f0fdf4', 0],
+                    ['peserta-didik.tugas',  'Tugas',  'assignment', '#d97706', '#fffbeb', $tugasMendatang->count()],
+                    ['peserta-didik.cbt',    'CBT',    'quiz',       '#9333ea', '#fdf2f8', $cbtMendatang->count()],
+                ])->filter(fn ($m) => \Route::has($m[0]))->values();
+            @endphp
+            @if ($quickMenu->isNotEmpty())
+                <div class="grid gap-3" style="grid-template-columns:repeat({{ $quickMenu->count() }}, minmax(0, 1fr))">
+                    @foreach ($quickMenu as [$route, $label, $icon, $color, $bg, $badge])
+                        <a href="{{ route($route) }}" class="flex flex-col items-center gap-2 py-4 rounded-xl bg-white border transition-colors text-center relative" style="border-color:#c5c5d7"
+                           onmouseover="this.style.background='#f6fafe'" onmouseout="this.style.background='white'">
+                            <div class="w-10 h-10 rounded-xl flex items-center justify-center relative" style="background:{{ $bg }}">
+                                <span class="material-symbols-outlined text-[20px]" style="color:{{ $color }}">{{ $icon }}</span>
+                                @if ($badge > 0)
+                                    <span class="absolute -top-1 -right-1 w-4 h-4 rounded-full text-[10px] font-bold text-white flex items-center justify-center" style="background:#ba1a1a">{{ $badge }}</span>
+                                @endif
+                            </div>
+                            <span class="text-[11px] font-semibold" style="color:#505f76">{{ $label }}</span>
+                        </a>
+                    @endforeach
+                </div>
+            @endif
 
             {{-- Jadwal Hari Ini --}}
             <div class="bg-white rounded-xl border overflow-hidden" style="border-color:#c5c5d7; box-shadow:0 1px 3px rgba(0,0,0,0.05)">
@@ -275,7 +334,7 @@
                         <span class="material-symbols-outlined text-[17px]" style="color:#3c50e0">event_upcoming</span>
                         <h3 class="text-[14px] font-semibold" style="color:#171c1f">Jadwal Hari Ini</h3>
                     </div>
-                    <a href="#" class="text-[12px] font-medium" style="color:#3c50e0">Lihat Semua</a>
+                    <a href="{{ route('peserta-didik.jadwal') }}" class="text-[12px] font-medium" style="color:#3c50e0">Lihat Semua</a>
                 </div>
                 <div class="divide-y" style="border-color:#f0f4f8">
                     @forelse ($jadwalHariIni as $j)
@@ -306,7 +365,9 @@
                             <span class="material-symbols-outlined text-[17px]" style="color:#d97706">assignment</span>
                             <h3 class="text-[13.5px] font-semibold" style="color:#171c1f">Tugas Mendatang</h3>
                         </div>
-                        <a href="#" class="text-[12px] font-medium" style="color:#3c50e0">Semua</a>
+                        @if (\Route::has('peserta-didik.tugas'))
+                            <a href="{{ route('peserta-didik.tugas') }}" class="text-[12px] font-medium" style="color:#3c50e0">Semua</a>
+                        @endif
                     </div>
                     <div class="divide-y" style="border-color:#f0f4f8">
                         @forelse ($tugasMendatang as $t)
@@ -338,7 +399,9 @@
                             <span class="material-symbols-outlined text-[17px]" style="color:#9333ea">quiz</span>
                             <h3 class="text-[13.5px] font-semibold" style="color:#171c1f">CBT Mendatang</h3>
                         </div>
-                        <a href="#" class="text-[12px] font-medium" style="color:#3c50e0">Semua</a>
+                        @if (\Route::has('peserta-didik.cbt'))
+                            <a href="{{ route('peserta-didik.cbt') }}" class="text-[12px] font-medium" style="color:#3c50e0">Semua</a>
+                        @endif
                     </div>
                     <div class="p-4 space-y-3">
                         @forelse ($cbtMendatang as $c)

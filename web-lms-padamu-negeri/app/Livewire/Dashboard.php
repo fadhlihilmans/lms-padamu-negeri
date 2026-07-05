@@ -2,10 +2,12 @@
 
 namespace App\Livewire;
 
+use App\Models\AbsensiDetail;
 use App\Models\Cbt;
 use App\Models\JadwalPelajaran;
 use App\Models\PesertaDidik;
 use App\Models\Rombel;
+use App\Models\SesiAbsensi;
 use App\Models\Tugas;
 use App\Models\Guru;
 use App\Services\PeriodeService;
@@ -52,6 +54,15 @@ class Dashboard extends Component
         $rombelQuery = Rombel::query()
             ->when($periode, fn ($q) => $q->where('periode_ajaran_id', $periode->id));
 
+        // Rekap absensi hari ini (semua sesi hari ini).
+        $sesiHariIniIds = SesiAbsensi::whereDate('tanggal', today())->pluck('id');
+        $absensiCounts  = $sesiHariIniIds->isEmpty()
+            ? collect()
+            : AbsensiDetail::whereIn('sesi_absensi_id', $sesiHariIniIds)
+                ->selectRaw('status, COUNT(*) as total')
+                ->groupBy('status')
+                ->pluck('total', 'status');
+
         return [
             'role'          => 'admin',
             'totalPeserta'  => PesertaDidik::where('status_akademik', 'aktif')->count(),
@@ -63,6 +74,13 @@ class Dashboard extends Component
                 ->orderByDesc('id')
                 ->take(5)
                 ->get(),
+            'absensiSesiCount' => $sesiHariIniIds->count(),
+            'absensiHariIni'   => [
+                'hadir' => (int) ($absensiCounts['hadir'] ?? 0),
+                'izin'  => (int) ($absensiCounts['izin'] ?? 0),
+                'sakit' => (int) ($absensiCounts['sakit'] ?? 0),
+                'alpa'  => (int) ($absensiCounts['alpa'] ?? 0),
+            ],
         ];
     }
 
@@ -105,6 +123,31 @@ class Dashboard extends Component
         $rombelPd = $pd?->pesertaDidikRombel()->with('rombel.paket')->latest()->first()?->rombel;
         $rombelId = $rombelPd?->id;
 
+        // Status absensi hari ini: 'tidak_ada_sesi' | 'belum' | 'sudah'.
+        $absensiStatus   = 'tidak_ada_sesi';
+        $sesiTerbukaCount = 0;
+        if ($pd) {
+            $rombelIds = $pd->pesertaDidikRombel()->pluck('rombel_id');
+
+            $sesiHariIni = SesiAbsensi::whereHas('guruMapelRombel', fn ($q) => $q->whereIn('rombel_id', $rombelIds))
+                ->whereDate('tanggal', today())
+                ->get();
+
+            if ($sesiHariIni->isNotEmpty()) {
+                $answered = AbsensiDetail::whereIn('sesi_absensi_id', $sesiHariIni->pluck('id'))
+                    ->where('peserta_didik_id', $pd->id)
+                    ->pluck('sesi_absensi_id')
+                    ->flip();
+
+                $pending = $sesiHariIni->filter(fn ($s) => $s->status_sesi === 'terbuka'
+                    && (! $s->tanggal_buka || ! $s->tanggal_buka->isFuture())
+                    && ! isset($answered[$s->id]));
+
+                $sesiTerbukaCount = $pending->count();
+                $absensiStatus    = $pending->isNotEmpty() ? 'belum' : 'sudah';
+            }
+        }
+
         $jadwalHariIni = $rombelId
             ? JadwalPelajaran::whereHas('guruMapelRombel', fn ($q) => $q->where('rombel_id', $rombelId))
                 ->where('hari', $hariIni)
@@ -132,12 +175,14 @@ class Dashboard extends Component
             : collect();
 
         return [
-            'role'           => 'peserta_didik',
-            'pd'             => $pd,
-            'rombelPd'       => $rombelPd,
-            'jadwalHariIni'  => $jadwalHariIni,
-            'tugasMendatang' => $tugasMendatang,
-            'cbtMendatang'   => $cbtMendatang,
+            'role'             => 'peserta_didik',
+            'pd'               => $pd,
+            'rombelPd'         => $rombelPd,
+            'jadwalHariIni'    => $jadwalHariIni,
+            'tugasMendatang'   => $tugasMendatang,
+            'cbtMendatang'     => $cbtMendatang,
+            'absensiStatus'    => $absensiStatus,
+            'sesiTerbukaCount' => $sesiTerbukaCount,
         ];
     }
 

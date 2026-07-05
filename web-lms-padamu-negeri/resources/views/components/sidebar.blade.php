@@ -63,7 +63,7 @@
             <x-sidebar-item route="admin.import.peserta-didik" icon="upload_file" label="Import Excel" />
             <x-sidebar-item route="admin.absensi.rekap" icon="how_to_reg" label="Rekap Absensi" />
             <x-sidebar-item route="admin.kenaikan" icon="trending_up" label="Kenaikan Kelas" />
-            <x-sidebar-item route="penilaian.index" icon="grade" label="Penilaian Akhir" />
+            <x-sidebar-item route="admin.penilaian" icon="grade" label="Rekap Penilaian" />
 
             <p class="px-3 pt-4 pb-1 text-[10px] font-bold uppercase tracking-[0.08em] text-[#9da4b0]">Sistem</p>
             <x-sidebar-item route="admin.pengaturan" icon="settings" label="Pengaturan" />

@@ -131,7 +131,7 @@
                     } else {
                         $iconBg = 'bg-green-50'; $iconColor = 'text-green-600'; $icon = 'article';
                     }
-                    $deskripsi = $m->isi ? Str::limit(strip_tags($m->isi), 110) : null;
+                    $deskripsi = $m->ringkasan(110);
                 @endphp
                 <div class="bg-white border border-[#c5c5d7] rounded-xl p-4 hover:border-[#3c50e0]/40 hover:shadow-sm transition-all group">
                     <div class="flex items-start gap-3 sm:gap-4">
@@ -147,7 +147,7 @@
                                 <p class="text-[12px] text-[#757686] mt-0.5 line-clamp-2">{{ $deskripsi }}</p>
                             @endif
                             <div class="flex flex-wrap items-center gap-2 mt-2">
-                                @if ($m->isi)
+                                @if ($deskripsi)
                                     <span class="inline-flex items-center gap-1 text-[12px] px-2 py-0.5 rounded-full bg-green-50 text-green-600 font-medium">
                                         <span class="material-symbols-outlined text-[12px]">article</span> Teks
                                     </span>

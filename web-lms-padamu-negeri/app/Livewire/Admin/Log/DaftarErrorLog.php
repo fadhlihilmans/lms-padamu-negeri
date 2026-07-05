@@ -21,6 +21,17 @@ class DaftarErrorLog extends Component
 
     public ?int $confirmDeleteId = null;
     public bool $showDeleteAll   = false;
+    public ?int $detailId        = null;
+
+    public function showDetail(int $id): void
+    {
+        $this->detailId = $id;
+    }
+
+    public function closeDetail(): void
+    {
+        $this->detailId = null;
+    }
 
     public function updatingSearch(): void  { $this->resetPage(); }
     public function updatingTanggal(): void { $this->resetPage(); }
@@ -53,6 +64,10 @@ class DaftarErrorLog extends Component
             ->latest()
             ->paginate($this->perPage);
 
-        return view('livewire.admin.log.daftar-error-log', compact('logs'));
+        $detail = $this->detailId
+            ? ErrorLog::with('user')->find($this->detailId)
+            : null;
+
+        return view('livewire.admin.log.daftar-error-log', compact('logs', 'detail'));
     }
 }
