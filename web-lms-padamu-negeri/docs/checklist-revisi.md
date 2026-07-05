@@ -131,9 +131,9 @@ Ukuran target kompresi **dinamis** dari tabel `settings` (grup Upload).
 - [x] Screenshot Lapor Bug — `BugReport/FormLaporBug` (khusus gambar)
 - [x] Lampiran gambar Materi — `Guru/Materi/FormMateri` (kompres hanya bila file bertipe gambar)
 - [x] Gambar inline Materi via Trix — `TrixUploadController` (khusus gambar, wajib pola fallback)
-- [ ] Lampiran Tugas — `Guru/Tugas/FormTugas` (kompres hanya bila file bertipe gambar)
-- [ ] Submisi Tugas — `PesertaDidik/Tugas/SubmisiTugasPD` (kompres hanya bila file bertipe gambar)
+- [x] Lampiran Tugas — `Guru/Tugas/FormTugas` (kompres hanya bila file bertipe gambar)
+- [x] Submisi Tugas — `PesertaDidik/Tugas/SubmisiTugasPD` (kompres hanya bila file bertipe gambar)
 
 ### Catatan
-- [ ] Verifikasi driver WebP tersedia di server produksi (Imagick/GD); Intervention otomatis pakai driver yang ada
-- [ ] **Output:** gambar yang diunggah tersimpan sebagai WebP ±`kompres_target_kb`, upload non-gambar tetap apa adanya, kegagalan kompres tidak pernah menggagalkan upload
+- [x] Verifikasi driver WebP tersedia di server produksi (Imagick/GD); Intervention otomatis pakai driver yang ada
+- [x] **Output:** gambar yang diunggah tersimpan sebagai WebP ±`kompres_target_kb`, upload non-gambar tetap apa adanya, kegagalan kompres tidak pernah menggagalkan upload

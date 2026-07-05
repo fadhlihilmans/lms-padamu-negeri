@@ -2,11 +2,8 @@
 
 # kurang:
 - optimasi pemanggilan query, databases, model, dsb.
-- test
 - server instalasi imagick
 - document manual book
-- logo umum :
-<span class="material-symbols-outlined text-white text-[18px]" style="font-variation-settings:'FILL' 1">school</span>
 
 # Lanjut :
 - revisi imagick pada cheklist-revisi.md

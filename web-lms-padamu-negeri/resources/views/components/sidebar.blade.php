@@ -16,6 +16,7 @@
     // Toggle modul (lapis 1/UX — CLAUDE.md #11) + identitas dari SettingService.
     $setting    = app(\App\Services\SettingService::class);
     $namaPkbm   = $setting->get('nama_pkbm', 'LMS Padamu Negeri');
+    $logoApp    = $setting->get('logo_aplikasi_path', '');
     $modMateri  = $setting->get('modul_materi_aktif', true);
     $modTugas   = $setting->get('modul_tugas_aktif', true);
     $modAbsensi = $setting->get('modul_absensi_aktif', true);
@@ -28,9 +29,14 @@
 
     {{-- Logo / Brand --}}
     <div class="px-5 py-5 border-b border-outline-variant flex items-center gap-3 flex-shrink-0">
-        <div class="w-9 h-9 rounded-xl bg-[#3c50e0] flex items-center justify-center flex-shrink-0">
-            <span class="material-symbols-outlined text-white text-[18px]" style="font-variation-settings:'FILL' 1">school</span>
-        </div>
+        @if ($logoApp)
+            <img src="{{ \Illuminate\Support\Facades\Storage::url($logoApp) }}" alt="Logo"
+                 class="w-9 h-9 rounded-xl object-contain flex-shrink-0">
+        @else
+            <div class="w-9 h-9 rounded-xl bg-[#3c50e0] flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined text-white text-[18px]" style="font-variation-settings:'FILL' 1">school</span>
+            </div>
+        @endif
         <div class="min-w-0">
             <h1 class="text-[14px] font-bold text-[#3c50e0] leading-tight truncate">{{ $namaPkbm }}</h1>
             <p class="text-[11px] text-[#757686] truncate">Sistem Akademik PKBM</p>

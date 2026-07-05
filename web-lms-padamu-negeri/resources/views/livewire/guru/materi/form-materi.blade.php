@@ -128,14 +128,23 @@
                      onmouseover="this.style.borderColor='#3c50e0'; this.style.background='#EEF2FF'"
                      onmouseout="this.style.borderColor='#c5c5d7'; this.style.background='#f6fafe'"
                      x-data @click="$refs.fileZone.click()">
-                    <div class="w-12 h-12 rounded-full flex items-center justify-center mb-3" style="background: #d0e1fb">
-                        <span class="material-symbols-outlined text-[24px]" style="color: #3c50e0">cloud_upload</span>
+                    <div class="contents" wire:loading.remove wire:target="lampiranBaru">
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center mb-3" style="background: #d0e1fb">
+                            <span class="material-symbols-outlined text-[24px]" style="color: #3c50e0">cloud_upload</span>
+                        </div>
+                        <p class="text-[14px] font-medium" style="color: #171c1f">Seret & lepas file di sini</p>
+                        <p class="text-[12px] mt-0.5 mb-3" style="color: #757686">atau klik untuk memilih file dari perangkat</p>
+                        <span class="px-4 py-1.5 rounded-lg border text-[12px] font-medium transition-colors" style="border-color: #c5c5d7; color: #505f76">
+                            Pilih File
+                        </span>
                     </div>
-                    <p class="text-[14px] font-medium" style="color: #171c1f">Seret & lepas file di sini</p>
-                    <p class="text-[12px] mt-0.5 mb-3" style="color: #757686">atau klik untuk memilih file dari perangkat</p>
-                    <span class="px-4 py-1.5 rounded-lg border text-[12px] font-medium transition-colors" style="border-color: #c5c5d7; color: #505f76">
-                        Pilih File
-                    </span>
+                    {{-- Indikator sedang mengunggah --}}
+                    <div class="flex flex-col items-center gap-2 py-2" wire:loading wire:target="lampiranBaru">
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background: #d0e1fb">
+                            <span class="material-symbols-outlined text-[24px] animate-spin" style="color: #3c50e0">progress_activity</span>
+                        </div>
+                        <p class="text-[14px] font-semibold" style="color: #3c50e0">Mengunggah file…</p>
+                    </div>
                     <input x-ref="fileZone" wire:model="lampiranBaru" type="file" multiple
                            accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,image/*" class="hidden">
                 </div>

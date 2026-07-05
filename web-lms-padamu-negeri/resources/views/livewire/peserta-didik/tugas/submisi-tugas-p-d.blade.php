@@ -234,6 +234,14 @@
                     {{-- Tab Upload File --}}
                     <div x-show="tab === 'file'" x-cloak>
                         <label class="flex flex-col items-center gap-3 sm:gap-4 p-6 sm:p-10 border-2 border-dashed border-[#c5c5d7] rounded-xl cursor-pointer hover:border-[#3c50e0] hover:bg-[#f6fafe] transition-all group">
+                            {{-- Indikator sedang mengunggah --}}
+                            <div wire:loading wire:target="fileBaru" class="flex flex-col items-center gap-3">
+                                <div class="w-14 h-14 rounded-full bg-[#EEF2FF] flex items-center justify-center">
+                                    <span class="material-symbols-outlined text-[#3c50e0] text-[30px] animate-spin">progress_activity</span>
+                                </div>
+                                <p class="text-[15px] font-semibold text-[#3c50e0]">Mengunggah file…</p>
+                            </div>
+                            <div class="contents" wire:loading.remove wire:target="fileBaru">
                             @if ($fileBaru)
                                 <div class="w-14 h-14 rounded-full bg-[#EEF2FF] flex items-center justify-center">
                                     <span class="material-symbols-outlined text-[#3c50e0] text-[30px]">task_alt</span>
@@ -251,6 +259,7 @@
                                     <p class="text-[13px] text-[#505f76] mt-1">PDF, Word, gambar — maks {{ app(\App\Services\SettingService::class)->get('max_upload_tugas_mb', 10) }} MB</p>
                                 </div>
                             @endif
+                            </div>
                             <input wire:model="fileBaru" type="file"
                                    accept=".pdf,.doc,.docx,.ppt,.pptx,image/*"
                                    class="hidden">

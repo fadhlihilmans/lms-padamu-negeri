@@ -38,7 +38,9 @@
                             <span class="material-symbols-outlined text-[16px]">upload</span> Pilih Gambar
                             <input type="file" wire:model="screenshot" accept="image/*" class="hidden">
                         </label>
-                        <div wire:loading wire:target="screenshot" class="text-[12px] text-[#757686] mt-1">Mengunggah…</div>
+                        <div wire:loading wire:target="screenshot" class="flex items-center gap-1.5 text-[12px] text-[#3c50e0] mt-1">
+                            <span class="material-symbols-outlined text-[14px] animate-spin">progress_activity</span> Mengunggah…
+                        </div>
                         @error('screenshot') <p class="text-[12px] text-[#ba1a1a] mt-1">{{ $message }}</p> @enderror
                     </div>
                 </div>

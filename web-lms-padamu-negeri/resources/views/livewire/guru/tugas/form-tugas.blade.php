@@ -104,7 +104,7 @@
                     <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background: #f0f4f8">
                         <span class="material-symbols-outlined text-[26px]" style="color: #505f76">upload_file</span>
                     </div>
-                    <div class="text-center">
+                    <div class="text-center" wire:loading.remove wire:target="lampiranBaru">
                         @if ($lampiranBaru)
                             <p class="text-[14px] font-semibold" style="color: #3c50e0">{{ $lampiranBaru->getClientOriginalName() }}</p>
                             <p class="text-[12px] mt-0.5" style="color: #505f76">{{ round($lampiranBaru->getSize() / 1024, 1) }} KB · Klik untuk ganti</p>
@@ -112,6 +112,11 @@
                             <p class="text-[14px] font-medium" style="color: #171c1f">Klik untuk pilih file lampiran</p>
                             <p class="text-[12px] mt-0.5" style="color: #505f76">PDF, Word, Excel, gambar — maks {{ $maxMb }}MB</p>
                         @endif
+                    </div>
+                    {{-- Indikator sedang mengunggah --}}
+                    <div class="text-center flex items-center gap-2" wire:loading wire:target="lampiranBaru">
+                        <span class="material-symbols-outlined text-[18px] animate-spin" style="color:#3c50e0">progress_activity</span>
+                        <span class="text-[14px] font-semibold" style="color:#3c50e0">Mengunggah file…</span>
                     </div>
                     <input wire:model="lampiranBaru" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,image/*" class="hidden">
                 </label>

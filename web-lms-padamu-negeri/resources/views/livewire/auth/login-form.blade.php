@@ -1,6 +1,8 @@
 @php
-    $waAdmin = preg_replace('/[^0-9]/', '', app(\App\Services\SettingService::class)->get('whatsapp_admin', '') ?? '');
+    $setting = app(\App\Services\SettingService::class);
+    $waAdmin = preg_replace('/[^0-9]/', '', $setting->get('whatsapp_admin', '') ?? '');
     $waLink  = $waAdmin ? 'https://wa.me/' . $waAdmin . '?text=' . rawurlencode('Halo Admin, saya butuh bantuan untuk akun LMS (reset password / kendala login).') : '';
+    $logoApp = $setting->get('logo_aplikasi_path', '');
 @endphp
 
 <div class="relative w-full max-w-[360px]" x-data="{ showPassword: false, showContact: false }">
@@ -10,9 +12,14 @@
 
         {{-- Card Header / Brand --}}
         <div class="px-8 pt-8 pb-6 text-center">
-            <div class="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center" style="background: #EEF2FF">
-                <span class="material-symbols-outlined text-[30px]" style="color:#3c50e0;font-variation-settings:'FILL' 1, 'wght' 400">school</span>
-            </div>
+            @if ($logoApp)
+                <img src="{{ \Illuminate\Support\Facades\Storage::url($logoApp) }}" alt="Logo"
+                     class="w-16 h-16 rounded-2xl mx-auto mb-4 object-contain">
+            @else
+                <div class="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center" style="background: #EEF2FF">
+                    <span class="material-symbols-outlined text-[30px]" style="color:#3c50e0;font-variation-settings:'FILL' 1, 'wght' 400">school</span>
+                </div>
+            @endif
             <h1 class="text-[20px] font-bold leading-tight tracking-tight" style="color:#171c1f">{{ app(\App\Services\SettingService::class)->get('nama_pkbm', 'LMS Padamu Negeri') }}</h1>
             <p class="text-[13px] mt-1" style="color:#757686">Sistem Akademik PKBM</p>
         </div>

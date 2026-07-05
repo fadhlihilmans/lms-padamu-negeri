@@ -15,6 +15,7 @@ class SettingSeeder extends Seeder
             ['maintenance_mode', 'boolean', 'general', '0', 'Mode Maintenance', 'Jika aktif, seluruh akses non-Admin diarahkan ke halaman maintenance.'],
             ['nama_pkbm', 'string', 'general', 'PKBM Padamu Negeri', 'Nama PKBM', 'Ditampilkan di sidebar, topbar, login, dan kop rapor.'],
             ['whatsapp_admin', 'string', 'general', '6281234567891', 'WhatsApp Admin', 'Nomor WhatsApp admin untuk bantuan/reset password (format 62xxx). Ditampilkan di halaman login.'],
+            ['logo_aplikasi_path', 'string', 'general', '', 'Logo Aplikasi', 'Logo yang tampil di halaman login dan sidebar. Bila kosong, memakai ikon bawaan.'],
 
             // ── Kop Rapor ──
             ['nama_kabupaten', 'string', 'kop_rapor', 'Pemerintah Kabupaten Batang', 'Nama Pemerintah Kabupaten', 'Baris teratas kop rapor.'],

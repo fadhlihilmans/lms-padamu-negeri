@@ -6,6 +6,7 @@ use App\Models\PesertaDidikRombel;
 use App\Models\Tugas;
 use App\Models\TugasSubmisi;
 use App\Services\ErrorLogService;
+use App\Services\ImageService;
 use App\Services\PeriodeService;
 use App\Services\SettingService;
 use Illuminate\Support\Facades\Auth;
@@ -111,7 +112,7 @@ class SubmisiTugasPD extends Component
                 if ($this->submisi?->file_path) {
                     Storage::disk('public')->delete($this->submisi->file_path);
                 }
-                $filePath = $this->fileBaru->store('tugas/submisi', 'public');
+                $filePath = app(ImageService::class)->store($this->fileBaru, 'tugas/submisi', 'public');
             } else {
                 $filePath = $this->submisi?->file_path;
             }

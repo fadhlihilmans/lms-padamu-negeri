@@ -43,7 +43,9 @@
                                                 <span class="material-symbols-outlined text-[16px]">delete</span> Hapus
                                             </button>
                                         @endif
-                                        <div wire:loading wire:target="logoFiles.{{ $key }}" class="text-[12px] text-[#757686] mt-1">Mengunggah…</div>
+                                        <div wire:loading wire:target="logoFiles.{{ $key }}" class="flex items-center gap-1.5 text-[12px] text-[#3c50e0] mt-1">
+                                            <span class="material-symbols-outlined text-[14px] animate-spin">progress_activity</span> Mengunggah…
+                                        </div>
                                         @error('logoFiles.'.$key) <p class="text-[12px] text-[#ba1a1a] mt-1">{{ $message }}</p> @enderror
                                         @if ($s->description) <p class="text-[12px] text-[#757686] mt-1">{{ $s->description }}</p> @endif
                                     </div>

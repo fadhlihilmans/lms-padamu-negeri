@@ -5,6 +5,7 @@ namespace App\Livewire\Guru\Tugas;
 use App\Models\GuruMapelRombel;
 use App\Models\Tugas;
 use App\Services\ErrorLogService;
+use App\Services\ImageService;
 use App\Services\PeriodeService;
 use App\Services\SettingService;
 use Illuminate\Support\Facades\Auth;
@@ -101,7 +102,7 @@ class FormTugas extends Component
 
                 if ($this->lampiranBaru) {
                     if ($lampiranPath) Storage::disk('public')->delete($lampiranPath);
-                    $lampiranPath = $this->lampiranBaru->store('tugas/lampiran', 'public');
+                    $lampiranPath = app(ImageService::class)->store($this->lampiranBaru, 'tugas/lampiran', 'public');
                 } elseif ($this->hapusLampiran) {
                     if ($lampiranPath) Storage::disk('public')->delete($lampiranPath);
                     $lampiranPath = null;
@@ -116,7 +117,7 @@ class FormTugas extends Component
                 ]);
             } else {
                 if ($this->lampiranBaru) {
-                    $lampiranPath = $this->lampiranBaru->store('tugas/lampiran', 'public');
+                    $lampiranPath = app(ImageService::class)->store($this->lampiranBaru, 'tugas/lampiran', 'public');
                 }
 
                 Tugas::create([
