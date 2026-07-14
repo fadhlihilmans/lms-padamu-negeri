@@ -12,7 +12,7 @@ class PesertaDidikSeeder extends Seeder
     {
         $pesertaDidiks = [
             [
-                'nipd'          => '1718',
+                'nipd'          => '9918',
                 'nisn'          => '1234567890',
                 'nik'           => '3201010101010001',
                 'nama_lengkap'  => 'Ahmad Fauzi',
@@ -23,7 +23,7 @@ class PesertaDidikSeeder extends Seeder
                 'no_hp'         => '08567890001',
             ],
             [
-                'nipd'          => '1719',
+                'nipd'          => '9919',
                 'nisn'          => '1234567891',
                 'nik'           => '3201010101010002',
                 'nama_lengkap'  => 'Siti Aminah',
@@ -34,7 +34,7 @@ class PesertaDidikSeeder extends Seeder
                 'no_hp'         => null,
             ],
             [
-                'nipd'          => '1720',
+                'nipd'          => '9920',
                 'nisn'          => null,
                 'nik'           => null,
                 'nama_lengkap'  => 'Budi Santoso',
@@ -45,7 +45,7 @@ class PesertaDidikSeeder extends Seeder
                 'no_hp'         => '08567890003',
             ],
             [
-                'nipd'          => '1721',
+                'nipd'          => '9921',
                 'nisn'          => '9876543210',
                 'nik'           => '3201010101010004',
                 'nama_lengkap'  => 'Dewi Lestari',
@@ -56,7 +56,7 @@ class PesertaDidikSeeder extends Seeder
                 'no_hp'         => null,
             ],
             [
-                'nipd'          => '1722',
+                'nipd'          => '9922',
                 'nisn'          => null,
                 'nik'           => '3201010101010005',
                 'nama_lengkap'  => 'Eko Prasetyo',
