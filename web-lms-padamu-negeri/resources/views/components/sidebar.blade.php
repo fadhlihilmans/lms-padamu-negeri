@@ -73,7 +73,7 @@
 
             <p class="px-3 pt-4 pb-1 text-[10px] font-bold uppercase tracking-[0.08em] text-[#9da4b0]">Sistem</p>
             <x-sidebar-item route="admin.pengaturan" icon="settings" label="Pengaturan" />
-            <x-sidebar-item route="admin.grade" icon="tune" label="Konfigurasi Grade" />
+            <x-sidebar-item route="admin.grade" icon="tune" label="Konfigurasi Nilai" />
             <x-sidebar-item route="admin.error-log" icon="bug_report" label="Log Error" />
             <x-sidebar-item route="admin.bug-report" icon="pest_control" label="Laporan Bug" />
             <x-sidebar-item route="bug-report.index" icon="flag" label="Lapor Bug" />

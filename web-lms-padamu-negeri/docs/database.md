@@ -362,11 +362,21 @@ Unique: (`rapor_id`,`mapel_id`).
 |---|---|---|
 | id | BIGINT PK | |
 | rapor_nilai_mapel_id | FK → rapor_nilai_mapel, onDelete cascade | |
-| nama_komponen | VARCHAR(50) NOT NULL | Pengetahuan, Keterampilan, Sikap |
-| nilai_referensi | TINYINT UNSIGNED NULL | usulan dari rata-rata Tugas+CBT (dihitung saat form dibuka, tidak di-cache permanen) |
-| nilai_akhir | TINYINT UNSIGNED NOT NULL | final; default = nilai_referensi, bisa override |
-| grade | ENUM('A','B','C','D') NOT NULL | konversi otomatis dari nilai_akhir, lihat tabel `konfigurasi_grade` di Bagian 8.1 |
+| nama_komponen | VARCHAR(50) NOT NULL | **`TUGAS`** atau **`SAS/SAT`** (Revisi Tahap 4) |
+| nilai_referensi | TINYINT UNSIGNED NULL | usulan otomatis — **hanya untuk `TUGAS`**; `SAS/SAT` selalu NULL |
+| nilai_akhir | TINYINT UNSIGNED NOT NULL | final; diinput/override guru |
+| grade | ENUM('A','B','C','D') NOT NULL | konversi dari nilai_akhir via `konfigurasi_grade` |
 | catatan | TEXT NULL | |
+
+#### Komponen nilai v2 (Revisi Tahap 4) — MENGGANTI Pengetahuan/Keterampilan
+
+| Komponen | Sumber | Nilai referensi? |
+|---|---|---|
+| **`TUGAS`** | gabungan **nilai Tugas + nilai CBT**, berbobot `bobot_tugas_dari_tugas` : `bobot_tugas_dari_cbt` | **Ya** (dihitung otomatis) |
+| **`SAS/SAT`** | **input manual guru** (Sumatif Akhir Semester/Tahun) | **Tidak** — tidak memakai CBT sama sekali |
+
+**Nilai akhir satu mapel** = `TUGAS × bobot_rapor_tugas%` + `SAS/SAT × bobot_rapor_sas%`
+(bukan rata-rata biasa). Grade A/B/C/D dikonversi dari nilai berbobot ini.
 
 > Catatan: `nilai_referensi` SENGAJA dihitung ulang saat form dibuka (Service
 > Class), bukan disimpan sebagai cache permanen — supaya tidak usang kalau ada
@@ -418,6 +428,39 @@ dan `stitch-prompts.md` Bagian 12).
 > baris yang ada, dikelompokkan per `group`).
 
 ---
+
+### konfigurasi_nilai
+Tabel key-value **khusus BOBOT penilaian** (Revisi Tahap 4). Dikelola Admin lewat
+halaman **Konfigurasi Nilai** (dulu bernama "Konfigurasi Grade").
+
+> **Kenapa tabel sendiri, bukan `settings`?** Keputusan pemilik proyek: bobot nilai
+> dipisahkan dari pengaturan aplikasi umum agar terkumpul di satu halaman khusus
+> bersama rentang grade. Ini **pengecualian resmi** dari aturan `CLAUDE.md` #9
+> (yang mewajibkan konfigurasi global memakai tabel `settings`). Lihat CLAUDE.md #9a.
+
+| Kolom | Tipe | Keterangan |
+|---|---|---|
+| id | BIGINT PK | |
+| key | VARCHAR(100) UNIQUE NOT NULL | snake_case, mis. `bobot_cbt_pg` |
+| value | VARCHAR(50) NOT NULL | disimpan string, cast di Service |
+| type | ENUM('integer') NOT NULL DEFAULT 'integer' | semua bobot berupa persen bulat |
+| grup | VARCHAR(50) NOT NULL | `cbt` / `komponen_tugas` / `rapor` — untuk pengelompokan card |
+| label | VARCHAR(150) NOT NULL | teks di form |
+
+**Baris awal (Seeder) — tiap grup WAJIB total 100:**
+
+| key | grup | default | Kegunaan |
+|---|---|---|---|
+| `bobot_cbt_pg` | cbt | 70 | Porsi Pilihan Ganda pada nilai CBT |
+| `bobot_cbt_uraian` | cbt | 30 | Porsi Uraian pada nilai CBT |
+| `bobot_tugas_dari_tugas` | komponen_tugas | 60 | Porsi nilai Tugas di komponen **TUGAS** |
+| `bobot_tugas_dari_cbt` | komponen_tugas | 40 | Porsi nilai CBT di komponen **TUGAS** |
+| `bobot_rapor_tugas` | rapor | 70 | Porsi komponen **TUGAS** pada nilai mapel |
+| `bobot_rapor_sas` | rapor | 30 | Porsi komponen **SAS/SAT** pada nilai mapel |
+
+> **Normalisasi (WAJIB):** bila salah satu sumber tidak ada, bobot dinormalisasi ke 100%.
+> Contoh: CBT tanpa soal uraian → nilai PG dipakai penuh (100%), BUKAN dikali 70%.
+> Tanpa ini, peserta didik tidak akan pernah bisa mendapat nilai 100.
 
 ### konfigurasi_grade
 Rentang nilai untuk konversi otomatis ke huruf grade (A/B/C/D), dapat diubah

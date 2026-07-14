@@ -68,6 +68,17 @@ file-file ini, file ini yang menang — konfirmasikan dulu ke saya kalau ada ben
    caching & casting konsisten di satu tempat. Gunakan Laravel cache (`Cache::
    remember`) di Service ini agar tidak query DB di setiap request — invalidasi
    cache saat Admin menyimpan perubahan.
+9a. **PENGECUALIAN aturan #9 — Bobot Nilai.** Bobot penilaian (CBT PG/Uraian,
+    komponen TUGAS = Tugas/CBT, dan rapor = TUGAS/SAS-SAT) **TIDAK** disimpan di
+    tabel `settings`, melainkan di tabel tersendiri **`konfigurasi_nilai`**
+    (key-value, lihat `docs/database.md`). Alasannya: bobot dikelola bersama
+    rentang grade di satu halaman khusus **Konfigurasi Nilai** (dulu "Konfigurasi
+    Grade"), terpisah dari menu Pengaturan. Aksesnya lewat `NilaiConfigService`
+    (cache + cast + invalidasi), BUKAN query langsung dari Livewire.
+    Validasi wajib: tiap pasangan bobot dalam satu grup **harus total 100**.
+    Bila salah satu sumber nilai tidak ada, bobot **dinormalisasi ke 100%**
+    (mis. CBT tanpa uraian → nilai PG dipakai penuh, bukan dikali 70%).
+
 10. **Mode Maintenance** (`maintenance_mode`): dicek di Middleware global
     (`CheckMaintenanceMode`), bukan dicek manual di tiap controller/Livewire.
     Saat `true`: Admin tetap bisa login & akses penuh; role lain diarahkan ke

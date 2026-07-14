@@ -10,10 +10,12 @@ use App\Models\PesertaDidik;
 /**
  * Auto-grading & lifecycle pengerjaan CBT.
  *
- * MODEL NILAI (keputusan produk): skala 0–100 per soal.
+ * MODEL NILAI (Revisi Tahap 4): skala 0–100.
  * - nilai_pg     = persentase PG benar (0–100).
  * - nilai_uraian = rata-rata skor uraian (diisi guru saat koreksi).
- * - nilai_akhir  = rata-rata tertimbang PG & uraian menurut jumlah soal.
+ * - nilai_akhir  = PG & Uraian BERBOBOT sesuai `konfigurasi_nilai`
+ *                  (default PG 70% + Uraian 30%), BUKAN lagi ditimbang jumlah soal.
+ *                  Bila hanya ada satu tipe soal, bobot DINORMALISASI ke 100%.
  */
 class CbtGradingService
 {
@@ -77,11 +79,14 @@ class CbtGradingService
                 'waktu_submit'     => now(),
             ]);
         } else {
-            // PG murni → nilai final otomatis.
+            // PG murni → nilai final otomatis. Bobot dinormalisasi ke 100%
+            // (tanpa soal uraian, PG dipakai penuh — BUKAN dikali 70%).
+            $nilaiAkhir = app(NilaiConfigService::class)->nilaiCbt((float) $nilaiPg, null) ?? $nilaiPg;
+
             $hasil->update([
                 'nilai_pg'         => $nilaiPg,
                 'nilai_uraian'     => null,
-                'nilai_akhir'      => $nilaiPg,
+                'nilai_akhir'      => $nilaiAkhir,
                 'status_penilaian' => 'otomatis',
                 'waktu_submit'     => now(),
             ]);

@@ -91,7 +91,8 @@ class RaporSeeder extends Seeder
                     RaporNilaiKomponen::create([
                         'rapor_nilai_mapel_id' => $rnm->id,
                         'nama_komponen'        => $namaKomponen,
-                        'nilai_referensi'      => $nilai,
+                        // SAS/SAT diinput manual → tidak punya nilai referensi.
+                        'nilai_referensi'      => $namaKomponen === \App\Services\RaporService::KOMPONEN_SAS ? null : $nilai,
                         'nilai_akhir'          => $nilai,
                         'grade'                => $this->konversiGrade($gradeRanges, $nilai),
                         'catatan'              => null,

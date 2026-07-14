@@ -11,8 +11,8 @@
 
     {{-- ── Heading ─────────────────────────────────────────────────────────── --}}
     <div>
-        <h1 class="text-xl font-bold text-on-surface">Konfigurasi Grade</h1>
-        <p class="text-sm text-[#505f76] mt-0.5">Atur rentang nilai untuk konversi otomatis ke huruf grade. Rentang antar grade tidak boleh tumpang tindih.</p>
+        <h1 class="text-xl font-bold text-on-surface">Konfigurasi Nilai</h1>
+        <p class="text-sm text-[#505f76] mt-0.5">Atur rentang grade dan bobot penilaian (CBT, komponen TUGAS, dan rapor). Tiap pasangan bobot wajib total 100%.</p>
     </div>
 
     <div class="bg-white border border-[#c5c5d7] rounded-xl overflow-hidden">
@@ -78,5 +78,64 @@
             </button>
         </div>
     </div>
+
+    {{-- ── Card Bobot (Revisi Tahap 4) ──────────────────────────────────────────
+         Tiap grup WAJIB total 100%. Bila salah satu sumber nilai tidak ada,
+         bobot otomatis dinormalisasi ke 100% saat perhitungan (lihat
+         NilaiConfigService) — mis. CBT tanpa uraian → nilai PG dipakai penuh. --}}
+    @foreach ($grupBobot as $grup => $items)
+        @php
+            $total = $items->sum(fn ($i) => (int) ($bobot[$i->key] ?? 0));
+            $penjelasan = match ($grup) {
+                'cbt'            => 'Menentukan nilai akhir sebuah CBT dari porsi soal Pilihan Ganda dan Uraian.',
+                'komponen_tugas' => 'Komponen <b>TUGAS</b> di rapor adalah gabungan nilai Tugas dan nilai CBT.',
+                'rapor'          => 'Nilai akhir tiap mata pelajaran di rapor = <b>TUGAS</b> + <b>SAS/SAT</b> sesuai bobot ini.',
+                default          => '',
+            };
+        @endphp
+
+        <div class="bg-white border border-[#c5c5d7] rounded-xl overflow-hidden">
+            <div class="px-5 py-3.5 border-b border-[#c5c5d7] bg-[#f6fafe]">
+                <p class="text-sm font-semibold text-on-surface">{{ $labelGrup[$grup] ?? $grup }}</p>
+                <p class="text-[12px] text-[#757686] mt-0.5">{!! $penjelasan !!}</p>
+            </div>
+
+            <div class="p-5 space-y-4">
+                @foreach ($items as $item)
+                    <div class="flex items-center justify-between gap-4">
+                        <label class="text-[13.5px] text-on-surface">{{ $item->label }}</label>
+                        <div class="flex items-center gap-1.5 flex-shrink-0">
+                            <input type="number" min="0" max="100" wire:model="bobot.{{ $item->key }}"
+                                   class="w-24 px-3 py-2 border rounded-lg text-sm text-right focus:outline-none focus:border-[#3c50e0] focus:ring-1 focus:ring-[#3c50e0] @error('bobot.'.$item->key) border-[#ba1a1a] @else border-[#c5c5d7] @enderror">
+                            <span class="text-[13px] text-[#757686]">%</span>
+                        </div>
+                    </div>
+                    @error('bobot.'.$item->key)
+                        <p class="text-[12px] text-[#ba1a1a] -mt-2">{{ $message }}</p>
+                    @enderror
+                @endforeach
+
+                {{-- Indikator total: harus tepat 100% --}}
+                <div class="flex items-center justify-between pt-3 border-t border-[#c5c5d7]">
+                    <span class="text-[13px] font-medium text-[#505f76]">Total</span>
+                    <span class="text-[14px] font-bold {{ $total === 100 ? 'text-green-600' : 'text-[#ba1a1a]' }}">
+                        {{ $total }}%
+                        @if ($total !== 100)
+                            <span class="text-[12px] font-normal">(harus 100%)</span>
+                        @endif
+                    </span>
+                </div>
+            </div>
+
+            <div class="px-5 py-3.5 border-t border-[#c5c5d7] flex justify-end">
+                <button wire:click="saveBobot('{{ $grup }}')" wire:loading.attr="disabled"
+                        class="px-5 py-2 bg-[#3c50e0] text-white rounded-lg text-sm font-semibold hover:bg-[#2a3db0] transition-colors flex items-center gap-2 cursor-pointer">
+                    <span wire:loading wire:target="saveBobot('{{ $grup }}')" class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span>
+                    <span wire:loading.remove wire:target="saveBobot('{{ $grup }}')" class="material-symbols-outlined text-[16px]">save</span>
+                    Simpan
+                </button>
+            </div>
+        </div>
+    @endforeach
 
 </div>
