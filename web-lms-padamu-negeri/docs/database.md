@@ -146,6 +146,13 @@ Unique: (`tahun_ajaran`,`semester`).
 
 Unique: (`peserta_didik_id`,`rombel_id`).
 
+> **ATURAN (Revisi Tahap 3): satu peserta didik hanya boleh punya SATU rombel per
+> Tahun Ajaran.** Unique di atas hanya mencegah PD masuk rombel *yang sama* dua kali —
+> ia TIDAK mencegah PD berada di banyak rombel sekaligus. Inilah akar bug
+> "1 siswa banyak rombel". Aturan 1-rombel-per-TA **dijaga di level aplikasi**
+> (Service/Livewire), karena rombel kini per-TA maka ganjil↔genap tidak lagi
+> melahirkan rombel baru.
+
 ### mapel
 | id | BIGINT PK | |
 |---|---|---|
@@ -158,18 +165,22 @@ Unique: (`peserta_didik_id`,`rombel_id`).
 | guru_id | FK → guru, onDelete cascade | |
 | mapel_id | FK → mapel, onDelete cascade | |
 | rombel_id | FK → rombel, onDelete cascade | |
-| periode_ajaran_id | FK → periode_ajaran, onDelete cascade | |
+| tahun_ajaran | VARCHAR(9) NOT NULL | **terikat ke TA, bukan semester** (Revisi Tahap 3) |
 
-Unique: (`guru_id`,`mapel_id`,`rombel_id`,`periode_ajaran_id`).
+Unique: (`guru_id`,`mapel_id`,`rombel_id`,`tahun_ajaran`).
 **Tabel ini jadi dasar otorisasi Materi/Tugas/CBT/Absensi.**
+
+> **PENTING (Revisi Logic Sistem Tahap 3).** Plotting cukup **1× per Tahun Ajaran**;
+> semester genap otomatis memakai data yang sama — TIDAK ada clone. Sebelumnya kolom
+> ini `periode_ajaran_id` (TA+semester), yang membuat rombel & plotting terlahir ulang
+> tiap semester dan menyebabkan "1 siswa banyak rombel". Lihat `docs/keputusan-revisi.md`.
 
 ### jadwal_pelajaran
 | Kolom | Tipe | Keterangan |
 |---|---|---|
 | id | BIGINT PK | |
-| rombel_id | FK → rombel, onDelete cascade | |
-| mapel_id | FK → mapel, onDelete restrict | |
-| guru_id | FK → guru, onDelete restrict | |
+| guru_mapel_rombel_id | FK → guru_mapel_rombel, onDelete cascade | |
+| periode_ajaran_id | FK → periode_ajaran, onDelete cascade | jadwal berlaku per **semester** |
 | hari | ENUM('senin','selasa','rabu','kamis','jumat','sabtu','minggu') | |
 | jam_mulai | TIME NOT NULL | |
 | jam_selesai | TIME NOT NULL | |
@@ -178,22 +189,35 @@ Unique: (`guru_id`,`mapel_id`,`rombel_id`,`periode_ajaran_id`).
 
 ## 3. Kegiatan Belajar
 
+> ### ⚠️ Prinsip Struktur vs Transaksi (Revisi Tahap 3 — WAJIB)
+>
+> - **STRUKTUR** (`rombel`, `guru_mapel_rombel`, keanggotaan) → terikat **Tahun Ajaran**.
+>   Tidak lahir ulang tiap semester.
+> - **TRANSAKSI** (`materi`, `tugas`, `cbt`, `sesi_absensi`, `jadwal_pelajaran`, `rapor`)
+>   → terikat **`periode_ajaran_id`** (TA **+** semester), lewat kolomnya SENDIRI.
+>
+> Kenapa transaksi butuh kolom sendiri: karena `guru_mapel_rombel` kini per-TA, ia tidak
+> lagi membawa informasi semester. Tanpa `periode_ajaran_id` di tabel transaksi, materi/
+> tugas/CBT semester ganjil akan bocor ke semester genap.
+
 ### materi
 | Kolom | Tipe | Keterangan |
 |---|---|---|
 | id | BIGINT PK | |
 | guru_mapel_rombel_id | FK → guru_mapel_rombel, onDelete cascade | |
+| periode_ajaran_id | FK → periode_ajaran, onDelete cascade | **semester tempat materi dibuat** |
 | judul | VARCHAR(200) NOT NULL | |
-| deskripsi | TEXT NULL | |
-| tipe_konten | ENUM('text','file','link_video','gambar') NOT NULL | |
-| file_path | VARCHAR(255) NULL | jika tipe file/gambar |
-| url | VARCHAR(500) NULL | jika tipe link_video |
+| isi | LONGTEXT NULL | rich text (Trix) |
+
+> Lampiran materi dipisah ke tabel `materi_lampiran`
+> (`materi_id`, `tipe` ENUM('file','gambar','link_video'), `file_path`, `url`, `nama_asli`, `urutan`).
 
 ### tugas
 | Kolom | Tipe | Keterangan |
 |---|---|---|
 | id | BIGINT PK | |
 | guru_mapel_rombel_id | FK → guru_mapel_rombel, onDelete cascade | |
+| periode_ajaran_id | FK → periode_ajaran, onDelete cascade | **semester tempat tugas dibuat** |
 | judul | VARCHAR(200) NOT NULL | |
 | deskripsi | TEXT NULL | |
 | lampiran_path | VARCHAR(255) NULL | |
@@ -221,6 +245,7 @@ Unique: (`tugas_id`,`peserta_didik_id`).
 |---|---|---|
 | id | BIGINT PK | |
 | guru_mapel_rombel_id | FK → guru_mapel_rombel, onDelete cascade | |
+| periode_ajaran_id | FK → periode_ajaran, onDelete cascade | **semester tempat CBT dibuat** |
 | nama_ujian | VARCHAR(200) NOT NULL | |
 | kkm | TINYINT UNSIGNED NOT NULL | |
 | tanggal_mulai | DATETIME NOT NULL | |
@@ -272,7 +297,10 @@ Unique: (`cbt_id`,`peserta_didik_id`).
 |---|---|---|
 | id | BIGINT PK | |
 | guru_mapel_rombel_id | FK → guru_mapel_rombel, onDelete cascade | |
+| periode_ajaran_id | FK → periode_ajaran, onDelete cascade | **semester sesi absensi** |
 | tanggal | DATE NOT NULL | |
+| tanggal_buka | DATETIME NULL | kapan sesi mulai boleh diisi |
+| tutup_pada | DATETIME NULL | auto-tutup bila lewat |
 | status_sesi | ENUM('terbuka','ditutup') NOT NULL DEFAULT 'terbuka' | |
 
 ### absensi_detail

@@ -218,10 +218,9 @@ class PesertaDidikManager extends Component
         try {
             $pd = PesertaDidik::findOrFail($id);
 
-            if ($pd->pesertaDidikRombel()->exists()) {
-                $this->dispatch('notify', type: 'error', message: 'Peserta Didik tidak dapat dihapus karena terdaftar di rombel.');
-                return;
-            }
+            // Keanggotaan rombel BUKAN alasan memblokir hapus — itu sekadar penempatan,
+            // bukan jejak akademik. Keanggotaannya ikut di-soft-delete di bawah.
+            // Yang tetap memblokir hanya jejak akademik nyata:
             if ($pd->tugasSubmisi()->exists()) {
                 $this->dispatch('notify', type: 'error', message: 'Peserta Didik tidak dapat dihapus karena memiliki submisi tugas.');
                 return;
@@ -232,6 +231,8 @@ class PesertaDidikManager extends Component
             }
 
             DB::transaction(function () use ($pd) {
+                // Lepaskan dari semua rombel (soft delete) agar tidak menggantung di daftar anggota.
+                $pd->pesertaDidikRombel()->delete();
                 $pd->user->delete();
                 $pd->delete();
             });

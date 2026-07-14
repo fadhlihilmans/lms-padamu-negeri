@@ -80,21 +80,22 @@ class PemetaanGuruMapelRombel extends Component
             'mapelId.exists'    => 'Mata Pelajaran tidak valid.',
         ]);
 
-        $periodeAktif = PeriodeAjaran::where('is_aktif', true)->first();
+        // Plotting terikat TAHUN AJARAN → cukup 1x per TA, genap otomatis ikut.
+        $tahunAjaran = app(\App\Services\PeriodeService::class)->getTahunAjaran();
 
-        if (! $periodeAktif) {
+        if (! $tahunAjaran) {
             $this->dispatch('notify', type: 'error', message: 'Tidak ada Periode Ajaran aktif. Aktifkan periode terlebih dahulu.');
             return;
         }
 
         $duplicate = GuruMapelRombel::where('rombel_id', $this->rombelId)
             ->where('mapel_id', $this->mapelId)
-            ->where('periode_ajaran_id', $periodeAktif->id)
+            ->where('tahun_ajaran', $tahunAjaran)
             ->when($this->editId, fn ($q) => $q->where('id', '!=', $this->editId))
             ->exists();
 
         if ($duplicate) {
-            $this->addError('mapelId', 'Mata Pelajaran ini sudah dipetakan untuk Rombel tersebut pada periode aktif.');
+            $this->addError('mapelId', 'Mata Pelajaran ini sudah dipetakan untuk Rombel tersebut pada Tahun Ajaran ini.');
             return;
         }
 
@@ -104,10 +105,10 @@ class PemetaanGuruMapelRombel extends Component
             GuruMapelRombel::updateOrCreate(
                 ['id' => $this->editId],
                 [
-                    'rombel_id'         => $this->rombelId,
-                    'guru_id'           => $this->guruId,
-                    'mapel_id'          => $this->mapelId,
-                    'periode_ajaran_id' => $periodeAktif->id,
+                    'rombel_id'    => $this->rombelId,
+                    'guru_id'      => $this->guruId,
+                    'mapel_id'     => $this->mapelId,
+                    'tahun_ajaran' => $tahunAjaran,
                 ]
             );
             $this->closeForm();
@@ -149,10 +150,11 @@ class PemetaanGuruMapelRombel extends Component
     public function render(): View
     {
         $periodeAktif = PeriodeAjaran::where('is_aktif', true)->first();
+        $tahunAjaran  = app(\App\Services\PeriodeService::class)->getTahunAjaran();
 
         $pemetaan = GuruMapelRombel::query()
             ->with(['guru', 'mapel', 'rombel'])
-            ->when($periodeAktif, fn (Builder $q) => $q->where('periode_ajaran_id', $periodeAktif->id), fn (Builder $q) => $q->whereRaw('1 = 0'))
+            ->when($tahunAjaran, fn (Builder $q) => $q->where('tahun_ajaran', $tahunAjaran), fn (Builder $q) => $q->whereRaw('1 = 0'))
             ->when($this->filterRombelId, fn (Builder $q) => $q->where('rombel_id', $this->filterRombelId))
             ->when($this->search, fn (Builder $q) => $q->where(function (Builder $qq) {
                 $qq->whereHas('guru', fn (Builder $qqq) => $qqq->where('nama_lengkap', 'like', "%{$this->search}%"))
@@ -162,10 +164,14 @@ class PemetaanGuruMapelRombel extends Component
             ->orderBy('mapel_id')
             ->paginate($this->perPage);
 
-        $rombels = $periodeAktif
-            ? Rombel::where('periode_ajaran_id', $periodeAktif->id)->orderBy('nama')->get()
+        $rombels = $tahunAjaran
+            ? Rombel::where('tahun_ajaran', $tahunAjaran)->orderBy('nama')->get()
             : collect();
-        $gurus  = Guru::orderBy('nama_lengkap')->get();
+        // Hanya guru AKTIF yang bisa dipetakan ke penugasan baru. Guru nonaktif
+        // (sudah keluar) tetap punya histori plotting di TA lampau — tidak dihapus.
+        $gurus = Guru::whereHas('user', fn ($q) => $q->where('is_active', true))
+            ->orderBy('nama_lengkap')
+            ->get();
         $mapels = Mapel::orderBy('nama')->get();
 
         return view('livewire.admin.master-data.pemetaan-guru-mapel-rombel', compact(

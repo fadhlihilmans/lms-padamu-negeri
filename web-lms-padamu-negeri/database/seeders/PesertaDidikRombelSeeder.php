@@ -27,7 +27,7 @@ class PesertaDidikRombelSeeder extends Seeder
                 continue;
             }
 
-            $rombel = Rombel::where('periode_ajaran_id', $periode->id)
+            $rombel = Rombel::where('tahun_ajaran', $periode->tahun_ajaran)
                 ->where('wilayah_id', $wilayah->id)
                 ->first();
             if (! $rombel) {

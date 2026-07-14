@@ -11,6 +11,8 @@ class JadwalPelajaran extends Model
 
     protected $fillable = [
         'guru_mapel_rombel_id',
+        // TRANSAKSI → semester tempat data ini dibuat (Revisi Tahap 3).
+        'periode_ajaran_id',
         'hari',
         'jam_mulai',
         'jam_selesai',
@@ -19,5 +21,17 @@ class JadwalPelajaran extends Model
     public function guruMapelRombel(): BelongsTo
     {
         return $this->belongsTo(GuruMapelRombel::class);
+    }
+
+    /** TRANSAKSI → terikat periode (TA + semester). */
+    public function periodeAjaran(): BelongsTo
+    {
+        return $this->belongsTo(PeriodeAjaran::class);
+    }
+
+    /** Batasi ke satu periode (TA + semester). */
+    public function scopePeriode($query, $periodeId)
+    {
+        return $query->when($periodeId, fn ($q) => $q->where('periode_ajaran_id', $periodeId));
     }
 }

@@ -21,7 +21,7 @@
                 <div class="flex flex-wrap items-center gap-3 text-[13px] text-[#505f76]">
                     <span class="flex items-center gap-1">
                         <span class="material-symbols-outlined text-[14px]">calendar_month</span>
-                        {{ $rombel->periodeAjaran?->nama ?? '—' }}
+                        TA {{ $rombel->tahun_ajaran }}
                     </span>
                     @if ($rombel->paket)
                         <span class="text-[#c5c5d7]">·</span>

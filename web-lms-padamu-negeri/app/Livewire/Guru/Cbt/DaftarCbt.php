@@ -86,7 +86,7 @@ class DaftarCbt extends Component
 
         return GuruMapelRombel::with(['mapel', 'rombel'])
             ->where('guru_id', $guru->id)
-            ->where('periode_ajaran_id', $periode->id)
+            ->where('tahun_ajaran', $periode->tahun_ajaran)
             ->get();
     }
 
@@ -206,6 +206,8 @@ class DaftarCbt extends Component
 
             // jenis_cbt dideteksi ulang dari komposisi soal di FormSoalCbt; default sementara.
             $data['guru_mapel_rombel_id'] = $gmr->id;
+            // TRANSAKSI → semester tempat CBT dibuat (Revisi Tahap 3).
+            $data['periode_ajaran_id']    = app(\App\Services\PeriodeService::class)->getSelected()?->id;
             $data['jenis_cbt']            = 'pilihan_ganda';
             $cbt = Cbt::create($data);
 

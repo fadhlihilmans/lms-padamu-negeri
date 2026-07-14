@@ -114,13 +114,20 @@ class MapelManager extends Component
 
     public function render(): View
     {
+        // Jumlah pemetaan yang DITAMPILKAN dihitung dari TA aktif saja (Revisi #3) —
+        // sebelumnya menjumlah SELURUH tahun ajaran sehingga angkanya menyesatkan.
+        // Catatan: penjaga hapus di atas TETAP mengecek semua TA, karena mapel yang
+        // punya histori di TA lampau tidak boleh dihapus (merusak arsip).
+        $ta = app(\App\Services\PeriodeService::class)->getTahunAjaran();
+
         $mapels = Mapel::query()
             ->when($this->search, fn(Builder $q) => $q->where('nama', 'like', "%{$this->search}%"))
-            ->withCount('guruMapelRombel')
+            ->withCount(['guruMapelRombel as pemetaan_aktif_count' => fn ($q) => $q
+                ->when($ta, fn ($qq) => $qq->where('tahun_ajaran', $ta), fn ($qq) => $qq->whereRaw('1 = 0'))])
             ->orderBy('nama')
             ->paginate($this->perPage);
 
-        return view('livewire.admin.master-data.mapel-manager', compact('mapels'));
+        return view('livewire.admin.master-data.mapel-manager', compact('mapels', 'ta'));
     }
 
     private function resetForm(): void

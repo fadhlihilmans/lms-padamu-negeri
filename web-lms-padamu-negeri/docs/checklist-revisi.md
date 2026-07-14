@@ -54,20 +54,20 @@ Menerapkan desain final `docs/design-references/*.html` ke tampilan Blade aplika
 - [x] 8.3 Form Tugas
 
 ### 9 — CBT
-- [ ] 9.1 Form Soal CBT
-- [ ] 9.2 Pengerjaan CBT
-- [ ] 9.3 Form/Daftar CBT Baru
-- [ ] 9.4 Koreksi CBT
-- [ ] 9.5 Hasil CBT
+- [x] 9.1 Form Soal CBT
+- [x] 9.2 Pengerjaan CBT
+- [x] 9.3 Form/Daftar CBT Baru
+- [x] 9.4 Koreksi CBT
+- [x] 9.5 Hasil CBT
 
 ### 10 — Kenaikan Kelas
-- [ ] 10.1 Assign Rombel Baru
-- [ ] 10.2 Kenaikan Kelas
+- [x] 10.1 Assign Rombel Baru
+- [x] 10.2 Kenaikan Kelas
 
 ### 11 — Rapor
-- [ ] 11.1 Progres Rapor
-- [ ] 11.2 Input Nilai Akhir Rapor
-- [ ] 11.3 Preview Cetak PDF
+- [x] 11.1 Progres Rapor
+- [x] 11.2 Input Nilai Akhir Rapor
+- [x] 11.3 Preview Cetak PDF
 
 ## Fase Revisi Tambah Alert pada form
 
@@ -137,3 +137,67 @@ Ukuran target kompresi **dinamis** dari tabel `settings` (grup Upload).
 ### Catatan
 - [x] Verifikasi driver WebP tersedia di server produksi (Imagick/GD); Intervention otomatis pakai driver yang ada
 - [x] **Output:** gambar yang diunggah tersimpan sebagai WebP ±`kompres_target_kb`, upload non-gambar tetap apa adanya, kegagalan kompres tidak pernah menggagalkan upload
+
+---
+
+## Fase Revisi — Logic Sistem
+
+> Sumber: `Revisi_Logic_Sistem.md`. Diurutkan menurut **ketergantungan & kebutuhan**,
+> bukan urutan asli dokumen. Tahap 3 adalah **akar** dari mayoritas bug di bagian 1–3
+> dokumen asli, jadi sengaja ditaruh setelah bug kritis & keputusan.
+
+### Tahap 0 — Keputusan (BLOCKING, harus diputuskan sebelum Tahap 3 & 4)
+> ✍️ **Keputusan final keempat item di bawah sudah ditulis di [`docs/keputusan-revisi.md`](keputusan-revisi.md).**
+> Baca dokumen itu sebelum mengerjakan Tahap 3 & 4. Bila tidak setuju, ubah dokumennya dulu.
+
+- [x] **Boleh clear database?** (ada data asli NIPD 1721 tercampur dummy) → menentukan Jalur A (`migrate:fresh`) vs Jalur B (migrasi bertahap + backfill)
+- [x] Plotting semester: **clone otomatis** ganjil→genap, atau tetap **manual** per semester
+- [x] CBT nilai uraian: **kunci permanen** setelah dikoreksi, atau **izinkan edit terkontrol**
+- [x] Strategi final "1 siswa banyak rombel" & mekanisme kenaikan kelas (pindah vs clone)
+
+### Tahap 1 — Bug kritis (fitur tak terpakai; tidak menyentuh skema)
+- [-] **Penilaian Akhir error `Undefined array key 17`** untuk semua guru kecuali `g001` — akar: `$rapors[$pid]` (Collection `offsetGet`) di `FormNilaiKomponen.php:118`, ganti ke `$rapors->get($pid)`
+- [-] **Ganti dropdown rombel → pindah → balik ke rombel semula → error** (pola sama dengan di atas)
+- [-] **Preview file peserta didik di MOBILE tidak berfungsi** (tidak muncul, tidak ada tombol close/X) — *prioritas tinggi*
+- [-] Semua file (materi, lampiran tugas, hasil kerja) yang tampil ke siswa harus **mode preview**
+- [-] Siswa di rombel baru yang **belum diisi plotting tidak bisa dihapus**
+
+### Tahap 2 — Perbaikan cepat (risiko rendah, bisa paralel)
+- [-] **Password minimal 3 karakter** (turun dari 6, agar bisa sama dengan NIPD) — ubah di `ModalGantiPassword` & `ProfilSaya`
+- [-] **Import Excel:** paksa kolom **NIPD/NISN/NIK jadi teks** agar `0` di depan tidak hilang (`007` ≠ `7`)
+- [-] **Import Excel:** tanda **bintang (\*)** pada header kolom yang wajib diisi
+- [-] **Editor materi:** list/poin bernomor tidak terlihat di editor (hasil akhir sudah benar → dugaan CSS Trix)
+- [-] **CBT:** tanda/ikon "**sedang berlangsung**" — sekarang ikon "akan datang" hilang begitu CBT dimulai
+- [-] **Styling:** elemen upload file & kirim tugas tidak center
+- [-] **Styling:** padding dropdown mepet (berlaku global)
+- [-] **Upload:** drag & drop belum berfungsi (baru bisa klik pilih file) — *prioritas rendah*
+
+### Tahap 3 — AKAR: Skema Tahun Ajaran (butuh keputusan Tahap 0)
+> Masalah: `rombel` & `guru_mapel_rombel` sekarang terikat `periode_ajaran_id` (**TA + semester**),
+> padahal `docs/database.md` menetapkan rombel terikat **Tahun Ajaran** saja. Ini akar dari
+> duplikat rombel, "1 siswa banyak rombel", dashboard nyantol, jadwal duplikat, dsb.
+
+- [-] Migration: `rombel` & `guru_mapel_rombel` terikat **Tahun Ajaran**, bukan periode (TA+semester)
+- [-] Selaraskan / update `docs/database.md` bila skema final berbeda dari spesifikasi
+- [-] **Plotting cukup 1× per TA** (ganjil); semester genap otomatis memakai data yang sama
+- [-] Data di Admin **difilter TA aktif** saja (bukan seluruh histori)
+- [-] Menu **Rombel**: tampilkan hanya rombel TA aktif
+- [-] **Mata Pelajaran**: jumlah "pemetaan" dihitung dari TA aktif saja
+- [-] **Dashboard Guru & Peserta Didik** ikut TA aktif (tidak nyantol ke periode lama)
+- [-] **Wali kelas lama** tidak lagi tercatat aktif di TA yang sudah lewat
+- [-] **Materi** tidak lagi menampilkan data semester/TA sebelumnya
+- [-] **Jadwal Pelajaran (siswa)**: dropdown rombel tidak duplikat & sinkron dengan TA aktif
+- [-] **Mode arsip** (dropdown TA): benar-benar read-only + menampilkan data TA lama (bukan TA aktif)
+- [-] Telusuri & perbaiki akar **"1 siswa bisa punya banyak rombel"** + cegah duplikasi
+- [-] **Kenaikan kelas (ganjil→genap)**: siswa **PINDAH** rombel, bukan di-clone/double
+- [-] **Kenaikan kelas**: tambah **filter per rombel** + **checklist-semua** untuk pemindahan massal
+- [-] **Manajemen Guru**: solusi hapus guru yang masih punya histori pemetaan di TA lampau
+
+### Tahap 4 — Skema Nilai (Rapor & CBT) — WAJIB update `docs/database.md` dulu
+- [ ] **CBT:** skema penilaian **PG 70% + Uraian 30% = 100** (sekarang ditimbang per jumlah soal di `CbtGradingService`)
+- [ ] **CBT:** nilai uraian tidak bisa ke-edit tak sengaja saat mengoreksi submisi lain (ikuti keputusan Tahap 0)
+- [ ] **Rapor:** komponen **"Pengetahuan" → "TUGAS"** = total nilai Tugas **+** nilai CBT
+- [ ] **Rapor:** komponen **"Keterampilan" → "SAS/SAT"** = **input manual**, tanpa nilai referensi (tidak pakai CBT)
+- [ ] **Rapor:** bobot **Tugas 70% + SAS/SAT 30% = 100**, bersifat **dinamis** (simpan di tabel `settings`)
+- [ ] **Progres Rapor:** status "Belum Lengkap" muncul padahal tugas sudah lengkap (diduga karena siswa belum mengerjakan CBT yang lewat tenggat)
+- [ ] Sesuaikan `RaporService::KOMPONEN`, `referensiForGmr()`, dan `docs/database.md`

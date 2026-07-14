@@ -172,11 +172,12 @@
                     <option value="{{ $p->id }}">{{ $p->nama }}</option>
                 @endforeach
             </select>
-            <select wire:model.live="filterPeriodeId" class="w-full sm:w-auto py-2 pl-2.5 rounded-lg text-[13px] cursor-pointer outline-none sm:flex-shrink-0"
+            {{-- Rombel terikat Tahun Ajaran (bukan semester). Default = TA periode aktif. --}}
+            <select wire:model.live="filterTahunAjaran" class="w-full sm:w-auto py-2 pl-2.5 rounded-lg text-[13px] cursor-pointer outline-none sm:flex-shrink-0"
                     style="border: 1.5px solid #c5c5d7; color: #505f76; background: white">
-                <option value="">Semua Periode</option>
-                @foreach ($periodes as $p)
-                    <option value="{{ $p->id }}">{{ $p->tahun_ajaran }} {{ ucfirst($p->semester) }}</option>
+                <option value="">TA Aktif</option>
+                @foreach ($tahunAjarans as $ta)
+                    <option value="{{ $ta }}">TA {{ $ta }}</option>
                 @endforeach
             </select>
             <div class="flex items-center gap-1.5 w-full sm:w-auto justify-between sm:justify-start sm:flex-shrink-0">
@@ -239,7 +240,7 @@
                     @empty
                         <tr>
                             <td colspan="6" class="px-4 py-16 text-center">
-                                @if ($search || $filterWilayahId || $filterPaketId || $filterPeriodeId)
+                                @if ($search || $filterWilayahId || $filterPaketId || $filterTahunAjaran)
                                     <span class="material-symbols-outlined text-[40px] mb-2 block" style="color: #c5c5d7">search_off</span>
                                     <p class="text-[13px]" style="color: #757686">Tidak ada data ditemukan.</p>
                                     <button wire:click="$set('search', '')" class="mt-2 text-[12.5px] cursor-pointer hover:underline" style="color: #3c50e0">Hapus Filter</button>

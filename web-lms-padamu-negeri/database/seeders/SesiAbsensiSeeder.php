@@ -39,7 +39,7 @@ class SesiAbsensiSeeder extends Seeder
 
         foreach ($config as [$wilayah, $mapel, $sesiList]) {
             $gmr = GuruMapelRombel::with('guru')
-                ->where('periode_ajaran_id', $periode->id)
+                ->where('tahun_ajaran', $periode->tahun_ajaran)
                 ->whereHas('rombel.wilayah', fn ($q) => $q->where('nama', $wilayah))
                 ->whereHas('mapel', fn ($q) => $q->where('nama', $mapel))
                 ->first();
@@ -68,6 +68,7 @@ class SesiAbsensiSeeder extends Seeder
                 $sesi = SesiAbsensi::firstOrCreate(
                     ['guru_mapel_rombel_id' => $gmr->id, 'tanggal' => $tanggal->toDateString()],
                     [
+                        'periode_ajaran_id' => $periode->id,
                         'tanggal_buka' => $bukaAt,
                         'tutup_pada'   => $tutupAt,
                         'status_sesi'  => $sesiDef['status_sesi'],

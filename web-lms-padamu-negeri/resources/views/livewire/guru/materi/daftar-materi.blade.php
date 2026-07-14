@@ -34,8 +34,8 @@
             <span class="text-[#3c50e0] font-medium">{{ $gmrSelected->mapel->nama }}</span>
             <span class="w-full sm:w-auto text-[#505f76]">
                 — {{ $gmrSelected->rombel->paket->nama ?? '' }} · {{ $gmrSelected->rombel->nama }}
-                @if ($gmrSelected->rombel->periodeAjaran)
-                    · Periode {{ $gmrSelected->rombel->periodeAjaran->tahun_ajaran }}
+                @if ($gmrSelected->rombel->tahun_ajaran)
+                    · TA {{ $gmrSelected->rombel->tahun_ajaran }}
                 @endif
             </span>
         </div>

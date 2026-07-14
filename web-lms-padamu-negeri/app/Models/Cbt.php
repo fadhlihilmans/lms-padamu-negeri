@@ -15,6 +15,8 @@ class Cbt extends Model
 
     protected $fillable = [
         'guru_mapel_rombel_id',
+        // TRANSAKSI → semester tempat data ini dibuat (Revisi Tahap 3).
+        'periode_ajaran_id',
         'nama_ujian',
         'kkm',
         'tanggal_mulai',
@@ -44,5 +46,17 @@ class Cbt extends Model
     public function hasilCbt(): HasMany
     {
         return $this->hasMany(HasilCbt::class);
+    }
+
+    /** TRANSAKSI → terikat periode (TA + semester). */
+    public function periodeAjaran(): BelongsTo
+    {
+        return $this->belongsTo(PeriodeAjaran::class);
+    }
+
+    /** Batasi ke satu periode (TA + semester). */
+    public function scopePeriode($query, $periodeId)
+    {
+        return $query->when($periodeId, fn ($q) => $q->where('periode_ajaran_id', $periodeId));
     }
 }

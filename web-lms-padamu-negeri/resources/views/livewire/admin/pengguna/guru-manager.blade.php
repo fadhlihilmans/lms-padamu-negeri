@@ -133,6 +133,65 @@
         </div>
     @endif
 
+    {{-- ── Modal Peringatan Nonaktifkan Guru ────────────────────────────────────
+         Akun nonaktif TIDAK BISA LOGIN. Bila guru masih wali kelas / masih
+         mengampu mapel di TA aktif, tugasnya (rapor, kenaikan kelas, materi,
+         tugas, CBT) akan macet. Karena itu Admin diperingatkan lebih dulu. --}}
+    @if ($confirmToggleId && $toggleGuru && $toggleInfo)
+        <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
+             style="background: rgba(0,0,0,0.5); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px)">
+            <div class="w-full sm:max-w-md bg-white rounded-t-2xl sm:rounded-xl overflow-hidden shadow-xl flex flex-col">
+
+                <div class="px-5 py-5 flex items-start gap-3">
+                    <div class="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0" style="background: #fffbeb">
+                        <span class="material-symbols-outlined text-[18px]" style="color: #d97706">warning</span>
+                    </div>
+                    <div class="min-w-0">
+                        <h4 class="text-[15px] font-semibold" style="color: #171c1f">Nonaktifkan {{ $toggleGuru->nama_lengkap }}?</h4>
+                        <p class="text-[13px] mt-1" style="color: #505f76">
+                            Guru ini <strong>masih punya tugas berjalan</strong> di Tahun Ajaran aktif.
+                            Akun yang dinonaktifkan <strong>tidak bisa login</strong>.
+                        </p>
+
+                        <ul class="mt-3 flex flex-col gap-1.5">
+                            @if (count($toggleInfo['rombelWali']))
+                                <li class="flex items-start gap-1.5 text-[13px]" style="color: #171c1f">
+                                    <span class="material-symbols-outlined text-[15px] flex-shrink-0 mt-0.5" style="color: #ba1a1a">groups</span>
+                                    <span>Wali Kelas di <strong>{{ implode(', ', $toggleInfo['rombelWali']) }}</strong></span>
+                                </li>
+                            @endif
+                            @if ($toggleInfo['jumlahMapel'] > 0)
+                                <li class="flex items-start gap-1.5 text-[13px]" style="color: #171c1f">
+                                    <span class="material-symbols-outlined text-[15px] flex-shrink-0 mt-0.5" style="color: #ba1a1a">book</span>
+                                    <span>Mengampu <strong>{{ $toggleInfo['jumlahMapel'] }} mapel</strong> pada TA aktif</span>
+                                </li>
+                            @endif
+                        </ul>
+
+                        <p class="text-[12.5px] mt-3 p-2.5 rounded-lg" style="background: #fffbeb; color: #92400e">
+                            Sebaiknya <strong>pindahkan dulu</strong> wali kelas &amp; pemetaan mapelnya ke guru lain,
+                            agar rapor, kenaikan kelas, materi, tugas, dan CBT tidak macet.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 px-5 py-4 border-t flex-shrink-0" style="border-color: #d1d5db; background: white">
+                    <button wire:click="cancelToggle"
+                            class="px-4 py-2.5 rounded-lg text-[13px] font-medium border cursor-pointer transition-colors text-center"
+                            style="color: #505f76; border-color: #c5c5d7; background: white"
+                            onmouseover="this.style.background='#f0f4f8'" onmouseout="this.style.background='white'">
+                        Batal
+                    </button>
+                    <button wire:click="confirmNonaktif"
+                            class="px-5 py-2.5 rounded-lg text-[13.5px] font-semibold text-white cursor-pointer transition-colors text-center"
+                            style="background: #d97706" onmouseover="this.style.background='#b45309'" onmouseout="this.style.background='#d97706'">
+                        Tetap Nonaktifkan
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+
     {{-- ── Modal Konfirmasi Hapus ───────────────────────────────────────────── --}}
     @if ($confirmDeleteId)
         <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"

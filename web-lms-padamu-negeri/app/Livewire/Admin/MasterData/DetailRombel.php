@@ -17,7 +17,6 @@ class DetailRombel extends Component
     public function mount(int $id): void
     {
         $this->rombel = Rombel::with([
-            'periodeAjaran',
             'wilayah',
             'paket',
             'tingkat',

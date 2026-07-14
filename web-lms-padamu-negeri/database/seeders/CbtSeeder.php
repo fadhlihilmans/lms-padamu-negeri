@@ -23,7 +23,7 @@ class CbtSeeder extends Seeder
     {
         $periode = PeriodeAjaran::where('is_aktif', true)->firstOrFail();
 
-        $gmr = GuruMapelRombel::where('periode_ajaran_id', $periode->id)
+        $gmr = GuruMapelRombel::where('tahun_ajaran', $periode->tahun_ajaran)
             ->whereHas('rombel.wilayah', fn ($q) => $q->where('nama', 'Botolambat'))
             ->whereHas('mapel', fn ($q) => $q->where('nama', 'Matematika'))
             ->first();
@@ -80,6 +80,7 @@ class CbtSeeder extends Seeder
             $soalDef = $def['soal'];
             unset($def['soal']);
 
+            $def['periode_ajaran_id'] = $periode->id;
             $cbt = Cbt::firstOrCreate(
                 ['guru_mapel_rombel_id' => $gmr->id, 'nama_ujian' => $def['nama_ujian']],
                 $def,

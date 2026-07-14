@@ -47,7 +47,7 @@ class MateriSeeder extends Seeder
         ];
 
         foreach ($materiList as [$wilayah, $mapel, $items]) {
-            $gmr = $this->resolveGmr($periode->id, $wilayah, $mapel);
+            $gmr = $this->resolveGmr($periode->tahun_ajaran, $wilayah, $mapel);
             if (! $gmr) {
                 continue;
             }
@@ -55,7 +55,7 @@ class MateriSeeder extends Seeder
             foreach ($items as $item) {
                 $materi = Materi::firstOrCreate(
                     ['guru_mapel_rombel_id' => $gmr->id, 'judul' => $item['judul']],
-                    ['isi' => $item['isi']],
+                    ['isi' => $item['isi'], 'periode_ajaran_id' => $periode->id],
                 );
 
                 foreach ($item['lampiran'] as $i => $lamp) {
@@ -72,9 +72,9 @@ class MateriSeeder extends Seeder
         }
     }
 
-    private function resolveGmr(int $periodeId, string $wilayah, string $mapel): ?GuruMapelRombel
+    private function resolveGmr(string $tahunAjaran, string $wilayah, string $mapel): ?GuruMapelRombel
     {
-        return GuruMapelRombel::where('periode_ajaran_id', $periodeId)
+        return GuruMapelRombel::where('tahun_ajaran', $tahunAjaran)
             ->whereHas('rombel.wilayah', fn ($q) => $q->where('nama', $wilayah))
             ->whereHas('mapel', fn ($q) => $q->where('nama', $mapel))
             ->first();

@@ -74,13 +74,13 @@ class ProfilSaya extends Component
         $this->validate(
             [
                 'passwordLama'       => ['required', 'string'],
-                'passwordBaru'       => ['required', 'string', 'min:6', 'different:passwordLama'],
+                'passwordBaru'       => ['required', 'string', 'min:3', 'different:passwordLama'],
                 'konfirmasiPassword' => ['required', 'string', 'same:passwordBaru'],
             ],
             [
                 'passwordLama.required'       => 'Password saat ini wajib diisi.',
                 'passwordBaru.required'       => 'Password baru wajib diisi.',
-                'passwordBaru.min'            => 'Password baru minimal 6 karakter.',
+                'passwordBaru.min'            => 'Password baru minimal 3 karakter.',
                 'passwordBaru.different'      => 'Password baru harus berbeda dari password saat ini.',
                 'konfirmasiPassword.required' => 'Konfirmasi password wajib diisi.',
                 'konfirmasiPassword.same'     => 'Konfirmasi password tidak cocok.',

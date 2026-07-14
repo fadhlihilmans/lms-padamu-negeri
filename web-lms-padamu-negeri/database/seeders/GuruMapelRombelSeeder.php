@@ -45,7 +45,7 @@ class GuruMapelRombelSeeder extends Seeder
                 continue;
             }
 
-            $rombel = Rombel::where('periode_ajaran_id', $periode->id)
+            $rombel = Rombel::where('tahun_ajaran', $periode->tahun_ajaran)
                 ->where('wilayah_id', $wilayah->id)
                 ->first();
             if (! $rombel) {
@@ -66,10 +66,10 @@ class GuruMapelRombelSeeder extends Seeder
                 }
 
                 GuruMapelRombel::firstOrCreate([
-                    'guru_id'           => $guru->id,
-                    'mapel_id'          => $mapel->id,
-                    'rombel_id'         => $rombel->id,
-                    'periode_ajaran_id' => $periode->id,
+                    'guru_id'      => $guru->id,
+                    'mapel_id'     => $mapel->id,
+                    'rombel_id'    => $rombel->id,
+                    'tahun_ajaran' => $periode->tahun_ajaran,
                 ]);
             }
         }

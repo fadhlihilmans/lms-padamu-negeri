@@ -28,29 +28,34 @@ class JadwalPesertaDidik extends Component
         $hariOrder  = self::HARI_ORDER;
         $hariLabel  = self::HARI_LABEL;
         $pd         = Auth::user()->pesertaDidik;
+        $periode    = app(\App\Services\PeriodeService::class)->getSelected();
 
-        // Rombel yang diikuti (tidak soft-deleted)
+        // Rombel HANYA dari Tahun Ajaran yang sedang dilihat (bukan seluruh histori).
+        // Karena 1 PD = 1 rombel per TA, daftar ini normalnya berisi tepat satu rombel.
         $rombels = collect();
-        if ($pd) {
+        if ($pd && $periode) {
             $rombels = Rombel::whereHas('pesertaDidikRombel', fn($q) => $q->where('peserta_didik_id', $pd->id))
-                ->orderByDesc('periode_ajaran_id')
+                ->where('tahun_ajaran', $periode->tahun_ajaran)
                 ->orderBy('nama')
                 ->get();
 
-            // Default ke rombel pertama jika belum dipilih
-            if (! $this->filterRombelId && $rombels->isNotEmpty()) {
-                $this->filterRombelId = $rombels->first()->id;
+            // Pilihan lama bisa jadi milik TA lain (mis. setelah ganti periode) → reset.
+            if (! $rombels->contains('id', (int) $this->filterRombelId)) {
+                $this->filterRombelId = (string) ($rombels->first()->id ?? '');
             }
         }
 
         $jadwalByHari   = collect();
         $rombelSelected = null;
 
-        if ($this->filterRombelId) {
-            $rombelSelected = $rombels->firstWhere('id', $this->filterRombelId);
+        if ($this->filterRombelId && $periode) {
+            $rombelSelected = $rombels->firstWhere('id', (int) $this->filterRombelId);
             if ($rombelSelected) {
                 $jadwalRaw = JadwalPelajaran::with(['guruMapelRombel.mapel', 'guruMapelRombel.guru'])
-                    ->whereHas('guruMapelRombel', fn($q) => $q->where('rombel_id', $this->filterRombelId))
+                    // Jadwal berlaku PER SEMESTER. Tanpa filter ini, jadwal ganjil &
+                    // genap tampil bersamaan → itu penyebab "jadwal duplikat".
+                    ->where('periode_ajaran_id', $periode->id)
+                    ->whereHas('guruMapelRombel', fn($q) => $q->where('rombel_id', $rombelSelected->id))
                     ->orderByRaw("FIELD(hari, 'senin','selasa','rabu','kamis','jumat','sabtu','minggu')")
                     ->orderBy('jam_mulai')
                     ->get();
@@ -59,7 +64,7 @@ class JadwalPesertaDidik extends Component
         }
 
         return view('livewire.peserta-didik.jadwal-peserta-didik', compact(
-            'pd', 'rombels', 'rombelSelected', 'jadwalByHari', 'hariOrder', 'hariLabel'
+            'pd', 'rombels', 'rombelSelected', 'jadwalByHari', 'hariOrder', 'hariLabel', 'periode'
         ));
     }
 }

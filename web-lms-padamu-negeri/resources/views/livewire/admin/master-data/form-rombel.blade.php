@@ -24,22 +24,23 @@
             <form wire:submit="save">
                 <div class="px-5 py-5 space-y-4">
 
-                    {{-- Periode Ajaran --}}
+                    {{-- Tahun Ajaran — rombel terikat TA, bukan semester (Revisi Tahap 3) --}}
                     <div>
-                        <label for="periodeAjaranId" class="block text-[13px] font-medium mb-1.5" style="color: #171c1f">Periode Ajaran <span style="color: #ba1a1a">*</span></label>
-                        <select wire:model="periodeAjaranId" id="periodeAjaranId"
+                        <label for="tahunAjaran" class="block text-[13px] font-medium mb-1.5" style="color: #171c1f">Tahun Ajaran <span style="color: #ba1a1a">*</span></label>
+                        <select wire:model="tahunAjaran" id="tahunAjaran"
                                 class="w-full px-3 py-2.5 rounded-lg text-[14px] bg-white outline-none cursor-pointer transition-all"
-                                style="border: 1.5px solid {{ $errors->has('periodeAjaranId') ? '#ba1a1a' : '#c5c5d7' }}; color: #171c1f"
+                                style="border: 1.5px solid {{ $errors->has('tahunAjaran') ? '#ba1a1a' : '#c5c5d7' }}; color: #171c1f"
                                 onfocus="this.style.borderColor='#3c50e0'; this.style.boxShadow='0 0 0 3px rgba(60,80,224,0.1)'"
-                                onblur="this.style.borderColor='{{ $errors->has('periodeAjaranId') ? '#ba1a1a' : '#c5c5d7' }}'; this.style.boxShadow='none'">
-                            <option value="" selected>Pilih periode...</option>
-                            @foreach ($periodes as $p)
-                                <option value="{{ $p->id }}">{{ $p->tahun_ajaran }} — {{ ucfirst($p->semester) }}{{ $p->is_aktif ? ' (Aktif)' : '' }}</option>
+                                onblur="this.style.borderColor='{{ $errors->has('tahunAjaran') ? '#ba1a1a' : '#c5c5d7' }}'; this.style.boxShadow='none'">
+                            <option value="" selected>Pilih tahun ajaran...</option>
+                            @foreach ($tahunAjarans as $ta)
+                                <option value="{{ $ta }}">{{ $ta }}</option>
                             @endforeach
                         </select>
-                        @error('periodeAjaranId')
+                        @error('tahunAjaran')
                             <p class="text-[12px] mt-1.5" style="color: #ba1a1a">{{ $message }}</p>
                         @enderror
+                        <p class="text-[12px] mt-1.5" style="color: #9da4b0">Rombel berlaku untuk satu Tahun Ajaran penuh (ganjil &amp; genap).</p>
                     </div>
 
                     {{-- Paket & Tingkat --}}
@@ -117,12 +118,12 @@
                     </div>
 
                     {{-- Preview nama otomatis --}}
-                    @if ($periodeAjaranId && $wilayahId && $paketId && $tingkatId)
+                    @if ($tahunAjaran && $wilayahId && $paketId && $tingkatId)
                         @php
                             $prevW  = $wilayahs->firstWhere('id', $wilayahId)?->nama ?? '?';
                             $prevP  = $pakets->firstWhere('id', $paketId)?->nama ?? '?';
                             $prevT  = $tingkats->firstWhere('id', $tingkatId)?->nama ?? '?';
-                            $prevTA = $periodes->firstWhere('id', $periodeAjaranId)?->tahun_ajaran ?? '?';
+                            $prevTA = $tahunAjaran;
                         @endphp
                         <div class="flex items-start gap-2 p-3 rounded-lg border" style="background: #EEF2FF; border-color: #c5d0ff">
                             <span class="material-symbols-outlined text-[16px] flex-shrink-0 mt-0.5" style="color: #3c50e0">auto_awesome</span>

@@ -35,7 +35,7 @@ class RaporSeeder extends Seeder
         }
 
         $rombel = Rombel::with('waliKelas')
-            ->where('periode_ajaran_id', $periode->id)
+            ->where('tahun_ajaran', $periode->tahun_ajaran)
             ->where('wilayah_id', $wilayah->id)
             ->first();
         if (! $rombel) {
@@ -47,7 +47,7 @@ class RaporSeeder extends Seeder
         // Mapel yang diajarkan di rombel ini + guru pengampunya.
         $gmrs = GuruMapelRombel::with(['mapel', 'guru'])
             ->where('rombel_id', $rombel->id)
-            ->where('periode_ajaran_id', $periode->id)
+            ->where('tahun_ajaran', $periode->tahun_ajaran)
             ->get();
 
         // PD anggota rombel (urut stabil).

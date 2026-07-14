@@ -117,6 +117,8 @@ class SesiAbsensi extends Component
         try {
             $sesi = SesiAbsensiModel::create([
                 'guru_mapel_rombel_id' => $this->selectedGmrId,
+                // TRANSAKSI → semester tempat sesi absensi dibuat (Revisi Tahap 3).
+                'periode_ajaran_id'    => app(\App\Services\PeriodeService::class)->getSelected()?->id,
                 'tanggal'              => $bukaPada->toDateString(),
                 'tanggal_buka'         => $bukaPada,
                 'tutup_pada'           => $tutupPada,
@@ -202,7 +204,7 @@ class SesiAbsensi extends Component
         if (! $guru || ! $periode) return collect();
 
         return GuruMapelRombel::where('guru_id', $guru->id)
-            ->where('periode_ajaran_id', $periode->id)
+            ->where('tahun_ajaran', $periode->tahun_ajaran)
             ->with(['mapel', 'rombel'])
             ->get();
     }

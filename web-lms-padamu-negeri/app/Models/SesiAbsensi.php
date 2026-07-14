@@ -12,6 +12,8 @@ class SesiAbsensi extends Model
 
     protected $fillable = [
         'guru_mapel_rombel_id',
+        // TRANSAKSI → semester tempat data ini dibuat (Revisi Tahap 3).
+        'periode_ajaran_id',
         'tanggal',
         'tanggal_buka',
         'tutup_pada',
@@ -35,5 +37,17 @@ class SesiAbsensi extends Model
     public function detail(): HasMany
     {
         return $this->hasMany(AbsensiDetail::class);
+    }
+
+    /** TRANSAKSI → terikat periode (TA + semester). */
+    public function periodeAjaran(): BelongsTo
+    {
+        return $this->belongsTo(PeriodeAjaran::class);
+    }
+
+    /** Batasi ke satu periode (TA + semester). */
+    public function scopePeriode($query, $periodeId)
+    {
+        return $query->when($periodeId, fn ($q) => $q->where('periode_ajaran_id', $periodeId));
     }
 }

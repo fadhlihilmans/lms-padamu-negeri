@@ -21,6 +21,18 @@ class PeriodeService
         return PeriodeAjaran::where('is_aktif', true)->first();
     }
 
+    /**
+     * Tahun Ajaran dari periode yang sedang dipilih (mis. "2024/2025").
+     *
+     * Dipakai untuk semua query STRUKTUR — `rombel` & `guru_mapel_rombel` kini
+     * terikat Tahun Ajaran, bukan periode (TA+semester). Lihat database.md
+     * "Prinsip Struktur vs Transaksi".
+     */
+    public function getTahunAjaran(): ?string
+    {
+        return $this->getSelected()?->tahun_ajaran;
+    }
+
     public function isReadOnlyMode(): bool
     {
         $periode = $this->getSelected();

@@ -151,6 +151,7 @@ class FormMateri extends Component
                 ['id' => $this->editId],
                 [
                     'guru_mapel_rombel_id' => $gmr->id,
+                    'periode_ajaran_id'    => app(\App\Services\PeriodeService::class)->getSelected()?->id,  // TRANSAKSI → semester
                     'judul'                => $this->judul,
                     'isi'                  => $this->isi ?: null,
                 ]

@@ -39,7 +39,7 @@ class KenaikanKelasSeeder extends Seeder
             }
 
             $rombel = Rombel::with('waliKelas')
-                ->where('periode_ajaran_id', $periode->id)
+                ->where('tahun_ajaran', $periode->tahun_ajaran)
                 ->where('wilayah_id', $wilayah->id)
                 ->first();
 

@@ -27,7 +27,7 @@ class RombelSeeder extends Seeder
         $rombels = [
             // Rombel 1: Botolambat – Paket C – Kelas 10
             [
-                'periode_ajaran_id' => $periode->id,
+                'tahun_ajaran'      => $periode->tahun_ajaran,
                 'wilayah_id'        => $botolambat->id,
                 'paket_id'          => $paketC->id,
                 'tingkat_id'        => $kelas10->id,
@@ -36,7 +36,7 @@ class RombelSeeder extends Seeder
             ],
             // Rombel 2: Pondok 1 – Paket B – Kelas 7
             [
-                'periode_ajaran_id' => $periode->id,
+                'tahun_ajaran'      => $periode->tahun_ajaran,
                 'wilayah_id'        => $pondok1->id,
                 'paket_id'          => $paketB->id,
                 'tingkat_id'        => $kelas7->id,
@@ -48,7 +48,7 @@ class RombelSeeder extends Seeder
         foreach ($rombels as $data) {
             Rombel::firstOrCreate(
                 [
-                    'periode_ajaran_id' => $data['periode_ajaran_id'],
+                    'tahun_ajaran'      => $data['tahun_ajaran'],
                     'wilayah_id'        => $data['wilayah_id'],
                     'paket_id'          => $data['paket_id'],
                     'tingkat_id'        => $data['tingkat_id'],

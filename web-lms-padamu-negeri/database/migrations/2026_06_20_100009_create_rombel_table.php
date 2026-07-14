@@ -10,7 +10,10 @@ return new class extends Migration
     {
         Schema::create('rombel', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('periode_ajaran_id')->constrained('periode_ajaran')->restrictOnDelete();
+            // STRUKTUR → terikat TAHUN AJARAN, bukan semester (database.md; Revisi Tahap 3).
+            // Dengan begini rombel TIDAK lahir ulang tiap semester, sehingga peserta didik
+            // tidak perlu di-clone ganjil→genap (akar bug "1 siswa banyak rombel").
+            $table->string('tahun_ajaran', 9)->index();
             $table->foreignId('wilayah_id')->constrained('wilayah')->restrictOnDelete();
             $table->foreignId('paket_id')->constrained('paket')->restrictOnDelete();
             $table->foreignId('tingkat_id')->constrained('tingkat')->restrictOnDelete();

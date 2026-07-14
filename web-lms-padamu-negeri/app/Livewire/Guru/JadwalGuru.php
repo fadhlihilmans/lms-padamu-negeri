@@ -97,6 +97,7 @@ class JadwalGuru extends Component
         }
 
         $duplicate = JadwalPelajaran::whereHas('guruMapelRombel', fn($q) => $q->where('rombel_id', $rombelWaliKelas->id))
+            ->where('periode_ajaran_id', app(\App\Services\PeriodeService::class)->getSelected()?->id)  // bentrok dinilai per semester
             ->where('hari', $this->hari)
             ->where('jam_mulai', $this->jamMulai . ':00')
             ->when($this->editId, fn($q) => $q->where('id', '!=', $this->editId))
@@ -114,6 +115,7 @@ class JadwalGuru extends Component
                 ['id' => $this->editId],
                 [
                     'guru_mapel_rombel_id' => $this->gmrId,
+                    'periode_ajaran_id'    => app(\App\Services\PeriodeService::class)->getSelected()?->id,  // TRANSAKSI → semester
                     'hari'                 => $this->hari,
                     'jam_mulai'            => $this->jamMulai,
                     'jam_selesai'          => $this->jamSelesai,
@@ -174,8 +176,10 @@ class JadwalGuru extends Component
         if ($guru) {
             // Jadwal pribadi (sebagai pengajar di semua rombel)
             $jadwalRaw = JadwalPelajaran::with(['guruMapelRombel.rombel', 'guruMapelRombel.mapel'])
+                // Jadwal berlaku per SEMESTER — tanpa ini ganjil & genap tampil bersamaan.
+                ->when($periode, fn($q) => $q->where('periode_ajaran_id', $periode->id))
                 ->whereHas('guruMapelRombel', fn($q) => $q->where('guru_id', $guru->id)
-                    ->when($periode, fn($s) => $s->where('periode_ajaran_id', $periode->id))
+                    ->when($periode, fn($s) => $s->where('tahun_ajaran', $periode->tahun_ajaran))
                 )
                 ->orderByRaw("FIELD(hari, 'senin','selasa','rabu','kamis','jumat','sabtu','minggu')")
                 ->orderBy('jam_mulai')
@@ -190,12 +194,13 @@ class JadwalGuru extends Component
                 $pemetaanQuery = GuruMapelRombel::with(['guru', 'mapel'])
                     ->where('rombel_id', $rombelWaliKelas->id);
                 if ($periode) {
-                    $pemetaanQuery->where('periode_ajaran_id', $periode->id);
+                    $pemetaanQuery->where('tahun_ajaran', $periode->tahun_ajaran);
                 }
                 $pemetaanWk = $pemetaanQuery->orderBy('mapel_id')->get();
 
                 // Jadwal rombel wali kelas
                 $jadwalWkRaw = JadwalPelajaran::with(['guruMapelRombel.mapel', 'guruMapelRombel.guru'])
+                    ->when($periode, fn($q) => $q->where('periode_ajaran_id', $periode->id))
                     ->whereHas('guruMapelRombel', fn($q) => $q->where('rombel_id', $rombelWaliKelas->id))
                     ->orderByRaw("FIELD(hari, 'senin','selasa','rabu','kamis','jumat','sabtu','minggu')")
                     ->orderBy('jam_mulai')

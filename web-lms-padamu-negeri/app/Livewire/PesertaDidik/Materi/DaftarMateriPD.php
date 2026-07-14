@@ -40,7 +40,7 @@ class DaftarMateriPD extends Component
         if ($pd && $periode) {
             $rombels = PesertaDidikRombel::with('rombel')
                 ->where('peserta_didik_id', $pd->id)
-                ->whereHas('rombel', fn($q) => $q->where('periode_ajaran_id', $periode->id))
+                ->whereHas('rombel', fn($q) => $q->where('tahun_ajaran', $periode->tahun_ajaran))
                 ->get()
                 ->pluck('rombel');
 
@@ -49,7 +49,7 @@ class DaftarMateriPD extends Component
             if ($rombelIds) {
                 $mapels = \App\Models\GuruMapelRombel::with('mapel')
                     ->whereIn('rombel_id', $rombelIds)
-                    ->where('periode_ajaran_id', $periode->id)
+                    ->where('tahun_ajaran', $periode->tahun_ajaran)
                     ->get()
                     ->pluck('mapel')
                     ->unique('id')
@@ -57,10 +57,9 @@ class DaftarMateriPD extends Component
                     ->values();
 
                 $materi = Materi::with(['guruMapelRombel.mapel', 'guruMapelRombel.guru', 'lampiran'])
-                    ->whereHas('guruMapelRombel', function ($q) use ($rombelIds, $periode) {
-                        $q->whereIn('rombel_id', $rombelIds)
-                          ->where('periode_ajaran_id', $periode->id);
-                    })
+                    // TRANSAKSI: materi disaring per PERIODE (semester) langsung.
+                    ->where('periode_ajaran_id', $periode->id)
+                    ->whereHas('guruMapelRombel', fn ($q) => $q->whereIn('rombel_id', $rombelIds))
                     ->when($this->search, fn($q) => $q->where('judul', 'like', '%' . $this->search . '%'))
                     ->when($this->filterMapel, fn($q) => $q->whereHas(
                         'guruMapelRombel', fn($s) => $s->where('mapel_id', $this->filterMapel)

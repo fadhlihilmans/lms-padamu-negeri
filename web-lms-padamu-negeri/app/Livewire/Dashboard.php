@@ -43,7 +43,7 @@ class Dashboard extends Component
         } elseif ($user?->hasRole('guru')) {
             $data = array_merge($data, $this->dataGuru($user, $periode, $hariIni));
         } elseif ($user?->hasRole('peserta_didik')) {
-            $data = array_merge($data, $this->dataPesertaDidik($user, $hariIni));
+            $data = array_merge($data, $this->dataPesertaDidik($user, $hariIni, $periode));
         }
 
         return view('livewire.dashboard', $data);
@@ -52,7 +52,7 @@ class Dashboard extends Component
     private function dataAdmin(?object $periode): array
     {
         $rombelQuery = Rombel::query()
-            ->when($periode, fn ($q) => $q->where('periode_ajaran_id', $periode->id));
+            ->when($periode, fn ($q) => $q->where('tahun_ajaran', $periode->tahun_ajaran));
 
         // Rekap absensi hari ini (semua sesi hari ini).
         $sesiHariIniIds = SesiAbsensi::whereDate('tanggal', today())->pluck('id');
@@ -94,7 +94,7 @@ class Dashboard extends Component
 
         $jadwalHariIni = JadwalPelajaran::whereHas('guruMapelRombel', fn ($q) => $q
                 ->where('guru_id', $guru->id)
-                ->when($periode, fn ($qq) => $qq->where('periode_ajaran_id', $periode->id)))
+                ->when($periode, fn ($qq) => $qq->where('tahun_ajaran', $periode->tahun_ajaran)))
             ->where('hari', $hariIni)
             ->with(['guruMapelRombel.mapel', 'guruMapelRombel.rombel'])
             ->orderBy('jam_mulai')
@@ -117,19 +117,28 @@ class Dashboard extends Component
         ];
     }
 
-    private function dataPesertaDidik(object $user, string $hariIni): array
+    private function dataPesertaDidik(object $user, string $hariIni, ?object $periode = null): array
     {
-        $pd       = $user->pesertaDidik;
-        $rombelPd = $pd?->pesertaDidikRombel()->with('rombel.paket')->latest()->first()?->rombel;
+        $pd = $user->pesertaDidik;
+
+        // Rombel PD pada TAHUN AJARAN yang sedang dilihat — BUKAN sekadar keanggotaan
+        // terbaru. Sebelumnya memakai latest(), sehingga saat melihat periode lampau
+        // dashboard tetap "nyantol" ke rombel TA terbaru (Revisi #4).
+        $rombelPd = ($pd && $periode)
+            ? $pd->pesertaDidikRombel()
+                ->whereHas('rombel', fn ($q) => $q->where('tahun_ajaran', $periode->tahun_ajaran))
+                ->with('rombel.paket')
+                ->first()?->rombel
+            : null;
         $rombelId = $rombelPd?->id;
 
         // Status absensi hari ini: 'tidak_ada_sesi' | 'belum' | 'sudah'.
         $absensiStatus   = 'tidak_ada_sesi';
         $sesiTerbukaCount = 0;
-        if ($pd) {
-            $rombelIds = $pd->pesertaDidikRombel()->pluck('rombel_id');
-
-            $sesiHariIni = SesiAbsensi::whereHas('guruMapelRombel', fn ($q) => $q->whereIn('rombel_id', $rombelIds))
+        if ($pd && $rombelId) {
+            $sesiHariIni = SesiAbsensi::whereHas('guruMapelRombel', fn ($q) => $q->where('rombel_id', $rombelId))
+                // Absensi terikat SEMESTER (periode), bukan hanya rombel.
+                ->when($periode, fn ($q) => $q->where('periode_ajaran_id', $periode->id))
                 ->whereDate('tanggal', today())
                 ->get();
 
@@ -165,12 +174,20 @@ class Dashboard extends Component
                 ->get()
             : collect();
 
-        $cbtMendatang = $rombelId
+        // CBT yang BELUM BERAKHIR — mencakup yang "akan datang" MAUPUN yang
+        // "sedang berlangsung". Sebelumnya hanya `tanggal_mulai >= now()`,
+        // sehingga begitu CBT dimulai ia langsung hilang dari dashboard dan
+        // peserta didik kehilangan tandanya.
+        $cbtMendatang = ($rombelId && $pd)
             ? Cbt::whereHas('guruMapelRombel', fn ($q) => $q->where('rombel_id', $rombelId))
-                ->where('tanggal_mulai', '>=', now())
+                ->whereRaw('DATE_ADD(tanggal_mulai, INTERVAL durasi_menit MINUTE) >= ?', [now()])
+                // Sembunyikan yang sudah dikumpulkan oleh PD ini.
+                ->whereDoesntHave('hasilCbt', fn ($q) => $q
+                    ->where('peserta_didik_id', $pd->id)
+                    ->whereNotNull('waktu_submit'))
                 ->with('guruMapelRombel.mapel')
                 ->orderBy('tanggal_mulai')
-                ->take(2)
+                ->take(3)
                 ->get()
             : collect();
 

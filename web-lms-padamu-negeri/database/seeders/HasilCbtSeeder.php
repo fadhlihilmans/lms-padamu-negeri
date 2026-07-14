@@ -22,7 +22,7 @@ class HasilCbtSeeder extends Seeder
     {
         $periode = PeriodeAjaran::where('is_aktif', true)->firstOrFail();
 
-        $gmr = GuruMapelRombel::where('periode_ajaran_id', $periode->id)
+        $gmr = GuruMapelRombel::where('tahun_ajaran', $periode->tahun_ajaran)
             ->whereHas('rombel.wilayah', fn ($q) => $q->where('nama', 'Botolambat'))
             ->whereHas('mapel', fn ($q) => $q->where('nama', 'Matematika'))
             ->first();
