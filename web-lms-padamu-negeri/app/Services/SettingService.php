@@ -11,12 +11,17 @@ class SettingService
     private const CACHE_TTL    = 3600; // 1 hour
 
     private const DEFAULTS = [
-        'modul_materi_aktif'   => true,
-        'modul_tugas_aktif'    => true,
-        'modul_absensi_aktif'  => true,
-        'modul_cbt_aktif'      => true,
-        'maintenance_mode'     => false,
-        'max_upload_materi_mb' => 10,
+        'modul_materi_guru_aktif'  => true,
+        'modul_materi_pd_aktif'    => true,
+        'modul_tugas_guru_aktif'   => true,
+        'modul_tugas_pd_aktif'     => true,
+        'modul_absensi_guru_aktif' => true,
+        'modul_absensi_pd_aktif'   => true,
+        'modul_cbt_guru_aktif'     => true,
+        'modul_cbt_pd_aktif'       => true,
+        'maintenance_mode'         => false,
+        'max_upload_materi_mb'     => 10,
+        'max_upload_tugas_mb'      => 10,
     ];
 
     private function all(): array

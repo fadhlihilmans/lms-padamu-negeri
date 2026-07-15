@@ -22,7 +22,7 @@
                    class="w-full pl-10 pr-4 py-2.5 border border-[#c5c5d7] rounded-lg text-sm focus:outline-none focus:ring-1 focus:ring-[#3c50e0]">
         </div>
         <input wire:model.live="tanggal" type="date"
-               class="px-3 py-2.5 border border-[#c5c5d7] rounded-lg text-sm bg-white cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#3c50e0]">
+               class="w-full sm:w-auto px-3 py-2.5 border border-[#c5c5d7] rounded-lg text-sm bg-white cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#3c50e0]">
     </div>
 
     {{-- ── Tabel ───────────────────────────────────────────────────────────── --}}

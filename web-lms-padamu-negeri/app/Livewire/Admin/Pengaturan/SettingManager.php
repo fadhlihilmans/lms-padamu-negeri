@@ -26,13 +26,14 @@ class SettingManager extends Component
     public array $logoFiles = [];
 
     public const GROUP_LABEL = [
-        'general'   => 'Umum',
-        'kop_rapor' => 'Kop Rapor',
-        'upload'    => 'Upload',
-        'modul'     => 'Modul',
+        'general'    => 'Umum',
+        'kop_rapor'  => 'Kop Rapor',
+        'upload'     => 'Upload',
+        'modul_guru' => 'Modul — Guru',
+        'modul_pd'   => 'Modul — Peserta Didik',
     ];
 
-    public const GROUP_ORDER = ['general', 'kop_rapor', 'upload', 'modul'];
+    public const GROUP_ORDER = ['general', 'kop_rapor', 'upload', 'modul_guru', 'modul_pd'];
 
     public function mount(): void
     {

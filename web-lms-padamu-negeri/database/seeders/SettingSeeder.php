@@ -34,10 +34,15 @@ class SettingSeeder extends Seeder
             ['kompres_target_kb', 'integer', 'upload', '300', 'Target Kompres Gambar (KB)', 'Gambar yang diunggah dikompres ke WebP hingga sekitar ukuran ini (logo, gambar materi, screenshot bug).'],
 
             // ── Modul ──
-            ['modul_materi_aktif', 'boolean', 'modul', '1', 'Modul Materi', 'Aktifkan/nonaktifkan modul Materi.'],
-            ['modul_tugas_aktif', 'boolean', 'modul', '1', 'Modul Tugas', 'Aktifkan/nonaktifkan modul Tugas.'],
-            ['modul_absensi_aktif', 'boolean', 'modul', '1', 'Modul Absensi', 'Aktifkan/nonaktifkan modul Absensi.'],
-            ['modul_cbt_aktif', 'boolean', 'modul', '1', 'Modul CBT', 'Aktifkan/nonaktifkan modul CBT.'],
+            // Toggle per role — dikelompokkan per blok role (CLAUDE.md #11).
+            ['modul_materi_guru_aktif', 'boolean', 'modul_guru', '1', 'Materi', 'Akses modul Materi untuk Guru.'],
+            ['modul_tugas_guru_aktif', 'boolean', 'modul_guru', '1', 'Tugas', 'Akses modul Tugas untuk Guru.'],
+            ['modul_absensi_guru_aktif', 'boolean', 'modul_guru', '1', 'Absensi', 'Akses modul Absensi untuk Guru.'],
+            ['modul_cbt_guru_aktif', 'boolean', 'modul_guru', '1', 'CBT', 'Akses modul CBT untuk Guru.'],
+            ['modul_materi_pd_aktif', 'boolean', 'modul_pd', '1', 'Materi', 'Akses modul Materi untuk Peserta Didik.'],
+            ['modul_tugas_pd_aktif', 'boolean', 'modul_pd', '1', 'Tugas', 'Akses modul Tugas untuk Peserta Didik.'],
+            ['modul_absensi_pd_aktif', 'boolean', 'modul_pd', '1', 'Absensi', 'Akses modul Absensi untuk Peserta Didik.'],
+            ['modul_cbt_pd_aktif', 'boolean', 'modul_pd', '1', 'CBT', 'Akses modul CBT untuk Peserta Didik.'],
         ];
 
         foreach ($rows as [$key, $type, $group, $value, $label, $desc]) {

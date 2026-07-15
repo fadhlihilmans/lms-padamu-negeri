@@ -380,10 +380,10 @@ dan `stitch-prompts.md` Bagian 12).
 | `logo_kabupaten_path` | string | kop_rapor | (path file upload) | Logo kiri kop rapor. |
 | `max_upload_materi_mb` | integer | upload | `10` | Batas ukuran file materi, divalidasi di form Livewire. |
 | `max_upload_tugas_mb` | integer | upload | `10` | Batas ukuran file submisi tugas. |
-| `modul_cbt_aktif` | boolean | modul | `true` | Lihat aturan dua-lapis di `CLAUDE.md`. |
-| `modul_tugas_aktif` | boolean | modul | `true` | idem. |
-| `modul_absensi_aktif` | boolean | modul | `true` | idem. |
-| `modul_materi_aktif` | boolean | modul | `true` | idem. |
+| `modul_cbt_guru_aktif` / `modul_cbt_pd_aktif` | boolean | modul | `true` | Toggle **terpisah per role** (Guru & Peserta Didik). Lihat aturan dua-lapis di `CLAUDE.md`. |
+| `modul_tugas_guru_aktif` / `modul_tugas_pd_aktif` | boolean | modul | `true` | idem. |
+| `modul_absensi_guru_aktif` / `modul_absensi_pd_aktif` | boolean | modul | `true` | idem. |
+| `modul_materi_guru_aktif` / `modul_materi_pd_aktif` | boolean | modul | `true` | idem. |
 
 > Tambah baris baru kapan saja tanpa migration baru — cukup `INSERT` lewat
 > Seeder atau lewat UI Pengaturan itu sendiri (form generate otomatis dari
