@@ -39,9 +39,9 @@ class ProgresRapor extends Component
             return collect();
         }
 
-        return \App\Models\Rombel::with('periodeAjaran')
+        return \App\Models\Rombel::query()
             ->where('wali_kelas_id', $guru->id)
-            ->where('periode_ajaran_id', $periode->id)
+            ->where('tahun_ajaran', $periode->tahun_ajaran)
             ->orderBy('nama')
             ->get();
     }
@@ -141,7 +141,7 @@ class ProgresRapor extends Component
 
         $gmrs = GuruMapelRombel::with(['mapel', 'guru'])
             ->where('rombel_id', $this->rombelId)
-            ->where('periode_ajaran_id', $periode?->id)
+            ->where('tahun_ajaran', $periode?->tahun_ajaran)
             ->get();
 
         $rapors   = Rapor::where('periode_ajaran_id', $periode?->id)

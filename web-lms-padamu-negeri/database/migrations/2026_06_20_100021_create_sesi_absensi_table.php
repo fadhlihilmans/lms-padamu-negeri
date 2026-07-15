@@ -11,6 +11,9 @@ return new class extends Migration
         Schema::create('sesi_absensi', function (Blueprint $table) {
             $table->id();
             $table->foreignId('guru_mapel_rombel_id')->constrained('guru_mapel_rombel')->cascadeOnDelete();
+            // TRANSAKSI → terikat PERIODE (TA + semester). Wajib karena guru_mapel_rombel
+            // kini per-TA sehingga tidak lagi membawa info semester (Revisi Tahap 3).
+            $table->foreignId('periode_ajaran_id')->constrained('periode_ajaran')->cascadeOnDelete();
             $table->date('tanggal');
             $table->enum('status_sesi', ['terbuka', 'ditutup'])->default('terbuka');
             $table->timestamps();

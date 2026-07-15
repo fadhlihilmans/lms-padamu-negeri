@@ -228,7 +228,7 @@
                                 @error($model) <p class="text-[12px] text-[#ba1a1a] mt-1">{{ $message }}</p> @enderror
                             </div>
                         @endforeach
-                        <p class="text-[12px] text-[#757686]">Password minimal 6 karakter dan berbeda dari password saat ini.</p>
+                        <p class="text-[12px] text-[#757686]">Password minimal 3 karakter dan berbeda dari password saat ini.</p>
                     </div>
 
                     {{-- Footer --}}

@@ -20,9 +20,13 @@ class HasilCbtSeeder extends Seeder
 {
     public function run(): void
     {
+        // NIPD diambil DINAMIS dari PesertaDidikSeeder (urut id) — jangan hardcode,
+        // supaya seeder ini tidak rusak bila daftar NIPD diubah.
+        $daftarNipd = \App\Models\PesertaDidik::orderBy('id')->pluck('nipd')->all();
+
         $periode = PeriodeAjaran::where('is_aktif', true)->firstOrFail();
 
-        $gmr = GuruMapelRombel::where('periode_ajaran_id', $periode->id)
+        $gmr = GuruMapelRombel::where('tahun_ajaran', $periode->tahun_ajaran)
             ->whereHas('rombel.wilayah', fn ($q) => $q->where('nama', 'Botolambat'))
             ->whereHas('mapel', fn ($q) => $q->where('nama', 'Matematika'))
             ->first();
@@ -41,9 +45,9 @@ class HasilCbtSeeder extends Seeder
 
         // Pola jawaban tiap PD (huruf per soal, urut sesuai $soal).
         $patterns = [
-            '1718' => ['C', 'B', 'A', 'B', 'C'], // semua benar  → 100
-            '1719' => ['C', 'B', 'A', 'B', 'A'], // 4 benar      → 80
-            '1720' => ['C', 'B', 'C', 'A', 'C'], // 3 benar      → 60
+            $daftarNipd[0] => ['C', 'B', 'A', 'B', 'C'], // semua benar  → 100
+            $daftarNipd[1] => ['C', 'B', 'A', 'B', 'A'], // 4 benar      → 80
+            $daftarNipd[2] => ['C', 'B', 'C', 'A', 'C'], // 3 benar      → 60
         ];
 
         $mulai  = Carbon::yesterday()->setTime(9, 0);

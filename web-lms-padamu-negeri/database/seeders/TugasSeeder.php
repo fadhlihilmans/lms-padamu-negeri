@@ -55,7 +55,7 @@ class TugasSeeder extends Seeder
         ];
 
         foreach ($tugasList as [$wilayah, $mapel, $items]) {
-            $gmr = GuruMapelRombel::where('periode_ajaran_id', $periode->id)
+            $gmr = GuruMapelRombel::where('tahun_ajaran', $periode->tahun_ajaran)
                 ->whereHas('rombel.wilayah', fn ($q) => $q->where('nama', $wilayah))
                 ->whereHas('mapel', fn ($q) => $q->where('nama', $mapel))
                 ->first();
@@ -72,7 +72,7 @@ class TugasSeeder extends Seeder
             foreach ($items as $item) {
                 $tugas = Tugas::firstOrCreate(
                     ['guru_mapel_rombel_id' => $gmr->id, 'judul' => $item['judul']],
-                    ['deskripsi' => $item['deskripsi'], 'deadline' => $item['deadline']],
+                    ['deskripsi' => $item['deskripsi'], 'deadline' => $item['deadline'], 'periode_ajaran_id' => $periode->id],
                 );
 
                 foreach ($item['submisi'] as $idx => $nilai) {

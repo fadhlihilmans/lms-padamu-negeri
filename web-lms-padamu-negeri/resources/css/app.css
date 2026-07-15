@@ -94,9 +94,83 @@
     .text-label-sm     { font-size: 12px; line-height: 16px; font-weight: 600; }
 }
 
-/* Dropdown native: beri ruang kanan agar teks tidak mepet ikon panah
+/* Dropdown native: beri ruang kiri & kanan agar teks tidak mepet tepi/ikon panah
    (konsisten dengan design-references). !important agar menang atas util px-*. */
 select:not([multiple]) {
+    padding-left: 0.75rem !important;
     padding-right: 2.5rem !important;
     background-position: right 0.7rem center;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Trix rich-text: kembalikan gaya yang dihapus Tailwind Preflight.
+
+   Preflight me-reset `ul, ol { list-style: none; margin: 0; padding: 0 }` dan
+   menyeragamkan heading, sehingga di dalam editor Trix bullet/nomor TIDAK
+   TERLIHAT (padahal HTML-nya benar). Aturan di bawah sengaja UNLAYERED agar
+   menang atas Preflight (yang berada di `@layer base`).
+
+   Berlaku untuk dua tempat sekaligus:
+     - `trix-editor`   → saat mengetik (form materi / jawaban tugas)
+     - `.trix-content` → saat menampilkan hasil (detail materi, dll.)
+   ───────────────────────────────────────────────────────────────────────────── */
+trix-editor ul,
+.trix-content ul {
+    list-style: disc;
+    padding-left: 1.5rem;
+    margin: 0.5rem 0;
+}
+
+trix-editor ol,
+.trix-content ol {
+    list-style: decimal;
+    padding-left: 1.75rem;
+    margin: 0.5rem 0;
+}
+
+trix-editor li,
+.trix-content li {
+    display: list-item;
+    margin: 0.25rem 0;
+}
+
+/* Daftar bersarang: ganti simbol agar tingkatannya terbaca */
+trix-editor ul ul, .trix-content ul ul { list-style: circle; }
+trix-editor ul ul ul, .trix-content ul ul ul { list-style: square; }
+
+trix-editor h1,
+.trix-content h1 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.75rem;
+    margin: 0.75rem 0 0.5rem;
+}
+
+trix-editor blockquote,
+.trix-content blockquote {
+    border-left: 3px solid var(--color-outline-variant);
+    padding-left: 0.875rem;
+    margin: 0.5rem 0;
+    color: var(--color-secondary);
+}
+
+trix-editor pre,
+.trix-content pre {
+    background: var(--color-surface-container-low);
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    overflow-x: auto;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.8125rem;
+}
+
+.trix-content a {
+    color: var(--color-primary-container);
+    text-decoration: underline;
+}
+
+.trix-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
 }

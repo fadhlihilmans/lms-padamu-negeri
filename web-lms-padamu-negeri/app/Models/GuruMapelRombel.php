@@ -14,10 +14,20 @@ class GuruMapelRombel extends Model
         'guru_id',
         'mapel_id',
         'rombel_id',
-        'periode_ajaran_id',
+        // STRUKTUR → plotting cukup 1x per Tahun Ajaran (bukan per semester).
+        'tahun_ajaran',
     ];
 
+    // ─── Scope ─────────────────────────────────────────────────────────────────
+
+    /** Plotting pada satu Tahun Ajaran (mis. "2024/2025"). */
+    public function scopeTahunAjaran($query, ?string $tahunAjaran)
+    {
+        return $query->when($tahunAjaran, fn ($q) => $q->where('tahun_ajaran', $tahunAjaran));
+    }
+
     // ─── Relasi ────────────────────────────────────────────────────────────────
+    // Catatan: TIDAK lagi belongsTo periode_ajaran — plotting terikat Tahun Ajaran.
 
     public function guru(): BelongsTo
     {
@@ -32,11 +42,6 @@ class GuruMapelRombel extends Model
     public function rombel(): BelongsTo
     {
         return $this->belongsTo(Rombel::class);
-    }
-
-    public function periodeAjaran(): BelongsTo
-    {
-        return $this->belongsTo(PeriodeAjaran::class);
     }
 
     public function materi(): HasMany

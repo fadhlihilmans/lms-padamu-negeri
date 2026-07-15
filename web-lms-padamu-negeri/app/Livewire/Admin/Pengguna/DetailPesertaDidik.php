@@ -20,7 +20,7 @@ class DetailPesertaDidik extends Component
             'user',
             'alamat',
             'ortu',
-            'pesertaDidikRombel.rombel.periodeAjaran',
+            'pesertaDidikRombel.rombel',
             'pesertaDidikRombel.rombel.paket',
             'pesertaDidikRombel.rombel.tingkat',
         ])->findOrFail($id);

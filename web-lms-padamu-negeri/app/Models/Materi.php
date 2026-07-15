@@ -16,6 +16,8 @@ class Materi extends Model
 
     protected $fillable = [
         'guru_mapel_rombel_id',
+        // TRANSAKSI → semester tempat data ini dibuat (Revisi Tahap 3).
+        'periode_ajaran_id',
         'judul',
         'isi',
     ];
@@ -45,5 +47,17 @@ class Materi extends Model
         $teks   = trim(preg_replace('/\s+/', ' ', strip_tags($bersih ?? '')));
 
         return $teks !== '' ? Str::limit($teks, $limit) : null;
+    }
+
+    /** TRANSAKSI → terikat periode (TA + semester). */
+    public function periodeAjaran(): BelongsTo
+    {
+        return $this->belongsTo(PeriodeAjaran::class);
+    }
+
+    /** Batasi ke satu periode (TA + semester). */
+    public function scopePeriode($query, $periodeId)
+    {
+        return $query->when($periodeId, fn ($q) => $q->where('periode_ajaran_id', $periodeId));
     }
 }

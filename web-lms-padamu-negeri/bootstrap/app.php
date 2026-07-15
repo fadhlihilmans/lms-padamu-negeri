@@ -28,6 +28,16 @@ return Application::configure(basePath: dirname(__DIR__))
             fn (Request $request) => $request->is('api/*'),
         );
 
+        // Mode Arsip: tampilkan toast peringatan yang ramah, bukan halaman error 500.
+        // Perubahan data otomatis batal karena exception dilempar sebelum query jalan
+        // (dan otomatis rollback bila berada di dalam DB::transaction).
+        $exceptions->render(function (\App\Exceptions\ModeArsipException $e) {
+            return back()->with('toast', [
+                'type'    => 'warning',
+                'message' => $e->getMessage(),
+            ]);
+        });
+
         // Catat SEMUA exception tak-tertangani ke tabel error_log (CLAUDE.md #14),
         // supaya error yang tidak dibungkus try-catch (mis. query gagal saat login)
         // tetap muncul di menu Log Error. Exception "wajar" (validasi, auth, 404/403,
@@ -44,6 +54,8 @@ return Application::configure(basePath: dirname(__DIR__))
                 \Illuminate\Session\TokenMismatchException::class,
                 \Illuminate\Database\Eloquent\ModelNotFoundException::class,
                 \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface::class,
+                // Penolakan yang DISENGAJA (Mode Arsip), bukan bug → jangan penuhi log.
+                \App\Exceptions\ModeArsipException::class,
             ];
 
             foreach ($abaikan as $tipe) {

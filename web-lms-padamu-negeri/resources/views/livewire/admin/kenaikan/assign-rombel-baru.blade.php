@@ -22,14 +22,43 @@
             <div class="px-4 py-3 border-b border-[#c5c5d7] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
                     <p class="text-sm font-semibold text-on-surface">Daftar Tunggu Peserta Didik</p>
-                    <p class="text-xs text-[#757686]">Terpilih: <strong class="text-[#3c50e0]">{{ count($selected) }}</strong> dari {{ $totalTunggu }} peserta didik</p>
+                    <p class="text-xs text-[#757686]">
+                        Terpilih: <strong class="text-[#3c50e0]">{{ count($selected) }}</strong> dari {{ $totalTunggu }} peserta didik
+                        @if (count($selected))
+                            · <button wire:click="clearSelection" class="text-[#ba1a1a] hover:underline cursor-pointer">Kosongkan</button>
+                        @endif
+                    </p>
                 </div>
-                <div class="relative w-full sm:w-auto">
-                    <span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-[#757686] text-[18px] pointer-events-none">search</span>
-                    <input wire:model.live.debounce.300ms="search" type="text" placeholder="Cari nama…"
-                           class="w-full sm:w-52 pl-9 pr-3 py-2 border border-[#c5c5d7] rounded-lg text-sm bg-white focus:outline-none focus:border-[#3c50e0] focus:ring-1 focus:ring-[#3c50e0]">
+                <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                    {{-- Filter per rombel ASAL — mempermudah pemindahan massal per kelas --}}
+                    <select wire:model.live="filterRombelAsalId"
+                            class="w-full sm:w-56 py-2 border border-[#c5c5d7] rounded-lg text-sm bg-white cursor-pointer focus:outline-none focus:border-[#3c50e0] focus:ring-1 focus:ring-[#3c50e0]">
+                        <option value="">Semua Rombel Asal</option>
+                        @foreach ($rombelAsalOptions as $opt)
+                            <option value="{{ $opt['id'] }}">{{ $opt['nama'] }} ({{ $opt['total'] }})</option>
+                        @endforeach
+                    </select>
+                    <div class="relative w-full sm:w-auto">
+                        <span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-[#757686] text-[18px] pointer-events-none">search</span>
+                        <input wire:model.live.debounce.300ms="search" type="text" placeholder="Cari nama…"
+                               class="w-full sm:w-52 pl-9 pr-3 py-2 border border-[#c5c5d7] rounded-lg text-sm bg-white focus:outline-none focus:border-[#3c50e0] focus:ring-1 focus:ring-[#3c50e0]">
+                    </div>
                 </div>
             </div>
+
+            {{-- Aksi massal: centang semua yang SEDANG TAMPIL --}}
+            @if ($waiting->isNotEmpty())
+                <div class="px-4 py-2 border-b border-[#c5c5d7] bg-[#f6fafe] flex items-center gap-2">
+                    <button wire:click="toggleSelectAll" type="button"
+                            class="inline-flex items-center gap-1.5 text-[13px] font-medium text-[#3c50e0] hover:underline cursor-pointer">
+                        <span class="material-symbols-outlined text-[18px]">{{ $allSelected ? 'check_box' : 'check_box_outline_blank' }}</span>
+                        {{ $allSelected ? 'Hapus centang semua' : 'Pilih semua yang tampil' }} ({{ $waiting->count() }})
+                    </button>
+                    @if ($filterRombelAsalId || $search)
+                        <span class="text-[12px] text-[#757686]">— hanya yang sedang difilter</span>
+                    @endif
+                </div>
+            @endif
 
             <div class="flex-1 overflow-auto">
                 <table class="w-full text-left text-sm">
@@ -73,10 +102,10 @@
                                 <td colspan="4" class="px-4 py-16 text-center">
                                     <span class="material-symbols-outlined text-[48px] text-[#c5c5d7] mb-3 block">inbox</span>
                                     <p class="text-[15px] font-medium text-on-surface mb-1">
-                                        {{ $search ? 'Tidak ada yang cocok' : 'Ruang tunggu kosong' }}
+                                        {{ ($search || $filterRombelAsalId) ? 'Tidak ada yang cocok' : 'Ruang tunggu kosong' }}
                                     </p>
                                     <p class="text-[13px] text-[#757686]">
-                                        {{ $search ? 'Coba kata kunci lain.' : 'Peserta didik muncul di sini setelah Wali Kelas memutuskan Naik/Tinggal/Pindah.' }}
+                                        {{ ($search || $filterRombelAsalId) ? 'Coba ubah filter rombel asal atau kata kunci.' : 'Peserta didik muncul di sini setelah Wali Kelas memutuskan Naik/Tinggal/Pindah.' }}
                                     </p>
                                 </td>
                             </tr>

@@ -12,20 +12,28 @@ use App\Models\TugasSubmisi;
 /**
  * Menghitung nilai_referensi (usulan) tiap komponen rapor dari data formatif.
  *
- * Interpretasi (PRD 6.11: "rata-rata Tugas + CBT"):
- *   - Pengetahuan  ← rata-rata nilai CBT (hasil_cbt.nilai_akhir)
- *   - Keterampilan ← rata-rata nilai Tugas (tugas_submisi.nilai)
+ * KOMPONEN v2 (Revisi Tahap 4) — MENGGANTI Pengetahuan/Keterampilan:
+ *   - TUGAS   ← gabungan BERBOBOT rata-rata Tugas + rata-rata CBT
+ *               (bobot dari `konfigurasi_nilai`, default 60:40)
+ *   - SAS/SAT ← INPUT MANUAL guru, tidak memakai CBT → referensi selalu null
+ *
  * Nilai referensi TIDAK di-cache permanen — selalu dihitung ulang saat form
  * dibuka (docs/database.md catatan rapor_nilai_komponen).
  */
 class RaporService
 {
-    /** Komponen nilai baku v1 (lihat desain 11.2). */
-    public const KOMPONEN = ['Pengetahuan', 'Keterampilan'];
+    public const KOMPONEN_TUGAS = 'TUGAS';
+    public const KOMPONEN_SAS   = 'SAS/SAT';
+
+    /** Komponen nilai v2. Urutan menentukan urutan kolom di form penilaian. */
+    public const KOMPONEN = [self::KOMPONEN_TUGAS, self::KOMPONEN_SAS];
+
+    /** Komponen yang punya nilai referensi otomatis (SAS/SAT manual → tidak ada). */
+    public const KOMPONEN_BERREFERENSI = [self::KOMPONEN_TUGAS];
 
     /**
      * @param  int[]  $pesertaDidikIds
-     * @return array<int, array{Pengetahuan: ?int, Keterampilan: ?int}>
+     * @return array<int, array{'TUGAS': ?int, 'SAS/SAT': ?int}>
      */
     public function referensiForGmr(GuruMapelRombel $gmr, array $pesertaDidikIds): array
     {
@@ -36,8 +44,8 @@ class RaporService
         $cbtIds   = Cbt::where('guru_mapel_rombel_id', $gmr->id)->pluck('id');
         $tugasIds = Tugas::where('guru_mapel_rombel_id', $gmr->id)->pluck('id');
 
-        // Pengetahuan = rata-rata CBT.
-        $pengetahuan = $cbtIds->isEmpty() ? collect() : HasilCbt::query()
+        // Rata-rata nilai CBT peserta didik.
+        $rataCbt = $cbtIds->isEmpty() ? collect() : HasilCbt::query()
             ->whereIn('cbt_id', $cbtIds)
             ->whereIn('peserta_didik_id', $pesertaDidikIds)
             ->whereNotNull('nilai_akhir')
@@ -45,8 +53,8 @@ class RaporService
             ->groupBy('peserta_didik_id')
             ->pluck('rata', 'peserta_didik_id');
 
-        // Keterampilan = rata-rata Tugas.
-        $keterampilan = $tugasIds->isEmpty() ? collect() : TugasSubmisi::query()
+        // Rata-rata nilai Tugas peserta didik.
+        $rataTugas = $tugasIds->isEmpty() ? collect() : TugasSubmisi::query()
             ->whereIn('tugas_id', $tugasIds)
             ->whereIn('peserta_didik_id', $pesertaDidikIds)
             ->whereNotNull('nilai')
@@ -54,15 +62,31 @@ class RaporService
             ->groupBy('peserta_didik_id')
             ->pluck('rata', 'peserta_didik_id');
 
+        $bobot = app(NilaiConfigService::class);
+
         $out = [];
         foreach ($pesertaDidikIds as $pid) {
+            // Penting: bila PD belum mengerjakan CBT, TUGAS TIDAK jadi kosong —
+            // bobot dinormalisasi sehingga nilai Tugas dipakai penuh. Inilah
+            // perbaikan bug "Belum Lengkap padahal tugas sudah lengkap".
             $out[$pid] = [
-                'Pengetahuan'  => isset($pengetahuan[$pid])  ? (int) round($pengetahuan[$pid])  : null,
-                'Keterampilan' => isset($keterampilan[$pid]) ? (int) round($keterampilan[$pid]) : null,
+                self::KOMPONEN_TUGAS => $bobot->komponenTugas(
+                    isset($rataTugas[$pid]) ? (float) $rataTugas[$pid] : null,
+                    isset($rataCbt[$pid])   ? (float) $rataCbt[$pid]   : null,
+                ),
+                self::KOMPONEN_SAS   => null,   // manual — tidak ada usulan otomatis
             ];
         }
 
         return $out;
+    }
+
+    /** Ambil nilai_akhir satu komponen pada rapor_nilai_mapel (null bila belum diisi). */
+    private function nilaiKomponen($raporNilaiMapel, string $namaKomponen): ?float
+    {
+        $k = $raporNilaiMapel->komponen->firstWhere('nama_komponen', $namaKomponen);
+
+        return $k?->nilai_akhir !== null ? (float) $k->nilai_akhir : null;
     }
 
     /**
@@ -84,17 +108,23 @@ class RaporService
         }
 
         $grade = app(GradeService::class);
+        $bobot = app(NilaiConfigService::class);
 
         $rows = $rapor->nilaiMapel
             ->sortBy(fn ($m) => $m->mapel?->nama)
             ->values()
-            ->map(function ($m) use ($grade) {
-                $vals = $m->komponen->pluck('nilai_akhir')->filter(fn ($v) => $v !== null);
-                $avg  = $vals->isNotEmpty() ? (int) round($vals->avg()) : null;
+            ->map(function ($m) use ($grade, $bobot) {
+                // Nilai mapel = TUGAS & SAS/SAT BERBOBOT (default 70:30), bukan
+                // rata-rata biasa. Bila salah satu belum diisi, bobot dinormalisasi.
+                $nilai = $bobot->nilaiMapel(
+                    $this->nilaiKomponen($m, self::KOMPONEN_TUGAS),
+                    $this->nilaiKomponen($m, self::KOMPONEN_SAS),
+                );
+
                 return [
                     'mapel'     => $m->mapel?->nama ?? '—',
-                    'nilai'     => $avg,
-                    'grade'     => $avg !== null ? $grade->konversi($avg) : null,
+                    'nilai'     => $nilai,
+                    'grade'     => $nilai !== null ? $grade->konversi($nilai) : null,
                     'deskripsi' => $m->catatan_mapel,
                 ];
             });

@@ -13,12 +13,16 @@ class PesertaDidikRombelSeeder extends Seeder
 {
     public function run(): void
     {
+        // NIPD diambil DINAMIS dari PesertaDidikSeeder (urut id) — jangan hardcode,
+        // supaya seeder ini tidak rusak bila daftar NIPD diubah.
+        $daftarNipd = \App\Models\PesertaDidik::orderBy('id')->pluck('nipd')->all();
+
         $periode = PeriodeAjaran::where('is_aktif', true)->firstOrFail();
 
         // Keanggotaan per rombel (berdasarkan wilayah rombel di periode aktif).
         $mapping = [
-            'Botolambat' => ['1718', '1719', '1720'],
-            'Pondok 1'   => ['1721', '1722'],
+            'Botolambat' => [$daftarNipd[0], $daftarNipd[1], $daftarNipd[2]],
+            'Pondok 1'   => [$daftarNipd[3], $daftarNipd[4]],
         ];
 
         foreach ($mapping as $wilayahNama => $nipds) {
@@ -27,7 +31,7 @@ class PesertaDidikRombelSeeder extends Seeder
                 continue;
             }
 
-            $rombel = Rombel::where('periode_ajaran_id', $periode->id)
+            $rombel = Rombel::where('tahun_ajaran', $periode->tahun_ajaran)
                 ->where('wilayah_id', $wilayah->id)
                 ->first();
             if (! $rombel) {

@@ -22,6 +22,9 @@ class AssignRombelBaru extends Component
 {
     public string $search = '';
 
+    /** Filter daftar tunggu berdasarkan rombel ASAL (mempermudah pemindahan massal). */
+    public string $filterRombelAsalId = '';
+
     /** kenaikan_kelas id yang dipilih */
     public array $selected = [];
 
@@ -66,6 +69,41 @@ class AssignRombelBaru extends Component
             ->whereHas('pesertaDidik');
     }
 
+    /** Antrian setelah filter rombel asal + pencarian (yang benar-benar TAMPIL). */
+    private function visibleQuery()
+    {
+        return $this->waitingQuery()
+            ->when($this->filterRombelAsalId, fn ($q) => $q->where('rombel_asal_id', $this->filterRombelAsalId))
+            ->when($this->search, fn ($q) => $q->whereHas('pesertaDidik', fn ($s) => $s
+                ->where('nama_lengkap', 'like', '%' . $this->search . '%')
+                ->orWhere('nipd', 'like', '%' . $this->search . '%')));
+    }
+
+    // Ganti filter/pencarian → bersihkan pilihan supaya tidak ada yang "terpilih
+    // diam-diam" padahal sudah tidak tampil di layar.
+    public function updatedFilterRombelAsalId(): void { $this->selected = []; }
+    public function updatedSearch(): void            { $this->selected = []; }
+
+    /**
+     * Checklist-semua: centang/hapus SEMUA baris yang sedang tampil.
+     * Sengaja hanya yang tampil (bukan seluruh antrian) agar Admin tidak
+     * memindahkan peserta didik dari rombel lain tanpa sadar.
+     */
+    public function toggleSelectAll(): void
+    {
+        $visible = $this->visibleQuery()->pluck('id')->map(fn ($id) => (string) $id)->all();
+
+        $semuaSudahTerpilih = ! empty($visible)
+            && count(array_intersect($visible, $this->selected)) === count($visible);
+
+        $this->selected = $semuaSudahTerpilih ? [] : $visible;
+    }
+
+    public function clearSelection(): void
+    {
+        $this->selected = [];
+    }
+
     public function assign(): void
     {
         if (empty($this->selected)) {
@@ -80,16 +118,26 @@ class AssignRombelBaru extends Component
         }
 
         try {
-            $count = 0;
-            DB::transaction(function () use ($rombel, &$count) {
-                $records = KenaikanKelas::whereIn('id', $this->selected)
+            $count   = 0;
+            $dilewati = [];   // PD yang sudah punya rombel lain di TA tujuan
+
+            DB::transaction(function () use ($rombel, &$count, &$dilewati) {
+                $records = KenaikanKelas::with('pesertaDidik')
+                    ->whereIn('id', $this->selected)
                     ->whereNull('rombel_tujuan_id')
                     ->get();
 
                 foreach ($records as $rec) {
+                    // 1 PD = 1 rombel per TA. Yang bentrok DILEWATI, bukan
+                    // menggagalkan seluruh batch — supaya sisanya tetap terpindah.
+                    $bentrok = PesertaDidikRombel::rombelLainDiTaSama($rec->peserta_didik_id, $rombel->id);
+                    if ($bentrok) {
+                        $dilewati[] = ($rec->pesertaDidik?->nama_lengkap ?? 'PD') . " (sudah di {$bentrok->nama})";
+                        continue;
+                    }
+
                     $rec->update(['rombel_tujuan_id' => $rombel->id]);
 
-                    // Buat keanggotaan rombel baru (unique peserta_didik_id+rombel_id).
                     PesertaDidikRombel::updateOrCreate(
                         ['peserta_didik_id' => $rec->peserta_didik_id, 'rombel_id' => $rombel->id],
                         [],
@@ -99,7 +147,18 @@ class AssignRombelBaru extends Component
             });
 
             $this->selected = [];
-            $this->dispatch('notify', ['type' => 'success', 'message' => "{$count} peserta didik di-assign ke {$rombel->nama}."]);
+
+            if ($count > 0) {
+                $this->dispatch('notify', ['type' => 'success', 'message' => "{$count} peserta didik di-assign ke {$rombel->nama}."]);
+            }
+            if ($dilewati) {
+                $this->dispatch('notify', [
+                    'type'    => 'warning',
+                    'message' => count($dilewati) . ' peserta didik dilewati karena sudah punya rombel lain di TA ini: '
+                               . implode(', ', array_slice($dilewati, 0, 3))
+                               . (count($dilewati) > 3 ? ', …' : ''),
+                ]);
+            }
         } catch (\Throwable $th) {
             app(ErrorLogService::class)->record('Assign Rombel Baru', $th);
             $this->dispatch('notify', ['type' => 'error', 'message' => 'Terjadi kesalahan, silakan coba lagi.']);
@@ -108,15 +167,29 @@ class AssignRombelBaru extends Component
 
     public function render(): View
     {
-        $waiting = $this->waitingQuery()
-            ->when($this->search, fn ($q) => $q->whereHas('pesertaDidik', fn ($s) => $s
-                ->where('nama_lengkap', 'like', '%' . $this->search . '%')
-                ->orWhere('nipd', 'like', '%' . $this->search . '%')))
+        $waiting = $this->visibleQuery()
             ->get()
             ->sortBy(fn ($k) => $k->pesertaDidik?->nama_lengkap)
             ->values();
 
         $totalTunggu = $this->waitingQuery()->count();
+
+        // Opsi filter: rombel asal yang benar-benar ada di antrian + jumlahnya.
+        $rombelAsalOptions = $this->waitingQuery()
+            ->get()
+            ->groupBy('rombel_asal_id')
+            ->map(fn ($rows) => [
+                'id'    => $rows->first()->rombel_asal_id,
+                'nama'  => $rows->first()->rombelAsal?->nama ?? '—',
+                'total' => $rows->count(),
+            ])
+            ->sortBy('nama')
+            ->values();
+
+        // Status checklist-semua (berdasarkan baris yang tampil).
+        $visibleIds  = $waiting->pluck('id')->map(fn ($id) => (string) $id)->all();
+        $allSelected = ! empty($visibleIds)
+            && count(array_intersect($visibleIds, $this->selected)) === count($visibleIds);
 
         // Ringkasan PD terpilih.
         $selectedRecords = collect();
@@ -132,7 +205,7 @@ class AssignRombelBaru extends Component
         $rombelsTujuan = collect();
         if ($this->targetPeriodeId && $this->targetPaketId) {
             $rombelsTujuan = Rombel::withCount('pesertaDidikRombel')
-                ->where('periode_ajaran_id', $this->targetPeriodeId)
+                ->where('tahun_ajaran', \App\Models\PeriodeAjaran::find($this->targetPeriodeId)?->tahun_ajaran)
                 ->where('paket_id', $this->targetPaketId)
                 ->orderBy('nama')
                 ->get();
@@ -143,7 +216,8 @@ class AssignRombelBaru extends Component
             : null;
 
         return view('livewire.admin.kenaikan.assign-rombel-baru', compact(
-            'waiting', 'totalTunggu', 'selectedRecords', 'periodes', 'pakets', 'rombelsTujuan', 'targetRombel'
+            'waiting', 'totalTunggu', 'selectedRecords', 'periodes', 'pakets', 'rombelsTujuan', 'targetRombel',
+            'rombelAsalOptions', 'allSelected'
         ));
     }
 }

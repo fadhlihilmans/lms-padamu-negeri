@@ -130,7 +130,9 @@
                     <tr class="border-b" style="border-color: #c5c5d7">
                         <th class="px-4 py-3 text-[11.5px] font-semibold uppercase tracking-wide w-12" style="color: #757686">No</th>
                         <th class="px-4 py-3 text-[11.5px] font-semibold uppercase tracking-wide" style="color: #757686">Nama Mata Pelajaran</th>
-                        <th class="px-4 py-3 text-[11.5px] font-semibold uppercase tracking-wide text-center" style="color: #757686">Digunakan</th>
+                        <th class="px-4 py-3 text-[11.5px] font-semibold uppercase tracking-wide text-center" style="color: #757686">
+                            Digunakan @if ($ta)<span class="normal-case font-normal">(TA {{ $ta }})</span>@endif
+                        </th>
                         <th class="px-4 py-3 text-[11.5px] font-semibold uppercase tracking-wide text-center w-24" style="color: #757686">Aksi</th>
                     </tr>
                 </thead>
@@ -140,9 +142,9 @@
                             <td class="px-4 py-3.5 text-[13px]" style="color: #9da4b0">{{ $mapels->firstItem() + $i }}</td>
                             <td class="px-4 py-3.5 text-[13.5px] font-medium" style="color: #171c1f">{{ $m->nama }}</td>
                             <td class="px-4 py-3.5 text-center">
-                                @if ($m->guru_mapel_rombel_count > 0)
+                                @if ($m->pemetaan_aktif_count > 0)
                                     <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[12px] font-semibold whitespace-nowrap" style="background: #dcfce7; color: #15803d">
-                                        {{ $m->guru_mapel_rombel_count }} pemetaan
+                                        {{ $m->pemetaan_aktif_count }} pemetaan
                                     </span>
                                 @else
                                     <span class="text-[12px]" style="color: #9da4b0">—</span>

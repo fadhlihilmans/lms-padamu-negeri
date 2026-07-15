@@ -14,7 +14,8 @@ class Rombel extends Model
     protected $table = 'rombel';
 
     protected $fillable = [
-        'periode_ajaran_id',
+        // STRUKTUR → terikat Tahun Ajaran, bukan periode (TA+semester).
+        'tahun_ajaran',
         'wilayah_id',
         'paket_id',
         'tingkat_id',
@@ -22,12 +23,17 @@ class Rombel extends Model
         'nama',
     ];
 
-    // ─── Relasi ────────────────────────────────────────────────────────────────
+    // ─── Scope ─────────────────────────────────────────────────────────────────
 
-    public function periodeAjaran(): BelongsTo
+    /** Rombel pada satu Tahun Ajaran (mis. "2024/2025"). */
+    public function scopeTahunAjaran($query, ?string $tahunAjaran)
     {
-        return $this->belongsTo(PeriodeAjaran::class);
+        return $query->when($tahunAjaran, fn ($q) => $q->where('tahun_ajaran', $tahunAjaran));
     }
+
+    // ─── Relasi ────────────────────────────────────────────────────────────────
+    // Catatan: rombel TIDAK lagi belongsTo periode_ajaran — ia terikat Tahun Ajaran
+    // (kolom `tahun_ajaran`), sehingga tidak lahir ulang tiap semester.
 
     public function wilayah(): BelongsTo
     {

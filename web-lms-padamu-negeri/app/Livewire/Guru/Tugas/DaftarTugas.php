@@ -92,7 +92,7 @@ class DaftarTugas extends Component
         if ($guru && $periode) {
             $gmrList = GuruMapelRombel::with(['mapel', 'rombel'])
                 ->where('guru_id', $guru->id)
-                ->where('periode_ajaran_id', $periode->id)
+                ->where('tahun_ajaran', $periode->tahun_ajaran)
                 ->get();
 
             $gmrIds = $gmrList->pluck('id')->toArray();

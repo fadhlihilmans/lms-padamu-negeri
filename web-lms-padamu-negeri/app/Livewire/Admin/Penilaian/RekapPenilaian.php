@@ -63,7 +63,7 @@ class RekapPenilaian extends Component
         }
 
         $rombels = Rombel::query()
-            ->where('periode_ajaran_id', $periode->id)
+            ->where('tahun_ajaran', $periode->tahun_ajaran)
             ->when($this->search !== '', fn ($q) => $q->where('nama', 'like', '%' . $this->search . '%'))
             ->with(['paket', 'waliKelas'])
             ->orderBy('nama')
@@ -110,7 +110,7 @@ class RekapPenilaian extends Component
             ->pluck('total', 'rombel_id');
 
         $gmrByRombel = GuruMapelRombel::whereIn('rombel_id', $ids)
-            ->where('periode_ajaran_id', $periodeId)
+            ->where('tahun_ajaran', \App\Models\PeriodeAjaran::find($periodeId)?->tahun_ajaran)
             ->with('mapel')
             ->get()
             ->groupBy('rombel_id');

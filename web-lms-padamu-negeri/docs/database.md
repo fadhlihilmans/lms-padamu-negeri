@@ -146,6 +146,13 @@ Unique: (`tahun_ajaran`,`semester`).
 
 Unique: (`peserta_didik_id`,`rombel_id`).
 
+> **ATURAN (Revisi Tahap 3): satu peserta didik hanya boleh punya SATU rombel per
+> Tahun Ajaran.** Unique di atas hanya mencegah PD masuk rombel *yang sama* dua kali —
+> ia TIDAK mencegah PD berada di banyak rombel sekaligus. Inilah akar bug
+> "1 siswa banyak rombel". Aturan 1-rombel-per-TA **dijaga di level aplikasi**
+> (Service/Livewire), karena rombel kini per-TA maka ganjil↔genap tidak lagi
+> melahirkan rombel baru.
+
 ### mapel
 | id | BIGINT PK | |
 |---|---|---|
@@ -158,18 +165,22 @@ Unique: (`peserta_didik_id`,`rombel_id`).
 | guru_id | FK → guru, onDelete cascade | |
 | mapel_id | FK → mapel, onDelete cascade | |
 | rombel_id | FK → rombel, onDelete cascade | |
-| periode_ajaran_id | FK → periode_ajaran, onDelete cascade | |
+| tahun_ajaran | VARCHAR(9) NOT NULL | **terikat ke TA, bukan semester** (Revisi Tahap 3) |
 
-Unique: (`guru_id`,`mapel_id`,`rombel_id`,`periode_ajaran_id`).
+Unique: (`guru_id`,`mapel_id`,`rombel_id`,`tahun_ajaran`).
 **Tabel ini jadi dasar otorisasi Materi/Tugas/CBT/Absensi.**
+
+> **PENTING (Revisi Logic Sistem Tahap 3).** Plotting cukup **1× per Tahun Ajaran**;
+> semester genap otomatis memakai data yang sama — TIDAK ada clone. Sebelumnya kolom
+> ini `periode_ajaran_id` (TA+semester), yang membuat rombel & plotting terlahir ulang
+> tiap semester dan menyebabkan "1 siswa banyak rombel". Lihat `docs/keputusan-revisi.md`.
 
 ### jadwal_pelajaran
 | Kolom | Tipe | Keterangan |
 |---|---|---|
 | id | BIGINT PK | |
-| rombel_id | FK → rombel, onDelete cascade | |
-| mapel_id | FK → mapel, onDelete restrict | |
-| guru_id | FK → guru, onDelete restrict | |
+| guru_mapel_rombel_id | FK → guru_mapel_rombel, onDelete cascade | |
+| periode_ajaran_id | FK → periode_ajaran, onDelete cascade | jadwal berlaku per **semester** |
 | hari | ENUM('senin','selasa','rabu','kamis','jumat','sabtu','minggu') | |
 | jam_mulai | TIME NOT NULL | |
 | jam_selesai | TIME NOT NULL | |
@@ -178,22 +189,35 @@ Unique: (`guru_id`,`mapel_id`,`rombel_id`,`periode_ajaran_id`).
 
 ## 3. Kegiatan Belajar
 
+> ### ⚠️ Prinsip Struktur vs Transaksi (Revisi Tahap 3 — WAJIB)
+>
+> - **STRUKTUR** (`rombel`, `guru_mapel_rombel`, keanggotaan) → terikat **Tahun Ajaran**.
+>   Tidak lahir ulang tiap semester.
+> - **TRANSAKSI** (`materi`, `tugas`, `cbt`, `sesi_absensi`, `jadwal_pelajaran`, `rapor`)
+>   → terikat **`periode_ajaran_id`** (TA **+** semester), lewat kolomnya SENDIRI.
+>
+> Kenapa transaksi butuh kolom sendiri: karena `guru_mapel_rombel` kini per-TA, ia tidak
+> lagi membawa informasi semester. Tanpa `periode_ajaran_id` di tabel transaksi, materi/
+> tugas/CBT semester ganjil akan bocor ke semester genap.
+
 ### materi
 | Kolom | Tipe | Keterangan |
 |---|---|---|
 | id | BIGINT PK | |
 | guru_mapel_rombel_id | FK → guru_mapel_rombel, onDelete cascade | |
+| periode_ajaran_id | FK → periode_ajaran, onDelete cascade | **semester tempat materi dibuat** |
 | judul | VARCHAR(200) NOT NULL | |
-| deskripsi | TEXT NULL | |
-| tipe_konten | ENUM('text','file','link_video','gambar') NOT NULL | |
-| file_path | VARCHAR(255) NULL | jika tipe file/gambar |
-| url | VARCHAR(500) NULL | jika tipe link_video |
+| isi | LONGTEXT NULL | rich text (Trix) |
+
+> Lampiran materi dipisah ke tabel `materi_lampiran`
+> (`materi_id`, `tipe` ENUM('file','gambar','link_video'), `file_path`, `url`, `nama_asli`, `urutan`).
 
 ### tugas
 | Kolom | Tipe | Keterangan |
 |---|---|---|
 | id | BIGINT PK | |
 | guru_mapel_rombel_id | FK → guru_mapel_rombel, onDelete cascade | |
+| periode_ajaran_id | FK → periode_ajaran, onDelete cascade | **semester tempat tugas dibuat** |
 | judul | VARCHAR(200) NOT NULL | |
 | deskripsi | TEXT NULL | |
 | lampiran_path | VARCHAR(255) NULL | |
@@ -221,6 +245,7 @@ Unique: (`tugas_id`,`peserta_didik_id`).
 |---|---|---|
 | id | BIGINT PK | |
 | guru_mapel_rombel_id | FK → guru_mapel_rombel, onDelete cascade | |
+| periode_ajaran_id | FK → periode_ajaran, onDelete cascade | **semester tempat CBT dibuat** |
 | nama_ujian | VARCHAR(200) NOT NULL | |
 | kkm | TINYINT UNSIGNED NOT NULL | |
 | tanggal_mulai | DATETIME NOT NULL | |
@@ -272,7 +297,10 @@ Unique: (`cbt_id`,`peserta_didik_id`).
 |---|---|---|
 | id | BIGINT PK | |
 | guru_mapel_rombel_id | FK → guru_mapel_rombel, onDelete cascade | |
+| periode_ajaran_id | FK → periode_ajaran, onDelete cascade | **semester sesi absensi** |
 | tanggal | DATE NOT NULL | |
+| tanggal_buka | DATETIME NULL | kapan sesi mulai boleh diisi |
+| tutup_pada | DATETIME NULL | auto-tutup bila lewat |
 | status_sesi | ENUM('terbuka','ditutup') NOT NULL DEFAULT 'terbuka' | |
 
 ### absensi_detail
@@ -334,11 +362,21 @@ Unique: (`rapor_id`,`mapel_id`).
 |---|---|---|
 | id | BIGINT PK | |
 | rapor_nilai_mapel_id | FK → rapor_nilai_mapel, onDelete cascade | |
-| nama_komponen | VARCHAR(50) NOT NULL | Pengetahuan, Keterampilan, Sikap |
-| nilai_referensi | TINYINT UNSIGNED NULL | usulan dari rata-rata Tugas+CBT (dihitung saat form dibuka, tidak di-cache permanen) |
-| nilai_akhir | TINYINT UNSIGNED NOT NULL | final; default = nilai_referensi, bisa override |
-| grade | ENUM('A','B','C','D') NOT NULL | konversi otomatis dari nilai_akhir, lihat tabel `konfigurasi_grade` di Bagian 8.1 |
+| nama_komponen | VARCHAR(50) NOT NULL | **`TUGAS`** atau **`SAS/SAT`** (Revisi Tahap 4) |
+| nilai_referensi | TINYINT UNSIGNED NULL | usulan otomatis — **hanya untuk `TUGAS`**; `SAS/SAT` selalu NULL |
+| nilai_akhir | TINYINT UNSIGNED NOT NULL | final; diinput/override guru |
+| grade | ENUM('A','B','C','D') NOT NULL | konversi dari nilai_akhir via `konfigurasi_grade` |
 | catatan | TEXT NULL | |
+
+#### Komponen nilai v2 (Revisi Tahap 4) — MENGGANTI Pengetahuan/Keterampilan
+
+| Komponen | Sumber | Nilai referensi? |
+|---|---|---|
+| **`TUGAS`** | gabungan **nilai Tugas + nilai CBT**, berbobot `bobot_tugas_dari_tugas` : `bobot_tugas_dari_cbt` | **Ya** (dihitung otomatis) |
+| **`SAS/SAT`** | **input manual guru** (Sumatif Akhir Semester/Tahun) | **Tidak** — tidak memakai CBT sama sekali |
+
+**Nilai akhir satu mapel** = `TUGAS × bobot_rapor_tugas%` + `SAS/SAT × bobot_rapor_sas%`
+(bukan rata-rata biasa). Grade A/B/C/D dikonversi dari nilai berbobot ini.
 
 > Catatan: `nilai_referensi` SENGAJA dihitung ulang saat form dibuka (Service
 > Class), bukan disimpan sebagai cache permanen — supaya tidak usang kalau ada
@@ -390,6 +428,39 @@ dan `stitch-prompts.md` Bagian 12).
 > baris yang ada, dikelompokkan per `group`).
 
 ---
+
+### konfigurasi_nilai
+Tabel key-value **khusus BOBOT penilaian** (Revisi Tahap 4). Dikelola Admin lewat
+halaman **Konfigurasi Nilai** (dulu bernama "Konfigurasi Grade").
+
+> **Kenapa tabel sendiri, bukan `settings`?** Keputusan pemilik proyek: bobot nilai
+> dipisahkan dari pengaturan aplikasi umum agar terkumpul di satu halaman khusus
+> bersama rentang grade. Ini **pengecualian resmi** dari aturan `CLAUDE.md` #9
+> (yang mewajibkan konfigurasi global memakai tabel `settings`). Lihat CLAUDE.md #9a.
+
+| Kolom | Tipe | Keterangan |
+|---|---|---|
+| id | BIGINT PK | |
+| key | VARCHAR(100) UNIQUE NOT NULL | snake_case, mis. `bobot_cbt_pg` |
+| value | VARCHAR(50) NOT NULL | disimpan string, cast di Service |
+| type | ENUM('integer') NOT NULL DEFAULT 'integer' | semua bobot berupa persen bulat |
+| grup | VARCHAR(50) NOT NULL | `cbt` / `komponen_tugas` / `rapor` — untuk pengelompokan card |
+| label | VARCHAR(150) NOT NULL | teks di form |
+
+**Baris awal (Seeder) — tiap grup WAJIB total 100:**
+
+| key | grup | default | Kegunaan |
+|---|---|---|---|
+| `bobot_cbt_pg` | cbt | 70 | Porsi Pilihan Ganda pada nilai CBT |
+| `bobot_cbt_uraian` | cbt | 30 | Porsi Uraian pada nilai CBT |
+| `bobot_tugas_dari_tugas` | komponen_tugas | 60 | Porsi nilai Tugas di komponen **TUGAS** |
+| `bobot_tugas_dari_cbt` | komponen_tugas | 40 | Porsi nilai CBT di komponen **TUGAS** |
+| `bobot_rapor_tugas` | rapor | 70 | Porsi komponen **TUGAS** pada nilai mapel |
+| `bobot_rapor_sas` | rapor | 30 | Porsi komponen **SAS/SAT** pada nilai mapel |
+
+> **Normalisasi (WAJIB):** bila salah satu sumber tidak ada, bobot dinormalisasi ke 100%.
+> Contoh: CBT tanpa soal uraian → nilai PG dipakai penuh (100%), BUKAN dikali 70%.
+> Tanpa ini, peserta didik tidak akan pernah bisa mendapat nilai 100.
 
 ### konfigurasi_grade
 Rentang nilai untuk konversi otomatis ke huruf grade (A/B/C/D), dapat diubah

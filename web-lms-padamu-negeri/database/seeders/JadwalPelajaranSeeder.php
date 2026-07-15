@@ -27,7 +27,7 @@ class JadwalPelajaranSeeder extends Seeder
         ];
 
         $gmrs = GuruMapelRombel::with(['mapel', 'rombel.wilayah'])
-            ->where('periode_ajaran_id', $periode->id)
+            ->where('tahun_ajaran', $periode->tahun_ajaran)
             ->get();
 
         foreach ($gmrs as $gmr) {
@@ -44,6 +44,7 @@ class JadwalPelajaranSeeder extends Seeder
                     'hari'                 => $slot[0],
                 ],
                 [
+                    'periode_ajaran_id' => $periode->id,
                     'jam_mulai'   => $slot[1],
                     'jam_selesai' => $slot[2],
                 ],

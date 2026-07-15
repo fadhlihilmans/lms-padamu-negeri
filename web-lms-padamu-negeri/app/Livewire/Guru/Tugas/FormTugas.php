@@ -122,6 +122,7 @@ class FormTugas extends Component
 
                 Tugas::create([
                     'guru_mapel_rombel_id' => $this->gmrId,
+                    'periode_ajaran_id'    => app(\App\Services\PeriodeService::class)->getSelected()?->id,  // TRANSAKSI → semester
                     'judul'                => $this->judul,
                     'deskripsi'            => $this->deskripsi ?: null,
                     'lampiran_path'        => $lampiranPath,
@@ -146,7 +147,7 @@ class FormTugas extends Component
         if ($guru && $periode) {
             $gmrList = GuruMapelRombel::with(['mapel', 'rombel'])
                 ->where('guru_id', $guru->id)
-                ->where('periode_ajaran_id', $periode->id)
+                ->where('tahun_ajaran', $periode->tahun_ajaran)
                 ->get();
         }
 

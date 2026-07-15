@@ -58,31 +58,31 @@ class ImportPesertaDidikService
                 break;
             }
 
-            $nipd        = trim((string) ($row[1] ?? ''));
-            $nisn        = trim((string) ($row[2] ?? ''));
-            $nik         = trim((string) ($row[3] ?? ''));
-            $namaLengkap = trim((string) ($row[4] ?? ''));
-            $jenisKelamin = strtoupper(trim((string) ($row[5] ?? '')));
-            $tempatLahir = trim((string) ($row[6] ?? ''));
+            $nipd        = $this->str($row[1] ?? null);
+            $nisn        = $this->str($row[2] ?? null);
+            $nik         = $this->str($row[3] ?? null);
+            $namaLengkap = $this->str($row[4] ?? null);
+            $jenisKelamin = strtoupper($this->str($row[5] ?? null));
+            $tempatLahir = $this->str($row[6] ?? null);
             $tanggalLahirRaw = $row[7] ?? null;
-            $agama       = trim((string) ($row[8] ?? ''));
-            $noHp        = trim((string) ($row[9] ?? ''));
+            $agama       = $this->str($row[8] ?? null);
+            $noHp        = $this->str($row[9] ?? null);
             // kolom K (index 10) = Email — tidak disimpan di DB
-            $namaWilayah = trim((string) ($row[11] ?? ''));
-            $namaPaket   = trim((string) ($row[12] ?? ''));
-            $namaTingkat = trim((string) ($row[13] ?? ''));
-            $alamat      = trim((string) ($row[14] ?? ''));
-            $rt          = trim((string) ($row[15] ?? ''));
-            $rw          = trim((string) ($row[16] ?? ''));
-            $dusun       = trim((string) ($row[17] ?? ''));
-            $kelurahan   = trim((string) ($row[18] ?? ''));
-            $kecamatan   = trim((string) ($row[19] ?? ''));
-            $kodePos     = trim((string) ($row[20] ?? ''));
-            $namaAyah    = trim((string) ($row[21] ?? ''));
-            $noHpAyah    = trim((string) ($row[22] ?? ''));
-            $namaIbu     = trim((string) ($row[23] ?? ''));
-            $noHpIbu     = trim((string) ($row[24] ?? ''));
-            $namaWali    = trim((string) ($row[25] ?? ''));
+            $namaWilayah = $this->str($row[11] ?? null);
+            $namaPaket   = $this->str($row[12] ?? null);
+            $namaTingkat = $this->str($row[13] ?? null);
+            $alamat      = $this->str($row[14] ?? null);
+            $rt          = $this->str($row[15] ?? null);
+            $rw          = $this->str($row[16] ?? null);
+            $dusun       = $this->str($row[17] ?? null);
+            $kelurahan   = $this->str($row[18] ?? null);
+            $kecamatan   = $this->str($row[19] ?? null);
+            $kodePos     = $this->str($row[20] ?? null);
+            $namaAyah    = $this->str($row[21] ?? null);
+            $noHpAyah    = $this->str($row[22] ?? null);
+            $namaIbu     = $this->str($row[23] ?? null);
+            $noHpIbu     = $this->str($row[24] ?? null);
+            $namaWali    = $this->str($row[25] ?? null);
 
             // ── Validasi wajib ──────────────────────────────────────────
             if ($nipd === '') {
@@ -176,7 +176,7 @@ class ImportPesertaDidikService
             $rombel = Rombel::where('wilayah_id', $wilayah->id)
                 ->where('paket_id', $paket->id)
                 ->where('tingkat_id', $tingkat->id)
-                ->where('periode_ajaran_id', $periodeId)
+                ->where('tahun_ajaran', \App\Models\PeriodeAjaran::find($periodeId)?->tahun_ajaran)
                 ->first();
             if (!$rombel) {
                 $results[] = $this->fail($rowIndex, $nipd, $namaLengkap,
@@ -315,6 +315,31 @@ class ImportPesertaDidikService
         }
 
         return $results;
+    }
+
+    /**
+     * Ubah nilai sel Excel menjadi string dengan aman.
+     *
+     * PhpSpreadsheet mengembalikan sel angka sebagai int/float. Casting float
+     * langsung ke string menghasilkan NOTASI ILMIAH untuk angka panjang —
+     * mis. NIK 16 digit `3300000000000001` menjadi `3.3E+15`. Karena itu float
+     * diformat sebagai bilangan bulat penuh.
+     *
+     * Catatan: angka 0 di depan (mis. `007`) hanya bertahan bila selnya bertipe
+     * TEKS di file Excel — itulah sebabnya template kini memformat kolom
+     * NIPD/NISN/NIK/HP/RT/RW/Kode Pos sebagai teks.
+     */
+    private function str(mixed $v): string
+    {
+        if ($v === null) {
+            return '';
+        }
+
+        if (is_float($v)) {
+            return trim(number_format($v, 0, '.', ''));
+        }
+
+        return trim((string) $v);
     }
 
     private function fail(int $row, string $nipd, string $nama, string $alasan): array

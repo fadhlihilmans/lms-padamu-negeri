@@ -65,7 +65,7 @@ class FormNilaiKomponen extends Component
 
         return GuruMapelRombel::with(['mapel', 'rombel'])
             ->where('guru_id', $guru->id)
-            ->where('periode_ajaran_id', $periode->id)
+            ->where('tahun_ajaran', $periode->tahun_ajaran)
             ->get();
     }
 
@@ -115,7 +115,9 @@ class FormNilaiKomponen extends Component
             $this->nilaiAkhir[$pid] = array_fill_keys(RaporService::KOMPONEN, '');
             $this->catatan[$pid]    = '';
 
-            $rnm = $rapors[$pid]?->nilaiMapel->first();
+            // Pakai get(): akses $rapors[$pid] pada Collection memanggil offsetGet()
+            // yang melempar "Undefined array key" bila PD belum punya baris rapor.
+            $rnm = $rapors->get($pid)?->nilaiMapel->first();
             if ($rnm) {
                 $this->catatan[$pid] = $rnm->catatan_mapel ?? '';
                 foreach ($rnm->komponen as $k) {

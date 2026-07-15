@@ -133,7 +133,8 @@
                                 <div class="flex items-center gap-2">
                                     <label class="text-sm font-medium text-[#505f76] whitespace-nowrap">Nilai (0–100):</label>
                                     <input type="number" min="0" max="100" wire:model="skor.{{ $soal->id }}"
-                                           class="w-20 px-3 py-1.5 border rounded-lg text-sm font-bold text-[#3c50e0] text-center focus:outline-none focus:border-[#3c50e0] focus:ring-1 focus:ring-[#3c50e0] @error('skor.'.$soal->id) border-[#ba1a1a] @else border-[#c5c5d7] @enderror">
+                                           @disabled(! $editMode)
+                                           class="w-20 px-3 py-1.5 border rounded-lg text-sm font-bold text-center focus:outline-none focus:border-[#3c50e0] focus:ring-1 focus:ring-[#3c50e0] @error('skor.'.$soal->id) border-[#ba1a1a] @else border-[#c5c5d7] @enderror {{ $editMode ? 'text-[#3c50e0]' : 'bg-[#f0f4f8] text-[#757686] cursor-not-allowed' }}">
                                     <span class="text-xs text-[#757686]">/ 100</span>
                                     @error('skor.'.$soal->id) <span class="text-xs text-[#ba1a1a]">{{ $message }}</span> @enderror
                                 </div>
@@ -153,11 +154,19 @@
                                     class="flex-1 sm:flex-none px-4 py-2 text-sm rounded-lg border border-[#c5c5d7] text-[#505f76] hover:bg-[#f0f4f8] flex items-center justify-center gap-1.5 cursor-pointer">
                                 <span class="material-symbols-outlined text-[16px]">chevron_left</span> Sebelumnya
                             </button>
-                            <button type="button" wire:click="saveAndNext" wire:loading.attr="disabled"
-                                    class="flex-1 sm:flex-none px-4 py-2 text-sm rounded-lg bg-[#3c50e0] text-white hover:bg-[#2a3db0] font-medium flex items-center justify-center gap-1.5 cursor-pointer">
-                                <span wire:loading wire:target="saveAndNext" class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span>
-                                Simpan &amp; Lanjut <span wire:loading.remove wire:target="saveAndNext" class="material-symbols-outlined text-[16px]">chevron_right</span>
-                            </button>
+                            @if ($editMode)
+                                <button type="button" wire:click="saveAndNext" wire:loading.attr="disabled"
+                                        class="flex-1 sm:flex-none px-4 py-2 text-sm rounded-lg bg-[#3c50e0] text-white hover:bg-[#2a3db0] font-medium flex items-center justify-center gap-1.5 cursor-pointer">
+                                    <span wire:loading wire:target="saveAndNext" class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span>
+                                    Simpan &amp; Lanjut <span wire:loading.remove wire:target="saveAndNext" class="material-symbols-outlined text-[16px]">chevron_right</span>
+                                </button>
+                            @else
+                                {{-- Sudah final & terkunci → butuh aksi eksplisit untuk mengubah. --}}
+                                <button type="button" wire:click="enableEdit"
+                                        class="flex-1 sm:flex-none px-4 py-2 text-sm rounded-lg border border-[#3c50e0] text-[#3c50e0] hover:bg-[#EEF2FF] font-medium flex items-center justify-center gap-1.5 cursor-pointer">
+                                    <span class="material-symbols-outlined text-[16px]">edit</span> Edit Nilai
+                                </button>
+                            @endif
                         </div>
                     </div>
                 @endif

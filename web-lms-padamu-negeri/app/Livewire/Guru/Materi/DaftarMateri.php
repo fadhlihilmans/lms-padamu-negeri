@@ -65,7 +65,7 @@ class DaftarMateri extends Component
         $materi      = collect();
 
         if ($guru) {
-            $pemetaanQuery = GuruMapelRombel::with(['mapel', 'rombel.paket', 'rombel.periodeAjaran'])
+            $pemetaanQuery = GuruMapelRombel::with(['mapel', 'rombel.paket'])
                 ->where('guru_id', $guru->id);
             $pemetaan = $pemetaanQuery->orderBy('mapel_id')->get();
 

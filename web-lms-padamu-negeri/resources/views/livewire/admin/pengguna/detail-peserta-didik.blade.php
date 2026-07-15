@@ -239,7 +239,7 @@
                             <div class="p-3 rounded-lg border border-[#e8ecf0] bg-[#f6fafe]">
                                 <p class="text-[13px] font-semibold text-on-surface">{{ $pdr->rombel?->nama ?? '—' }}</p>
                                 <p class="text-[12px] text-[#505f76] mt-0.5">
-                                    {{ $pdr->rombel?->periodeAjaran?->nama ?? '—' }}
+                                    TA {{ $pdr->rombel?->tahun_ajaran ?? '—' }}
                                 </p>
                                 @if ($pdr->rombel?->paket || $pdr->rombel?->tingkat)
                                     <p class="text-[11px] text-[#757686] mt-0.5">

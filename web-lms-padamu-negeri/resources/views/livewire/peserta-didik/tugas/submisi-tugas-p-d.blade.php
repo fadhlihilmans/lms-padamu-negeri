@@ -64,11 +64,13 @@
 
         {{-- Lampiran guru --}}
         @if ($tugas->lampiran_path)
-            <a href="{{ Storage::url($tugas->lampiran_path) }}" target="_blank"
-               class="flex sm:inline-flex items-center gap-2 px-4 py-2.5 bg-[#f6fafe] border border-[#c5d0ff] rounded-xl text-[13px] text-[#3c50e0] hover:bg-[#EEF2FF] hover:border-[#3c50e0] transition-colors cursor-pointer min-w-0">
-                <span class="material-symbols-outlined text-[18px] flex-shrink-0">download</span>
-                <span class="truncate">Unduh Lampiran Guru — {{ basename($tugas->lampiran_path) }}</span>
-            </a>
+            <button type="button"
+                    x-data
+                    x-on:click="$dispatch('open-file-preview', { url: '{{ Storage::url($tugas->lampiran_path) }}', name: @js(basename($tugas->lampiran_path)) })"
+                    class="flex sm:inline-flex items-center gap-2 px-4 py-2.5 bg-[#f6fafe] border border-[#c5d0ff] rounded-xl text-[13px] text-[#3c50e0] hover:bg-[#EEF2FF] hover:border-[#3c50e0] transition-colors cursor-pointer min-w-0 text-left">
+                <span class="material-symbols-outlined text-[18px] flex-shrink-0">visibility</span>
+                <span class="truncate">Lihat Lampiran Guru — {{ basename($tugas->lampiran_path) }}</span>
+            </button>
         @endif
     </div>
 
@@ -123,17 +125,19 @@
 
                 {{-- Preview jawaban --}}
                 @if ($submisi->file_path)
-                    <a href="{{ Storage::url($submisi->file_path) }}" target="_blank"
-                       class="flex items-center gap-3 p-3.5 bg-[#f6fafe] border border-[#c5d0ff] rounded-xl {{ $submisi->isi_text ? 'mb-3' : '' }} hover:border-[#3c50e0] hover:bg-[#EEF2FF] transition-colors cursor-pointer group">
+                    <button type="button"
+                            x-data
+                            x-on:click="$dispatch('open-file-preview', { url: '{{ Storage::url($submisi->file_path) }}', name: @js(basename($submisi->file_path)) })"
+                            class="w-full text-left flex items-center gap-3 p-3.5 bg-[#f6fafe] border border-[#c5d0ff] rounded-xl {{ $submisi->isi_text ? 'mb-3' : '' }} hover:border-[#3c50e0] hover:bg-[#EEF2FF] transition-colors cursor-pointer group">
                         <div class="w-9 h-9 rounded-lg bg-[#EEF2FF] group-hover:bg-white flex items-center justify-center flex-shrink-0 transition-colors">
                             <span class="material-symbols-outlined text-[#3c50e0] text-[20px]">description</span>
                         </div>
                         <div class="flex-1 min-w-0">
                             <p class="text-[13px] font-medium text-on-surface truncate">{{ basename($submisi->file_path) }}</p>
-                            <p class="text-[12px] text-[#505f76]">Klik untuk unduh / lihat</p>
+                            <p class="text-[12px] text-[#505f76]">Klik untuk pratinjau</p>
                         </div>
-                        <span class="material-symbols-outlined text-[18px] text-[#505f76]">open_in_new</span>
-                    </a>
+                        <span class="material-symbols-outlined text-[18px] text-[#505f76]">visibility</span>
+                    </button>
                 @endif
                 @if ($submisi->isi_text)
                     <div class="p-4 bg-[#f6fafe] border border-[#c5c5d7] rounded-xl">
@@ -233,7 +237,18 @@
 
                     {{-- Tab Upload File --}}
                     <div x-show="tab === 'file'" x-cloak>
-                        <label class="flex flex-col items-center gap-3 sm:gap-4 p-6 sm:p-10 border-2 border-dashed border-[#c5c5d7] rounded-xl cursor-pointer hover:border-[#3c50e0] hover:bg-[#f6fafe] transition-all group">
+                        {{-- Drag & drop: set files ke input lalu picu 'change' agar wire:model menangkapnya --}}
+                        <label class="flex flex-col items-center justify-center text-center gap-3 sm:gap-4 p-6 sm:p-10 border-2 border-dashed border-[#c5c5d7] rounded-xl cursor-pointer hover:border-[#3c50e0] hover:bg-[#f6fafe] transition-all group"
+                               x-data="{ dragging: false }"
+                               :class="dragging && 'border-[#3c50e0] bg-[#EEF2FF]'"
+                               x-on:dragover.prevent="dragging = true"
+                               x-on:dragleave.prevent="dragging = false"
+                               x-on:drop.prevent="
+                                    dragging = false;
+                                    if ($event.dataTransfer.files.length) {
+                                        $refs.fileInput.files = $event.dataTransfer.files;
+                                        $refs.fileInput.dispatchEvent(new Event('change'));
+                                    }">
                             {{-- Indikator sedang mengunggah --}}
                             <div wire:loading wire:target="fileBaru" class="flex flex-col items-center gap-3">
                                 <div class="w-14 h-14 rounded-full bg-[#EEF2FF] flex items-center justify-center">
@@ -260,7 +275,7 @@
                                 </div>
                             @endif
                             </div>
-                            <input wire:model="fileBaru" type="file"
+                            <input x-ref="fileInput" wire:model="fileBaru" type="file"
                                    accept=".pdf,.doc,.docx,.ppt,.pptx,image/*"
                                    class="hidden">
                         </label>

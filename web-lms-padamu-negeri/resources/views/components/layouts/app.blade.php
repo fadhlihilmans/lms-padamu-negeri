@@ -96,6 +96,10 @@
         <livewire:auth.modal-ganti-password />
     @endauth
 
+    {{-- Pratinjau file global (gambar + PDF via PDF.js) — dipakai semua modul.
+         Picu dari mana pun: $dispatch('open-file-preview', { url, name }) --}}
+    <x-file-preview />
+
     {{-- Toast Notifications (mendengarkan event 'notify' dari semua Livewire komponen) --}}
     <div
         x-data="{

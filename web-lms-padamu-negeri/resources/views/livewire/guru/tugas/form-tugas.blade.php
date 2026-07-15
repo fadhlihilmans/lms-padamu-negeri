@@ -97,8 +97,18 @@
                 <label class="text-[13px] font-medium" style="color: #171c1f">
                     Lampiran <span class="text-[12px] font-normal" style="color: #505f76">(opsional, maks {{ $maxMb }}MB)</span>
                 </label>
+                {{-- Drag & drop: set files ke input lalu picu 'change' agar wire:model menangkapnya --}}
                 <label class="flex flex-col items-center gap-3 p-6 border-2 border-dashed rounded-xl cursor-pointer transition-all"
                        style="border-color: #c5c5d7; background: #f6fafe"
+                       x-data
+                       x-on:dragover.prevent="$el.style.borderColor='#3c50e0'; $el.style.background='#EEF2FF'"
+                       x-on:dragleave.prevent="$el.style.borderColor='#c5c5d7'; $el.style.background='#f6fafe'"
+                       x-on:drop.prevent="
+                            $el.style.borderColor='#c5c5d7'; $el.style.background='#f6fafe';
+                            if ($event.dataTransfer.files.length) {
+                                $refs.fileInput.files = $event.dataTransfer.files;
+                                $refs.fileInput.dispatchEvent(new Event('change'));
+                            }"
                        onmouseover="this.style.borderColor='#3c50e0'; this.style.background='#EEF2FF'"
                        onmouseout="this.style.borderColor='#c5c5d7'; this.style.background='#f6fafe'">
                     <div class="w-12 h-12 rounded-full flex items-center justify-center" style="background: #f0f4f8">
@@ -118,7 +128,7 @@
                         <span class="material-symbols-outlined text-[18px] animate-spin" style="color:#3c50e0">progress_activity</span>
                         <span class="text-[14px] font-semibold" style="color:#3c50e0">Mengunggah file…</span>
                     </div>
-                    <input wire:model="lampiranBaru" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,image/*" class="hidden">
+                    <input x-ref="fileInput" wire:model="lampiranBaru" type="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,image/*" class="hidden">
                 </label>
                 @error('lampiranBaru') <p class="text-[12px]" style="color: #ba1a1a">{{ $message }}</p> @enderror
             </div>

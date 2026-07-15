@@ -148,12 +148,76 @@ class GuruManager extends Component
 
     // ── Toggle Aktif ─────────────────────────────────────────────────────────
 
+    /**
+     * Tugas guru yang MASIH BERJALAN di TA aktif (wali kelas + plotting mapel).
+     *
+     * Dipakai sebagai penjagaan sebelum menonaktifkan: akun nonaktif TIDAK BISA
+     * LOGIN, sehingga bila guru masih wali kelas / masih mengampu mapel di TA
+     * aktif, tugas itu akan macet (rapor, kenaikan kelas, materi, tugas, CBT).
+     *
+     * @return array{rombelWali: array<string>, jumlahMapel: int, adaKonflik: bool}
+     */
+    private function tugasAktif(Guru $guru): array
+    {
+        $ta = app(\App\Services\PeriodeService::class)->getTahunAjaran();
+
+        $rombelWali = \App\Models\Rombel::where('wali_kelas_id', $guru->id)
+            ->tahunAjaran($ta)
+            ->pluck('nama')
+            ->all();
+
+        $jumlahMapel = $guru->guruMapelRombel()
+            ->when($ta, fn ($q) => $q->where('tahun_ajaran', $ta))
+            ->count();
+
+        return [
+            'rombelWali'  => $rombelWali,
+            'jumlahMapel' => $jumlahMapel,
+            'adaKonflik'  => count($rombelWali) > 0 || $jumlahMapel > 0,
+        ];
+    }
+
     public function toggleActive(int $id): void
     {
+        $guru = Guru::with('user')->findOrFail($id);
+
+        // Mengaktifkan kembali tidak berisiko → langsung jalan.
+        if (! $guru->user->is_active) {
+            $this->setAktif($guru, true);
+            return;
+        }
+
+        // Menonaktifkan: peringatkan bila guru masih punya tugas di TA aktif.
+        if ($this->tugasAktif($guru)['adaKonflik']) {
+            $this->confirmToggleId = $id;   // → tampilkan modal peringatan
+            return;
+        }
+
+        $this->setAktif($guru, false);
+    }
+
+    /** Tetap nonaktifkan meski masih ada tugas aktif (Admin sudah diperingatkan). */
+    public function confirmNonaktif(): void
+    {
+        $id = $this->confirmToggleId;
+        $this->confirmToggleId = null;
+        if (! $id) {
+            return;
+        }
+
+        $this->setAktif(Guru::with('user')->findOrFail($id), false);
+    }
+
+    public function cancelToggle(): void
+    {
+        $this->confirmToggleId = null;
+    }
+
+    private function setAktif(Guru $guru, bool $aktif): void
+    {
         try {
-            $guru = Guru::with('user')->findOrFail($id);
-            $guru->user->update(['is_active' => ! $guru->user->is_active]);
-            $status = $guru->user->is_active ? 'diaktifkan' : 'dinonaktifkan';
+            $guru->user->update(['is_active' => $aktif]);
+            $status = $aktif ? 'diaktifkan' : 'dinonaktifkan';
             $this->dispatch('notify', type: 'success', message: "Akun \"{$guru->nama_lengkap}\" berhasil {$status}.");
         } catch (\Throwable $th) {
             app(ErrorLogService::class)->record('Toggle Aktif Guru', $th);
@@ -174,12 +238,16 @@ class GuruManager extends Component
         try {
             $guru = Guru::findOrFail($id);
 
-            if ($guru->guruMapelRombel()->exists()) {
-                $this->dispatch('notify', type: 'error', message: 'Guru tidak dapat dihapus karena memiliki pemetaan aktif.');
-                return;
-            }
-            if ($guru->jadwalPelajaran()->exists()) {
-                $this->dispatch('notify', type: 'error', message: 'Guru tidak dapat dihapus karena memiliki jadwal pelajaran.');
+            // Guru yang punya JEJAK MENGAJAR tidak boleh dihapus — menghapusnya akan
+            // memutus histori materi/tugas/CBT/nilai di TA lampau. Sesuai database.md:
+            // "Jika perlu nonaktifkan, pakai kolom is_aktif, bukan soft delete."
+            // Solusinya: NONAKTIFKAN akunnya (users.is_active = 0), bukan dihapus.
+            if ($guru->guruMapelRombel()->exists() || $guru->jadwalPelajaran()->exists()) {
+                $this->dispatch(
+                    'notify',
+                    type: 'warning',
+                    message: 'Guru ini punya histori mengajar (pemetaan/jadwal), jadi tidak bisa dihapus tanpa merusak arsip. Gunakan tombol Nonaktifkan — guru akan hilang dari penugasan baru, tetapi datanya tetap utuh.',
+                );
                 return;
             }
 
@@ -208,7 +276,11 @@ class GuruManager extends Component
             ->orderBy('nama_lengkap')
             ->paginate($this->perPage);
 
-        return view('livewire.admin.pengguna.guru-manager', compact('gurus'));
+        // Data untuk modal peringatan nonaktif (hanya saat dipicu).
+        $toggleGuru = $this->confirmToggleId ? Guru::find($this->confirmToggleId) : null;
+        $toggleInfo = $toggleGuru ? $this->tugasAktif($toggleGuru) : null;
+
+        return view('livewire.admin.pengguna.guru-manager', compact('gurus', 'toggleGuru', 'toggleInfo'));
     }
 
     private function resetForm(): void

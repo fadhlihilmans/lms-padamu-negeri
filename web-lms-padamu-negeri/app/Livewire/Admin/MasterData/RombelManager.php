@@ -27,7 +27,8 @@ class RombelManager extends Component
     #[Url] public string $search              = '';
     public string        $filterWilayahId     = '';
     public string        $filterPaketId       = '';
-    public string        $filterPeriodeId     = '';
+    /** Kosong = ikut TA periode aktif (default). Rombel terikat TA, bukan semester. */
+    public string        $filterTahunAjaran   = '';
     public int           $perPage             = 10;
 
     // ── Kelola Anggota ────────────────────────────────────────────────────────
@@ -43,7 +44,7 @@ class RombelManager extends Component
     public function updatedPerPage(): void          { $this->resetPage(); }
     public function updatedFilterWilayahId(): void  { $this->resetPage(); }
     public function updatedFilterPaketId(): void    { $this->resetPage(); }
-    public function updatedFilterPeriodeId(): void  { $this->resetPage(); }
+    public function updatedFilterTahunAjaran(): void { $this->resetPage(); }
 
     // ── Delete ───────────────────────────────────────────────────────────────
 
@@ -97,6 +98,16 @@ class RombelManager extends Component
     {
         if (! $this->kelolaRombelId) return;
 
+        // LAPIS 1 (UX): cegah lebih dulu dengan pesan jelas, sebelum model menolak.
+        // 1 peserta didik hanya boleh punya 1 rombel per Tahun Ajaran.
+        $bentrok = PesertaDidikRombel::rombelLainDiTaSama($pesertaDidikId, $this->kelolaRombelId);
+        if ($bentrok) {
+            $this->dispatch('notify', type: 'error', message:
+                "Peserta didik sudah terdaftar di \"{$bentrok->nama}\" pada TA {$bentrok->tahun_ajaran}. "
+                . 'Keluarkan dulu dari rombel itu sebelum memindahkannya.');
+            return;
+        }
+
         try {
             $existing = PesertaDidikRombel::withTrashed()
                 ->where('rombel_id', $this->kelolaRombelId)
@@ -119,6 +130,10 @@ class RombelManager extends Component
 
             $this->searchAnggota = '';
             $this->dispatch('notify', type: 'success', message: 'Peserta Didik berhasil ditambahkan ke Rombel.');
+        } catch (\App\Exceptions\SatuRombelPerTaException $th) {
+            // LAPIS 2 (jaring pengaman model) — seharusnya tak tercapai, tapi jangan
+            // sampai jadi halaman error bila ada jalur yang terlewat.
+            $this->dispatch('notify', type: 'error', message: $th->getMessage());
         } catch (\Throwable $th) {
             app(ErrorLogService::class)->record('Tambah Anggota Rombel', $th);
             $this->dispatch('notify', type: 'error', message: 'Maaf, terjadi kesalahan.');
@@ -141,20 +156,25 @@ class RombelManager extends Component
 
     public function render(): View
     {
+        // Default: hanya TA yang sedang dipilih (revisi — jangan tampilkan semua histori).
+        $taAktif = app(\App\Services\PeriodeService::class)->getTahunAjaran();
+        $taFilter = $this->filterTahunAjaran !== '' ? $this->filterTahunAjaran : $taAktif;
+
         $rombels = Rombel::query()
-            ->with(['periodeAjaran', 'wilayah', 'paket', 'tingkat', 'waliKelas'])
+            ->with(['wilayah', 'paket', 'tingkat', 'waliKelas'])
             ->withCount('pesertaDidikRombel')
+            ->tahunAjaran($taFilter)
             ->when($this->search, fn(Builder $q) => $q->where('nama', 'like', "%{$this->search}%"))
             ->when($this->filterWilayahId, fn(Builder $q) => $q->where('wilayah_id', $this->filterWilayahId))
             ->when($this->filterPaketId, fn(Builder $q) => $q->where('paket_id', $this->filterPaketId))
-            ->when($this->filterPeriodeId, fn(Builder $q) => $q->where('periode_ajaran_id', $this->filterPeriodeId))
-            ->orderByDesc('periode_ajaran_id')
+            ->orderByDesc('tahun_ajaran')
             ->orderBy('nama')
             ->paginate($this->perPage);
 
-        $wilayahs = Wilayah::orderBy('nama')->get();
-        $pakets   = Paket::orderBy('nama')->get();
-        $periodes = PeriodeAjaran::orderByDesc('id')->get();
+        $wilayahs     = Wilayah::orderBy('nama')->get();
+        $pakets       = Paket::orderBy('nama')->get();
+        $tahunAjarans = PeriodeAjaran::select('tahun_ajaran')->distinct()
+            ->orderByDesc('tahun_ajaran')->pluck('tahun_ajaran');
 
         $rombelKelola = null;
         $calonAnggota = collect();
@@ -178,7 +198,7 @@ class RombelManager extends Component
 
         return view('livewire.admin.master-data.rombel-manager', compact(
             'rombels', 'wilayahs', 'pakets',
-            'periodes', 'rombelKelola', 'calonAnggota'
+            'tahunAjarans', 'rombelKelola', 'calonAnggota'
         ));
     }
 }

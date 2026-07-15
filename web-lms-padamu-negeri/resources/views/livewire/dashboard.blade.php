@@ -405,26 +405,48 @@
                     </div>
                     <div class="p-4 space-y-3">
                         @forelse ($cbtMendatang as $c)
-                            <div class="p-4 rounded-xl border transition-colors" style="border-color:#c5c5d7; background:white"
-                                 onmouseover="this.style.background='#f6fafe'" onmouseout="this.style.background='white'">
+                            @php
+                                $mulaiAt     = \Illuminate\Support\Carbon::parse($c->tanggal_mulai);
+                                $selesaiAt   = $mulaiAt->copy()->addMinutes((int) $c->durasi_menit);
+                                $berlangsung = now()->between($mulaiAt, $selesaiAt);
+                            @endphp
+                            <div class="p-4 rounded-xl border transition-colors"
+                                 style="border-color:{{ $berlangsung ? '#16a34a' : '#c5c5d7' }}; background:{{ $berlangsung ? '#f0fdf4' : 'white' }}">
                                 <div class="flex items-start justify-between gap-2">
                                     <div class="flex-1 min-w-0">
-                                        <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold mb-1.5" style="background:#f0f4f8; color:#757686">{{ ucfirst(str_replace('_', ' ', $c->jenis_cbt ?? 'CBT')) }}</span>
+                                        {{-- Tanda status: tetap ada saat CBT sedang berlangsung --}}
+                                        @if ($berlangsung)
+                                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold mb-1.5" style="background:#dcfce7; color:#15803d">
+                                                <span class="relative flex w-1.5 h-1.5">
+                                                    <span class="animate-ping absolute inline-flex w-full h-full rounded-full opacity-75" style="background:#16a34a"></span>
+                                                    <span class="relative inline-flex w-1.5 h-1.5 rounded-full" style="background:#16a34a"></span>
+                                                </span>
+                                                SEDANG BERLANGSUNG
+                                            </span>
+                                        @else
+                                            <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold mb-1.5" style="background:#f0f4f8; color:#757686">{{ ucfirst(str_replace('_', ' ', $c->jenis_cbt ?? 'CBT')) }}</span>
+                                        @endif
                                         <p class="text-[13.5px] font-semibold truncate" style="color:#171c1f">{{ $c->nama_ujian }}</p>
                                         <p class="text-[11.5px] mt-0.5" style="color:#505f76">{{ $c->guruMapelRombel?->mapel?->nama ?? '' }}</p>
                                     </div>
                                     <div class="text-right flex-shrink-0">
-                                        <p class="text-[22px] font-bold leading-none" style="color:#3c50e0">{{ \Illuminate\Support\Carbon::parse($c->tanggal_mulai)->format('d') }}</p>
-                                        <p class="text-[10px] font-semibold uppercase" style="color:#757686">{{ \Illuminate\Support\Carbon::parse($c->tanggal_mulai)->format('M') }}</p>
+                                        <p class="text-[22px] font-bold leading-none" style="color:{{ $berlangsung ? '#16a34a' : '#3c50e0' }}">{{ $mulaiAt->format('d') }}</p>
+                                        <p class="text-[10px] font-semibold uppercase" style="color:#757686">{{ $mulaiAt->format('M') }}</p>
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-3 mt-3 pt-3 border-t" style="border-color:#f0f4f8">
+                                <div class="flex items-center gap-3 mt-3 pt-3 border-t" style="border-color:{{ $berlangsung ? '#bbf7d0' : '#f0f4f8' }}">
                                     <span class="flex items-center gap-1 text-[12px]" style="color:#505f76">
-                                        <span class="material-symbols-outlined text-[13px]">schedule</span>{{ \Illuminate\Support\Carbon::parse($c->tanggal_mulai)->format('H:i') }}
+                                        <span class="material-symbols-outlined text-[13px]">schedule</span>{{ $mulaiAt->format('H:i') }}
                                     </span>
                                     <span class="flex items-center gap-1 text-[12px]" style="color:#505f76">
                                         <span class="material-symbols-outlined text-[13px]">timer</span>{{ $c->durasi_menit }} menit
                                     </span>
+                                    @if ($berlangsung && \Route::has('peserta-didik.cbt.kerjakan'))
+                                        <a href="{{ route('peserta-didik.cbt.kerjakan', ['cbtId' => $c->id]) }}"
+                                           class="ml-auto px-3 py-1.5 rounded-lg text-[12px] font-semibold text-white" style="background:#16a34a">
+                                            Kerjakan
+                                        </a>
+                                    @endif
                                 </div>
                             </div>
                         @empty

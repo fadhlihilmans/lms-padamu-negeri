@@ -123,11 +123,21 @@
                     File & Gambar
                     <span class="text-[12px] font-normal" style="color: #505f76">(PDF, DOCX, PPT, XLS, gambar — maks {{ $maxMb }}MB/file)</span>
                 </label>
-                <div class="border-2 border-dashed rounded-xl p-6 flex flex-col items-center text-center transition-all cursor-pointer"
+                {{-- Drag & drop (mendukung banyak file sekaligus) --}}
+                <div class="border-2 border-dashed rounded-xl p-6 flex flex-col items-center justify-center text-center transition-all cursor-pointer"
                      style="border-color: #c5c5d7; background: #f6fafe"
                      onmouseover="this.style.borderColor='#3c50e0'; this.style.background='#EEF2FF'"
                      onmouseout="this.style.borderColor='#c5c5d7'; this.style.background='#f6fafe'"
-                     x-data @click="$refs.fileZone.click()">
+                     x-data
+                     @click="$refs.fileZone.click()"
+                     x-on:dragover.prevent="$el.style.borderColor='#3c50e0'; $el.style.background='#EEF2FF'"
+                     x-on:dragleave.prevent="$el.style.borderColor='#c5c5d7'; $el.style.background='#f6fafe'"
+                     x-on:drop.prevent="
+                          $el.style.borderColor='#c5c5d7'; $el.style.background='#f6fafe';
+                          if ($event.dataTransfer.files.length) {
+                              $refs.fileZone.files = $event.dataTransfer.files;
+                              $refs.fileZone.dispatchEvent(new Event('change'));
+                          }">
                     <div class="contents" wire:loading.remove wire:target="lampiranBaru">
                         <div class="w-12 h-12 rounded-full flex items-center justify-center mb-3" style="background: #d0e1fb">
                             <span class="material-symbols-outlined text-[24px]" style="color: #3c50e0">cloud_upload</span>

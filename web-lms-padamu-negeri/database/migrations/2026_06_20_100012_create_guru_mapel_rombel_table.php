@@ -13,10 +13,12 @@ return new class extends Migration
             $table->foreignId('guru_id')->constrained('guru')->cascadeOnDelete();
             $table->foreignId('mapel_id')->constrained('mapel')->cascadeOnDelete();
             $table->foreignId('rombel_id')->constrained('rombel')->cascadeOnDelete();
-            $table->foreignId('periode_ajaran_id')->constrained('periode_ajaran')->cascadeOnDelete();
+            // STRUKTUR → terikat TAHUN AJARAN. Plotting cukup 1x per TA; semester genap
+            // otomatis memakai data yang sama (tanpa clone). Lihat keputusan-revisi.md.
+            $table->string('tahun_ajaran', 9)->index();
             $table->timestamps();
 
-            $table->unique(['guru_id', 'mapel_id', 'rombel_id', 'periode_ajaran_id'], 'gmrp_unique');
+            $table->unique(['guru_id', 'mapel_id', 'rombel_id', 'tahun_ajaran'], 'gmrp_unique');
         });
     }
 

@@ -114,6 +114,7 @@ class JadwalManager extends Component
         }
 
         $duplicate = JadwalPelajaran::whereHas('guruMapelRombel', fn ($q) => $q->where('rombel_id', $this->rombelIdForm))
+            ->where('periode_ajaran_id', app(\App\Services\PeriodeService::class)->getSelected()?->id)  // bentrok dinilai per semester
             ->where('hari', $this->hari)
             ->where('jam_mulai', $this->jamMulai . ':00')
             ->when($this->editId, fn ($q) => $q->where('id', '!=', $this->editId))
@@ -131,6 +132,7 @@ class JadwalManager extends Component
                 ['id' => $this->editId],
                 [
                     'guru_mapel_rombel_id' => $this->gmrId,
+                    'periode_ajaran_id'    => app(\App\Services\PeriodeService::class)->getSelected()?->id,  // TRANSAKSI → semester
                     'hari'                 => $this->hari,
                     'jam_mulai'            => $this->jamMulai,
                     'jam_selesai'          => $this->jamSelesai,
@@ -170,14 +172,14 @@ class JadwalManager extends Component
         $periode = app(PeriodeService::class)->getSelected();
 
         $rombels = $periode
-            ? Rombel::where('periode_ajaran_id', $periode->id)->orderBy('nama')->get()
+            ? Rombel::where('tahun_ajaran', $periode->tahun_ajaran)->orderBy('nama')->get()
             : collect();
 
         $hariOrderSql = "FIELD(hari, '" . implode("','", self::HARI_ORDER) . "')";
 
         $jadwals = JadwalPelajaran::query()
             ->with(['guruMapelRombel.mapel', 'guruMapelRombel.guru', 'guruMapelRombel.rombel'])
-            ->when($periode, fn (Builder $q) => $q->whereHas('guruMapelRombel.rombel', fn (Builder $qq) => $qq->where('periode_ajaran_id', $periode->id)), fn (Builder $q) => $q->whereRaw('1 = 0'))
+            ->when($periode, fn (Builder $q) => $q->where('periode_ajaran_id', $periode->id), fn (Builder $q) => $q->whereRaw('1 = 0'))
             ->when($this->filterRombelId, fn (Builder $q) => $q->whereHas('guruMapelRombel', fn (Builder $qq) => $qq->where('rombel_id', $this->filterRombelId)))
             ->when($this->filterHari, fn (Builder $q) => $q->where('hari', $this->filterHari))
             ->when($this->search, fn (Builder $q) => $q->where(function (Builder $qq) {

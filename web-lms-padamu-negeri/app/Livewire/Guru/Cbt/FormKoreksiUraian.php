@@ -22,6 +22,15 @@ class FormKoreksiUraian extends Component
     public string $filterStatus  = '';
     public ?int   $selectedHasilId = null;
 
+    /**
+     * Mode ubah untuk PD terpilih.
+     * - Menunggu koreksi → true (langsung boleh isi).
+     * - Sudah dikoreksi  → false (terkunci; guru harus klik "Edit Nilai").
+     * Ini mencegah skor yang sudah final ke-edit/tersimpan ulang tanpa sengaja
+     * saat guru berpindah antar peserta didik (keputusan Tahap 0).
+     */
+    public bool $editMode = false;
+
     /** skor[cbt_soal_id] => nilai 0..100 */
     public array $skor = [];
 
@@ -79,7 +88,16 @@ class FormKoreksiUraian extends Component
         foreach ($this->uraianSoal() as $soal) {
             $this->skor[$soal->id] = $jawaban[$soal->id] ?? '';
         }
+
+        // Terkunci bila sudah dikoreksi; butuh koreksi → langsung bisa diisi.
+        $this->editMode = $hasil->status_penilaian !== 'selesai_dinilai';
         $this->resetValidation();
+    }
+
+    /** Buka kunci untuk mengubah nilai yang sudah final (aksi eksplisit). */
+    public function enableEdit(): void
+    {
+        $this->editMode = true;
     }
 
     public function goToPrev(): void
@@ -93,7 +111,8 @@ class FormKoreksiUraian extends Component
 
     public function saveAndNext(): void
     {
-        if (! $this->selectedHasilId) {
+        // Tolak menyimpan bila terkunci (jaring pengaman selain tombol yang disembunyikan).
+        if (! $this->selectedHasilId || ! $this->editMode) {
             return;
         }
 
@@ -120,15 +139,14 @@ class FormKoreksiUraian extends Component
             // nilai_uraian = rata-rata skor uraian (0–100).
             $nilaiUraian = (int) round(collect($this->skor)->map(fn ($v) => (int) $v)->avg());
 
-            // nilai_akhir = rata-rata tertimbang PG & uraian menurut jumlah soal.
-            $jumlahUraian = $uraianSoal->count();
-            $jumlahPg     = $this->cbt->soal()->where('tipe_soal', 'pilihan_ganda')->count();
-            $total        = $jumlahPg + $jumlahUraian;
-            $nilaiPg      = (int) ($hasil->nilai_pg ?? 0);
+            // nilai_akhir = PG & Uraian BERBOBOT (Konfigurasi Nilai, default 70:30).
+            // Sebelumnya ditimbang menurut JUMLAH SOAL — diganti sesuai Revisi Tahap 4.
+            // Bila CBT tak punya soal PG, bobot dinormalisasi → uraian dipakai penuh.
+            $adaPg   = $this->cbt->soal()->where('tipe_soal', 'pilihan_ganda')->exists();
+            $nilaiPg = $adaPg ? (float) ($hasil->nilai_pg ?? 0) : null;
 
-            $nilaiAkhir = $total > 0
-                ? (int) round((($jumlahPg * $nilaiPg) + ($jumlahUraian * $nilaiUraian)) / $total)
-                : 0;
+            $nilaiAkhir = app(\App\Services\NilaiConfigService::class)
+                ->nilaiCbt($nilaiPg, (float) $nilaiUraian) ?? 0;
 
             $hasil->update([
                 'nilai_uraian'     => $nilaiUraian,
@@ -147,6 +165,8 @@ class FormKoreksiUraian extends Component
             if ($next) {
                 $this->selectHasil($next->id);
             } else {
+                // Tetap di PD ini, tapi KUNCI kembali (baru saja jadi final).
+                $this->editMode = false;
                 $this->dispatch('notify', ['type' => 'success', 'message' => 'Semua koreksi uraian selesai.']);
             }
         } catch (\Throwable $th) {
@@ -185,10 +205,13 @@ class FormKoreksiUraian extends Component
         $totalSoal    = $jumlahPg + $jumlahUraian;
         $nilaiPg      = (int) ($current?->nilai_pg ?? 0);
 
-        $filled       = collect($this->skor)->filter(fn ($v) => $v !== '' && $v !== null);
-        $uraianAvg    = $filled->count() ? (int) round($filled->map(fn ($v) => (int) $v)->avg()) : null;
-        $previewAkhir = ($uraianAvg !== null && $totalSoal > 0)
-            ? (int) round((($jumlahPg * $nilaiPg) + ($jumlahUraian * $uraianAvg)) / $totalSoal)
+        $filled    = collect($this->skor)->filter(fn ($v) => $v !== '' && $v !== null);
+        $uraianAvg = $filled->count() ? (int) round($filled->map(fn ($v) => (int) $v)->avg()) : null;
+
+        // Preview nilai akhir = PG & Uraian BERBOBOT (konsisten dgn saat disimpan).
+        $previewAkhir = $uraianAvg !== null
+            ? app(\App\Services\NilaiConfigService::class)
+                ->nilaiCbt($jumlahPg > 0 ? (float) $nilaiPg : null, (float) $uraianAvg)
             : null;
 
         return view('livewire.guru.cbt.form-koreksi-uraian', compact(

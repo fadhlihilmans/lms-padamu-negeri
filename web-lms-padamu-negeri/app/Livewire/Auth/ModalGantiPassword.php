@@ -22,11 +22,11 @@ class ModalGantiPassword extends Component
     public function save(): void
     {
         $this->validate([
-            'passwordBaru'       => 'required|string|min:6',
+            'passwordBaru'       => 'required|string|min:3',
             'konfirmasiPassword' => 'required|string|same:passwordBaru',
         ], [
             'passwordBaru.required'       => 'Password baru wajib diisi.',
-            'passwordBaru.min'            => 'Password minimal 6 karakter.',
+            'passwordBaru.min'            => 'Password minimal 3 karakter.',
             'konfirmasiPassword.required' => 'Konfirmasi password wajib diisi.',
             'konfirmasiPassword.same'     => 'Konfirmasi password tidak cocok.',
         ]);

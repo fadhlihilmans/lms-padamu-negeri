@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             RombelSeeder::class,
             // Langkah 18–19
             GradeSeeder::class,
+            KonfigurasiNilaiSeeder::class,   // bobot penilaian (Tahap 4)
             SettingSeeder::class,
 
             // ── Data dummy end-to-end (ikuti urutan dependency) ──

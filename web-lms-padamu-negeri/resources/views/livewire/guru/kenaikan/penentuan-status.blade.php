@@ -22,7 +22,7 @@
             <h1 class="text-xl font-bold text-on-surface">Kenaikan Kelas</h1>
             <p class="text-sm text-[#505f76] mt-0.5">
                 {{ $rombel?->nama ?? 'Wali Kelas' }}
-                @if ($rombel?->periodeAjaran) · TA {{ $rombel->periodeAjaran->tahun_ajaran }} @endif
+                @if ($rombel?->tahun_ajaran) · TA {{ $rombel->tahun_ajaran }} @endif
             </p>
         </div>
         @if ($rombel)

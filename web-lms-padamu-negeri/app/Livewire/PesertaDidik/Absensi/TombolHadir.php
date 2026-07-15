@@ -82,12 +82,22 @@ class TombolHadir extends Component
         $detailHariIni = collect();
         $riwayatMinggu = collect();
 
-        if ($pd) {
-            // Rombel PD
-            $rombelIds = $pd->pesertaDidikRombel()->pluck('rombel_id');
+        $periode = app(\App\Services\PeriodeService::class)->getSelected();
+
+        if ($pd && $periode) {
+            // Rombel PD pada TA yang sedang dilihat saja — sebelumnya mengambil SEMUA
+            // rombel lintas TA, sehingga PD bisa melihat/mengisi sesi absensi milik
+            // rombel tahun lain.
+            $rombelIds = $pd->pesertaDidikRombel()
+                ->whereHas('rombel', fn($q) => $q->where('tahun_ajaran', $periode->tahun_ajaran))
+                ->pluck('rombel_id');
+
+            // Absensi terikat SEMESTER → selalu batasi ke periode yang dipilih.
+            $sesiPeriode = fn($q) => $q->where('periode_ajaran_id', $periode->id)
+                ->whereHas('guruMapelRombel', fn($s) => $s->whereIn('rombel_id', $rombelIds));
 
             // Auto-close sesi yang sudah melewati tutup_pada
-            SesiAbsensi::whereHas('guruMapelRombel', fn($q) => $q->whereIn('rombel_id', $rombelIds))
+            SesiAbsensi::where($sesiPeriode)
                 ->whereDate('tanggal', today())
                 ->where('status_sesi', 'terbuka')
                 ->whereNotNull('tutup_pada')
@@ -95,7 +105,7 @@ class TombolHadir extends Component
                 ->update(['status_sesi' => 'ditutup']);
 
             // Sesi terbuka hari ini yang sudah waktunya buka
-            $sesiTerbuka = SesiAbsensi::whereHas('guruMapelRombel', fn($q) => $q->whereIn('rombel_id', $rombelIds))
+            $sesiTerbuka = SesiAbsensi::where($sesiPeriode)
                 ->whereDate('tanggal', today())
                 ->where('status_sesi', 'terbuka')
                 ->where(fn($q) => $q->whereNull('tanggal_buka')->orWhere('tanggal_buka', '<=', now()))
@@ -103,7 +113,7 @@ class TombolHadir extends Component
                 ->get();
 
             // Detail absensi PD hari ini (semua sesi)
-            $sesiHariIniIds = SesiAbsensi::whereHas('guruMapelRombel', fn($q) => $q->whereIn('rombel_id', $rombelIds))
+            $sesiHariIniIds = SesiAbsensi::where($sesiPeriode)
                 ->whereDate('tanggal', today())
                 ->pluck('id');
 

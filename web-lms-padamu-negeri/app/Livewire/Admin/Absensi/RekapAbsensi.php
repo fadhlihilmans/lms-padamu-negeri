@@ -51,7 +51,7 @@ class RekapAbsensi extends Component
         $rombels = collect();
 
         if ($periode) {
-            $rombels = Rombel::where('periode_ajaran_id', $periode->id)
+            $rombels = Rombel::where('tahun_ajaran', $periode->tahun_ajaran)
                 ->orderBy('nama')
                 ->get();
         }
@@ -64,7 +64,7 @@ class RekapAbsensi extends Component
                 'detail',
             ])
             ->when($periode, fn($q) =>
-                $q->whereHas('guruMapelRombel', fn($sub) => $sub->where('periode_ajaran_id', $periode->id))
+                $q->where('periode_ajaran_id', $periode->id)
             )
             ->when($this->filterRombelId, fn($q) =>
                 $q->whereHas('guruMapelRombel', fn($sub) => $sub->where('rombel_id', $this->filterRombelId))

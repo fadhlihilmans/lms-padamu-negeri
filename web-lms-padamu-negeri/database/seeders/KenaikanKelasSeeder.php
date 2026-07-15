@@ -17,18 +17,22 @@ class KenaikanKelasSeeder extends Seeder
 {
     public function run(): void
     {
+        // NIPD diambil DINAMIS dari PesertaDidikSeeder (urut id) — jangan hardcode,
+        // supaya seeder ini tidak rusak bila daftar NIPD diubah.
+        $daftarNipd = \App\Models\PesertaDidik::orderBy('id')->pluck('nipd')->all();
+
         $periode = PeriodeAjaran::where('is_aktif', true)->firstOrFail();
 
         // [wilayah rombel] => [nipd => status_keputusan]
         $keputusan = [
             'Botolambat' => [
-                '1718' => 'naik',
-                '1719' => 'naik',
-                '1720' => 'tinggal',
+                $daftarNipd[0] => 'naik',
+                $daftarNipd[1] => 'naik',
+                $daftarNipd[2] => 'tinggal',
             ],
             'Pondok 1' => [
-                '1721' => 'naik',
-                '1722' => 'pindah_wilayah',
+                $daftarNipd[3] => 'naik',
+                $daftarNipd[4] => 'pindah_wilayah',
             ],
         ];
 
@@ -39,7 +43,7 @@ class KenaikanKelasSeeder extends Seeder
             }
 
             $rombel = Rombel::with('waliKelas')
-                ->where('periode_ajaran_id', $periode->id)
+                ->where('tahun_ajaran', $periode->tahun_ajaran)
                 ->where('wilayah_id', $wilayah->id)
                 ->first();
 

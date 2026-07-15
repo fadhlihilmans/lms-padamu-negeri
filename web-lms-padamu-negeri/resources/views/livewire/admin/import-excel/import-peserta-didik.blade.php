@@ -80,6 +80,10 @@
                     <span><b>Z</b> — Nama Wali</span>
                 </div>
                 <p class="text-[11px] mt-2" style="color: #757686"><span style="color: #ba1a1a">*</span> wajib diisi. Header di baris 1, data mulai baris 2.</p>
+                <p class="text-[11px] mt-1 flex items-start gap-1" style="color: #757686">
+                    <span class="material-symbols-outlined text-[13px] flex-shrink-0" style="color: #d97706">info</span>
+                    <span>Kolom <b>NIPD, NISN, NIK, No HP, RT, RW, Kode Pos</b> sudah diformat <b>Teks</b> di template — jangan diubah ke Angka, agar angka <b>0</b> di depan (mis. <code>007</code>) tidak hilang.</span>
+                </p>
             </div>
         </div>
 
