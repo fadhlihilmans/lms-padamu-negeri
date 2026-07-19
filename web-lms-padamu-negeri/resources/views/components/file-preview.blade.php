@@ -4,13 +4,43 @@
     Cara memicu dari Blade mana pun:
         $dispatch('open-file-preview', { url: '{{ Storage::url($path) }}', name: 'nama.pdf' })
 
-    - Gambar → tampil langsung.
-    - PDF    → dirender PDF.js ke <canvas> (JALAN DI MOBILE; iframe tidak).
+    - Gambar → tampil langsung (<img>).
+    - PDF   → <iframe> (ringan, tanpa library tambahan).
+      Di mobile yang tidak support iframe PDF, otomatis fallback ke tombol Unduh.
     - Lainnya (docx/xlsx/pptx) → kartu "pratinjau tidak tersedia" + tombol Unduh.
 
     Mobile: layar penuh, tombol tutup (X) selalu terlihat di header yang sticky.
 --}}
-<div x-data="filePreview" @open-file-preview.window="show($event.detail)">
+<div x-data="{
+        open: false,
+        url: '',
+        name: '',
+        kind: 'other',
+
+        imageExts: ['jpg','jpeg','png','webp','gif','bmp','svg'],
+
+        show(detail) {
+            const payload = Array.isArray(detail) ? detail[0] : detail;
+            if (!payload || !payload.url) return;
+
+            this.url  = payload.url;
+            this.name = payload.name || 'File';
+
+            const ext = (payload.url.split('?')[0].split('.').pop() || '').toLowerCase();
+            this.kind = ext === 'pdf' ? 'pdf' : (this.imageExts.includes(ext) ? 'image' : 'other');
+
+            this.open = true;
+            document.body.style.overflow = 'hidden';
+        },
+
+        close() {
+            this.open = false;
+            this.url  = '';
+            document.body.style.overflow = '';
+        },
+     }"
+     @open-file-preview.window="show($event.detail)">
+
     <template x-teleport="body">
         <div x-show="open" x-cloak
              @keydown.escape.window="close()"
@@ -20,7 +50,7 @@
             <div class="bg-white w-full h-full sm:h-[88vh] sm:max-w-4xl sm:rounded-xl overflow-hidden shadow-2xl flex flex-col"
                  @click.stop>
 
-                {{-- Header: nama file + Unduh + tombol X (selalu terlihat) --}}
+                {{-- Header: nama file + Unduh + tombol X --}}
                 <div class="px-4 py-3 border-b border-[#c5c5d7] flex items-center gap-2 flex-shrink-0 bg-white">
                     <span class="material-symbols-outlined text-[20px] text-[#505f76] flex-shrink-0">description</span>
                     <span class="text-[14px] font-medium text-on-surface truncate flex-1 min-w-0" x-text="name"></span>
@@ -38,29 +68,19 @@
                 </div>
 
                 {{-- Body --}}
-                <div class="flex-1 overflow-y-auto bg-[#f0f4f8]">
+                <div class="flex-1 overflow-hidden bg-[#f0f4f8]">
 
                     {{-- Gambar --}}
                     <template x-if="kind === 'image'">
-                        <div class="w-full h-full flex items-center justify-center p-4">
+                        <div class="w-full h-full flex items-center justify-center p-4 overflow-auto">
                             <img :src="url" :alt="name" class="max-w-full max-h-full object-contain rounded-lg shadow">
                         </div>
                     </template>
 
-                    {{-- PDF (PDF.js → canvas) --}}
+                    {{-- PDF (iframe) --}}
                     <template x-if="kind === 'pdf'">
-                        <div class="p-3 sm:p-4">
-                            <div x-show="loading" class="flex items-center justify-center gap-2 py-16 text-[#505f76]">
-                                <span class="material-symbols-outlined text-[20px] animate-spin">progress_activity</span>
-                                <span class="text-[13.5px]">Memuat pratinjau…</span>
-                            </div>
-
-                            <div x-show="error" class="flex flex-col items-center gap-2 py-16 text-center px-6">
-                                <span class="material-symbols-outlined text-[36px] text-[#ba1a1a]">error</span>
-                                <p class="text-[13.5px] text-[#505f76]" x-text="error"></p>
-                            </div>
-
-                            <div x-ref="pdfHost"></div>
+                        <div class="w-full h-full">
+                            <iframe :src="url + '#zoom=page-width'" class="w-full h-full border-0" title="Pratinjau PDF"></iframe>
                         </div>
                     </template>
 
