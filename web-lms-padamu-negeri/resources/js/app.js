@@ -17,7 +17,13 @@
 import * as pdfjsLib from 'pdfjs-dist';
 import pdfWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
+// Vite plugin renameMjsToJs (di vite.config.js) me-rename .mjs → .js saat
+// build, tapi URL di sini masih menunjuk .mjs. Kita ganti ekstensi di runtime
+// agar browser request file .js yang benar (diterima semua web server).
+const workerSrc = typeof pdfWorkerUrl === 'string'
+    ? pdfWorkerUrl.replace(/\.mjs(\b|$)/, '.js')
+    : pdfWorkerUrl;
+pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc;
 
 const IMAGE_EXT = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'svg'];
 

@@ -2,8 +2,9 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import { bunny } from 'laravel-vite-plugin/fonts';
 import tailwindcss from '@tailwindcss/vite';
-import { resolve, basename } from 'path';
-import { renameSync, existsSync } from 'fs';
+import { basename } from 'path';
+import { readFileSync, writeFileSync } from 'fs';
+import { resolve } from 'path';
 
 /**
  * Vite plugin: rename .mjs assets to .js after build.
@@ -11,14 +12,22 @@ import { renameSync, existsSync } from 'fs';
  * Nginx/Apache sering tidak punya mapping MIME type untuk .mjs,
  * sehingga file dikirim sebagai application/octet-stream — browser
  * menolak memuatnya sebagai JavaScript module (PDF.js worker gagal).
- * Plugin ini me-rename file .mjs → .js dan memperbaiki referensi
- * di manifest.json supaya semuanya konsisten.
+ * Plugin ini:
+ *   1. generateBundle — rename .mjs → .js di output + update referensi di JS chunks
+ *   2. writeBundle    — patch manifest.json agar assets array juga pakai .js
  */
 function renameMjsToJs() {
+    let outDir = '';
+
     return {
         name: 'rename-mjs-to-js',
         enforce: 'post',
         apply: 'build',
+
+        configResolved(config) {
+            outDir = config.build.outDir;
+        },
+
         generateBundle(_options, bundle) {
             const toRename = [];
             for (const [fileName, chunk] of Object.entries(bundle)) {
@@ -37,6 +46,20 @@ function renameMjsToJs() {
                         chunk.code = chunk.code.replaceAll(oldBase, newBase);
                     }
                 }
+            }
+        },
+
+        // Patch manifest.json after all plugins (incl. Laravel) have written it
+        closeBundle() {
+            const manifestPath = resolve(outDir, 'manifest.json');
+            try {
+                const raw = readFileSync(manifestPath, 'utf-8');
+                const patched = raw.replace(/\.mjs"/g, '.js"');
+                if (patched !== raw) {
+                    writeFileSync(manifestPath, patched, 'utf-8');
+                }
+            } catch {
+                // manifest belum ada atau tidak bisa dibaca — skip
             }
         },
     };
