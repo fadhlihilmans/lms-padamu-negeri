@@ -110,12 +110,30 @@ class RaporService
         $grade = app(GradeService::class);
         $bobot = app(NilaiConfigService::class);
 
-        $rows = $rapor->nilaiMapel
-            ->sortBy(fn ($m) => $m->mapel?->nama)
+        // Ambil semua mapel yang diajarkan di rombel ini agar mapel yang belum dinilai
+        // tetap muncul di cetak rapor dengan nilai kosong (—).
+        $semuaGmr = GuruMapelRombel::with('mapel')
+            ->where('rombel_id', $rapor->rombel_id)
+            ->where('tahun_ajaran', $rapor->periodeAjaran->tahun_ajaran)
+            ->get();
+
+        $rows = $semuaGmr
+            ->sortBy(fn ($gmr) => $gmr->mapel?->nama)
             ->values()
-            ->map(function ($m) use ($grade, $bobot) {
-                // Nilai mapel = TUGAS & SAS/SAT BERBOBOT (default 70:30), bukan
-                // rata-rata biasa. Bila salah satu belum diisi, bobot dinormalisasi.
+            ->map(function ($gmr) use ($rapor, $grade, $bobot) {
+                // Cari apakah sudah ada nilai yang diinput untuk mapel ini
+                $m = $rapor->nilaiMapel->firstWhere('mapel_id', $gmr->mapel_id);
+
+                if (! $m) {
+                    return [
+                        'mapel'     => $gmr->mapel?->nama ?? '—',
+                        'nilai'     => null,
+                        'grade'     => null,
+                        'deskripsi' => null,
+                    ];
+                }
+
+                // Jika sudah ada, hitung nilainya
                 $nilai = $bobot->nilaiMapel(
                     $this->nilaiKomponen($m, self::KOMPONEN_TUGAS),
                     $this->nilaiKomponen($m, self::KOMPONEN_SAS),
