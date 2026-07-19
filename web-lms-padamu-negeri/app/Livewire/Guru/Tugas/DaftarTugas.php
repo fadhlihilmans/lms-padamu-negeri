@@ -105,6 +105,7 @@ class DaftarTugas extends Component
                 $tugas = Tugas::with(['guruMapelRombel.mapel', 'guruMapelRombel.rombel'])
                     ->withCount('submisi')
                     ->whereIn('guru_mapel_rombel_id', $gmrIds)
+                    ->where('periode_ajaran_id', $periode->id)
                     ->when($this->gmrId, fn($q) => $q->where('guru_mapel_rombel_id', $this->gmrId))
                     ->when($this->search, fn($q) => $q->where('judul', 'like', '%' . $this->search . '%'))
                     ->when($this->filterStatus === 'aktif', fn($q) => $q->where('deadline', '>=', now()))

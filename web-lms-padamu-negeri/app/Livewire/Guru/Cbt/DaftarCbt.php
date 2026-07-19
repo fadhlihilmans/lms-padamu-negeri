@@ -283,13 +283,14 @@ class DaftarCbt extends Component
         $now = now();
         $cbt = collect();
 
-        if ($gmrSelected) {
+        if ($gmrSelected && $periode) {
             $cbt = Cbt::withCount([
                     'soal',
                     'hasilCbt',
                     'soal as uraian_count' => fn ($q) => $q->where('tipe_soal', 'uraian'),
                 ])
                 ->where('guru_mapel_rombel_id', $gmrSelected->id)
+                ->where('periode_ajaran_id', $periode->id)
                 ->when($this->search, fn ($q) => $q->where('nama_ujian', 'like', '%' . $this->search . '%'))
                 ->when($this->statusFilter === 'terjadwal', fn ($q) => $q->where('tanggal_mulai', '>', $now))
                 ->when($this->statusFilter === 'berlangsung', fn ($q) => $q
